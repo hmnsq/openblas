@@ -36,14 +36,14 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
-#if  defined(Z13)
+#यदि  defined(Z13)
 #define MULTI_THREAD_MINIMAL  200000
-#else
+#अन्यथा
 #define MULTI_THREAD_MINIMAL  10000
 #endif
 
@@ -51,20 +51,20 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+शून्य NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   blasint n    = *N;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
+#अन्यथा
 #ifdef COMPLEX
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy){
+शून्य CNAME(blasint n, शून्य *VALPHA, शून्य *vx, blasint incx, शून्य *vy, blasint incy){
 FLOAT *ALPHA = (FLOAT*) VALPHA;
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#अन्यथा
+शून्य CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 #endif
 #endif
 
@@ -72,31 +72,31 @@ void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint in
   FLOAT alpha_i = *(ALPHA + 1);
 
 #ifdef SMP
-  int mode, nthreads;
+  पूर्णाङ्क mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#अन्यथा
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (n <= 0) return;
+  यदि (n <= 0) प्रत्यागम;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  यदि ((alpha_r == ZERO) && (alpha_i == ZERO)) प्रत्यागम;
 
-  if (incx == 0 && incy == 0) {
+  यदि (incx == 0 && incy == 0) {
   *y += n * (alpha_r * (*x) - alpha_i* (*(x+1)) );
   *(y+1) += n * (alpha_i * (*x) + alpha_r * (*(x +1)) );
-  return;
+  प्रत्यागम;
   }
   
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  यदि (incx < 0) x -= (n - 1) * incx * 2;
+  यदि (incy < 0) y -= (n - 1) * incy * 2;
 
 #ifdef SMP
   //disable multi-thread when incx==0 or incy==0
@@ -104,36 +104,36 @@ void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint in
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  यदि (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  अन्यथा
+	  nthreads = अंक_cpu_avail(1);
 
-  if (nthreads == 1) {
+  यदि (nthreads == 1) {
 #endif
 
 #ifndef CONJ
-    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#else
-    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
+    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, रिक्त, 0);
+#अन्यथा
+    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, रिक्त, 0);
 #endif
 
 #ifdef SMP
-  } else {
+  } अन्यथा {
 
 #ifdef XDOUBLE
     mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
     mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#अन्यथा
     mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 
-    blas_level1_thread(mode, n, 0, 0, ALPHA, x, incx, y, incy, NULL, 0,
+    blas_level1_thread(mode, n, 0, 0, ALPHA, x, incx, y, incy, रिक्त, 0,
 #ifndef CONJ
-                       (int (*)(void))AXPYU_K,
-#else
-                       (int (*)(void))AXPYC_K,
+                       (पूर्णाङ्क (*)(शून्य))AXPYU_K,
+#अन्यथा
+                       (पूर्णाङ्क (*)(शून्य))AXPYC_K,
 #endif
 		       nthreads);
   }
@@ -143,6 +143,6 @@ void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint in
 
   IDEBUG_END;
 
-  return;
+  प्रत्यागम;
 
 }
