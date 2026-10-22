@@ -46,7 +46,7 @@
 #define ERROR_NAME "XLAUUM"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZLAUUM"
-#else
+#아니면
 #define ERROR_NAME "CLAUUM"
 #endif
 
@@ -83,22 +83,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  만약 (uplo_arg == 'U') uplo = 0;
+  만약 (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
+  만약 (args.lda < MAX(1,args.n)) info = 4;
+  만약 (args.n   < 0)             info = 2;
+  만약 (uplo     < 0)             info = 1;
+  만약 (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
     *Info = - info;
-    return;
+    반환;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  만약 (args.n == 0) 반환;
 
   IDEBUG_START;
 
@@ -113,19 +113,19 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
 #ifdef SMP
   args.common = NULL;
-  if (args.n < 64) {
+  만약 (args.n < 64) {
     args.nthreads = 1;
-  } else {
+  } 아니면 {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  만약 (args.nthreads == 1) {
 #endif
 
     *Info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } 아니면 {
 
     *Info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
 
@@ -142,5 +142,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  반환;
 }

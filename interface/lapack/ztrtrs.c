@@ -46,7 +46,7 @@
 #define ERROR_NAME "XTRTRS"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTRTRS"
-#else
+#아니면
 #define ERROR_NAME "CTRTRS"
 #endif
 
@@ -71,7 +71,7 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
   blas_arg_t args;
 
   blasint info;
-  int uplo, trans, diag;
+  정수 uplo, trans, diag;
   FLOAT *buffer;
 #ifdef PPC440
   extern
@@ -91,33 +91,33 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  만약 (trans_arg == 'N') trans = 0;
+  만약 (trans_arg == 'T') trans = 1;
+  만약 (trans_arg == 'R') trans = 2;
+  만약 (trans_arg == 'C') trans = 3;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  만약 (uplo_arg == 'U') uplo = 0;
+  만약 (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  만약 (diag_arg == 'U') diag = 0;
+  만약 (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  만약 (args.ldb  < MAX(1, args.m)) info = 9;
+  만약 (args.lda  < MAX(1, args.m)) info = 7;
+  만약 (args.n    < 0) info = 5;
+  만약 (args.m    < 0) info = 4;
+  만약 (trans     < 0) info = 2;
+  만약 (uplo      < 0) info = 1;
+  만약 (diag      < 0) info = 3;
 
-  if (info != 0) {
+  만약 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    반환;
   }
 
   args.alpha = NULL;
@@ -125,12 +125,12 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  만약 (args.m == 0) 반환;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
+  만약 (diag) {
+    만약 (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+      반환;
     }
   }
 
@@ -148,19 +148,19 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
 #ifdef SMP
   args.common = NULL;
-  if (args.m < 64) {
+  만약 (args.m < 64) {
     args.nthreads = 1;
-  } else {
+  } 아니면 {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  만약 (args.nthreads == 1) {
 #endif
 
       (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } 아니면 {
     (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
   }
 #endif
@@ -173,6 +173,6 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   IDEBUG_END;
 
-  return;
+  반환;
 
 }

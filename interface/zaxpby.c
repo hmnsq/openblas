@@ -50,7 +50,7 @@ void NAME(blasint *N, void *VALPHA, FLOAT *x, blasint *INCX, void *VBETA, FLOAT 
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* BETA = (FLOAT*) VBETA;
 
-#else
+#아니면
 
 void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *VBETA, void *vy, blasint incy)
 {
@@ -66,17 +66,17 @@ void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *VBETA, void *v
   FLOAT beta_r  = *(BETA  + 0);
   FLOAT beta_i  = *(BETA  + 1);
 
-  if (n <= 0) return;
+  만약 (n <= 0) 반환;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  만약 (incx < 0) x -= (n - 1) * incx * 2;
+  만약 (incy < 0) y -= (n - 1) * incy * 2;
 
   AXPBY_K (n, alpha_r, alpha_i, x, incx, beta_r, beta_i, y, incy);
 
   FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
 
-  return;
+  반환;
 
 }

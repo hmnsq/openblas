@@ -48,33 +48,33 @@
 #define ERROR_NAME "QSYR2K"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYR2K"
-#else
+#아니면
 #define ERROR_NAME "SSYR2K"
 #endif
-#else
+#아니면
 #ifndef HEMM
 #ifdef XDOUBLE
 #define ERROR_NAME "XSYR2K"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSYR2K"
-#else
+#아니면
 #define ERROR_NAME "CSYR2K"
 #endif
-#else
+#아니면
 #ifdef XDOUBLE
 #define ERROR_NAME "XHER2K"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHER2K"
-#else
+#아니면
 #define ERROR_NAME "CHER2K"
 #endif
 #endif
 #endif
 
-static int (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+static 정수 (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef HEMM
   SYR2K_UN, SYR2K_UC, SYR2K_LN, SYR2K_LC,
-#else
+#아니면
   HER2K_UN, HER2K_UC, HER2K_LN, HER2K_LC,
 #endif
 };
@@ -100,27 +100,27 @@ void NAME(char *UPLO, char *TRANS,
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  정수 mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  정수 mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#아니면
+  정수 mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#아니면
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  정수 mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  정수 mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#아니면
+  정수 mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 
   blasint info;
-  int uplo;
-  int trans;
-  int nrowa;
+  정수 uplo;
+  정수 trans;
+  정수 nrowa;
 
   PRINT_DEBUG_NAME;
 
@@ -144,44 +144,44 @@ void NAME(char *UPLO, char *TRANS,
   uplo  = -1;
   trans = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  만약 (uplo_arg  == 'U') uplo  = 0;
+  만약 (uplo_arg  == 'L') uplo  = 1;
 
 #ifndef COMPLEX
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'C') trans = 1;
-#else
+  만약 (trans_arg == 'N') trans = 0;
+  만약 (trans_arg == 'T') trans = 1;
+  만약 (trans_arg == 'C') trans = 1;
+#아니면
 #ifdef HEMM
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'C') trans = 1;
-#else
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
+  만약 (trans_arg == 'N') trans = 0;
+  만약 (trans_arg == 'C') trans = 1;
+#아니면
+  만약 (trans_arg == 'N') trans = 0;
+  만약 (trans_arg == 'T') trans = 1;
 #endif
 
 #endif
 
 
   nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  만약 (trans & 1) nrowa = args.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 12;
-  if (args.ldb < MAX(1,nrowa))  info =  9;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
-  if (trans < 0)                info =  2;
-  if (uplo  < 0)                info =  1;
+  만약 (args.ldc < MAX(1,args.n)) info = 12;
+  만약 (args.ldb < MAX(1,nrowa))  info =  9;
+  만약 (args.lda < MAX(1,nrowa))  info =  7;
+  만약 (args.k < 0)               info =  4;
+  만약 (args.n < 0)               info =  3;
+  만약 (trans < 0)                info =  2;
+  만약 (uplo  < 0)                info =  1;
 
-  if (info != 0) {
+  만약 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
-#else
+#아니면
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Trans,
 	   blasint n, blasint k,
@@ -189,26 +189,26 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb,
-#else
+#아니면
 	   void *valpha,
 	   void *va, blasint lda,
 	   void *vb, blasint ldb,
 #endif
-#if !defined(COMPLEX) || defined(HEMM)
+#만약 !defined(COMPLEX) || defined(HEMM)
 	   FLOAT beta,
-#else
+#아니면
 	   void *vbeta,
 #endif
 #ifndef COMPLEX
 	   FLOAT *c,
-#else
+#아니면
 	   void *vc,
 #endif
            blasint ldc) {
 
 #ifdef COMPLEX
   FLOAT* alpha = (FLOAT*) valpha;
-#if !defined(HEMM)
+#만약 !defined(HEMM)
   FLOAT* beta = (FLOAT*) vbeta;
 #endif
   FLOAT* a = (FLOAT*) va;
@@ -217,7 +217,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 #endif
 
   blas_arg_t args;
-  int uplo, trans;
+  정수 uplo, trans;
   blasint info, nrowa;
 
   FLOAT *buffer;
@@ -230,19 +230,19 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  정수 mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  정수 mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#아니면
+  정수 mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#아니면
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  정수 mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  정수 mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#아니면
+  정수 mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
@@ -262,13 +262,13 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 
 #ifndef COMPLEX
   args.alpha = (void *)&alpha;
-#else
+#아니면
   args.alpha = (void *)alpha;
 #endif
 
-#if !defined(COMPLEX) || defined(HEMM)
+#만약 !defined(COMPLEX) || defined(HEMM)
   args.beta  = (void *)&beta;
-#else
+#아니면
   args.beta  = (void *)beta;
 #endif
 
@@ -276,36 +276,36 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+  만약 (order == CblasColMajor) {
+    만약 (Uplo == CblasUpper) uplo  = 0;
+    만약 (Uplo == CblasLower) uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
+    만약 (Trans == CblasNoTrans)     trans = 0;
 #ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 1;
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
+    만약 (Trans == CblasTrans)       trans = 1;
+    만약 (Trans == CblasConjNoTrans) trans = 0;
+    만약 (Trans == CblasConjTrans)   trans = 1;
 #elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 1;
-#else
-    if (Trans == CblasConjTrans)   trans = 1;
+    만약 (Trans == CblasTrans)       trans = 1;
+#아니면
+    만약 (Trans == CblasConjTrans)   trans = 1;
 #endif
 
     info = -1;
 
     nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    만약 (trans & 1) nrowa = args.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    만약 (args.ldc < MAX(1,args.n)) info = 12;
+    만약 (args.ldb < MAX(1,nrowa))  info =  9;
+    만약 (args.lda < MAX(1,nrowa))  info =  7;
+    만약 (args.k < 0)               info =  4;
+    만약 (args.n < 0)               info =  3;
+    만약 (trans < 0)                info =  2;
+    만약 (uplo  < 0)                info =  1;
   }
 
-  if (order == CblasRowMajor) {
+  만약 (order == CblasRowMajor) {
 
 #ifdef HEMM
     CAlpha[0] =  alpha[0];
@@ -314,71 +314,71 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
     args.alpha = (void *)CAlpha;
 #endif
 
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    만약 (Uplo == CblasUpper) uplo  = 1;
+    만약 (Uplo == CblasLower) uplo  = 0;
 
-    if (Trans == CblasNoTrans)     trans = 1;
+    만약 (Trans == CblasNoTrans)     trans = 1;
 #ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 0;
-    if (Trans == CblasConjNoTrans) trans = 1;
-    if (Trans == CblasConjTrans)   trans = 0;
+    만약 (Trans == CblasTrans)       trans = 0;
+    만약 (Trans == CblasConjNoTrans) trans = 1;
+    만약 (Trans == CblasConjTrans)   trans = 0;
 #elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 0;
-#else
-    if (Trans == CblasConjTrans)   trans = 0;
+    만약 (Trans == CblasTrans)       trans = 0;
+#아니면
+    만약 (Trans == CblasConjTrans)   trans = 0;
 #endif
 
     info = -1;
 
     nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    만약 (trans & 1) nrowa = args.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    만약 (args.ldc < MAX(1,args.n)) info = 12;
+    만약 (args.ldb < MAX(1,nrowa))  info =  9;
+    만약 (args.lda < MAX(1,nrowa))  info =  7;
+    만약 (args.k < 0)               info =  4;
+    만약 (args.n < 0)               info =  3;
+    만약 (trans < 0)                info =  2;
+    만약 (uplo  < 0)                info =  1;
   }
 
-  if (info >= 0) {
+  만약 (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
-  if (args.n == 0) return;
+  만약 (args.n == 0) 반환;
 
 #ifdef DYNAMIC_ARCH
 extern char* gotoblas_corename(void);
 #endif
 
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYR2K_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#만약 !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#만약 defined(ARCH_ARM64) && (defined(USE_SSYR2K_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#만약 defined(DYNAMIC_ARCH)
+만약 (strcmp(gotoblas_corename(), "armv9sme") == 0
+#만약 defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
 #endif
 )
 #endif
-   if (order == CblasRowMajor && n == ldc) {
-     if (Trans == CblasNoTrans && k == lda && k == ldb) {
-      if (Uplo == CblasUpper) {
+   만약 (order == CblasRowMajor && n == ldc) {
+     만약 (Trans == CblasNoTrans && k == lda && k == ldb) {
+      만약 (Uplo == CblasUpper) {
         SSYR2K_DIRECT_ALPHA_BETA_UN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
+        반환;
+      }아니면 만약 (Uplo == CblasLower) {
         SSYR2K_DIRECT_ALPHA_BETA_LN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+        반환;
       }
      }
-     else if (Trans == CblasTrans && n == lda && n ==ldb) {
-      if (Uplo == CblasUpper) {
+     아니면 만약 (Trans == CblasTrans && n == lda && n ==ldb) {
+      만약 (Uplo == CblasUpper) {
         SSYR2K_DIRECT_ALPHA_BETA_UT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
+        반환;
+      }아니면 만약 (Uplo == CblasLower) {
         SSYR2K_DIRECT_ALPHA_BETA_LT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+        반환;
       }
      }
    }
@@ -393,38 +393,38 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   FUNCTION_PROFILE_START();
 
   buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  만약 (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
   sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 
 #ifdef SMP
-  if (!trans){
+  만약 (!trans){
     mode |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
-  } else {
+  } 아니면 {
     mode |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
   }
 
   mode |= (uplo  << BLAS_UPLO_SHIFT);
 
   args.common = NULL;
-  if (args.n*args.k <1000)
+  만약 (args.n*args.k <1000)
 	  args.nthreads =1 ;
-  else
+  아니면
   args.nthreads = num_cpu_avail(3);
 
-  if (args.nthreads == 1) {
+  만약 (args.nthreads == 1) {
 #endif
 
     (syr2k[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
 
-  } else {
+  } 아니면 {
 
     syrk_thread(mode, &args, NULL, NULL, syr2k[(uplo << 1) | trans ], sa, sb, args.nthreads);
 
@@ -437,5 +437,5 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
   IDEBUG_END;
 
-  return;
+  반환;
 }

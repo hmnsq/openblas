@@ -48,25 +48,25 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT 
   FLOAT alpha   = *ALPHA;
   FLOAT beta    = *BETA;
 
-#else
+#아니면
 
 void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
 {
 
 #endif
 
-  if (n <= 0) return;
+  만약 (n <= 0) 반환;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  만약 (incx < 0) x -= (n - 1) * incx;
+  만약 (incy < 0) y -= (n - 1) * incy;
 
   AXPBY_K(n, alpha, x, incx, beta, y, incy);
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
 
-  return;
+  반환;
 
 }
 

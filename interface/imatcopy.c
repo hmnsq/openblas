@@ -37,9 +37,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#만약 defined(DOUBLE)
 #define ERROR_NAME "DIMATCOPY"
-#else
+#아니면
 #define ERROR_NAME "SIMATCOPY"
 #endif
 
@@ -61,7 +61,7 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 {
 
 	char Order, Trans;
-	int order=-1,trans=-1;
+	정수 order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
@@ -72,26 +72,26 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
+	만약 ( Order == 'C' ) order = BlasColMajor;
+	만약 ( Order == 'R' ) order = BlasRowMajor;
+	만약 ( Trans == 'N' ) trans = BlasNoTrans;
+	만약 ( Trans == 'R' ) trans = BlasNoTrans;
+	만약 ( Trans == 'T' ) trans = BlasTrans;
+	만약 ( Trans == 'C' ) trans = BlasTrans;
+#아니면 
 void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	정수 order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
 	blasint *lda, *ldb, *rows, *cols; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	만약 ( CORDER == CblasColMajor) order = BlasColMajor; 
+	만약 ( CORDER == CblasRowMajor) order = BlasRowMajor; 
+	만약 ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	만약 ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -100,95 +100,95 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	ldb = &cldb; 	
 #endif 
 
-	if ( order == BlasColMajor)
+	만약 ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	만약 ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
+        	만약 ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	만약 ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	만약 ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
+        	만약 ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	만약 ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	만약 ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	만약 ( *cols < 0 ) info = 4;
+	만약 ( *rows < 0 ) info = 3;
+	만약 ( trans < 0 ) info = 2;
+	만약 ( order < 0 ) info = 1;
 
-	if (info >= 0) {
+	만약 (info >= 0) {
     		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+    		반환;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	만약 ((*rows == 0) || (*cols == 0)) 반환;
 
 #ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+    만약 ( *lda == *ldb ) {
+        만약 ( order == BlasColMajor )
         {
-            if ( trans == BlasNoTrans )
+            만약 ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                반환;
             }
-            else if ( *rows == *cols )
+            아니면 만약 ( *rows == *cols )
             {
                 IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                반환;
             }
         }
-        else
+        아니면
         {
-            if ( trans == BlasNoTrans )
+            만약 ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                반환;
             }
-            else if ( *rows == *cols )
+            아니면 만약 ( *rows == *cols )
             {
                 IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                반환;
             }
         }
     }
 #endif
 
-	if ( *rows >  *cols )
+	만약 ( *rows >  *cols )
             msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
+    아니면
             msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
 
 	b = malloc(msize);
-	if ( b == NULL )
+	만약 ( b == NULL )
 	{
 		printf("Memory alloc failed in imatcopy\n");
 		exit(1);
 	}
 
-	if ( order == BlasColMajor )
+	만약 ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		만약 ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
 		}
-		else
+		아니면
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
 	}
-	else
+	아니면
 	{
-		if ( trans == BlasNoTrans )
+		만약 ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
-		else
+		아니면
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
@@ -196,7 +196,7 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	}
 
 	free(b);
-	return;
+	반환;
 
 }
 

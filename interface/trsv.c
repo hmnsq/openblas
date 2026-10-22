@@ -47,18 +47,18 @@
 #define ERROR_NAME "QTRSV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DTRSV "
-#else
+#아니면
 #define ERROR_NAME "STRSV "
 #endif
 
-static int (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static 정수 (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   qtrsv_NUU, qtrsv_NUN, qtrsv_NLU, qtrsv_NLN,
   qtrsv_TUU, qtrsv_TUN, qtrsv_TLU, qtrsv_TLN,
 #elif defined(DOUBLE)
   dtrsv_NUU, dtrsv_NUN, dtrsv_NLU, dtrsv_NLN,
   dtrsv_TUU, dtrsv_TUN, dtrsv_TLU, dtrsv_TLN,
-#else
+#아니면
   strsv_NUU, strsv_NUN, strsv_NLU, strsv_NLN,
   strsv_TUU, strsv_TUN, strsv_TLU, strsv_TLN,
 #endif
@@ -80,9 +80,9 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  정수 uplo;
+  정수 unit;
+  정수 trans;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -95,38 +95,38 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  만약 (trans_arg == 'N') trans = 0;
+  만약 (trans_arg == 'T') trans = 1;
+  만약 (trans_arg == 'R') trans = 0;
+  만약 (trans_arg == 'C') trans = 1;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  만약 (diag_arg  == 'U') unit  = 0;
+  만약 (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  만약 (uplo_arg  == 'U') uplo  = 0;
+  만약 (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  8;
-  if (lda  < MAX(1, n))   info =  6;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  만약 (incx == 0)          info =  8;
+  만약 (lda  < MAX(1, n))   info =  6;
+  만약 (n < 0)              info =  4;
+  만약 (unit  < 0)          info =  3;
+  만약 (trans < 0)          info =  2;
+  만약 (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  만약 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
-#else
+#아니면
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
 	   blasint n, FLOAT  *a, blasint lda, FLOAT  *x, blasint incx) {
 
-  int trans, uplo, unit;
+  정수 trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 
@@ -137,70 +137,70 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  만약 (order == CblasColMajor) {
+    만약 (Uplo == CblasUpper)         uplo  = 0;
+    만약 (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+    만약 (TransA == CblasNoTrans)     trans = 0;
+    만약 (TransA == CblasTrans)       trans = 1;
+    만약 (TransA == CblasConjNoTrans) trans = 0;
+    만약 (TransA == CblasConjTrans)   trans = 1;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    만약 (Diag == CblasUnit)          unit  = 0;
+    만약 (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    만약 (incx == 0)          info =  8;
+    만약 (lda  < MAX(1, n))   info =  6;
+    만약 (n < 0)              info =  4;
+    만약 (unit  < 0)          info =  3;
+    만약 (trans < 0)          info =  2;
+    만약 (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  만약 (order == CblasRowMajor) {
+    만약 (Uplo == CblasUpper)         uplo  = 1;
+    만약 (Uplo == CblasLower)         uplo  = 0;
+
+    만약 (TransA == CblasNoTrans)     trans = 1;
+    만약 (TransA == CblasTrans)       trans = 0;
+    만약 (TransA == CblasConjNoTrans) trans = 1;
+    만약 (TransA == CblasConjTrans)   trans = 0;
+
+    만약 (Diag == CblasUnit)          unit  = 0;
+    만약 (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    만약 (incx == 0)          info =  8;
+    만약 (lda  < MAX(1, n))   info =  6;
+    만약 (n < 0)              info =  4;
+    만약 (unit  < 0)          info =  3;
+    만약 (trans < 0)          info =  2;
+    만약 (uplo  < 0)          info =  1;
+  }
+
+  만약 (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
 #endif
 
-  if (n == 0) return;
+  만약 (n == 0) 반환;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
+  만약 (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  만약 (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
   (trsv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer);
@@ -211,5 +211,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  반환;
 }

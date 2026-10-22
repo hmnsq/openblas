@@ -53,18 +53,18 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
 #ifndef SSCAL
   FLOAT *alpha=ALPHA;
-#else
+#아니면
   FLOAT alpha[2] = {ALPHA[0], ZERO};
 #endif
 
-#else
+#아니면
 
 #ifndef SSCAL
 void CNAME(blasint n, void *VALPHA, void *vx, blasint incx){
 
   FLOAT *x = (FLOAT*) vx;
   FLOAT *alpha=(FLOAT*)VALPHA;
-#else
+#아니면
 void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
 
@@ -73,44 +73,44 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
 #endif
 
 #ifdef SMP
-  int mode;
-  int nthreads;
+  정수 mode;
+  정수 nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#아니면
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  만약 (incx <= 0 || n <= 0) 반환;
 
-  if ((alpha[0] == ONE) && (alpha[1] == ZERO)) return;
+  만약 ((alpha[0] == ONE) && (alpha[1] == ZERO)) 반환;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
 #ifdef SMP
-  if ( n <= 1048576 )
+  만약 ( n <= 1048576 )
 	nthreads = 1;
-  else
+  아니면
 	nthreads = num_cpu_avail(1);
 
-  if (nthreads == 1) {
+  만약 (nthreads == 1) {
 #endif
 
   SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, NULL, 0, NULL, 1);
 
 #ifdef SMP
-  } else {
+  } 아니면 {
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_COMPLEX;
-#else
+#아니면
     mode  =  BLAS_SINGLE | BLAS_COMPLEX;
 #endif
 
-    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (int (*)(void))SCAL_K, nthreads);
+    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (정수 (*)(void))SCAL_K, nthreads);
 
   }
 #endif
@@ -119,6 +119,6 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  반환;
 
 }

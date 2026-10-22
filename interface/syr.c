@@ -47,27 +47,27 @@
 #define ERROR_NAME "QSYR  "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYR  "
-#else
+#아니면
 #define ERROR_NAME "SSYR  "
 #endif
 
-static int (*syr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static 정수 (*syr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   qsyr_U, qsyr_L,
 #elif defined(DOUBLE)
   dsyr_U, dsyr_L,
-#else
+#아니면
   ssyr_U, ssyr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static 정수 (*syr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, 정수) = {
 #ifdef XDOUBLE
   qsyr_thread_U, qsyr_thread_L,
 #elif defined(DOUBLE)
   dsyr_thread_U, dsyr_thread_L,
-#else
+#아니면
   ssyr_thread_U, ssyr_thread_L,
 #endif
 };
@@ -87,10 +87,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  정수 uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  정수 nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -98,30 +98,30 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  만약 (uplo_arg  == 'U') uplo  = 0;
+  만약 (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  만약 (lda  < MAX(1, n))   info =  7;
+  만약 (incx == 0)          info =  5;
+  만약 (n < 0)              info =  2;
+  만약 (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  만약 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
-#else
+#아니면
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *a, blasint lda) {
 
   FLOAT *buffer;
-  int uplo;
+  정수 uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  정수 nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -129,91 +129,91 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  만약 (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    만약 (Uplo == CblasUpper) uplo  = 0;
+    만약 (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    만약 (lda  < MAX(1, n))   info =  7;
+    만약 (incx == 0)          info =  5;
+    만약 (n < 0)              info =  2;
+    만약 (uplo  < 0)          info =  1;
+
   }
 
-  if (info >= 0) {
+  만약 (order == CblasRowMajor) {
+
+    만약 (Uplo == CblasUpper) uplo  = 1;
+    만약 (Uplo == CblasLower) uplo  = 0;
+
+    info = -1;
+
+    만약 (lda  < MAX(1, n))   info =  7;
+    만약 (incx == 0)          info =  5;
+    만약 (n < 0)              info =  2;
+    만약 (uplo  < 0)          info =  1;
+  }
+
+  만약 (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
 #endif
 
-  if (n == 0) return;
+  만약 (n == 0) 반환;
 
-  if (alpha == ZERO) return;
+  만약 (alpha == ZERO) 반환;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
-#if 1
-  if (incx == 1 && n < 100) {
+#만약 1
+  만약 (incx == 1 && n < 100) {
     BLASLONG i;
 
-    if (uplo == 0) {
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
+    만약 (uplo == 0) {
+      위해 (i = 0; i < n; i++){
+        만약 (x[i] != ZERO) {
           AXPYU_K(i + 1, 0, 0, alpha * x[i], x,     1, a, 1, NULL, 0);
         }
         a += lda;
       }  
-    } else {
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
+    } 아니면 {
+      위해 (i = 0; i < n; i++){
+        만약 (x[i] != ZERO) {
           AXPYU_K(n - i, 0, 0, alpha * x[i], x + i, 1, a, 1, NULL, 0);
         }
         a += 1 + lda;
       }
     }
-    return;
+    반환;
   } 
 #endif
-  if (incx < 0 ) x -= (n - 1) * incx;
+  만약 (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  만약 (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  만약 (n < 50) nthreads = 1;
+  만약 (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  만약 (nthreads == 1) {
 #endif
 
   (syr[uplo])(n, alpha, x, incx, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } 아니면 {
 
     (syr_thread[uplo])(n, alpha, x, incx, a, lda, buffer, nthreads);
 
@@ -226,5 +226,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
 
   IDEBUG_END;
 
-  return;
+  반환;
 }

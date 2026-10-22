@@ -10,7 +10,7 @@ OPENBLAS_EXPORT
 #ifndef CBLAS
 void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#아니면
 void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
     FLOAT *DA = (FLOAT*) VDA;
     FLOAT *DB = (FLOAT*) VDB;
@@ -20,7 +20,7 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 #ifdef DOUBLE
   long double safmin = DBL_MIN;
   long double rtmin = sqrt(DBL_MIN/DBL_EPSILON);
-#else
+#아니면
   long double safmin = FLT_MIN;
   long double rtmin = sqrt(FLT_MIN/FLT_EPSILON);
 #endif
@@ -46,45 +46,45 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   long double safmax = 1./safmin;
   safmax *= 2.;
   do {
-	if (db_r == ZERO && db_i == ZERO) {
+	만약 (db_r == ZERO && db_i == ZERO) {
 		*C        = ONE;
 		*(S  + 0) = ZERO;
 		*(S  + 1) = ZERO;
 		break;
 	}
 
-#if defined DOUBLE
+#만약 defined DOUBLE
 	long double rtmax = safmax /DBL_EPSILON;
-#else
+#아니면
 	long double rtmax = safmax /FLT_EPSILON;
 #endif
 
 	*(S1 + 0) = *(DB + 0);
 	*(S1 + 1) = *(DB + 1) *-1;
 
-	if (da_r == ZERO && da_i == ZERO) {
+	만약 (da_r == ZERO && da_i == ZERO) {
 		*C = ZERO;
-		if (db_r == ZERO) {
+		만약 (db_r == ZERO) {
 			(*DA) = fabsl(db_i);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
 			break;
-		} else if ( db_i == ZERO) {
+		} 아니면 만약 ( db_i == ZERO) {
 			*DA = fabsl(db_r);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
 			break;
-		} else {
+		} 아니면 {
 			long double g1 = MAX( fabsl(db_r), fabsl(db_i));
 			rtmax =sqrt(safmax/2.);
-			if (g1 > rtmin && g1 < rtmax) { // unscaled
+			만약 (g1 > rtmin && g1 < rtmax) { // unscaled
 				d = sqrt(adb);
 				*S = *S1 /d;
 				*(S+1) = *(S1+1) /d;
 				*DA = d ;
 				*(DA+1) = ZERO;
 				break;
-			} else { // scaled algorithm
+			} 아니면 { // scaled algorithm
 				long double u = MIN ( safmax, MAX ( safmin, g1));
 				FLOAT gs_r = db_r/u;
 				FLOAT gs_i = db_i/u;
@@ -97,32 +97,32 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			}
 		}
 
-	} else {
+	} 아니면 {
 
 		FLOAT f1 = MAX ( fabsl(da_r), fabsl(da_i));
 		FLOAT g1 = MAX ( fabsl(db_r), fabsl(db_i));
 		rtmax = sqrt(safmax / 4.);
-		if ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
+		만약 ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
 			long double h = ada + adb;
 			double adahsq = sqrt(ada * h);
-			if (ada >= h *safmin) {
+			만약 (ada >= h *safmin) {
 				*C = sqrt(ada/h);
 				*R = *DA / *C;
 				*(R+1) = *(DA+1) / *C;
 				rtmax *= 2.;
-				if ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
+				만약 ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
 					*S = *S1 * (*DA / adahsq) - *(S1+1)* (*(DA+1)/adahsq);
 					*(S+1) = *S1 * (*(DA+1) / adahsq) + *(S1+1) * (*DA/adahsq);
-				} else {
+				} 아니면 {
 					*S = *S1 * (*R/h) - *(S1+1) * (*(R+1)/h);
 					*(S+1) = *S1 * (*(R+1)/h) + *(S1+1) * (*(R)/h);
 				}
-			} else {
+			} 아니면 {
 				*C = ada / adahsq;
-				if (*C >= safmin) {
+				만약 (*C >= safmin) {
 					*R = *DA / *C;
 					*(R+1) = *(DA+1) / *C;
-				} else {
+				} 아니면 {
 					*R = *DA * (h / adahsq);
 					*(R+1) = *(DA+1) * (h / adahsq);
 				}
@@ -132,47 +132,47 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			*DA=*R;
 			*(DA+1)=*(R+1);
 			break;
-		} else {	// scaled
+		} 아니면 {	// scaled
 			FLOAT fs_r, fs_i, gs_r, gs_i;
 			long double v,w,f2,g2,h;
 			long double u = MIN ( safmax, MAX ( safmin, MAX(f1,g1)));
 			gs_r = db_r/u;
 			gs_i = db_i/u;
 			g2 = gs_r*gs_r + gs_i*gs_i;
-			if (f1 /u < rtmin) {
+			만약 (f1 /u < rtmin) {
 				v = MIN (safmax, MAX (safmin, f1));
 				w = v / u;
 				fs_r = *DA/ v;
 				fs_i = *(DA+1) / v;
 				f2 = fs_r*fs_r + fs_i*fs_i;
 				h = f2 * w * w + g2;		
-			} else { // use same scaling for both
+			} 아니면 { // use same scaling for both
 				w = 1.;
 				fs_r = *DA/ u;
 				fs_i = *(DA+1) / u;
 				f2 =  fs_r*fs_r + fs_i*fs_i;
 				h = f2 + g2;
 			}
-			if ( f2 >= h * safmin) {
+			만약 ( f2 >= h * safmin) {
 				*C = sqrt ( f2 / h );
 				*DA = fs_r / *C;
 				*(DA+1) = fs_i / *C;
 				rtmax *= 2;
-				if ( f2 > rtmin && h < rtmax) {
+				만약 ( f2 > rtmin && h < rtmax) {
 					FLOAT f2h=sqrt(f2*h);
 					*S = gs_r * (fs_r /f2h) + gs_i * (fs_i / f2h);
 					*(S+1) = gs_r * (fs_i /f2h) - gs_i * -1. * (fs_r / f2h);
-				} else {
+				} 아니면 {
 					*S = gs_r * (*DA/h) - gs_i * (*(DA+1) / h);
 					*(S+1) = gs_r * (*(DA+1) /h) + gs_i * -1. * (*DA / h);
 				}
-			} else { // intermediates might overflow
+			} 아니면 { // intermediates might overflow
 				d = sqrt ( f2 * h);
 				*C = f2 /d;
-				if (*C >= safmin) {
+				만약 (*C >= safmin) {
 					*DA = fs_r / *C;
 					*(DA+1) = fs_i / *C;
-				} else {
+				} 아니면 {
 					*DA = fs_r * (h / d);
 					*(DA+1) = fs_i / (h / d);
 				}
@@ -185,7 +185,7 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			break;
 		}
 	}
-    } while (0);
+    } 동안 (0);
 
 	FUNCTION_PROFILE_END(4, 4, 4);
 	IDEBUG_END;

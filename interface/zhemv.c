@@ -51,7 +51,7 @@
 #define ERROR_NAME "XHEMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHEMV "
-#else
+#아니면
 #define ERROR_NAME "CHEMV "
 #endif
 
@@ -72,21 +72,21 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   FLOAT beta_i	= BETA[1];
   blasint incy	= *INCY;
 #ifdef SMP
-  int nthreads;
+  정수 nthreads;
 #endif
 
-  int (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  정수 (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     HEMV_U, HEMV_L, HEMV_V, HEMV_M,
   };
 
 #ifdef SMP
-  int (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+  정수 (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, 정수) = {
     HEMV_THREAD_U, HEMV_THREAD_L, HEMV_THREAD_V, HEMV_THREAD_M,
   };
 #endif
 
   blasint info;
-  int uplo;
+  정수 uplo;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -94,25 +94,25 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
-  if (uplo_arg  == 'V') uplo  = 2;
-  if (uplo_arg  == 'M') uplo  = 3;
+  만약 (uplo_arg  == 'U') uplo  = 0;
+  만약 (uplo_arg  == 'L') uplo  = 1;
+  만약 (uplo_arg  == 'V') uplo  = 2;
+  만약 (uplo_arg  == 'M') uplo  = 3;
 
   info = 0;
 
-  if (incy == 0)          info = 10;
-  if (incx == 0)          info =  7;
-  if (lda  < MAX(1, n))   info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  만약 (incy == 0)          info = 10;
+  만약 (incx == 0)          info =  7;
+  만약 (lda  < MAX(1, n))   info =  5;
+  만약 (n < 0)              info =  2;
+  만약 (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  만약 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
-#else
+#아니면
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA,
 	   void *va, blasint lda, void *vx, blasint incx, void *VBETA, void *vy, blasint incy) {
@@ -129,18 +129,18 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   FLOAT beta_i	= BETA[1];
 
   FLOAT *buffer;
-  int uplo;
+  정수 uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  정수 nthreads;
 #endif
 
-  int (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  정수 (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     HEMV_U, HEMV_L, HEMV_V, HEMV_M,
   };
 
 #ifdef SMP
-  int (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+  정수 (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, 정수) = {
     HEMV_THREAD_U, HEMV_THREAD_L, HEMV_THREAD_V, HEMV_THREAD_M,
   };
 #endif
@@ -150,75 +150,75 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  만약 (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (incy == 0)          info = 10;
-    if (incx == 0)          info =  7;
-    if (lda  < MAX(1, n))   info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 3;
-    if (Uplo == CblasLower) uplo  = 2;
+    만약 (Uplo == CblasUpper) uplo  = 0;
+    만약 (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info = 10;
-    if (incx == 0)          info =  7;
-    if (lda  < MAX(1, n))   info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    만약 (incy == 0)          info = 10;
+    만약 (incx == 0)          info =  7;
+    만약 (lda  < MAX(1, n))   info =  5;
+    만약 (n < 0)              info =  2;
+    만약 (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  만약 (order == CblasRowMajor) {
+
+    만약 (Uplo == CblasUpper) uplo  = 3;
+    만약 (Uplo == CblasLower) uplo  = 2;
+
+    info = -1;
+
+    만약 (incy == 0)          info = 10;
+    만약 (incx == 0)          info =  7;
+    만약 (lda  < MAX(1, n))   info =  5;
+    만약 (n < 0)              info =  2;
+    만약 (uplo  < 0)          info =  1;
+  }
+
+  만약 (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
 #endif
 
-  if (n == 0) return;
+  만약 (n == 0) 반환;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  만약 ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  만약 ((alpha_r == ZERO) && (alpha_i == ZERO)) 반환;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  만약 (incx < 0 ) x -= (n - 1) * incx * 2;
+  만약 (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  만약 (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    반환;
   }
 
 #ifdef SMP
-  if (n<MULTI_THREAD_MINIMAL) {
+  만약 (n<MULTI_THREAD_MINIMAL) {
 	  nthreads = 1 ;
-  } else {
+  } 아니면 {
   	  nthreads = num_cpu_avail(2);
   };
 
-  if (nthreads == 1) {
+  만약 (nthreads == 1) {
 #endif
 
   (hemv[uplo])(n, n, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } 아니면 {
 
     (hemv_thread[uplo])(n, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
 
@@ -231,5 +231,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
 
   IDEBUG_END;
 
-  return;
+  반환;
 }
