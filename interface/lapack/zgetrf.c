@@ -46,7 +46,7 @@
 #define ERROR_NAME "XGETRF"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGETRF"
-#else
+#නැතහොත්
 #define ERROR_NAME "CGETRF"
 #endif
 
@@ -71,17 +71,17 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   args.c    = (void *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  නම් (args.lda < MAX(1,args.m)) info = 4;
+  නම් (args.n   < 0)             info = 2;
+  නම් (args.m   < 0)             info = 1;
+  නම් (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ආපසු;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  නම් (args.m == 0 || args.n == 0) ආපසු;
 
   IDEBUG_START;
 
@@ -96,18 +96,18 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
 #ifdef SMP
   args.common = NULL;
-  if (args.m*args.n <10000)
+  නම් (args.m*args.n <10000)
 	args.nthreads = 1;
-  else
+  නැතහොත්
 	args.nthreads = num_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  නම් (args.nthreads == 1) {
 #endif
 
     *Info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } නැතහොත් {
 
     *Info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
 
@@ -122,5 +122,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  ආපසු;
 }

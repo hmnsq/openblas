@@ -47,27 +47,27 @@
 #define ERROR_NAME "ZSPMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSPMV "
-#else
+#නැතහොත්
 #define ERROR_NAME "CSPMV "
 #endif
 
-static  int (*spmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static  පූර්ණ_සංඛ්‍යා (*spmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xspmv_U, xspmv_L,
 #elif defined(DOUBLE)
   zspmv_U, zspmv_L,
-#else
+#නැතහොත්
   cspmv_U, cspmv_L,
 #endif
 };
 
 #ifdef SMPTEST
-static  int (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static  පූර්ණ_සංඛ්‍යා (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, පූර්ණ_සංඛ්‍යා) = {
 #ifdef XDOUBLE
   xspmv_thread_U, xspmv_thread_L,
 #elif defined(DOUBLE)
   zspmv_thread_U, zspmv_thread_L,
-#else
+#නැතහොත්
   cspmv_thread_U, cspmv_thread_L,
 #endif
 };
@@ -75,10 +75,10 @@ static  int (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOA
 
 OPENBLAS_EXPORT
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
             FLOAT  *b, blasint *INCX, FLOAT *BETA, FLOAT *c, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  පූර්ණ_සංඛ්‍යා uplo;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  පූර්ණ_සංඛ්‍යා nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,52 +99,52 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  නම් (uplo_arg  == 'U') uplo  = 0;
+  නම් (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  9;
-  if (incx == 0)          info =  6;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  නම් (incy == 0)          info =  9;
+  නම් (incx == 0)          info =  6;
+  නම් (n < 0)              info =  2;
+  නම් (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  නම් (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ආපසු;
   }
 
-  if (n == 0) return;
+  නම් (n == 0) ආපසු;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, abs(incy), NULL, 0, NULL, 0);
+  නම් ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, abs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  නම් ((alpha_r == ZERO) && (alpha_i == ZERO)) ආපසු;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
+  නම් (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
+  නම් (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  නම් (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ආපසු;
   }
 
 #ifdef SMPTEST
   nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  නම් (nthreads == 1) {
 #endif
 
   (spmv[uplo])(n, alpha_r, alpha_i, a, b, incx, c, incy, buffer);
 
 #ifdef SMPTEST
 
-  } else {
+  } නැතහොත් {
 
     (spmv_thread[uplo])(n, ALPHA, a, b, incx, c, incy, buffer, nthreads);
 
@@ -157,5 +157,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
 
   IDEBUG_END;
 
-  return;
+  ආපසු;
 }

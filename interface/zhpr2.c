@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHPR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHPR2 "
-#else
+#නැතහොත්
 #define ERROR_NAME "CHPR2 "
 #endif
 
-static int (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static පූර්ණ_සංඛ්‍යා (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr2_U, xhpr2_L, xhpr2_V, xhpr2_M,
 #elif defined(DOUBLE)
   zhpr2_U, zhpr2_L, zhpr2_V, zhpr2_M,
-#else
+#නැතහොත්
   chpr2_U, chpr2_L, chpr2_V, chpr2_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static පූර්ණ_සංඛ්‍යා (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, පූර්ණ_සංඛ්‍යා) = {
 #ifdef XDOUBLE
   xhpr2_thread_U, xhpr2_thread_L, xhpr2_thread_V, xhpr2_thread_M,
 #elif defined(DOUBLE)
   zhpr2_thread_U, zhpr2_thread_L, zhpr2_thread_V, zhpr2_thread_M,
-#else
+#නැතහොත්
   chpr2_thread_U, chpr2_thread_L, chpr2_thread_V, chpr2_thread_M,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  පූර්ණ_සංඛ්‍යා uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  පූර්ණ_සංඛ්‍යා nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,25 +99,25 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  නම් (uplo_arg  == 'U') uplo  = 0;
+  නම් (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  නම් (incy == 0)          info =  7;
+  නම් (incx == 0)          info =  5;
+  නම් (n < 0)              info =  2;
+  නම් (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  නම් (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ආපසු;
   }
 
-#else
+#නැතහොත්
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+void CNAME(ga_nanaa CBLAS_ORDER order,
+	   ga_nanaa CBLAS_UPLO Uplo,
 	   blasint n,
 	   void *VALPHA,
 	   void  *vx, blasint incx,
@@ -132,10 +132,10 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   FLOAT *buffer;
-  int uplo;
+  පූර්ණ_සංඛ්‍යා uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  පූර්ණ_සංඛ්‍යා nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -143,69 +143,69 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  නම් (order == CblasColMajor) {
+    නම් (Uplo == CblasUpper)         uplo  = 0;
+    නම් (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    නම් (incy == 0)          info =  7;
+    නම් (incx == 0)          info =  5;
+    නම් (n < 0)              info =  2;
+    නම් (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  නම් (order == CblasRowMajor) {
+    නම් (Uplo == CblasUpper)         uplo  = 3;
+    නම් (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (incy == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    නම් (incx == 0)          info =  7;
+    නම් (incy == 0)          info =  5;
+    නම් (n < 0)              info =  2;
+    නම් (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  නම් (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ආපසු;
   }
 
 #endif
 
-  if (n == 0) return;
+  නම් (n == 0) ආපසු;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  නම් ((alpha_r == ZERO) && (alpha_i == ZERO)) ආපසු;
 
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  නම් (incx < 0 ) x -= (n - 1) * incx * 2;
+  නම් (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  නම් (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ආපසු;
   }
 
 #ifdef SMP
-  if (n < 100)
+  නම් (n < 100)
 	nthreads = 1;
-  else
+  නැතහොත්
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  නම් (nthreads == 1) {
 #endif
 
     (hpr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
 
 #ifdef SMP
-  } else {
+  } නැතහොත් {
 
     (hpr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
 
@@ -218,5 +218,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ආපසු;
 }

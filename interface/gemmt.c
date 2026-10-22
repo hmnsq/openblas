@@ -45,36 +45,36 @@
 #define ERROR_NAME "DGEMMTR"
 #elif defined(BFLOAT16)
 #define ERROR_NAME "SBGEMMTR"
-#else
+#නැතහොත්
 #define ERROR_NAME "SGEMMTR"
 #endif
-#else
+#නැතහොත්
 #ifdef XDOUBLE
 #define ERROR_NAME "QGEMMT "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGEMMT "
 #elif defined(BFLOAT16)
 #define ERROR_NAME "SBGEMMT "
-#else
+#නැතහොත්
 #define ERROR_NAME "SGEMMT "
 #endif
 #endif
-#else
+#නැතහොත්
 #define SMP_THRESHOLD_MIN 8192.0
 #ifdef RNAME
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMMTR"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMMTR"
-#else
+#නැතහොත්
 #define ERROR_NAME "CGEMMTR"
 #endif
-#else
+#නැතහොත්
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMMT "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMMT "
-#else
+#නැතහොත්
 #define ERROR_NAME "CGEMMT "
 #endif
 #endif
@@ -88,7 +88,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+void NAME(var_na *UPLO, var_na *TRANSA, var_na *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -97,12 +97,12 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	පූර්ණ_සංඛ්‍යා transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	var_na transA, transB, Uplo;
 	blasint nrowa, nrowb;
-#if !defined(COMPLEX)
+#නම් !defined(COMPLEX)
 	FLOAT alpha, beta;
 #endif
 
@@ -111,10 +111,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	m = *M;
 	k = *K;
 
-#if defined(COMPLEX)
+#නම් defined(COMPLEX)
 	FLOAT *alpha = Alpha;
 	FLOAT *beta = Beta;
-#else
+#නැතහොත්
 	alpha = *Alpha;
 	beta = *Beta;
 #endif
@@ -134,82 +134,82 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	නම් (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	නම් (transA == 'T')
 		transa = 1;
 #ifndef COMPLEX
-	if (transA == 'R')
+	නම් (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	නම් (transA == 'C')
 		transa = 1;
-#else
-	if (transA == 'R')
+#නැතහොත්
+	නම් (transA == 'R')
 		transa = 2;
-	if (transA == 'C')
+	නම් (transA == 'C')
 		transa = 3;
 #endif
 
-	if (transB == 'N')
+	නම් (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	නම් (transB == 'T')
 		transb = 1;
 #ifndef COMPLEX
-	if (transB == 'R')
+	නම් (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	නම් (transB == 'C')
 		transb = 1;
-#else
-	if (transB == 'R')
+#නැතහොත්
+	නම් (transB == 'R')
 		transb = 2;
-	if (transB == 'C')
+	නම් (transB == 'C')
 		transb = 3;
 #endif
 
-	if (Uplo == 'U')
+	නම් (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	නම් (Uplo == 'L')
 		uplo = 1;
 	
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	නම් (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	නම් (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	නම් (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	නම් (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	නම් (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	නම් (k < 0)
 		info = 5;
-	if (m < 0)
+	නම් (m < 0)
 		info = 4;
-	if (transb < 0)
+	නම් (transb < 0)
 		info = 3;
-	if (transa < 0)
+	නම් (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	නම් (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	නම් (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		ආපසු;
 	}
-#else
+#නැතහොත්
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 #ifndef COMPLEX
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
 	   IFLOAT * B, blasint LDB, FLOAT beta, FLOAT * c, blasint ldc)
 {
-#else
+#නැතහොත්
 	   void *valpha,
 	   void *va, blasint LDA,
 	   void *vb, blasint LDB, void *vbeta, void *vc, blasint ldc)
@@ -220,7 +220,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	FLOAT *B = (FLOAT *) vb;
 	FLOAT *c = (FLOAT *) vc;
 #endif
-	int transa, transb, uplo;
+	පූර්ණ_සංඛ්‍යා transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	FLOAT *a, *b;
@@ -232,38 +232,38 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	නම් (order == CblasColMajor) {
+		නම් (Uplo == CblasUpper) uplo = 0;
+		නම් (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		නම් (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		නම් (TransA == CblasTrans)
 			transa = 1;
 #ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+		නම් (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		නම් (TransA == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#නැතහොත්
+		නම් (TransA == CblasConjNoTrans)
 			transa = 2;
-		if (TransA == CblasConjTrans)
+		නම් (TransA == CblasConjTrans)
 			transa = 3;
 #endif
-		if (TransB == CblasNoTrans)
+		නම් (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		නම් (TransB == CblasTrans)
 			transb = 1;
 #ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+		නම් (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		නම් (TransB == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#නැතහොත්
+		නම් (TransB == CblasConjNoTrans)
 			transb = 2;
-		if (TransB == CblasConjTrans)
+		නම් (TransB == CblasConjTrans)
 			transb = 3;
 #endif
 
@@ -277,29 +277,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa, nrowb;
 
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		නම් (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1) nrowb = m;
+		නම් (transb & 1) nrowb = m;
 
-		if (ldc < MAX(1, m))
+		නම් (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		නම් (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		නම් (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		නම් (k < 0)
 			info = 5;
-		if (m < 0)
+		නම් (m < 0)
 			info = 4;
-		if (transb < 0)
+		නම් (transb < 0)
 			info = 3;
-		if (transa < 0)
+		නම් (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		නම් (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	නම් (order == CblasRowMajor) {
 
 		a = (void *)B;
 		b = (void *)A;
@@ -307,37 +307,37 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 1;
-		if (Uplo == CblasLower) uplo = 0;
+		නම් (Uplo == CblasUpper) uplo = 1;
+		නම් (Uplo == CblasLower) uplo = 0;
 
-		if (TransB == CblasNoTrans)
+		නම් (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		නම් (TransB == CblasTrans)
 			transa = 1;
 #ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+		නම් (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		නම් (TransB == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#නැතහොත්
+		නම් (TransB == CblasConjNoTrans)
 			transa = 2;
-		if (TransB == CblasConjTrans)
+		නම් (TransB == CblasConjTrans)
 			transa = 3;
 #endif
-		if (TransA == CblasNoTrans)
+		නම් (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		නම් (TransA == CblasTrans)
 			transb = 1;
 #ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+		නම් (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		නම් (TransA == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#නැතහොත්
+		නම් (TransA == CblasConjNoTrans)
 			transb = 2;
-		if (TransA == CblasConjTrans)
+		නම් (TransA == CblasConjTrans)
 			transb = 3;
 #endif
 
@@ -346,36 +346,36 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncola, ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		නම් (transa & 1) ncola = k;
 		ncolb = k;
-		if (transb & 1) ncolb = m;
+		නම් (transb & 1) ncolb = m;
 
-		if (ldc < MAX(1,m))
+		නම් (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		නම් (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		නම් (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		නම් (k < 0)
 			info = 5;
-		if (m < 0)
+		නම් (m < 0)
 			info = 4;
-		if (transb < 0)
+		නම් (transb < 0)
 			info = 2;
-		if (transa < 0)
+		නම් (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		නම් (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	නම් (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		ආපසු;
 	}
 #endif
 #ifndef COMPLEX
 #define GEMMT_TABLE_INDEX ((uplo << 2) | (transb << 1) | transa)
-#else
+#නැතහොත්
 #define GEMMT_TABLE_INDEX ((uplo << 4) | (transb << 2) | transa)
 #endif
 
@@ -383,34 +383,34 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	FLOAT *buffer, *sa, *sb;
 
 #ifdef SMP
-	double MMK;
+	dviguu_na MMK;
 #ifndef COMPLEX
 #ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_REAL;
+	පූර්ණ_සංඛ්‍යා mode = BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_REAL;
-#else
-	int mode = BLAS_SINGLE  | BLAS_REAL;
+	පූර්ණ_සංඛ්‍යා mode = BLAS_DOUBLE  | BLAS_REAL;
+#නැතහොත්
+	පූර්ණ_සංඛ්‍යා mode = BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#නැතහොත්
 #ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_COMPLEX;
+	පූර්ණ_සංඛ්‍යා mode = BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-	int mode = BLAS_SINGLE  | BLAS_COMPLEX;
+	පූර්ණ_සංඛ්‍යා mode = BLAS_DOUBLE  | BLAS_COMPLEX;
+#නැතහොත්
+	පූර්ණ_සංඛ්‍යා mode = BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 
 	/* [uplo][op(B)][op(A)], as in interface/gemm.c */
-	static int (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+	static පූර්ණ_සංඛ්‍යා (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef COMPLEX
 		GEMMT_UNN, GEMMT_UTN,
 		GEMMT_UNT, GEMMT_UTT,
 		GEMMT_LNN, GEMMT_LTN,
 		GEMMT_LNT, GEMMT_LTT,
-#else
+#නැතහොත්
 		GEMMT_UNN, GEMMT_UTN, GEMMT_URN, GEMMT_UCN,
 		GEMMT_UNT, GEMMT_UTT, GEMMT_URT, GEMMT_UCT,
 		GEMMT_UNR, GEMMT_UTR, GEMMT_URR, GEMMT_UCR,
@@ -422,8 +422,8 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #endif
 	};
 
-	if (m == 0)
-		return;
+	නම් (m == 0)
+		ආපසු;
 
 	IDEBUG_START;
 
@@ -441,10 +441,10 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	args.ldb = ldb;
 	args.ldc = ldc;
 
-#if defined(COMPLEX)
+#නම් defined(COMPLEX)
 	args.alpha = (void *)alpha;
 	args.beta  = (void *)beta;
-#else
+#නැතහොත්
 	args.alpha = (void *)&alpha;
 	args.beta  = (void *)&beta;
 #endif
@@ -455,30 +455,30 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #endif
 
 	buffer = (FLOAT *)blas_memory_alloc(0);
-	if (!buffer) {
+	නම් (!buffer) {
 		info = -999;
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		ආපසු;
 	}
 
 	sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
 	sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 
 #ifdef SMP
-	MMK = (double)(m + 1) * (double)m * (double)k;
-	if (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
+	MMK = (dviguu_na)(m + 1) * (dviguu_na)m * (dviguu_na)k;
+	නම් (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
 		args.nthreads = 1;
-	} else {
+	} නැතහොත් {
 		args.nthreads = num_cpu_avail(3);
 	}
 
-	if (args.nthreads == 1) {
+	නම් (args.nthreads == 1) {
 #endif
 
 		(gemmt[GEMMT_TABLE_INDEX])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-	} else {
+	} නැතහොත් {
 
 		/* Split the triangle into column ranges of equal area; every
 		   thread then runs the single-threaded driver on its own range
@@ -496,5 +496,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	ආපසු;
 }

@@ -52,28 +52,28 @@
 #ifdef XDOUBLE
 #ifndef CONJ
 #define ERROR_NAME "XGERU  "
-#else
+#නැතහොත්
 #define ERROR_NAME "XGERC  "
 #endif
 #elif defined DOUBLE
 #ifndef CONJ
 #define ERROR_NAME "ZGERU  "
-#else
+#නැතහොත්
 #define ERROR_NAME "ZGERC  "
 #endif
-#else
+#නැතහොත්
 #ifndef CONJ
 #define ERROR_NAME "CGERU  "
-#else
+#නැතහොත්
 #define ERROR_NAME "CGERC "
 #endif
 #endif
 
-#if   defined XDOUBLE
+#නම්   defined XDOUBLE
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	xger_thread_U
-#else
+#නැතහොත්
 #define GER		GERC_K
 #define GER_THREAD	xger_thread_C
 #define GERV		GERV_K
@@ -83,17 +83,17 @@
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	zger_thread_U
-#else
+#නැතහොත්
 #define GER		GERC_K
 #define GER_THREAD	zger_thread_C
 #define GERV		GERV_K
 #define GERV_THREAD	zger_thread_V
 #endif
-#else
+#නැතහොත්
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	cger_thread_U
-#else
+#නැතහොත්
 #define GER		GERC_K
 #define GER_THREAD	cger_thread_C
 #define GERV		GERV_K
@@ -119,7 +119,7 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    lda   = *LDA;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  පූර්ණ_සංඛ්‍යා nthreads;
 #endif
 
   blasint info;
@@ -128,20 +128,20 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  නම් (lda < MAX(1,m)) info = 9;
+  නම් (incy == 0)      info = 7;
+  නම් (incx == 0)      info = 5;
+  නම් (n < 0)          info = 2;
+  නම් (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  නම් (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ආපසු;
   }
 
-#else
+#නැතහොත්
 
-void CNAME(enum CBLAS_ORDER order,
+void CNAME(ga_nanaa CBLAS_ORDER order,
 	   blasint m, blasint n,
 	   void *VAlpha,
 	   void  *vx, blasint incx,
@@ -159,24 +159,24 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *buffer;
   blasint info, t;
 #ifdef SMPTEST
-  int nthreads;
+  පූර්ණ_සංඛ්‍යා nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  නම් (order == CblasColMajor) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    නම් (lda < MAX(1,m)) info = 9;
+    නම් (incy == 0)      info = 7;
+    නම් (incx == 0)      info = 5;
+    නම් (n < 0)          info = 2;
+    නම් (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  නම් (order == CblasRowMajor) {
     info = -1;
 
     t = n;
@@ -191,64 +191,64 @@ void CNAME(enum CBLAS_ORDER order,
     x = y;
     y = buffer;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    නම් (lda < MAX(1,m)) info = 9;
+    නම් (incy == 0)      info = 7;
+    නම් (incx == 0)      info = 5;
+    නම් (n < 0)          info = 2;
+    නම් (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  නම් (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ආපසු;
   }
 
 #endif
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
+  නම් (m == 0 || n == 0) ආපසු;
 
-  if ((alpha_r == 0.) && (alpha_i == 0.)) return;
+  නම් ((alpha_r == 0.) && (alpha_i == 0.)) ආපසු;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incy < 0) y -= (n - 1) * incy * 2;
-  if (incx < 0) x -= (m - 1) * incx * 2;
+  නම් (incy < 0) y -= (n - 1) * incy * 2;
+  නම් (incx < 0) x -= (m - 1) * incx * 2;
 
   STACK_ALLOC(2 * m, FLOAT, buffer);
 
 #ifdef SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
+  නම්(1L * m * n > 36L * parimaa_na(FLOAT) * parimaa_na(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
     nthreads = num_cpu_avail(2);
-  else
+  නැතහොත්
     nthreads = 1;
 
-  if (nthreads == 1) {
+  නම් (nthreads == 1) {
 #endif
 
-#if !defined(CBLAS) || !defined(CONJ)
+#නම් !defined(CBLAS) || !defined(CONJ)
   GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-#else
-  if (order == CblasColMajor) {
+#නැතහොත්
+  නම් (order == CblasColMajor) {
     GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-  } else {
+  } නැතහොත් {
     GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
   }
 #endif
 
 #ifdef SMPTEST
 
-  } else {
+  } නැතහොත් {
 
-#if !defined(CBLAS) || !defined(CONJ)
+#නම් !defined(CBLAS) || !defined(CONJ)
       GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-#else
-      if (order == CblasColMajor) {
+#නැතහොත්
+      නම් (order == CblasColMajor) {
 	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-      } else {
+      } නැතහොත් {
 	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
       }
 #endif
@@ -262,6 +262,6 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ආපසු;
 
 }
