@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
 #ifdef SMP
@@ -50,19 +50,19 @@
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGER  "
-#elif defined DOUBLE
+#নতুবা_যদি defined DOUBLE
 #define ERROR_NAME "DGER  "
-#else
+#অন্যথা
 #define ERROR_NAME "SGER  "
 #endif
 
 #define GER		GERU_K
 
-#if   defined XDOUBLE
+#যদি   defined XDOUBLE
 #define GER_THREAD	qger_thread
-#elif defined DOUBLE
+#নতুবা_যদি defined DOUBLE
 #define GER_THREAD	dger_thread
-#else
+#অন্যথা
 #define GER_THREAD	sger_thread
 #endif
 
@@ -70,7 +70,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+শূন্য NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -81,9 +81,9 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    incx  = *INCX;
   blasint    incy  = *INCY;
   blasint    lda   = *LDA;
-  FLOAT *buffer;
+  FLOAT *বাফার;
 #ifdef SMPTEST
-  int nthreads;
+  পূর্ণসংখ্যা nthreads;
 #endif
 
   blasint info;
@@ -92,47 +92,47 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  যদি (lda < MAX(1,m)) info = 9;
+  যদি (incy == 0)      info = 7;
+  যদি (incx == 0)      info = 5;
+  যদি (n < 0)          info = 2;
+  যদি (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    ফেরত;
   }
 
-#else
+#অন্যথা
 
-void CNAME(enum CBLAS_ORDER order,
+শূন্য CNAME(গণনা CBLAS_ORDER order,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
 	   FLOAT  *y, blasint incy,
 	   FLOAT  *a, blasint lda) {
 
-  FLOAT *buffer;
+  FLOAT *বাফার;
   blasint info, t;
 #ifdef SMPTEST
-  int nthreads;
+  পূর্ণসংখ্যা nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  যদি (order == CblasColMajor) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    যদি (lda < MAX(1,m)) info = 9;
+    যদি (incy == 0)      info = 7;
+    যদি (incx == 0)      info = 5;
+    যদি (n < 0)          info = 2;
+    যদি (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  যদি (order == CblasRowMajor) {
     info = -1;
 
     t = n;
@@ -143,68 +143,68 @@ void CNAME(enum CBLAS_ORDER order,
     incx = incy;
     incy = t;
 
-    buffer = x;
+    বাফার = x;
     x = y;
-    y = buffer;
+    y = বাফার;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    যদি (lda < MAX(1,m)) info = 9;
+    যদি (incy == 0)      info = 7;
+    যদি (incx == 0)      info = 5;
+    যদি (n < 0)          info = 2;
+    যদি (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    ফেরত;
   }
 
 #endif
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
-  if (alpha == 0.) return;
+  যদি (m == 0 || n == 0) ফেরত;
+  যদি (alpha == 0.) ফেরত;
 
-  if (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, NULL);
-    return;
+  যদি (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, ফাঁকা);
+    ফেরত;
   }  
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incy < 0) y -= (n - 1) * incy;
-  if (incx < 0) x -= (m - 1) * incx;
+  যদি (incy < 0) y -= (n - 1) * incy;
+  যদি (incx < 0) x -= (m - 1) * incx;
 
-  STACK_ALLOC(m, FLOAT, buffer);
+  স্তূপ_ALLOC(m, FLOAT, বাফার);
 
 #ifdef SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else if(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
-	  nthreads = MIN(3,num_cpu_avail(2));
-  else
+  যদি(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
+    nthreads = অঙ্ক_cpu_avail(2);
+  অন্যথা যদি(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
+	  nthreads = MIN(3,অঙ্ক_cpu_avail(2));
+  অন্যথা
     nthreads = 1;
 
-  if (nthreads == 1) {
+  যদি (nthreads == 1) {
 #endif
 
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, buffer);
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, বাফার);
 
 #ifdef SMPTEST
-  } else {
+  } অন্যথা {
 
-    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
+    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, বাফার, nthreads);
 
   }
 #endif
 
-  STACK_FREE(buffer);
+  স্তূপ_FREE(বাফার);
   FUNCTION_PROFILE_END(1, m * n + m + n, 2 * m * n);
 
   IDEBUG_END;
 
-  return;
+  ফেরত;
 }

@@ -29,16 +29,16 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2014/06/09 Saar
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব <stdlib.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#যদি defined(DOUBLE)
 #define ERROR_NAME "ZOMATCOPY"
-#else
+#অন্যথা
 #define ERROR_NAME "COMATCOPY"
 #endif
 
@@ -52,11 +52,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+শূন্য NAME( অক্ষর* ORDER, অক্ষর* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	অক্ষর Order, Trans;
+	পূর্ণসংখ্যা order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -65,114 +65,114 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTransConj;
-	if ( Trans == 'R' ) trans = BlasConj;
+	যদি ( Order == 'C' ) order = BlasColMajor;
+	যদি ( Order == 'R' ) order = BlasRowMajor;
+	যদি ( Trans == 'N' ) trans = BlasNoTrans;
+	যদি ( Trans == 'T' ) trans = BlasTrans;
+	যদি ( Trans == 'C' ) trans = BlasTransConj;
+	যদি ( Trans == 'R' ) trans = BlasConj;
 
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
+#অন্যথা 
+শূন্য CNAME(গণনা CBLAS_ORDER CORDER, গণনা CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
-	int order=-1,trans=-1;
+	পূর্ণসংখ্যা order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	যদি ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	যদি ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
-	if ( CTRANS == CblasTrans) trans = BlasTrans; 
-	if ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
+	যদি ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
+	যদি ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
+	যদি ( CTRANS == CblasTrans) trans = BlasTrans; 
+	যদি ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
 
 	rows = &crows; 
 	cols = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
 #endif
-	if ( order == BlasColMajor)
+	যদি ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	যদি ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	যদি ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
+        	যদি ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
+        	যদি ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	যদি ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	যদি ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	যদি ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
+        	যদি ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	যদি ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	যদি ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	যদি ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	যদি ( *cols < 0 ) info = 4;
+	যদি ( *rows < 0 ) info = 3;
+	যদি ( trans < 0 ) info = 2;
+	যদি ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	যদি (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    		ফেরত;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	যদি ((*rows == 0) || (*cols == 0)) ফেরত;
 
-	if ( order == BlasColMajor )
+	যদি ( order == BlasColMajor )
 	{
 
-		if ( trans == BlasNoTrans )
+		যদি ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
-		if ( trans == BlasConj )
+		যদি ( trans == BlasConj )
 		{
 			OMATCOPY_K_CNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
-		if ( trans == BlasTrans )
+		যদি ( trans == BlasTrans )
 		{
 			OMATCOPY_K_CT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
-		if ( trans == BlasTransConj )
+		যদি ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_CTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
 
 	}
-	else
+	অন্যথা
 	{
 
-		if ( trans == BlasNoTrans )
+		যদি ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
-		if ( trans == BlasConj )
+		যদি ( trans == BlasConj )
 		{
 			OMATCOPY_K_RNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
-		if ( trans == BlasTrans )
+		যদি ( trans == BlasTrans )
 		{
 			OMATCOPY_K_RT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
-		if ( trans == BlasTransConj )
+		যদি ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_RTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ফেরত;
 		}
 
 	}
 
-	return;
+	ফেরত;
 
 }
 

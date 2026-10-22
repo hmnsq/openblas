@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
 
-double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
+দ্বিগুণ NAME(blasint *N, দশমিক *x, blasint *INCX, দশমিক *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-  double ret = 0.0;
+  দ্বিগুণ ret = 0.0;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  যদি (n <= 0) ফেরত 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  যদি (incx < 0) x -= (n - 1) * incx;
+  যদি (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
@@ -69,26 +69,26 @@ double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
 
   IDEBUG_END;
 
-  return ret;
+  ফেরত ret;
 
 }
 
-#else
+#অন্যথা
 
-double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
+দ্বিগুণ CNAME(blasint n, দশমিক *x, blasint incx, দশমিক *y, blasint incy){
 
-  double ret = 0.0;
+  দ্বিগুণ ret = 0.0;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  যদি (n <= 0) ফেরত 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  যদি (incx < 0) x -= (n - 1) * incx;
+  যদি (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
@@ -96,7 +96,7 @@ double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
 
   IDEBUG_END;
 
-  return ret;
+  ফেরত ret;
 
 }
 

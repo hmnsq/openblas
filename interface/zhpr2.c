@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব <ctype.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XHPR2 "
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
 #define ERROR_NAME "ZHPR2 "
-#else
+#অন্যথা
 #define ERROR_NAME "CHPR2 "
 #endif
 
-static int (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+স্থির পূর্ণসংখ্যা (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr2_U, xhpr2_L, xhpr2_V, xhpr2_M,
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
   zhpr2_U, zhpr2_L, zhpr2_V, zhpr2_M,
-#else
+#অন্যথা
   chpr2_U, chpr2_L, chpr2_V, chpr2_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+স্থির পূর্ণসংখ্যা (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, পূর্ণসংখ্যা) = {
 #ifdef XDOUBLE
   xhpr2_thread_U, xhpr2_thread_L, xhpr2_thread_V, xhpr2_thread_M,
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
   zhpr2_thread_U, zhpr2_thread_L, zhpr2_thread_V, zhpr2_thread_M,
-#else
+#অন্যথা
   chpr2_thread_U, chpr2_thread_L, chpr2_thread_V, chpr2_thread_M,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+শূন্য NAME(অক্ষর *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  অক্ষর uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
+  পূর্ণসংখ্যা uplo;
+  FLOAT *বাফার;
 #ifdef SMP
-  int nthreads;
+  পূর্ণসংখ্যা nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,30 +99,30 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  যদি (uplo_arg  == 'U') uplo  = 0;
+  যদি (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  যদি (incy == 0)          info =  7;
+  যদি (incx == 0)          info =  5;
+  যদি (n < 0)              info =  2;
+  যদি (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    ফেরত;
   }
 
-#else
+#অন্যথা
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+শূন্য CNAME(গণনা CBLAS_ORDER order,
+	   গণনা CBLAS_UPLO Uplo,
 	   blasint n,
-	   void *VALPHA,
-	   void  *vx, blasint incx,
-	   void  *vy, blasint incy,
-	   void  *va) {
+	   শূন্য *VALPHA,
+	   শূন্য  *vx, blasint incx,
+	   শূন্য  *vy, blasint incy,
+	   শূন্য  *va) {
 
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* x = (FLOAT*) vx;
@@ -131,11 +131,11 @@ void CNAME(enum CBLAS_ORDER order,
 
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
-  FLOAT *buffer;
-  int uplo;
+  FLOAT *বাফার;
+  পূর্ণসংখ্যা uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  পূর্ণসংখ্যা nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -143,80 +143,80 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  যদি (order == CblasColMajor) {
+    যদি (Uplo == CblasUpper)         uplo  = 0;
+    যদি (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    যদি (incy == 0)          info =  7;
+    যদি (incx == 0)          info =  5;
+    যদি (n < 0)              info =  2;
+    যদি (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  যদি (order == CblasRowMajor) {
+    যদি (Uplo == CblasUpper)         uplo  = 3;
+    যদি (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (incy == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    যদি (incx == 0)          info =  7;
+    যদি (incy == 0)          info =  5;
+    যদি (n < 0)              info =  2;
+    যদি (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    ফেরত;
   }
 
 #endif
 
-  if (n == 0) return;
+  যদি (n == 0) ফেরত;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  যদি ((alpha_r == ZERO) && (alpha_i == ZERO)) ফেরত;
 
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  যদি (incx < 0 ) x -= (n - 1) * incx * 2;
+  যদি (incy < 0 ) y -= (n - 1) * incy * 2;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  বাফার = (FLOAT *)blas_memory_alloc(1);
+  যদি (!বাফার) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    ফেরত;
   }
 
 #ifdef SMP
-  if (n < 100)
+  যদি (n < 100)
 	nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  অন্যথা
+    nthreads = অঙ্ক_cpu_avail(2);
 
-  if (nthreads == 1) {
+  যদি (nthreads == 1) {
 #endif
 
-    (hpr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
+    (hpr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, বাফার);
 
 #ifdef SMP
-  } else {
+  } অন্যথা {
 
-    (hpr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
+    (hpr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, বাফার, nthreads);
 
   }
 #endif
 
-  blas_memory_free(buffer);
+  blas_memory_free(বাফার);
 
   FUNCTION_PROFILE_END(4, n * n / 2 + 2 * n, 2 * n * n);
 
   IDEBUG_END;
 
-  return;
+  ফেরত;
 }

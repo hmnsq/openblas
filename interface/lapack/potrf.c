@@ -36,109 +36,109 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QPOTRF"
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
 #define ERROR_NAME "DPOTRF"
-#else
+#অন্যথা
 #define ERROR_NAME "SPOTRF"
 #endif
 
-static blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+স্থির blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_SINGLE, POTRF_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+স্থির blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_PARALLEL, POTRF_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+শূন্য NAME(অক্ষর *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
+  FLOAT *বাফার;
 #ifdef PPC440
-  extern
+  বাহ্যিক
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (শূন্য *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  যদি (uplo_arg == 'U') uplo = 0;
+  যদি (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  যদি (args.lda < MAX(1,args.n)) info = 4;
+  যদি (args.n   < 0)             info = 2;
+  যদি (uplo     < 0)             info = 1;
+  যদি (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ফেরত;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  যদি (args.n == 0) ফেরত;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
 #ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+  বাফার = (FLOAT *)blas_memory_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)বাফার + GEMM_OFFSET_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * আকার_2 + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  args.common = ফাঁকা;
 #ifndef DOUBLE
-  int nmax = 128;
-#else 
-  int nmax = 64;
+  পূর্ণসংখ্যা nmax = 128;
+#অন্যথা 
+  পূর্ণসংখ্যা nmax = 64;
 #endif
-  if (args.n <nmax) {
+  যদি (args.n <nmax) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
-    if (args.n/args.nthreads <nmax)
+  } অন্যথা {
+    args.nthreads = অঙ্ক_cpu_avail(4);
+    যদি (args.n/args.nthreads <nmax)
 	    args.nthreads = args.n/nmax;
   }
 
-  if (args.nthreads == 1) {
+  যদি (args.nthreads == 1) {
 #endif
 
-    *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_single[uplo])(&args, ফাঁকা, ফাঁকা, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+  } অন্যথা {
+    *Info = (potrf_parallel[uplo])(&args, ফাঁকা, ফাঁকা, sa, sb, 0);
   }
 #endif
 
 #ifndef PPC440
-  blas_memory_free(buffer);
+  blas_memory_free(বাফার);
 #endif
 
   FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
@@ -147,5 +147,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  ফেরত;
 }

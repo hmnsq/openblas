@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XGETRF"
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
 #define ERROR_NAME "ZGETRF"
-#else
+#অন্যথা
 #define ERROR_NAME "CGETRF"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+শূন্য NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
-  FLOAT *buffer;
+  FLOAT *বাফার;
 #ifdef PPC440
-  extern
+  বাহ্যিক
 #endif
   FLOAT *sa, *sb;
 
@@ -66,61 +66,61 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (শূন্য *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (শূন্য *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  যদি (args.lda < MAX(1,args.m)) info = 4;
+  যদি (args.n   < 0)             info = 2;
+  যদি (args.m   < 0)             info = 1;
+  যদি (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ফেরত;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  যদি (args.m == 0 || args.n == 0) ফেরত;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
 #ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+  বাফার = (FLOAT *)blas_memory_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)বাফার + GEMM_OFFSET_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * আকার_2 + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m*args.n <10000)
+  args.common = ফাঁকা;
+  যদি (args.m*args.n <10000)
 	args.nthreads = 1;
-  else
-	args.nthreads = num_cpu_avail(4);
+  অন্যথা
+	args.nthreads = অঙ্ক_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  যদি (args.nthreads == 1) {
 #endif
 
-    *Info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    *Info = GETRF_SINGLE(&args, ফাঁকা, ফাঁকা, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } অন্যথা {
 
-    *Info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    *Info = GETRF_PARALLEL(&args, ফাঁকা, ফাঁকা, sa, sb, 0);
 
   }
 #endif
 
 #ifndef PPC440
-  blas_memory_free(buffer);
+  blas_memory_free(বাফার);
 #endif
 
   FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n,  2. / 3. * args.m * args.n * args.n);
 
   IDEBUG_END;
 
-  return;
+  ফেরত;
 }

@@ -36,58 +36,58 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব <ctype.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XSPR  "
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
 #define ERROR_NAME "ZSPR  "
-#else
+#অন্যথা
 #define ERROR_NAME "CSPR  "
 #endif
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+স্থির পূর্ণসংখ্যা (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xspr_U, xspr_L,
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
   zspr_U, zspr_L,
-#else
+#অন্যথা
   cspr_U, cspr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+স্থির পূর্ণসংখ্যা (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, পূর্ণসংখ্যা) = {
 #ifdef XDOUBLE
   xspr_thread_U, xspr_thread_L,
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
   zspr_thread_U, zspr_thread_L,
-#else
+#অন্যথা
   cspr_thread_U, cspr_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+শূন্য NAME(অক্ষর *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  অক্ষর uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
+  পূর্ণসংখ্যা uplo;
+  FLOAT *বাফার;
 #ifdef SMP
-  int nthreads;
+  পূর্ণসংখ্যা nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -95,61 +95,61 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  যদি (uplo_arg  == 'U') uplo  = 0;
+  যদি (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  যদি (incx == 0)          info =  5;
+  যদি (n < 0)              info =  2;
+  যদি (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    ফেরত;
   }
 
-  if (n == 0) return;
+  যদি (n == 0) ফেরত;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  যদি ((alpha_r == ZERO) && (alpha_i == ZERO)) ফেরত;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  যদি (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  বাফার = (FLOAT *)blas_memory_alloc(1);
+  যদি (!বাফার) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, আকার(ERROR_NAME));
+    ফেরত;
   }
 
 #ifdef SMP
-  nthreads = num_cpu_avail(2);
+  nthreads = অঙ্ক_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  যদি (n < 50) nthreads = 1;
+  যদি (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  যদি (nthreads == 1) {
 #endif
 
-    (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, buffer);
+    (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, বাফার);
 
 #ifdef SMP
-  } else {
+  } অন্যথা {
 
-    (spr_thread[uplo])(n, ALPHA, x, incx, a, buffer, nthreads);
+    (spr_thread[uplo])(n, ALPHA, x, incx, a, বাফার, nthreads);
 
   }
 #endif
 
-  blas_memory_free(buffer);
+  blas_memory_free(বাফার);
 
   FUNCTION_PROFILE_END(4, n * n / 2 + n, n * n);
 
   IDEBUG_END;
 
-  return;
+  ফেরত;
 }

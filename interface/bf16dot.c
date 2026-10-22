@@ -1,53 +1,53 @@
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
-float NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
+দশমিক NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
    BLASLONG n    = *N;
    BLASLONG incx = *INCX;
    BLASLONG incy = *INCY;
-   float ret;
+   দশমিক ret;
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return 0.;
+   যদি (n <= 0) ফেরত 0.;
 
    IDEBUG_START;
    FUNCTION_PROFILE_START();
 
-   if (incx < 0) x -= (n - 1) * incx;
-   if (incy < 0) y -= (n - 1) * incy;
+   যদি (incx < 0) x -= (n - 1) * incx;
+   যদি (incy < 0) y -= (n - 1) * incy;
    ret = BF16_DOT_K(n, x, incx, y, incy);
 
    FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
    IDEBUG_END;
 
-   return ret;
+   ফেরত ret;
  }
 
-#else
+#অন্যথা
 
-float CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
+দশমিক CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
 
-  float ret;
+  দশমিক ret;
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  যদি (n <= 0) ফেরত 0.;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  যদি (incx < 0) x -= (n - 1) * incx;
+  যদি (incy < 0) y -= (n - 1) * incy;
   ret = BF16_DOT_K(n, x, incx, y, incy);
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
   IDEBUG_END;
 
-  return ret;
+  ফেরত ret;
 }
 
 #endif

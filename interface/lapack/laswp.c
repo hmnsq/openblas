@@ -36,40 +36,40 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+স্থির পূর্ণসংখ্যা (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
 #ifdef XDOUBLE
   qlaswp_plus, qlaswp_minus,
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
   dlaswp_plus, dlaswp_minus,
-#else
+#অন্যথা
   slaswp_plus, slaswp_minus,
 #endif
 };
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
+শূন্য NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  পূর্ণসংখ্যা flag;
 
 #ifdef SMP
-  int mode, nthreads;
+  পূর্ণসংখ্যা mode, nthreads;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
 #endif
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  যদি (incx == 0 || n <= 0) ফেরত;
 
   IDEBUG_START;
 
@@ -78,31 +78,31 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   flag = (incx < 0);
 
 #ifdef SMP
-  if (n < 64) {
+  যদি (n < 64) {
     nthreads = 1;
-  } else {
-    nthreads = num_cpu_avail(1);
+  } অন্যথা {
+    nthreads = অঙ্ক_cpu_avail(1);
   }
 
-  if (nthreads == 1) {
+  যদি (nthreads == 1) {
 #endif
 
-  (laswp[flag])(n, k1, k2, ZERO, a, lda, NULL, 0, ipiv, incx);
+  (laswp[flag])(n, k1, k2, ZERO, a, lda, ফাঁকা, 0, ipiv, incx);
 
 #ifdef SMP
-  } else {
+  } অন্যথা {
 
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#অন্যথা
   mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
 
   blas_level1_thread(mode, n, k1, k2, dummyalpha,
-		     a, lda, NULL, 0, ipiv, incx,
-		     (int(*)(void))laswp[flag], nthreads);
+		     a, lda, ফাঁকা, 0, ipiv, incx,
+		     (পূর্ণসংখ্যা(*)(শূন্য))laswp[flag], nthreads);
   }
 #endif
 
@@ -110,6 +110,6 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
 
   IDEBUG_END;
 
-  return;
+  ফেরত;
 
 }

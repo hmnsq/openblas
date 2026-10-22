@@ -36,58 +36,58 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাব "functable.h"
 #endif
-#if  defined(Z13)
+#যদি  defined(Z13)
 #define MULTI_THREAD_MINIMAL  200000
-#else
+#অন্যথা
 #define MULTI_THREAD_MINIMAL  10000
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+শূন্য NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
   FLOAT alpha = *ALPHA;
 
-#else
+#অন্যথা
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+শূন্য CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  পূর্ণসংখ্যা mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#অন্যথা
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (n <= 0) return;
+  যদি (n <= 0) ফেরত;
 
-  if (alpha == ZERO) return;
+  যদি (alpha == ZERO) ফেরত;
 
-  if (incx == 0 && incy == 0) {
+  যদি (incx == 0 && incy == 0) {
     *y += n * alpha *(*x);
-    return;
+    ফেরত;
   }
     
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  যদি (incx < 0) x -= (n - 1) * incx;
+  যদি (incy < 0) y -= (n - 1) * incy;
 
 #ifdef SMP
   //disable multi-thread when incx==0 or incy==0
@@ -95,29 +95,29 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint inc
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  যদি (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  অন্যথা
+	  nthreads = অঙ্ক_cpu_avail(1);
 
-  if (nthreads == 1) {
+  যদি (nthreads == 1) {
 #endif
 
-  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, NULL, 0);
+  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, ফাঁকা, 0);
 
 #ifdef SMP
-  } else {
+  } অন্যথা {
 
 #ifdef XDOUBLE
     mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
+#নতুবা_যদি defined(DOUBLE)
     mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#অন্যথা
     mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0, &alpha,
-		       x, incx, y, incy, NULL, 0,  (int (*)(void))AXPYU_K, nthreads);
+		       x, incx, y, incy, ফাঁকা, 0,  (পূর্ণসংখ্যা (*)(শূন্য))AXPYU_K, nthreads);
 
   }
 #endif
@@ -126,6 +126,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint inc
 
   IDEBUG_END;
 
-  return;
+  ফেরত;
 
 }
