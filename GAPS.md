@@ -1,0 +1,487 @@
+# What is still missing
+
+76 languages. Each line says in how many languages it is missing.
+
+## Files in languages BURP cannot read yet
+
+- `.f`: 5 files
+- `.pl`: 1 files
+
+## Keywords with no word in a language's table
+
+- guru:size_t: 71
+- guru:fabs: 71
+- guru:stderr: 71
+- guru:fprintf: 71
+- guru:DBL_MIN: 71
+- guru:FLT_MIN: 71
+- guru:DBL_EPSILON: 71
+- guru:FLT_EPSILON: 71
+- guru:va_list: 71
+- guru:va_start: 71
+- guru:vfprintf: 71
+- guru:va_end: 71
+- guru:strcmp: 70
+- guru:memset: 70
+- guru:#endif: 66
+- guru:#ifdef: 66
+- guru:#define: 66
+- guru:#ifndef: 66
+- guru:#undef: 66
+- guru:sqrt: 62
+- guru:long: 62
+- guru:malloc: 62
+- guru:exit: 62
+- guru:printf: 62
+- guru:abs: 62
+- guru:void: 25
+- guru:NULL: 25
+- guru:#elif: 25
+- guru:static: 25
+- guru:float: 25
+- guru:extern: 25
+- guru:free: 25
+- guru:const: 25
+- guru:continue: 25
+- guru:do: 25
+- guru:for: 9
+- guru:char: 9
+- guru:sizeof: 9
+- guru:enum: 9
+- guru:double: 9
+- guru:break: 9
+- guru:inline: 9
+- guru:if: 1
+- guru:return: 1
+- guru:#else: 1
+- guru:int: 1
+- guru:else: 1
+- guru:#if: 1
+- guru:while: 1
+
+## Names with no dictionary entry (the most common first)
+
+- `FLOAT`: 76
+- `info`: 76
+- `n`: 76
+- `blasint`: 76
+- `uplo`: 76
+- `BLASLONG`: 76
+- `ERROR_NAME`: 76
+- `trans`: 76
+- `incx`: 76
+- `defined`: 76
+- `lda`: 76
+- `a`: 76
+- `m`: 76
+- `x`: 76
+- `nthreads`: 76
+- `incy`: 76
+- `alpha`: 76
+- `SMP`: 76
+- `i`: 76
+- `DOUBLE`: 76
+- `uplo_arg`: 76
+- `k`: 76
+- `y`: 76
+- `N`: 76
+- `XDOUBLE`: 76
+- `MAX`: 76
+- `TransA`: 76
+- `unit`: 76
+- `Uplo`: 76
+- `ldb`: 76
+- `BLASFUNC`: 76
+- `xerbla`: 76
+- `b`: 76
+- `sa`: 76
+- `ZERO`: 76
+- `transa`: 76
+- `beta`: 76
+- `INCX`: 76
+- `ALPHA`: 76
+- `sb`: 76
+- `COMPLEX`: 76
+- `trans_arg`: 76
+- `transb`: 76
+- `TOUPPER`: 76
+- `NAME`: 76
+- `c`: 76
+- `UPLO`: 76
+- `OPENBLAS_EXPORT`: 76
+- `Info`: 76
+- `FUNCTION_PROFILE`: 76
+- `ldc`: 76
+- `COMPSIZE`: 76
+- `CBLAS`: 76
+- `CblasConjNoTrans`: 76
+- `CblasConjTrans`: 76
+- `CNAME`: 76
+- `blas_arg_t`: 76
+- `CblasNoTrans`: 76
+- `INCY`: 76
+- `diag_arg`: 76
+- `CblasTrans`: 76
+- `Trans`: 76
+- `ret`: 76
+- `alpha_r`: 76
+- `LDA`: 76
+- `PPC440`: 76
+- `alpha_i`: 76
+- `Diag`: 76
+- `BETA`: 76
+- `nrowa`: 76
+- `ldA`: 76
+- `IFLOAT`: 76
+- `vx`: 76
+- `GEMM_ALIGN`: 76
+- `TRANS`: 76
+- `ncpu`: 76
+- `DA`: 76
+- `va`: 76
+- `BLAS_REAL`: 76
+- `BLAS_COMPLEX`: 76
+- `ONE`: 76
+- `side`: 76
+- `MIN`: 76
+- `diag`: 76
+- `MAX_K`: 76
+- `CBLAS_TRANSPOSE`: 76
+- `MNK`: 76
+- `M`: 76
+- `TransB`: 76
+- `DIAG`: 76
+- `S`: 76
+- `idx`: 76
+- `t`: 76
+- `CBLAS_UPLO`: 76
+- `BlasNoTrans`: 76
+- `BLAS_DOUBLE`: 76
+- `BLAS_SINGLE`: 76
+- `fmax`: 76
+- `C`: 76
+- `DYNAMIC_ARCH`: 76
+- `beta_r`: 76
+- `beta_i`: 76
+- `BLAS_XDOUBLE`: 76
+- `leny`: 76
+- `MN`: 76
+- `GEMM_P`: 76
+- `GEMM_Q`: 76
+- `SMPTEST`: 76
+- `BlasTrans`: 76
+- `vy`: 76
+- `nrowb`: 76
+- `CblasNonUnit`: 76
+- `ku`: 76
+- `kl`: 76
+- `SMALL_KERNEL_ADDR`: 76
+- `K`: 76
+- `CblasUnit`: 76
+- `lenx`: 76
+- `transA`: 76
+- `transB`: 76
+- `h`: 76
+- `j`: 76
+- `ldB`: 76
+- `HEMM`: 76
+- `gotoblas_corename`: 76
+- `VALPHA`: 76
+- `dd1`: 76
+- `dd2`: 76
+- `SCAL_K`: 76
+- `transc`: 76
+- `USE_SIMPLE_THREADED_LEVEL3`: 76
+- `CTRANS`: 76
+- `ipiv`: 76
+- `d`: 76
+- `Alpha`: 76
+- `ada`: 76
+- `GAM`: 76
+- `S1`: 76
+- `FLOATRET`: 76
+- `AXPYU_K`: 76
+- `BFLOAT16`: 76
+- `transa_array`: 76
+- `transb_array`: 76
+- `DB`: 76
+- `dx1`: 76
+- `common`: 76
+- `s`: 76
+- `bb`: 76
+- `valpha`: 76
+- `ABS`: 76
+- `fmin`: 76
+- `safmin`: 76
+- `dflag`: 76
+- `BlasTransConj`: 76
+- `BlasConj`: 76
+- `adb`: 76
+- `safmax`: 76
+- `dparam`: 76
+- `CONJ`: 76
+- `gemv`: 76
+- `NRHS`: 76
+- `dh21`: 76
+- `dh12`: 76
+- `cc`: 76
+- `CBLAS_DIAG`: 76
+- `VBETA`: 76
+- `gs_r`: 76
+- `gs_i`: 76
+- `fs_r`: 76
+- `fs_i`: 76
+- `HFLOAT16`: 76
+- `dh11`: 76
+- `dh22`: 76
+- `Side`: 76
+- `R`: 76
+- `u`: 76
+- `blasabs`: 76
+- `ldC`: 76
+- `NO_AFFINITY`: 76
+- `nodes`: 76
+- `vb`: 76
+- `vbeta`: 76
+- `vc`: 76
+- `al`: 76
+- `be`: 76
+- `GER_THREAD`: 76
+- `CORDER`: 76
+- `fr`: 76
+- `fi`: 76
+- `r`: 76
+- `gemv_thread`: 76
+- `GER`: 76
+- `aa`: 76
+- `rtmax`: 76
+- `f2`: 76
+- `TRANS_A`: 76
+- `TRANS_C`: 76
+- `GEMV`: 76
+- `TA`: 76
+- `TB`: 76
+- `GEMM_BATCH_THREAD`: 76
+- `msize`: 76
+- `OMATCOPY_K_CN`: 76
+- `OMATCOPY_K_RN`: 76
+- `nmax`: 76
+- `da`: 76
+- `db`: 76
+- `z`: 76
+- `scale`: 76
+- `du`: 76
+- `OPENBLAS_COMPLEX_FLOAT`: 76
+- `db_r`: 76
+- `db_i`: 76
+- `adahsq`: 76
+- `gemm`: 76
+- `XFLOAT`: 76
+- `w`: 76
+- `dy1`: 76
+- `incb`: 76
+- `blas_level1_thread`: 76
+- `bfloat16`: 76
+- `FLOAT_TYPE`: 76
+- `GEMM3M`: 76
+- `gemm_small_kernel`: 76
+- `gemm_small_kernel_b0`: 76
+- `zgemm_small_kernel`: 76
+- `zgemm_small_kernel_b0`: 76
+- `inc_x`: 76
+- `Beta`: 76
+- `ncola`: 76
+- `ncolb`: 76
+- `crows`: 76
+- `ccols`: 76
+- `clda`: 76
+- `cldb`: 76
+- `k1`: 76
+- `k2`: 76
+- `flag`: 76
+- `dummyalpha`: 76
+- `lauum_single`: 76
+- `lauum_parallel`: 76
+- `trtri_single`: 76
+- `trtri_parallel`: 76
+- `sigma`: 76
+- `alpha_float`: 76
+- `side_arg`: 76
+- `rtmin`: 76
+- `g1`: 76
+- `DOTU_K`: 76
+- `BGEMM`: 76
+- `ARCH_ARM64`: 76
+- `trans_idx`: 76
+- `A`: 76
+- `B`: 76
+- `LDB`: 76
+- `GEMV_N`: 76
+- `GEMV_T`: 76
+- `myret`: 76
+- `zero`: 76
+- `DOUBLE_PREC`: 76
+- `SINGLE_PREC`: 76
+- `GEMM_SMALL_KERNEL_NN`: 76
+- `GEMM_SMALL_KERNEL_TN`: 76
+- `GEMM_SMALL_KERNEL_NT`: 76
+- `GEMM_SMALL_KERNEL_TT`: 76
+- `GEMM_SMALL_KERNEL_B0_NN`: 76
+- `GEMM_SMALL_KERNEL_B0_TN`: 76
+- `GEMM_SMALL_KERNEL_B0_NT`: 76
+- `GEMM_SMALL_KERNEL_B0_TT`: 76
+- `TRANSA`: 76
+- `TRANSB`: 76
+- `lda_array`: 76
+- `ldb_array`: 76
+- `ldc_array`: 76
+- `stridea`: 76
+- `strideb`: 76
+- `laswp`: 76
+- `RETURN_BY_STRUCT`: 76
+- `f1`: 76
+- `inc_y`: 76
+- `m_array`: 76
+- `n_array`: 76
+- `k_array`: 76
+- `a_array`: 76
+- `b_array`: 76
+- `ta`: 76
+- `tb`: 76
+- `kval`: 76
+- `nval`: 76
+- `dp1`: 76
+- `dp2`: 76
+- `dtemp`: 76
+- `symm`: 76
+- `symv`: 76
+- `symv_thread`: 76
+- `MYTYPE`: 76
+- `DOTC_K`: 76
+- `SMPBUG`: 76
+- `da_r`: 76
+- `da_i`: 76
+
+## Comments with no translation
+
+- Redistribution and use in source and binary forms, with or: 76
+- without modification, are permitted provided that the following: 76
+- conditions are met:: 76
+- 1. Redistributions of source code must retain the above: 76
+- disclaimer.: 76
+- 2. Redistributions in binary form must reproduce the above: 76
+- disclaimer in the documentation and/or other materials: 76
+- provided with the distribution.: 76
+- THIS  SOFTWARE IS PROVIDED  BY THE  UNIVERSITY OF  TEXAS AT: 76
+- AUSTIN  ``AS IS''  AND ANY  EXPRESS OR  IMPLIED WARRANTIES,: 76
+- INCLUDING, BUT  NOT LIMITED  TO, THE IMPLIED  WARRANTIES OF: 76
+- MERCHANTABILITY  AND FITNESS FOR  A PARTICULAR  PURPOSE ARE: 76
+- DISCLAIMED.  IN  NO EVENT SHALL THE UNIVERSITY  OF TEXAS AT: 76
+- AUSTIN OR CONTRIBUTORS BE  LIABLE FOR ANY DIRECT, INDIRECT,: 76
+- INCIDENTAL,  SPECIAL, EXEMPLARY,  OR  CONSEQUENTIAL DAMAGES: 76
+- (INCLUDING, BUT  NOT LIMITED TO,  PROCUREMENT OF SUBSTITUTE: 76
+- GOODS  OR  SERVICES; LOSS  OF  USE,  DATA,  OR PROFITS;  OR: 76
+- BUSINESS INTERRUPTION) HOWEVER CAUSED  AND ON ANY THEORY OF: 76
+- LIABILITY, WHETHER  IN CONTRACT, STRICT  LIABILITY, OR TORT: 76
+- (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY OUT: 76
+- OF  THE  USE OF  THIS  SOFTWARE,  EVEN  IF ADVISED  OF  THE: 76
+- POSSIBILITY OF SUCH DAMAGE.: 76
+- The views and conclusions contained in the software and: 76
+- documentation are those of the authors and should not be: 76
+- interpreted as representing official policies, either expressed: 76
+- or implied, of The University of Texas at Austin.: 76
+- disable multi-thread when incx==0 or incy==0: 76
+- In that case, the threads would be dependent.: 76
+- for alignment: 76
+- Quick return if possible.: 76
+- Temporarily work-around the low performance issue with small input size &: 76
+- multithreads.: 76
+- void CNAME(enum CBLAS_ORDER order,
+	   blasint m, blasint n,
+	   FLOAT alpha,
+	   FLOAT  *a, blasint: 76
+- defined arm64: 76
+- These were passed in as blasint, but the struct translates them to blaslong: 76
+- Threshold chosen so that speed-up is > 1 on a Xeon E5-2630: 76
+- **********************************************************
+ * 2014-06-10 Saar
+ * 2015-09-07 grisuthe: 76
+- ABS & MAX: 76
+- ABS & MIN: 76
+- MAX: 76
+- MIN: 76
+- **********************************************************
+ * 2014/06/09 Saar
+**********************: 76
+- #ifdef SMP
+#ifdef __64BIT__
+#define SMPTEST 1
+#endif
+#endif: 76
+- Multithreaded swap gives performance benefits in ThunderX2T99: 76
+- Disable multi-threading as it does not show any performance: 76
+- benefits. Keep the multi-threading code for the record.: 76
+- CBLAS: 76
+- unscaled: 76
+- *****************************************************************
+ 2014/06/07 Saar
+*****************: 76
+- defined complex: 76
+- defined CBLAS: 76
+- defined dynarch: 76
+- defined b/hfloat16: 76
+- defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16): 76
+- The gemv kernels in arm64/{gemv_n.S,gemv_n_sve.c,gemv_t.S,gemv_t_sve.c}: 76
+- perform poorly in certain circumstances. We use the following boolean: 76
+- variable along with the gemv argument values to avoid these inefficient: 76
+- gemv cases, see github issue#4951.: 76
+- GEMV transpose modes indexed by the GEMM transpose codes (N=0, T=1, R=2, C=3).: 76
+- For real types only N and T occur. For complex types the OpenBLAS GEMV: 76
+- extensions O, U, S and D (index 4..7) behave like N, T, R and C but: 76
+- additionally conjugate the vector x, which lets a conjugated vector-shaped: 76
+- operand of GEMM be handled without an explicit conjugation pass.: 76
+- Even indices run on the GEMV_N kernels, odd indices on the GEMV_T kernels.: 76
+- Check if we can convert GEMM -> GEMV: 76
+- C = alpha * op(A) * op(B) + beta * C with op(B) a k x 1 vector: GEMV on A,: 76
+- where a conjugated op(B) selects the x-conjugating modes.: 76
+- C^T = op(B)^T * op(A)^T with op(A) a 1 x k vector: GEMV on B, where the: 76
+- transposition swaps N<->T and R<->C, and a conjugated op(A) selects the: 76
+- x-conjugating modes.: 76
+- For LOONGARCH64, applying an offset to the buffer is essential: 76
+- for minimizing cache conflicts and optimizing performance.: 76
+- Every member shares M and N: an empty member means an empty batch.: 76
+- [uplo][op(B)][op(A)], as in interface/gemm.c: 76
+- Split the triangle into column ranges of equal area; every
+		   thread then runs the single-threaded: 76
+- Enables the New IMATCOPY code with inplace operation if lda == ldb: 76
+- Test the input parameters.: 76
+- Quick return if possible: 76
+- *************************************************************************************
+* 2014/05/02 S: 76
+- This can only happen through rounding: the
+				   branch was chosen on ABS(dq1) > ABS(dq2),
+				   w: 76
+- Column Major: 76
+- Row Major: 76
+- end of the ifndef CBLAS ... else ... section: 76
+- if ( args.m < 2 * GEMM_MULTITHREAD_THRESHOLD )
+	args.nthreads = 1;
+  else
+	if ( args.n < 2 * GEMM_MU: 76
+- *********************************************************************
+ 2014/06/07 Saar
+
+************: 76
+- CREAL(*result) = 0.0;: 76
+- CIMAG(*result) = 0.0;: 76
+- cgemv_t.S return NaN if there are NaN or Inf in the buffer (see bug #746): 76
+- this is smallest dimension N of square input a to permit threading: 76
+- see graph in issue #1820 for explanation: 76
+- long double r;: 76
+- scaled algorithm: 76
+- no risk of intermediate overflow: 76
+- scaled: 76
+- use same scaling for both: 76
+- intermediates might overflow: 76
+- Calibrated on a Xeon E5-2630: 76
+- It seems to be required for some K8 or Barcelona CPU: 76
