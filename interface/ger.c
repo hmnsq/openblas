@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef SMP
@@ -50,19 +50,19 @@
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGER  "
-#elif defined DOUBLE
+#وإلاإذا defined DOUBLE
 #define ERROR_NAME "DGER  "
-#else
+#ܐܚܪܢܐ
 #define ERROR_NAME "SGER  "
 #endif
 
 #define GER		GERU_K
 
-#if   defined XDOUBLE
+#ܐܢ   defined XDOUBLE
 #define GER_THREAD	qger_thread
-#elif defined DOUBLE
+#وإلاإذا defined DOUBLE
 #define GER_THREAD	dger_thread
-#else
+#ܐܚܪܢܐ
 #define GER_THREAD	sger_thread
 #endif
 
@@ -70,7 +70,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+فراغ NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -83,7 +83,7 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    lda   = *LDA;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  صحيح nthreads;
 #endif
 
   blasint info;
@@ -92,20 +92,20 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  ܐܢ (lda < MAX(1,m)) info = 9;
+  ܐܢ (incy == 0)      info = 7;
+  ܐܢ (incx == 0)      info = 5;
+  ܐܢ (n < 0)          info = 2;
+  ܐܢ (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ܐܢ (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    ܦܢܐ;
   }
 
-#else
+#ܐܚܪܢܐ
 
-void CNAME(enum CBLAS_ORDER order,
+فراغ CNAME(تعداد CBLAS_ORDER order,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
@@ -115,24 +115,24 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *buffer;
   blasint info, t;
 #ifdef SMPTEST
-  int nthreads;
+  صحيح nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ܐܢ (order == CblasColMajor) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ܐܢ (lda < MAX(1,m)) info = 9;
+    ܐܢ (incy == 0)      info = 7;
+    ܐܢ (incx == 0)      info = 5;
+    ܐܢ (n < 0)          info = 2;
+    ܐܢ (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  ܐܢ (order == CblasRowMajor) {
     info = -1;
 
     t = n;
@@ -147,54 +147,54 @@ void CNAME(enum CBLAS_ORDER order,
     x = y;
     y = buffer;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ܐܢ (lda < MAX(1,m)) info = 9;
+    ܐܢ (incy == 0)      info = 7;
+    ܐܢ (incx == 0)      info = 5;
+    ܐܢ (n < 0)          info = 2;
+    ܐܢ (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ܐܢ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    ܦܢܐ;
   }
 
 #endif
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
-  if (alpha == 0.) return;
+  ܐܢ (m == 0 || n == 0) ܦܢܐ;
+  ܐܢ (alpha == 0.) ܦܢܐ;
 
-  if (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, NULL);
-    return;
+  ܐܢ (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, عدم);
+    ܦܢܐ;
   }  
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incy < 0) y -= (n - 1) * incy;
-  if (incx < 0) x -= (m - 1) * incx;
+  ܐܢ (incy < 0) y -= (n - 1) * incy;
+  ܐܢ (incx < 0) x -= (m - 1) * incx;
 
   STACK_ALLOC(m, FLOAT, buffer);
 
 #ifdef SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
+  ܐܢ(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
     nthreads = num_cpu_avail(2);
-  else if(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
+  ܐܚܪܢܐ ܐܢ(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
 	  nthreads = MIN(3,num_cpu_avail(2));
-  else
+  ܐܚܪܢܐ
     nthreads = 1;
 
-  if (nthreads == 1) {
+  ܐܢ (nthreads == 1) {
 #endif
 
     GER(m, n, 0, alpha, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMPTEST
-  } else {
+  } ܐܚܪܢܐ {
 
     GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -206,5 +206,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ܦܢܐ;
 }

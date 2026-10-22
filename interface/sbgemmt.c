@@ -32,9 +32,9 @@
 /*                                                                   */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن <stdlib.h>
+#ضمن "common.h"
 
 #define SMP_THRESHOLD_MIN 65536.0
 #define ERROR_NAME "SBGEMMT "
@@ -47,7 +47,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+فراغ NAME(حرف *UPLO, حرف *TRANSA, حرف *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -56,10 +56,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	صحيح transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	حرف transA, transB, Uplo;
 	blasint nrowa, nrowb;
 	IFLOAT *buffer;
 	IFLOAT *aa, *bb;
@@ -89,62 +89,62 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	ܐܢ (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	ܐܢ (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	ܐܢ (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	ܐܢ (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	ܐܢ (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	ܐܢ (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	ܐܢ (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	ܐܢ (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	ܐܢ (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	ܐܢ (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	ܐܢ (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	ܐܢ (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	ܐܢ (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	ܐܢ (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	ܐܢ (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	ܐܢ (k < 0)
 		info = 5;
-	if (m < 0)
+	ܐܢ (m < 0)
 		info = 4;
-	if (transb < 0)
+	ܐܢ (transb < 0)
 		info = 3;
-	if (transa < 0)
+	ܐܢ (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	ܐܢ (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ܐܢ (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, حجم(ERROR_NAME));
+		ܦܢܐ;
 	}
-#else
+#ܐܚܪܢܐ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+فراغ CNAME(تعداد CBLAS_ORDER order, تعداد CBLAS_UPLO Uplo,
+	   تعداد CBLAS_TRANSPOSE TransA, تعداد CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	صحيح transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,32 +166,32 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	ܐܢ (order == CblasColMajor) {
+		ܐܢ (Uplo == CblasUpper) uplo = 0;
+		ܐܢ (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		ܐܢ (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		ܐܢ (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ܐܢ (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		ܐܢ (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		ܐܢ (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		ܐܢ (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ܐܢ (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		ܐܢ (TransB == CblasConjTrans)
 			transb = 1;
 
-		a = (void *)A;
-		b = (void *)B;
+		a = (فراغ *)A;
+		b = (فراغ *)B;
 		lda = LDA;
 		ldb = LDB;
 
@@ -200,57 +200,57 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		ܐܢ (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		ܐܢ (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		ܐܢ (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		ܐܢ (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		ܐܢ (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		ܐܢ (k < 0)
 			info = 5;
-		if (m < 0)
+		ܐܢ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ܐܢ (transb < 0)
 			info = 3;
-		if (transa < 0)
+		ܐܢ (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		ܐܢ (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	ܐܢ (order == CblasRowMajor) {
 
-		a = (void *)B;
-		b = (void *)A;
+		a = (فراغ *)B;
+		b = (فراغ *)A;
 
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		ܐܢ (Uplo == CblasUpper) uplo = 0;
+		ܐܢ (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		ܐܢ (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		ܐܢ (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ܐܢ (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		ܐܢ (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		ܐܢ (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		ܐܢ (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ܐܢ (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		ܐܢ (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,90 +259,90 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		ܐܢ (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		ܐܢ (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		ܐܢ (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		ܐܢ (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		ܐܢ (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		ܐܢ (k < 0)
 			info = 5;
-		if (m < 0)
+		ܐܢ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ܐܢ (transb < 0)
 			info = 2;
-		if (transa < 0)
+		ܐܢ (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		ܐܢ (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ܐܢ (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, حجم(ERROR_NAME));
+		ܦܢܐ;
 	}
 
 #endif
-	int buffer_size;
+	صحيح buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	صحيح nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	ساكن صحيح (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, صحيح) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	صحيح (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	ܐܢ (m == 0)
+		ܦܢܐ;
 
 	IDEBUG_START;
 
-	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
+	ثابت blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
-		for (i = 0; i < m; i++) {
+	ܐܢ (uplo == 1) {
+		لكل (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			ܐܢ (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			ܐܢ (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#ܐܢ 0
+			ܐܢ (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, عدم, 0, عدم, 0);
 
-			if (alpha == ZERO)
-				continue;
+			ܐܢ (alpha == ZERO)
+				استمر;
 #endif
 
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / حجم(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / حجم(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -350,29 +350,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ܐܢ (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			ܐܚܪܢܐ
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ܐܢ (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				ܐܢ (!(transa & 1))
+				(gemv[(صحيح)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				ܐܚܪܢܐ
+				(gemv[(صحيح)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} ܐܚܪܢܐ {
+				ܐܢ (!(transa & 1))
+				(gemv_thread[(صحيح)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				ܐܚܪܢܐ
+				(gemv_thread[(صحيح)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
@@ -381,29 +381,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 			STACK_FREE(buffer);
 		}
-	} else {
+	} ܐܚܪܢܐ {
 
-		for (i = 0; i < m; i++) {
+		لكل (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			ܐܢ (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#ܐܢ 0
+			ܐܢ (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, عدم, 0, عدم, 0);
 
-			if (alpha == ZERO)
-				continue;
+			ܐܢ (alpha == ZERO)
+				استمر;
 #endif
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / حجم(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / حجم(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -411,29 +411,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ܐܢ (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			ܐܚܪܢܐ
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ܐܢ (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				ܐܢ (!(transa & 1))
+				(gemv[(صحيح)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				ܐܚܪܢܐ
+				(gemv[(صحيح)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} ܐܚܪܢܐ {
+				ܐܢ (!(transa & 1))
+				(gemv_thread[(صحيح)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				ܐܚܪܢܐ
+				(gemv_thread[(صحيح)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
@@ -445,5 +445,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	ܦܢܐ;
 }

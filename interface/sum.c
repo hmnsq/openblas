@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 OPENBLAS_EXPORT
@@ -54,7 +54,7 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ܐܢ (n <= 0) ܦܢܐ 0;
 
   IDEBUG_START;
 
@@ -66,14 +66,14 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ܦܢܐ ret;
 }
 
-#else
+#ܐܚܪܢܐ
 #ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+FLOAT CNAME(blasint n, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ܐܚܪܢܐ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -81,7 +81,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ܐܢ (n <= 0) ܦܢܐ 0;
 
   IDEBUG_START;
 
@@ -93,7 +93,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ܦܢܐ ret;
 }
 
 #endif

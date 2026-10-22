@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XGETRF"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "ZGETRF"
-#else
+#ܐܚܪܢܐ
 #define ERROR_NAME "CGETRF"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+فراغ NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
@@ -66,22 +66,22 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (فراغ *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (فراغ *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ܐܢ (args.lda < MAX(1,args.m)) info = 4;
+  ܐܢ (args.n   < 0)             info = 2;
+  ܐܢ (args.m   < 0)             info = 1;
+  ܐܢ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ܦܢܐ;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  ܐܢ (args.m == 0 || args.n == 0) ܦܢܐ;
 
   IDEBUG_START;
 
@@ -95,21 +95,21 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m*args.n <10000)
+  args.common = عدم;
+  ܐܢ (args.m*args.n <10000)
 	args.nthreads = 1;
-  else
+  ܐܚܪܢܐ
 	args.nthreads = num_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  ܐܢ (args.nthreads == 1) {
 #endif
 
-    *Info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    *Info = GETRF_SINGLE(&args, عدم, عدم, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } ܐܚܪܢܐ {
 
-    *Info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    *Info = GETRF_PARALLEL(&args, عدم, عدم, sa, sb, 0);
 
   }
 #endif
@@ -122,5 +122,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  ܦܢܐ;
 }

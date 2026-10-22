@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 OPENBLAS_EXPORT
@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ܐܢ (n <= 0) ܦܢܐ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ܐܢ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    ܦܢܐ fabs(x[0]);
+#ܐܚܪܢܐ
+    ܦܢܐ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ܐܢ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  ܦܢܐ (sqrt((مزدوج)n)*fabs(x[0]));
+#ܐܚܪܢܐ
+  ܦܢܐ (sqrt((عائم)n)*fabsf(x[0]));
 #endif
-#else
+#ܐܚܪܢܐ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  مزدوج fr=fabs(x[0]);
+  مزدوج fi=fabs(x[1]);
+  مزدوج fmin=MIN(fr,fi);
+  مزدوج fmax=MAX(fr,fi);
+  ܐܢ (fmax==0.) ܦܢܐ(fmax);
+  ܐܢ (fmax==fmin) ܦܢܐ(sqrt((مزدوج)n)*sqrt(2.)*fmax);
+  ܦܢܐ (sqrt((مزدوج)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ܐܚܪܢܐ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  عائم fr=fabs(x[0]);
+  عائم fi=fabs(x[1]);
+  عائم fmin=MIN(fr,fi);
+  عائم fmax=MAX(fr,fi);
+  ܐܢ (fmax==0.) ܦܢܐ(fmax);
+  ܐܢ (fmax==fmin) ܦܢܐ(sqrt((عائم)n)*sqrt(2.)*fmax);
+  ܦܢܐ (sqrt((عائم)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ܐܢ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ܐܚܪܢܐ
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ܦܢܐ ret;
 }
 
-#else
+#ܐܚܪܢܐ
 
 #ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+FLOAT CNAME(blasint n, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ܐܚܪܢܐ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ܐܢ (n <= 0) ܦܢܐ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ܐܢ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    ܦܢܐ fabs(x[0]);
+#ܐܚܪܢܐ
+    ܦܢܐ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ܐܢ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  ܦܢܐ (sqrt((مزدوج)n)*fabs(x[0]));
+#ܐܚܪܢܐ
+  ܦܢܐ (sqrt((عائم)n)*fabsf(x[0]));
 #endif
-#else
+#ܐܚܪܢܐ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  مزدوج fr=fabs(x[0]);
+  مزدوج fi=fabs(x[1]);
+  مزدوج fmin=MIN(fr,fi);
+  مزدوج fmax=MAX(fr,fi);
+  ܐܢ (fmax==0.) ܦܢܐ(fmax);
+  ܐܢ (fmax==fmin) ܦܢܐ(sqrt((مزدوج)n)*sqrt(2.)*fmax);
+  ܦܢܐ (sqrt((مزدوج)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ܐܚܪܢܐ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  عائم fr=fabs(x[0]);
+  عائم fi=fabs(x[1]);
+  عائم fmin=MIN(fr,fi);
+  عائم fmax=MAX(fr,fi);
+  ܐܢ (fmax==0.) ܦܢܐ(fmax);
+  ܐܢ (fmax==fmin) ܦܢܐ(sqrt((عائم)n)*sqrt(2.)*fmax);
+  ܦܢܐ (sqrt((عائم)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ܐܢ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ܐܚܪܢܐ
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ܦܢܐ ret;
 }
 
 #endif
