@@ -52,17 +52,17 @@
 #define ERROR_NAME "QGER  "
 #elif defined DOUBLE
 #define ERROR_NAME "DGER  "
-#else
+#ᮜᮤᮚ
 #define ERROR_NAME "SGER  "
 #endif
 
 #define GER		GERU_K
 
-#if   defined XDOUBLE
+#ᮚᮦᮔ᮪   defined XDOUBLE
 #define GER_THREAD	qger_thread
 #elif defined DOUBLE
 #define GER_THREAD	dger_thread
-#else
+#ᮜᮤᮚ
 #define GER_THREAD	sger_thread
 #endif
 
@@ -83,7 +83,7 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    lda   = *LDA;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  puur_naa_nka nthreads;
 #endif
 
   blasint info;
@@ -92,20 +92,20 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  ᮚᮦᮔ᮪ (lda < MAX(1,m)) info = 9;
+  ᮚᮦᮔ᮪ (incy == 0)      info = 7;
+  ᮚᮦᮔ᮪ (incx == 0)      info = 5;
+  ᮚᮦᮔ᮪ (n < 0)          info = 2;
+  ᮚᮦᮔ᮪ (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᮚᮦᮔ᮪ (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᮝᮜᮤ;
   }
 
-#else
+#ᮜᮤᮚ
 
-void CNAME(enum CBLAS_ORDER order,
+void CNAME(ga_nanaa CBLAS_ORDER order,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
@@ -115,24 +115,24 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *buffer;
   blasint info, t;
 #ifdef SMPTEST
-  int nthreads;
+  puur_naa_nka nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ᮚᮦᮔ᮪ (order == CblasColMajor) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ᮚᮦᮔ᮪ (lda < MAX(1,m)) info = 9;
+    ᮚᮦᮔ᮪ (incy == 0)      info = 7;
+    ᮚᮦᮔ᮪ (incx == 0)      info = 5;
+    ᮚᮦᮔ᮪ (n < 0)          info = 2;
+    ᮚᮦᮔ᮪ (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  ᮚᮦᮔ᮪ (order == CblasRowMajor) {
     info = -1;
 
     t = n;
@@ -147,54 +147,54 @@ void CNAME(enum CBLAS_ORDER order,
     x = y;
     y = buffer;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ᮚᮦᮔ᮪ (lda < MAX(1,m)) info = 9;
+    ᮚᮦᮔ᮪ (incy == 0)      info = 7;
+    ᮚᮦᮔ᮪ (incx == 0)      info = 5;
+    ᮚᮦᮔ᮪ (n < 0)          info = 2;
+    ᮚᮦᮔ᮪ (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᮚᮦᮔ᮪ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᮝᮜᮤ;
   }
 
 #endif
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
-  if (alpha == 0.) return;
+  ᮚᮦᮔ᮪ (m == 0 || n == 0) ᮝᮜᮤ;
+  ᮚᮦᮔ᮪ (alpha == 0.) ᮝᮜᮤ;
 
-  if (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
+  ᮚᮦᮔ᮪ (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
     GER(m, n, 0, alpha, x, incx, y, incy, a, lda, NULL);
-    return;
+    ᮝᮜᮤ;
   }  
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incy < 0) y -= (n - 1) * incy;
-  if (incx < 0) x -= (m - 1) * incx;
+  ᮚᮦᮔ᮪ (incy < 0) y -= (n - 1) * incy;
+  ᮚᮦᮔ᮪ (incx < 0) x -= (m - 1) * incx;
 
   STACK_ALLOC(m, FLOAT, buffer);
 
 #ifdef SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
+  ᮚᮦᮔ᮪(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
     nthreads = num_cpu_avail(2);
-  else if(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
+  ᮜᮤᮚ ᮚᮦᮔ᮪(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
 	  nthreads = MIN(3,num_cpu_avail(2));
-  else
+  ᮜᮤᮚ
     nthreads = 1;
 
-  if (nthreads == 1) {
+  ᮚᮦᮔ᮪ (nthreads == 1) {
 #endif
 
     GER(m, n, 0, alpha, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMPTEST
-  } else {
+  } ᮜᮤᮚ {
 
     GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -206,5 +206,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ᮝᮜᮤ;
 }

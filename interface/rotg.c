@@ -11,55 +11,55 @@ OPENBLAS_EXPORT
 
 void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#ᮜᮤᮚ
 
 void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
 #endif
 
 #ifdef DOUBLE
-  long double safmin = DBL_MIN;
-#else
-  long double safmin = FLT_MIN;
+  long dviguu_na safmin = DBL_MIN;
+#ᮜᮤᮚ
+  long dviguu_na safmin = FLT_MIN;
 #endif
 
-#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
+#ᮚᮦᮔ᮪ defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
 
-  long double da = *DA;
-  long double db = *DB;
-  long double c;
-  long double s;
-  long double r, z;
-  long double sigma, dascal,dbscal;
+  long dviguu_na da = *DA;
+  long dviguu_na db = *DB;
+  long dviguu_na c;
+  long dviguu_na s;
+  long dviguu_na r, z;
+  long dviguu_na sigma, dascal,dbscal;
 
-  long double ada = fabsl(da);
-  long double adb = fabsl(db);
-  long double maxab = MAX(ada,adb);
-  long double safmax;
-  long double scale;
+  long dviguu_na ada = fabsl(da);
+  long dviguu_na adb = fabsl(db);
+  long dviguu_na maxab = MAX(ada,adb);
+  long dviguu_na safmax;
+  long dviguu_na scale;
 
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ᮜᮤᮚ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (adb == ZERO) {
+  ᮚᮦᮔ᮪ (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } ᮜᮤᮚ ᮚᮦᮔ᮪ (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } ᮜᮤᮚ {
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
-    if (ada > adb)
+    ᮚᮦᮔ᮪ (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    ᮜᮤᮚ
 	sigma = copysign(1.,db);
     dascal = da / scale;
     dbscal = db / scale;
@@ -67,8 +67,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ᮚᮦᮔ᮪ (ada > adb) z = s;
+    ᮚᮦᮔ᮪ ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -76,7 +76,7 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     *DB = z;
   }
 
-#else
+#ᮜᮤᮚ
   FLOAT da = *DA;
   FLOAT db = *DB;
   FLOAT c  = *C;
@@ -87,34 +87,34 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   FLOAT ada = fabs(da);
   FLOAT adb = fabs(db);
   FLOAT maxab = MAX(ada,adb);
-  long double safmax ;
+  long dviguu_na safmax ;
   FLOAT scale ;
 
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
 
-  if (ada > adb)
+  ᮚᮦᮔ᮪ (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    ᮜᮤᮚ
 	sigma = copysign(1.,db);
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ᮜᮤᮚ
   PRINT_DEBUG_CNAME;
 #endif
 
 
-  if (adb == ZERO) {
+  ᮚᮦᮔ᮪ (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } ᮜᮤᮚ ᮚᮦᮔ᮪ (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } ᮜᮤᮚ {
     FLOAT aa = da / scale;
     FLOAT bb = db / scale;
 
@@ -122,8 +122,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ᮚᮦᮔ᮪ (ada > adb) z = s;
+    ᮚᮦᮔ᮪ ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -132,5 +132,5 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   }
 #endif
 
-  return;
+  ᮝᮜᮤ;
 }
