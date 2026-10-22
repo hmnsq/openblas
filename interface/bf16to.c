@@ -1,60 +1,60 @@
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
+#إذا defined(DOUBLE_PREC)
+#define FLOAT_TYPE مزدوج
+#وإلاإذا defined(SINGLE_PREC)
+#define FLOAT_TYPE عائم
+#وإلا
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
-void NAME(blasint *N, bfloat16 *in, blasint *INC_IN, FLOAT_TYPE *out, blasint *INC_OUT){
+فراغ NAME(blasint *N, bfloat16 *in, blasint *INC_IN, FLOAT_TYPE *out, blasint *INC_OUT){
   BLASLONG n    = *N;
   BLASLONG inc_in = *INC_IN;
   BLASLONG inc_out = *INC_OUT;
 
-  PRINT_DEBUG_NAME;
+  اطبع_DEBUG_NAME;
 
-  if (n <= 0) return;
+  إذا (n <= 0) أرجع;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  إذا (inc_in < 0)   in -= (n - 1) * inc_in;
+  إذا (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#إذا defined(DOUBLE_PREC)
   D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#وإلاإذا defined(SINGLE_PREC)
   S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
+#وإلا
 #endif
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
   IDEBUG_END;
 }
-#else
-void CNAME(blasint n, bfloat16 * in, blasint inc_in, FLOAT_TYPE * out, blasint inc_out){
-  PRINT_DEBUG_CNAME;
+#وإلا
+فراغ CNAME(blasint n, bfloat16 * in, blasint inc_in, FLOAT_TYPE * out, blasint inc_out){
+  اطبع_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  إذا (n <= 0) أرجع;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  إذا (inc_in < 0)   in -= (n - 1) * inc_in;
+  إذا (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#إذا defined(DOUBLE_PREC)
   D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#وإلاإذا defined(SINGLE_PREC)
   S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
+#وإلا
 #endif
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
