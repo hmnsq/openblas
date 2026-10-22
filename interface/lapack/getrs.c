@@ -46,7 +46,7 @@
 #define ERROR_NAME "QGETRS"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGETRS"
-#else
+#інакше
 #define ERROR_NAME "SGETRS"
 #endif
 
@@ -69,7 +69,7 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blas_arg_t args;
 
   blasint info;
-  int trans;
+  ціле trans;
   FLOAT *buffer;
 #ifdef PPC440
   extern
@@ -91,20 +91,20 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  якщо (trans_arg == 'N') trans = 0;
+  якщо (trans_arg == 'T') trans = 1;
+  якщо (trans_arg == 'R') trans = 0;
+  якщо (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  якщо (args.ldb  < MAX(1, args.m)) info = 8;
+  якщо (args.lda  < MAX(1, args.m)) info = 5;
+  якщо (args.n    < 0) info = 3;
+  якщо (args.m    < 0) info = 2;
+  якщо (trans     < 0) info = 1;
 
-  if (info != 0) {
+  якщо (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+    повернути;
   }
 
   args.alpha = NULL;
@@ -112,7 +112,7 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  якщо (args.m == 0 || args.n == 0) повернути;
 
   IDEBUG_START;
 
@@ -127,19 +127,19 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
 #ifdef SMP
   args.common = NULL;
-  if (args.m < 64) {
+  якщо (args.m < 64) {
     args.nthreads = 1;
-  } else {
+  } інакше {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  якщо (args.nthreads == 1) {
 #endif
 
     (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } інакше {
     (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
   }
 #endif
@@ -152,6 +152,6 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   IDEBUG_END;
 
-  return;
+  повернути;
 
 }

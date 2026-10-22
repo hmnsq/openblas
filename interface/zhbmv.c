@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHBMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHBMV "
-#else
+#інакше
 #define ERROR_NAME "CHBMV "
 #endif
 
-static  int (*hbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static  ціле (*hbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xhbmv_U, xhbmv_L, xhbmv_V, xhbmv_M,
 #elif defined(DOUBLE)
   zhbmv_U, zhbmv_L, zhbmv_V, zhbmv_M,
-#else
+#інакше
   chbmv_U, chbmv_L, chbmv_V, chbmv_M,
 #endif
 };
 
 #ifdef SMPBUG
-static  int (*hbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static  ціле (*hbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ціле) = {
 #ifdef XDOUBLE
   xhbmv_thread_U, xhbmv_thread_L, xhbmv_thread_V, xhbmv_thread_M,
 #elif defined(DOUBLE)
   zhbmv_thread_U, zhbmv_thread_L, zhbmv_thread_V, zhbmv_thread_M,
-#else
+#інакше
   chbmv_thread_U, chbmv_thread_L, chbmv_thread_V, chbmv_thread_M,
 #endif
 };
@@ -92,10 +92,10 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ціле uplo;
   FLOAT *buffer;
 #ifdef SMPBUG
-  int nthreads;
+  ціле nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -103,26 +103,26 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
-  if (uplo_arg  == 'V') uplo  = 2;
-  if (uplo_arg  == 'M') uplo  = 3;
+  якщо (uplo_arg  == 'U') uplo  = 0;
+  якщо (uplo_arg  == 'L') uplo  = 1;
+  якщо (uplo_arg  == 'V') uplo  = 2;
+  якщо (uplo_arg  == 'M') uplo  = 3;
 
   info = 0;
 
-  if (incy == 0)          info = 11;
-  if (incx == 0)          info =  8;
-  if (lda  < k + 1)       info =  6;
-  if (k < 0)              info =  3;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  якщо (incy == 0)          info = 11;
+  якщо (incx == 0)          info =  8;
+  якщо (lda  < k + 1)       info =  6;
+  якщо (k < 0)              info =  3;
+  якщо (n < 0)              info =  2;
+  якщо (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  якщо (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
-#else
+#інакше
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_UPLO Uplo,
@@ -144,10 +144,10 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT beta_r	= BETA[0];
   FLOAT beta_i	= BETA[1];
   FLOAT *buffer;
-  int uplo;
+  ціле uplo;
   blasint info;
 #ifdef SMPBUG
-  int nthreads;
+  ціле nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -155,71 +155,71 @@ void CNAME(enum CBLAS_ORDER order,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  якщо (order == CblasColMajor) {
+    якщо (Uplo == CblasUpper)         uplo  = 0;
+    якщо (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info = 11;
-    if (incx == 0)          info =  8;
-    if (lda  < k + 1)       info =  6;
-    if (k < 0)              info =  3;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    якщо (incy == 0)          info = 11;
+    якщо (incx == 0)          info =  8;
+    якщо (lda  < k + 1)       info =  6;
+    якщо (k < 0)              info =  3;
+    якщо (n < 0)              info =  2;
+    якщо (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  якщо (order == CblasRowMajor) {
+    якщо (Uplo == CblasUpper)         uplo  = 3;
+    якщо (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incy == 0)          info = 11;
-    if (incx == 0)          info =  8;
-    if (lda  < k + 1)       info =  6;
-    if (k < 0)              info =  3;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    якщо (incy == 0)          info = 11;
+    якщо (incx == 0)          info =  8;
+    якщо (lda  < k + 1)       info =  6;
+    якщо (k < 0)              info =  3;
+    якщо (n < 0)              info =  2;
+    якщо (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  якщо (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
 #endif
 
-  if (n == 0) return;
+  якщо (n == 0) повернути;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  якщо ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  якщо ((alpha_r == ZERO) && (alpha_i == ZERO)) повернути;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
+  якщо (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  якщо (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  якщо (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
 #ifdef SMPBUG
   nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  якщо (nthreads == 1) {
 #endif
 
     (hbmv[uplo])(n, k, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMPBUG
-  } else {
+  } інакше {
 
     (hbmv_thread[uplo])(n, k, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
 
@@ -232,5 +232,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  повернути;
 }

@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHER2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHER2 "
-#else
+#інакше
 #define ERROR_NAME "CHER2 "
 #endif
 
-static int (*her2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static ціле (*her2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   xher2_U, xher2_L, xher2_V, xher2_M,
 #elif defined(DOUBLE)
   zher2_U, zher2_L, zher2_V, zher2_M,
-#else
+#інакше
   cher2_U, cher2_L, cher2_V, cher2_M,
 #endif
 };
 
 #ifdef SMP
-static int (*her2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ціле (*her2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ціле) = {
 #ifdef XDOUBLE
   xher2_thread_U, xher2_thread_L, xher2_thread_V, xher2_thread_M,
 #elif defined(DOUBLE)
   zher2_thread_U, zher2_thread_L, zher2_thread_V, zher2_thread_M,
-#else
+#інакше
   cher2_thread_U, cher2_thread_L, cher2_thread_V, cher2_thread_M,
 #endif
 };
@@ -89,10 +89,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int  uplo;
+  ціле  uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ціле nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -100,23 +100,23 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  якщо (uplo_arg  == 'U') uplo  = 0;
+  якщо (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  якщо (lda  < MAX(1, n))   info =  9;
+  якщо (incy == 0)          info =  7;
+  якщо (incx == 0)          info =  5;
+  якщо (n < 0)              info =  2;
+  якщо (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  якщо (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
-#else
+#інакше
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy, void *va, blasint lda) {
 
@@ -128,10 +128,10 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   FLOAT *buffer;
-  int uplo;
+  ціле uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  ціле nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -139,72 +139,72 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  якщо (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 3;
-    if (Uplo == CblasLower) uplo  = 2;
+    якщо (Uplo == CblasUpper) uplo  = 0;
+    якщо (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  9;
-    if (incx == 0)          info =  7;
-    if (incy == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    якщо (lda  < MAX(1, n))   info =  9;
+    якщо (incy == 0)          info =  7;
+    якщо (incx == 0)          info =  5;
+    якщо (n < 0)              info =  2;
+    якщо (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  якщо (order == CblasRowMajor) {
+
+    якщо (Uplo == CblasUpper) uplo  = 3;
+    якщо (Uplo == CblasLower) uplo  = 2;
+
+    info = -1;
+
+    якщо (lda  < MAX(1, n))   info =  9;
+    якщо (incx == 0)          info =  7;
+    якщо (incy == 0)          info =  5;
+    якщо (n < 0)              info =  2;
+    якщо (uplo  < 0)          info =  1;
+  }
+
+  якщо (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
 #endif
 
-  if (n == 0) return;
+  якщо (n == 0) повернути;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  якщо ((alpha_r == ZERO) && (alpha_i == ZERO)) повернути;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  якщо (incx < 0 ) x -= (n - 1) * incx * 2;
+  якщо (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  якщо (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
 #ifdef SMP
-  if (n < 100)
+  якщо (n < 100)
 	nthreads = 1;
-  else
+  інакше
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  якщо (nthreads == 1) {
 #endif
 
     (her2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } інакше {
 
     (her2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -217,5 +217,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
 
   IDEBUG_END;
 
-  return;
+  повернути;
 }

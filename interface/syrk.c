@@ -49,25 +49,25 @@
 #define ERROR_NAME "QSYRK "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYRK "
-#else
+#інакше
 #define ERROR_NAME "SSYRK "
 #endif
-#else
+#інакше
 #define SMP_THRESHOLD_MIN 14824.
 #ifndef HEMM
 #ifdef XDOUBLE
 #define ERROR_NAME "XSYRK "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSYRK "
-#else
+#інакше
 #define ERROR_NAME "CSYRK "
 #endif
-#else
+#інакше
 #ifdef XDOUBLE
 #define ERROR_NAME "XHERK "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHERK "
-#else
+#інакше
 #define ERROR_NAME "CHERK "
 #endif
 #endif
@@ -77,15 +77,15 @@
 #define GEMM_MULTITHREAD_THRESHOLD 4
 #endif
 
-static int (*syrk[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+static ціле (*syrk[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef HEMM
   SYRK_UN, SYRK_UC, SYRK_LN, SYRK_LC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#якщо defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYRK_THREAD_UN, SYRK_THREAD_UC, SYRK_THREAD_LN, SYRK_THREAD_LC,
 #endif
-#else
+#інакше
   HERK_UN, HERK_UC, HERK_LN, HERK_LC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#якщо defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HERK_THREAD_UN, HERK_THREAD_UC, HERK_THREAD_LN, HERK_THREAD_LC,
 #endif
 #endif
@@ -113,28 +113,28 @@ void NAME(char *UPLO, char *TRANS,
 #ifdef USE_SIMPLE_THREADED_LEVEL3
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  ціле mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  ціле mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#інакше
+  ціле mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#інакше
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  ціле mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  ціле mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#інакше
+  ціле mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 #endif
 
   blasint info;
-  int uplo;
-  int trans;
-  int nrowa;
+  ціле uplo;
+  ціле trans;
+  ціле nrowa;
 
   PRINT_DEBUG_NAME;
 
@@ -156,69 +156,69 @@ void NAME(char *UPLO, char *TRANS,
   uplo  = -1;
   trans = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  якщо (uplo_arg  == 'U') uplo  = 0;
+  якщо (uplo_arg  == 'L') uplo  = 1;
 
 
 #ifndef COMPLEX
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'C') trans = 1;
-#else
+  якщо (trans_arg == 'N') trans = 0;
+  якщо (trans_arg == 'T') trans = 1;
+  якщо (trans_arg == 'C') trans = 1;
+#інакше
 #ifdef HEMM
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'C') trans = 1;
-#else
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
+  якщо (trans_arg == 'N') trans = 0;
+  якщо (trans_arg == 'C') trans = 1;
+#інакше
+  якщо (trans_arg == 'N') trans = 0;
+  якщо (trans_arg == 'T') trans = 1;
 #endif
 
 #endif
 
   nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  якщо (trans & 1) nrowa = args.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 10;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
-  if (trans < 0)                info =  2;
-  if (uplo  < 0)                info =  1;
+  якщо (args.ldc < MAX(1,args.n)) info = 10;
+  якщо (args.lda < MAX(1,nrowa))  info =  7;
+  якщо (args.k < 0)               info =  4;
+  якщо (args.n < 0)               info =  3;
+  якщо (trans < 0)                info =  2;
+  якщо (uplo  < 0)                info =  1;
 
-  if (info != 0) {
+  якщо (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
-#else
+#інакше
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Trans,
 	   blasint n, blasint k,
-#if !defined(COMPLEX) || defined(HEMM)
+#якщо !defined(COMPLEX) || defined(HEMM)
 	   FLOAT alpha,
-#else
+#інакше
 	   void *valpha,
 #endif
-#if !defined(COMPLEX)
+#якщо !defined(COMPLEX)
 	   FLOAT *a, blasint lda,
-#else
+#інакше
 	   void *va, blasint lda,
 #endif
-#if !defined(COMPLEX) || defined(HEMM)
+#якщо !defined(COMPLEX) || defined(HEMM)
 	   FLOAT beta,
-#else
+#інакше
 	   void *vbeta,
 #endif
-#if !defined(COMPLEX)
+#якщо !defined(COMPLEX)
 	   FLOAT *c, blasint ldc) {
-#else
+#інакше
 	   void *vc, blasint ldc) {
 #endif
 
 #ifdef COMPLEX
-#if !defined(HEMM)
+#якщо !defined(HEMM)
   FLOAT* alpha = (FLOAT*) valpha;
   FLOAT* beta = (FLOAT*) vbeta;
 #endif
@@ -227,7 +227,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 #endif
 
   blas_arg_t args;
-  int uplo, trans;
+  ціле uplo, trans;
   blasint info, nrowa;
 
   FLOAT *buffer;
@@ -239,19 +239,19 @@ double NNK;
 #ifdef USE_SIMPLE_THREADED_LEVEL3
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  ціле mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  ціле mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#інакше
+  ціле mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#інакше
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  ціле mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  ціле mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#інакше
+  ціле mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
@@ -268,10 +268,10 @@ double NNK;
   args.lda = lda;
   args.ldc = ldc;
 
-#if !defined(COMPLEX) || defined(HEMM)
+#якщо !defined(COMPLEX) || defined(HEMM)
   args.alpha = (void *)&alpha;
   args.beta  = (void *)&beta;
-#else
+#інакше
   args.alpha = (void *)alpha;
   args.beta  = (void *)beta;
 #endif
@@ -280,89 +280,89 @@ double NNK;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+  якщо (order == CblasColMajor) {
+    якщо (Uplo == CblasUpper) uplo  = 0;
+    якщо (Uplo == CblasLower) uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
+    якщо (Trans == CblasNoTrans)     trans = 0;
 #ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 1;
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
+    якщо (Trans == CblasTrans)       trans = 1;
+    якщо (Trans == CblasConjNoTrans) trans = 0;
+    якщо (Trans == CblasConjTrans)   trans = 1;
 #elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 1;
-#else
-    if (Trans == CblasConjTrans)   trans = 1;
+    якщо (Trans == CblasTrans)       trans = 1;
+#інакше
+    якщо (Trans == CblasConjTrans)   trans = 1;
 #endif
 
     info = -1;
 
     nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    якщо (trans & 1) nrowa = args.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    якщо (args.ldc < MAX(1,args.n)) info = 10;
+    якщо (args.lda < MAX(1,nrowa))  info =  7;
+    якщо (args.k < 0)               info =  4;
+    якщо (args.n < 0)               info =  3;
+    якщо (trans < 0)                info =  2;
+    якщо (uplo  < 0)                info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+  якщо (order == CblasRowMajor) {
+    якщо (Uplo == CblasUpper) uplo  = 1;
+    якщо (Uplo == CblasLower) uplo  = 0;
 
-    if (Trans == CblasNoTrans)     trans = 1;
+    якщо (Trans == CblasNoTrans)     trans = 1;
 #ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 0;
-    if (Trans == CblasConjNoTrans) trans = 1;
-    if (Trans == CblasConjTrans)   trans = 0;
+    якщо (Trans == CblasTrans)       trans = 0;
+    якщо (Trans == CblasConjNoTrans) trans = 1;
+    якщо (Trans == CblasConjTrans)   trans = 0;
 #elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 0;
-#else
-    if (Trans == CblasConjTrans)   trans = 0;
+    якщо (Trans == CblasTrans)       trans = 0;
+#інакше
+    якщо (Trans == CblasConjTrans)   trans = 0;
 #endif
 
     info = -1;
 
     nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    якщо (trans & 1) nrowa = args.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    якщо (args.ldc < MAX(1,args.n)) info = 10;
+    якщо (args.lda < MAX(1,nrowa))  info =  7;
+    якщо (args.k < 0)               info =  4;
+    якщо (args.n < 0)               info =  3;
+    якщо (trans < 0)                info =  2;
+    якщо (uplo  < 0)                info =  1;
   }
 
-  if (info >= 0) {
+  якщо (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
-  if (args.n == 0) return;
+  якщо (args.n == 0) повернути;
 
 #ifdef DYNAMIC_ARCH
 extern char* gotoblas_corename(void);
 #endif
 	
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYRK_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#якщо !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#якщо defined(ARCH_ARM64) && (defined(USE_SSYRK_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#якщо defined(DYNAMIC_ARCH)
+якщо (strcmp(gotoblas_corename(), "armv9sme") == 0
+#якщо defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
 #endif
 )
 #endif
-  if (order == CblasRowMajor && n == ldc) {
-    if (Trans == CblasNoTrans && k == lda) {
+  якщо (order == CblasRowMajor && n == ldc) {
+    якщо (Trans == CblasNoTrans && k == lda) {
       (Uplo == CblasUpper ? SSYRK_DIRECT_ALPHA_BETA_UN : SSYRK_DIRECT_ALPHA_BETA_LN)(n, k, alpha, a, lda, beta, c, ldc);
-      return;
-    } else if (Trans == CblasTrans && n == lda){
+      повернути;
+    } інакше якщо (Trans == CblasTrans && n == lda){
       (Uplo == CblasUpper ? SSYRK_DIRECT_ALPHA_BETA_UT : SSYRK_DIRECT_ALPHA_BETA_LT)(n, k, alpha, a, lda, beta, c, ldc);
-      return;
+      повернути;
     }
   }
 #endif
@@ -376,10 +376,10 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   FUNCTION_PROFILE_START();
 
   buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  якщо (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
   sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
@@ -387,9 +387,9 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
 #ifdef SMP
 #ifdef USE_SIMPLE_THREADED_LEVEL3
-  if (!trans){
+  якщо (!trans){
     mode |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
-  } else {
+  } інакше {
     mode |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
   }
   mode |= (uplo  << BLAS_UPLO_SHIFT);
@@ -398,25 +398,25 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   args.common = NULL;
 
   NNK = (double)(args.n+1)*(double)args.n*(double)args.k;
-  if (NNK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
+  якщо (NNK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
   args.nthreads = 1;
-  } else {
+  } інакше {
   args.nthreads = num_cpu_avail(3);
   }
 
-  if (args.nthreads == 1) {
+  якщо (args.nthreads == 1) {
 #endif
 
     (syrk[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } інакше {
 
 #ifndef USE_SIMPLE_THREADED_LEVEL3
 
     (syrk[4 | (uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
 
-#else
+#інакше
 
     syrk_thread(mode, &args, NULL, NULL, syrk[(uplo << 1) | trans ], sa, sb, args.nthreads);
 
@@ -431,5 +431,5 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
   IDEBUG_END;
 
-  return;
+  повернути;
 }

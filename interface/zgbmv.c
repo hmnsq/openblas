@@ -46,7 +46,7 @@
 #define ERROR_NAME "XGBMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGBMV "
-#else
+#інакше
 #define ERROR_NAME "CGBMV "
 #endif
 
@@ -58,22 +58,22 @@ static void (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT,
 #elif defined(DOUBLE)
       zgbmv_n, zgbmv_t, zgbmv_r, zgbmv_c,
       zgbmv_o, zgbmv_u, zgbmv_s, zgbmv_d,
-#else
+#інакше
       cgbmv_n, cgbmv_t, cgbmv_r, cgbmv_c,
       cgbmv_o, cgbmv_u, cgbmv_s, cgbmv_d,
 #endif
 };
 
 #ifdef SMP
-static int (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT *,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ціле (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT *,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ціле) = {
 #ifdef XDOUBLE
       xgbmv_thread_n, xgbmv_thread_t, xgbmv_thread_r, xgbmv_thread_c,
       xgbmv_thread_o, xgbmv_thread_u, xgbmv_thread_s, xgbmv_thread_d,
 #elif defined(DOUBLE)
       zgbmv_thread_n, zgbmv_thread_t, zgbmv_thread_r, zgbmv_thread_c,
       zgbmv_thread_o, zgbmv_thread_u, zgbmv_thread_s, zgbmv_thread_d,
-#else
+#інакше
       cgbmv_thread_n, cgbmv_thread_t, cgbmv_thread_r, cgbmv_thread_c,
       cgbmv_thread_o, cgbmv_thread_u, cgbmv_thread_s, cgbmv_thread_d,
 #endif
@@ -100,7 +100,7 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint incy = *INCY;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ціле nthreads;
 #endif
 
   FLOAT alpha_r = ALPHA[0];
@@ -120,32 +120,32 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N')  i = 0;
-  if (trans == 'T')  i = 1;
-  if (trans == 'R')  i = 2;
-  if (trans == 'C')  i = 3;
-  if (trans == 'O')  i = 4;
-  if (trans == 'U')  i = 5;
-  if (trans == 'S')  i = 6;
-  if (trans == 'D')  i = 7;
+  якщо (trans == 'N')  i = 0;
+  якщо (trans == 'T')  i = 1;
+  якщо (trans == 'R')  i = 2;
+  якщо (trans == 'C')  i = 3;
+  якщо (trans == 'O')  i = 4;
+  якщо (trans == 'U')  i = 5;
+  якщо (trans == 'S')  i = 6;
+  якщо (trans == 'D')  i = 7;
 
-  if (incy == 0)	 info = 13;
-  if (incx == 0)	 info = 10;
-  if (lda < kl + ku + 1) info = 8;
-  if (kl < 0)		 info = 5;
-  if (ku < 0)		 info = 4;
-  if (n < 0)		 info = 3;
-  if (m < 0)		 info = 2;
-  if (i < 0)		 info = 1;
+  якщо (incy == 0)	 info = 13;
+  якщо (incx == 0)	 info = 10;
+  якщо (lda < kl + ku + 1) info = 8;
+  якщо (kl < 0)		 info = 5;
+  якщо (ku < 0)		 info = 4;
+  якщо (n < 0)		 info = 3;
+  якщо (m < 0)		 info = 2;
+  якщо (i < 0)		 info = 1;
 
   trans = i;
 
-  if (info != 0){
+  якщо (info != 0){
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
-#else
+#інакше
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_TRANSPOSE TransA,
@@ -170,10 +170,10 @@ void CNAME(enum CBLAS_ORDER order,
 
   FLOAT *buffer;
   blasint lenx, leny;
-  int trans;
+  ціле trans;
   blasint info, t;
 #ifdef SMP
-  int nthreads;
+  ціле nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -181,29 +181,29 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+  якщо (order == CblasColMajor) {
+    якщо (TransA == CblasNoTrans)     trans = 0;
+    якщо (TransA == CblasTrans)       trans = 1;
+    якщо (TransA == CblasConjNoTrans) trans = 2;
+    якщо (TransA == CblasConjTrans)   trans = 3;
 
     info = -1;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    якщо (incy == 0)	 info = 13;
+    якщо (incx == 0)	 info = 10;
+    якщо (lda < kl + ku + 1) info = 8;
+    якщо (kl < 0)		 info = 5;
+    якщо (ku < 0)		 info = 4;
+    якщо (n < 0)		 info = 3;
+    якщо (m < 0)		 info = 2;
+    якщо (trans < 0)	 info = 1;
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
+  якщо (order == CblasRowMajor) {
+    якщо (TransA == CblasNoTrans)     trans = 1;
+    якщо (TransA == CblasTrans)       trans = 0;
+    якщо (TransA == CblasConjNoTrans) trans = 3;
+    якщо (TransA == CblasConjTrans)   trans = 2;
 
     info = -1;
 
@@ -215,64 +215,64 @@ void CNAME(enum CBLAS_ORDER order,
     ku = kl;
     kl = t;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    якщо (incy == 0)	 info = 13;
+    якщо (incx == 0)	 info = 10;
+    якщо (lda < kl + ku + 1) info = 8;
+    якщо (kl < 0)		 info = 5;
+    якщо (ku < 0)		 info = 4;
+    якщо (n < 0)		 info = 3;
+    якщо (m < 0)		 info = 2;
+    якщо (trans < 0)	 info = 1;
   }
 
-  if (info >= 0) {
+  якщо (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  якщо ((m==0) || (n==0)) повернути;
 
   lenx = n;
   leny = m;
-  if (trans & 1) lenx = m;
-  if (trans & 1) leny = n;
+  якщо (trans & 1) lenx = m;
+  якщо (trans & 1) leny = n;
 
-  if (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  якщо (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if (alpha_r == ZERO && alpha_i == ZERO) return;
+  якщо (alpha_r == ZERO && alpha_i == ZERO) повернути;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx - 1) * incx * 2;
-  if (incy < 0) y -= (leny - 1) * incy * 2;
+  якщо (incx < 0) x -= (lenx - 1) * incx * 2;
+  якщо (incy < 0) y -= (leny - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  якщо (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    повернути;
   }
 
 #ifdef SMP
-  if (m * n  < 125000 || ku + kl < 15) 
+  якщо (m * n  < 125000 || ku + kl < 15) 
     nthreads = 1;
-  else
+  інакше
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  якщо (nthreads == 1) {
 #endif
 
-  (gbmv[(int)trans])(m, n, kl, ku, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
+  (gbmv[(ціле)trans])(m, n, kl, ku, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
 
-  } else {
+  } інакше {
 
-    (gbmv_thread[(int)trans])(m, n, kl, ku, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gbmv_thread[(ціле)trans])(m, n, kl, ku, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
 
   }
 #endif
@@ -283,5 +283,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  повернути;
 }
