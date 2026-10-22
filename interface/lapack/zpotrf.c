@@ -46,7 +46,7 @@
 #define ERROR_NAME "XPOTRF"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZPOTRF"
-#else
+#ᤀᤡ᤺ᤆᤡ
 #define ERROR_NAME "CPOTRF"
 #endif
 
@@ -61,7 +61,7 @@ static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+void NAME(var_na *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -83,22 +83,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ᤀᤡ᤺ (uplo_arg == 'U') uplo = 0;
+  ᤀᤡ᤺ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ᤀᤡ᤺ (args.lda < MAX(1,args.n)) info = 4;
+  ᤀᤡ᤺ (args.n   < 0)             info = 2;
+  ᤀᤡ᤺ (uplo     < 0)             info = 1;
+  ᤀᤡ᤺ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ᤀᤡᤴ;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  ᤀᤡ᤺ (args.n == 0) ᤀᤡᤴ;
 
   IDEBUG_START;
 
@@ -114,21 +114,21 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #ifdef SMP
   args.common = NULL;
 #ifndef DOUBLE
-  if (args.n < 64)
-#else
-  if (args.n < 64)
+  ᤀᤡ᤺ (args.n < 64)
+#ᤀᤡ᤺ᤆᤡ
+  ᤀᤡ᤺ (args.n < 64)
 #endif
     args.nthreads = 1;
-  else
+  ᤀᤡ᤺ᤆᤡ
   args.nthreads = num_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  ᤀᤡ᤺ (args.nthreads == 1) {
 #endif
 
     *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } ᤀᤡ᤺ᤆᤡ {
 
     *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
 
@@ -145,5 +145,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  ᤀᤡᤴ;
 }
