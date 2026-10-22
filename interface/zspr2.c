@@ -47,37 +47,37 @@
 #define ERROR_NAME "XSPR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSPR2 "
-#else
+#ᰀᰧᰀ
 #define ERROR_NAME "CSPR2 "
 #endif
 
-static int (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static puur_naa_nka (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xspr2_U, xspr2_L,
 #elif defined(DOUBLE)
   zspr2_U, zspr2_L,
-#else
+#ᰀᰧᰀ
   cspr2_U, cspr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static puur_naa_nka (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, puur_naa_nka) = {
 #ifdef XDOUBLE
   xspr2_thread_U, xspr2_thread_L,
 #elif defined(DOUBLE)
   zspr2_thread_U, zspr2_thread_L,
-#else
+#ᰀᰧᰀ
   cspr2_thread_U, cspr2_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -85,10 +85,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  puur_naa_nka uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  puur_naa_nka nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -96,52 +96,52 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ᰀᰧ (uplo_arg  == 'U') uplo  = 0;
+  ᰀᰧ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ᰀᰧ (incy == 0)          info =  7;
+  ᰀᰧ (incx == 0)          info =  5;
+  ᰀᰧ (n < 0)              info =  2;
+  ᰀᰧ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᰀᰧ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᰀᰧᰌ;
   }
 
-  if (n == 0) return;
+  ᰀᰧ (n == 0) ᰀᰧᰌ;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ᰀᰧ ((alpha_r == ZERO) && (alpha_i == ZERO)) ᰀᰧᰌ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
+  ᰀᰧ (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  ᰀᰧ (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ᰀᰧ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᰀᰧᰌ;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ᰀᰧ (n < 50) nthreads = 1;
+  ᰀᰧ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ᰀᰧ (nthreads == 1) {
 #endif
 
     (spr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
 
 #ifdef SMP
-  } else {
+  } ᰀᰧᰀ {
 
     (spr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
 
@@ -154,5 +154,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  ᰀᰧᰌ;
 }
