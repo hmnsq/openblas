@@ -36,16 +36,16 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+فراغ NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
@@ -53,28 +53,28 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   PRINT_DEBUG_NAME;
 
-#else
+#אחרת
 
 #ifdef COMPLEX
-void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+فراغ CNAME(blasint n, فراغ *vx, blasint incx, فراغ *vy, blasint incy){
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#אחרת
+فراغ CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 #endif
 
   PRINT_DEBUG_CNAME;
 
 #endif
 
-  if (n <= 0) return;
+  אם (n <= 0) החזר;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0) y -= (n - 1) * incy * COMPSIZE;
+  אם (incx < 0) x -= (n - 1) * incx * COMPSIZE;
+  אם (incy < 0) y -= (n - 1) * incy * COMPSIZE;
 
   COPY_K(n, x, incx, y, incy);
 
@@ -82,6 +82,6 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
   IDEBUG_END;
 
-  return;
+  החזר;
 
 }

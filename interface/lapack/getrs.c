@@ -36,43 +36,43 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETRS"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "DGETRS"
-#else
+#אחרת
 #define ERROR_NAME "SGETRS"
 #endif
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_SINGLE, GETRS_T_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_PARALLEL, GETRS_T_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+فراغ NAME(حرف *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  حرف trans_arg = *TRANS;
 
   blas_arg_t args;
 
   blasint info;
-  int trans;
+  صحيح trans;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
@@ -80,39 +80,39 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (فراغ *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (فراغ *)b;
   args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  args.c    = (فراغ *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  אם (trans_arg == 'N') trans = 0;
+  אם (trans_arg == 'T') trans = 1;
+  אם (trans_arg == 'R') trans = 0;
+  אם (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  אם (args.ldb  < MAX(1, args.m)) info = 8;
+  אם (args.lda  < MAX(1, args.m)) info = 5;
+  אם (args.n    < 0) info = 3;
+  אם (args.m    < 0) info = 2;
+  אם (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  אם (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
+    החזר;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = عدم;
+  args.beta  = عدم;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  אם (args.m == 0 || args.n == 0) החזר;
 
   IDEBUG_START;
 
@@ -126,21 +126,21 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
+  args.common = عدم;
+  אם (args.m < 64) {
     args.nthreads = 1;
-  } else {
+  } אחרת {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  אם (args.nthreads == 1) {
 #endif
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&args, عدم, عدم, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+  } אחרת {
+    (getrs_parallel[trans])(&args, عدم, عدم, sa, sb, 0);
   }
 #endif
 
@@ -152,6 +152,6 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   IDEBUG_END;
 
-  return;
+  החזר;
 
 }

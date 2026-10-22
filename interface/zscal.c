@@ -36,36 +36,36 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+فراغ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
 
 #ifndef SSCAL
   FLOAT *alpha=ALPHA;
-#else
+#אחרת
   FLOAT alpha[2] = {ALPHA[0], ZERO};
 #endif
 
-#else
+#אחרת
 
 #ifndef SSCAL
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx){
+فراغ CNAME(blasint n, فراغ *VALPHA, فراغ *vx, blasint incx){
 
   FLOAT *x = (FLOAT*) vx;
   FLOAT *alpha=(FLOAT*)VALPHA;
-#else
-void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
+#אחרת
+فراغ CNAME(blasint n, FLOAT alpha_r, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
 
   FLOAT alpha[2] = {alpha_r, ZERO};
@@ -73,44 +73,44 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
 #endif
 
 #ifdef SMP
-  int mode;
-  int nthreads;
+  صحيح mode;
+  صحيح nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#אחרת
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  אם (incx <= 0 || n <= 0) החזר;
 
-  if ((alpha[0] == ONE) && (alpha[1] == ZERO)) return;
+  אם ((alpha[0] == ONE) && (alpha[1] == ZERO)) החזר;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
 #ifdef SMP
-  if ( n <= 1048576 )
+  אם ( n <= 1048576 )
 	nthreads = 1;
-  else
+  אחרת
 	nthreads = num_cpu_avail(1);
 
-  if (nthreads == 1) {
+  אם (nthreads == 1) {
 #endif
 
-  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, عدم, 0, عدم, 1);
 
 #ifdef SMP
-  } else {
+  } אחרת {
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_COMPLEX;
-#else
+#אחרת
     mode  =  BLAS_SINGLE | BLAS_COMPLEX;
 #endif
 
-    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (int (*)(void))SCAL_K, nthreads);
+    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, عدم, 0, عدم, 1, (صحيح (*)(فراغ))SCAL_K, nthreads);
 
   }
 #endif
@@ -119,6 +119,6 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  החזר;
 
 }
