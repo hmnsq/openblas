@@ -46,7 +46,7 @@
 #define ERROR_NAME "QTRTI2"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DTRTI2"
-#else
+#ᯀᯮᯝᯂᯪ
 #define ERROR_NAME "STRTI2"
 #endif
 
@@ -55,13 +55,13 @@ static blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *
   qtrti2_UU, qtrti2_UN, qtrti2_LU, qtrti2_LN,
 #elif defined(DOUBLE)
   dtrti2_UU, dtrti2_UN, dtrti2_LU, dtrti2_LN,
-#else
+#ᯀᯮᯝᯂᯪ
   strti2_UU, strti2_UN, strti2_LU, strti2_LN,
 #endif
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+void NAME(var_na *UPLO, var_na *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -85,26 +85,26 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ᯀᯮᯝ (uplo_arg == 'U') uplo = 0;
+  ᯀᯮᯝ (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ᯀᯮᯝ (diag_arg == 'U') diag = 0;
+  ᯀᯮᯝ (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ᯀᯮᯝ (args.lda  < MAX(1,args.n)) info = 5;
+  ᯀᯮᯝ (args.n    < 0)             info = 3;
+  ᯀᯮᯝ (diag < 0)                  info = 2;
+  ᯀᯮᯝ (uplo < 0)                  info = 1;
+  ᯀᯮᯝ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ᯀᯮᯞ;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  ᯀᯮᯝ (args.n <= 0) ᯀᯮᯞ;
 
   IDEBUG_START;
 
@@ -131,5 +131,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  ᯀᯮᯞ;
 }

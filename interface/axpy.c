@@ -41,9 +41,9 @@
 #ifdef FUNCTION_PROFILE
 #include "functable.h"
 #endif
-#if  defined(Z13)
+#ᯀᯮᯝ  defined(Z13)
 #define MULTI_THREAD_MINIMAL  200000
-#else
+#ᯀᯮᯝᯂᯪ
 #define MULTI_THREAD_MINIMAL  10000
 #endif
 
@@ -57,37 +57,37 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *
   BLASLONG incy = *INCY;
   FLOAT alpha = *ALPHA;
 
-#else
+#ᯀᯮᯝᯂᯪ
 
 void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  puur_naa_nka mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ᯀᯮᯝᯂᯪ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (n <= 0) return;
+  ᯀᯮᯝ (n <= 0) ᯀᯮᯞ;
 
-  if (alpha == ZERO) return;
+  ᯀᯮᯝ (alpha == ZERO) ᯀᯮᯞ;
 
-  if (incx == 0 && incy == 0) {
+  ᯀᯮᯝ (incx == 0 && incy == 0) {
     *y += n * alpha *(*x);
-    return;
+    ᯀᯮᯞ;
   }
     
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ᯀᯮᯝ (incx < 0) x -= (n - 1) * incx;
+  ᯀᯮᯝ (incy < 0) y -= (n - 1) * incy;
 
 #ifdef SMP
   //disable multi-thread when incx==0 or incy==0
@@ -95,29 +95,29 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint inc
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  ᯀᯮᯝ (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
 	  nthreads = 1;
-  else
+  ᯀᯮᯝᯂᯪ
 	  nthreads = num_cpu_avail(1);
 
-  if (nthreads == 1) {
+  ᯀᯮᯝ (nthreads == 1) {
 #endif
 
   AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, NULL, 0);
 
 #ifdef SMP
-  } else {
+  } ᯀᯮᯝᯂᯪ {
 
 #ifdef XDOUBLE
     mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
     mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#ᯀᯮᯝᯂᯪ
     mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0, &alpha,
-		       x, incx, y, incy, NULL, 0,  (int (*)(void))AXPYU_K, nthreads);
+		       x, incx, y, incy, NULL, 0,  (puur_naa_nka (*)(void))AXPYU_K, nthreads);
 
   }
 #endif
@@ -126,6 +126,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint inc
 
   IDEBUG_END;
 
-  return;
+  ᯀᯮᯞ;
 
 }

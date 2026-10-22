@@ -55,37 +55,37 @@
 #define ERROR_NAME "XSBMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSBMV "
-#else
+#ᯀᯮᯝᯂᯪ
 #define ERROR_NAME "CSBMV "
 #endif
 
-static  int (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static  puur_naa_nka (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xsbmv_U, xsbmv_L,
 #elif defined(DOUBLE)
   zsbmv_U, zsbmv_L,
-#else
+#ᯀᯮᯝᯂᯪ
   csbmv_U, csbmv_L,
 #endif
 };
 
 #ifdef SMPTEST
-static  int (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static  puur_naa_nka (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, puur_naa_nka) = {
 #ifdef XDOUBLE
   xsbmv_thread_U, xsbmv_thread_L,
 #elif defined(DOUBLE)
   zsbmv_thread_U, zsbmv_thread_L,
-#else
+#ᯀᯮᯝᯂᯪ
   csbmv_thread_U, csbmv_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
+void NAME(var_na *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
             FLOAT  *b, blasint *INCX, FLOAT *BETA, FLOAT *c, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n	= *N;
   blasint k	= *K;
   FLOAT alpha_r	= ALPHA[0];
@@ -97,10 +97,10 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  puur_naa_nka uplo;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  puur_naa_nka nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -108,53 +108,53 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ᯀᯮᯝ (uplo_arg  == 'U') uplo  = 0;
+  ᯀᯮᯝ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info = 11;
-  if (incx == 0)          info =  8;
-  if (lda  < k + 1)       info =  6;
-  if (k < 0)              info =  3;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ᯀᯮᯝ (incy == 0)          info = 11;
+  ᯀᯮᯝ (incx == 0)          info =  8;
+  ᯀᯮᯝ (lda  < k + 1)       info =  6;
+  ᯀᯮᯝ (k < 0)              info =  3;
+  ᯀᯮᯝ (n < 0)              info =  2;
+  ᯀᯮᯝ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᯀᯮᯝ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᯀᯮᯞ;
   }
 
-  if (n == 0) return;
+  ᯀᯮᯝ (n == 0) ᯀᯮᯞ;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, blasabs(incy), NULL, 0, NULL, 0);
+  ᯀᯮᯝ ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, blasabs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ᯀᯮᯝ ((alpha_r == ZERO) && (alpha_i == ZERO)) ᯀᯮᯞ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
+  ᯀᯮᯝ (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
+  ᯀᯮᯝ (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ᯀᯮᯝ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᯀᯮᯞ;
   }
 
 #ifdef SMPTEST
   nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ᯀᯮᯝ (nthreads == 1) {
 #endif
 
   (sbmv[uplo])(n, k, alpha_r, alpha_i, a, lda, b, incx, c, incy, buffer);
 
 #ifdef SMPTEST
-  } else {
+  } ᯀᯮᯝᯂᯪ {
 
     (sbmv_thread[uplo])(n, k, ALPHA, a, lda, b, incx, c, incy, buffer, nthreads);
 
@@ -167,5 +167,5 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
 
   IDEBUG_END;
 
-  return;
+  ᯀᯮᯞ;
 }

@@ -47,11 +47,11 @@
 #define ERROR_NAME "XTRMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTRMV "
-#else
+#ᯀᯮᯝᯂᯪ
 #define ERROR_NAME "CTRMV "
 #endif
 
-static int (*trmv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static puur_naa_nka (*trmv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   xtrmv_NUU, xtrmv_NUN, xtrmv_NLU, xtrmv_NLN,
   xtrmv_TUU, xtrmv_TUN, xtrmv_TLU, xtrmv_TLN,
@@ -62,7 +62,7 @@ static int (*trmv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = 
   ztrmv_TUU, ztrmv_TUN, ztrmv_TLU, ztrmv_TLN,
   ztrmv_RUU, ztrmv_RUN, ztrmv_RLU, ztrmv_RLN,
   ztrmv_CUU, ztrmv_CUN, ztrmv_CLU, ztrmv_CLN,
-#else
+#ᯀᯮᯝᯂᯪ
   ctrmv_NUU, ctrmv_NUN, ctrmv_NLU, ctrmv_NLN,
   ctrmv_TUU, ctrmv_TUN, ctrmv_TLU, ctrmv_TLN,
   ctrmv_RUU, ctrmv_RUN, ctrmv_RLU, ctrmv_RLN,
@@ -71,7 +71,7 @@ static int (*trmv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = 
 };
 
 #ifdef SMP
-static int (*trmv_thread[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static puur_naa_nka (*trmv_thread[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, puur_naa_nka) = {
 #ifdef XDOUBLE
   xtrmv_thread_NUU, xtrmv_thread_NUN, xtrmv_thread_NLU, xtrmv_thread_NLN,
   xtrmv_thread_TUU, xtrmv_thread_TUN, xtrmv_thread_TLU, xtrmv_thread_TLN,
@@ -82,7 +82,7 @@ static int (*trmv_thread[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOA
   ztrmv_thread_TUU, ztrmv_thread_TUN, ztrmv_thread_TLU, ztrmv_thread_TLN,
   ztrmv_thread_RUU, ztrmv_thread_RUN, ztrmv_thread_RLU, ztrmv_thread_RLN,
   ztrmv_thread_CUU, ztrmv_thread_CUN, ztrmv_thread_CLU, ztrmv_thread_CLN,
-#else
+#ᯀᯮᯝᯂᯪ
   ctrmv_thread_NUU, ctrmv_thread_NUN, ctrmv_thread_NLU, ctrmv_thread_NLN,
   ctrmv_thread_TUU, ctrmv_thread_TUN, ctrmv_thread_TLU, ctrmv_thread_TLN,
   ctrmv_thread_RUU, ctrmv_thread_RUN, ctrmv_thread_RLU, ctrmv_thread_RLN,
@@ -95,24 +95,24 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+void NAME(var_na *UPLO, var_na *TRANS, var_na *DIAG,
 	   blasint *N, FLOAT *a, blasint *LDA, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  var_na uplo_arg  = *UPLO;
+  var_na trans_arg = *TRANS;
+  var_na diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans, buffer_size;
+  puur_naa_nka uplo;
+  puur_naa_nka unit;
+  puur_naa_nka trans, buffer_size;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  puur_naa_nka nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -125,45 +125,45 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  ᯀᯮᯝ (trans_arg == 'N') trans = 0;
+  ᯀᯮᯝ (trans_arg == 'T') trans = 1;
+  ᯀᯮᯝ (trans_arg == 'R') trans = 2;
+  ᯀᯮᯝ (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  ᯀᯮᯝ (diag_arg  == 'U') unit  = 0;
+  ᯀᯮᯝ (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ᯀᯮᯝ (uplo_arg  == 'U') uplo  = 0;
+  ᯀᯮᯝ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  8;
-  if (lda  < MAX(1, n))   info =  6;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  ᯀᯮᯝ (incx == 0)          info =  8;
+  ᯀᯮᯝ (lda  < MAX(1, n))   info =  6;
+  ᯀᯮᯝ (n < 0)              info =  4;
+  ᯀᯮᯝ (unit  < 0)          info =  3;
+  ᯀᯮᯝ (trans < 0)          info =  2;
+  ᯀᯮᯝ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᯀᯮᯝ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᯀᯮᯞ;
   }
 
-#else
+#ᯀᯮᯝᯂᯪ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_DIAG Diag,
 	   blasint n, void  *va, blasint lda, void  *vx, blasint incx) {
 
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit, buffer_size;
+  puur_naa_nka trans, uplo, unit, buffer_size;
   blasint info;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  puur_naa_nka nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -173,96 +173,96 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ᯀᯮᯝ (order == CblasColMajor) {
+    ᯀᯮᯝ (Uplo == CblasUpper)         uplo  = 0;
+    ᯀᯮᯝ (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    ᯀᯮᯝ (TransA == CblasNoTrans)     trans = 0;
+    ᯀᯮᯝ (TransA == CblasTrans)       trans = 1;
+    ᯀᯮᯝ (TransA == CblasConjNoTrans) trans = 2;
+    ᯀᯮᯝ (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    ᯀᯮᯝ (Diag == CblasUnit)          unit  = 0;
+    ᯀᯮᯝ (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    ᯀᯮᯝ (incx == 0)          info =  8;
+    ᯀᯮᯝ (lda  < MAX(1, n))   info =  6;
+    ᯀᯮᯝ (n < 0)              info =  4;
+    ᯀᯮᯝ (unit  < 0)          info =  3;
+    ᯀᯮᯝ (trans < 0)          info =  2;
+    ᯀᯮᯝ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᯀᯮᯝ (order == CblasRowMajor) {
+    ᯀᯮᯝ (Uplo == CblasUpper)         uplo  = 1;
+    ᯀᯮᯝ (Uplo == CblasLower)         uplo  = 0;
+
+    ᯀᯮᯝ (TransA == CblasNoTrans)     trans = 1;
+    ᯀᯮᯝ (TransA == CblasTrans)       trans = 0;
+    ᯀᯮᯝ (TransA == CblasConjNoTrans) trans = 3;
+    ᯀᯮᯝ (TransA == CblasConjTrans)   trans = 2;
+
+    ᯀᯮᯝ (Diag == CblasUnit)          unit  = 0;
+    ᯀᯮᯝ (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    ᯀᯮᯝ (incx == 0)          info =  8;
+    ᯀᯮᯝ (lda  < MAX(1, n))   info =  6;
+    ᯀᯮᯝ (n < 0)              info =  4;
+    ᯀᯮᯝ (unit  < 0)          info =  3;
+    ᯀᯮᯝ (trans < 0)          info =  2;
+    ᯀᯮᯝ (uplo  < 0)          info =  1;
+  }
+
+  ᯀᯮᯝ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᯀᯮᯞ;
   }
 
 #endif
 
-  if (n == 0) return;
+  ᯀᯮᯝ (n == 0) ᯀᯮᯞ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  ᯀᯮᯝ (incx < 0 ) x -= (n - 1) * incx * 2;
 
 #ifdef SMP
   // Calibrated on a Xeon E5-2630
-  if(1L * n * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD) {
+  ᯀᯮᯝ(1L * n * n > 36L * parimaa_na(FLOAT) * parimaa_na(FLOAT) * GEMM_MULTITHREAD_THRESHOLD) {
     nthreads = num_cpu_avail(2);
-    if(nthreads > 2 && 1L * n * n < 64L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
+    ᯀᯮᯝ(nthreads > 2 && 1L * n * n < 64L * parimaa_na(FLOAT) * parimaa_na(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
       nthreads = 2;
-  } else
+  } ᯀᯮᯝᯂᯪ
       nthreads = 1;
 
-  if(nthreads > 1) {
+  ᯀᯮᯝ(nthreads > 1) {
     buffer_size = n > 16 ? 0 : n * 4 + 40;
   }
-  else
+  ᯀᯮᯝᯂᯪ
 #endif
   {
-    buffer_size = ((n - 1) / DTB_ENTRIES) * 2 * DTB_ENTRIES + 32 / sizeof(FLOAT);
+    buffer_size = ((n - 1) / DTB_ENTRIES) * 2 * DTB_ENTRIES + 32 / parimaa_na(FLOAT);
     // It seems to be required for some K8 or Barcelona CPU
     buffer_size += 8;
-    if(incx != 1)
+    ᯀᯮᯝ(incx != 1)
       buffer_size += n * 2;
   }
   STACK_ALLOC(buffer_size, FLOAT, buffer);
 
 #ifdef SMP
-  if (nthreads == 1) {
+  ᯀᯮᯝ (nthreads == 1) {
 #endif
 
   (trmv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer);
 
 #ifdef SMP
-  } else {
+  } ᯀᯮᯝᯂᯪ {
 
     (trmv_thread[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer, nthreads);
 
@@ -275,5 +275,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  ᯀᯮᯞ;
 }

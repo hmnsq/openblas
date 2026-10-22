@@ -13,41 +13,41 @@ float NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
    float ret;
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return 0.;
+   ᯀᯮᯝ (n <= 0) ᯀᯮᯞ 0.;
 
    IDEBUG_START;
    FUNCTION_PROFILE_START();
 
-   if (incx < 0) x -= (n - 1) * incx;
-   if (incy < 0) y -= (n - 1) * incy;
+   ᯀᯮᯝ (incx < 0) x -= (n - 1) * incx;
+   ᯀᯮᯝ (incy < 0) y -= (n - 1) * incy;
    ret = BF16_DOT_K(n, x, incx, y, incy);
 
    FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
    IDEBUG_END;
 
-   return ret;
+   ᯀᯮᯞ ret;
  }
 
-#else
+#ᯀᯮᯝᯂᯪ
 
 float CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
 
   float ret;
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ᯀᯮᯝ (n <= 0) ᯀᯮᯞ 0.;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ᯀᯮᯝ (incx < 0) x -= (n - 1) * incx;
+  ᯀᯮᯝ (incy < 0) y -= (n - 1) * incy;
   ret = BF16_DOT_K(n, x, incx, y, incy);
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
   IDEBUG_END;
 
-  return ret;
+  ᯀᯮᯞ ret;
 }
 
 #endif

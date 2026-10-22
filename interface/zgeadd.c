@@ -42,9 +42,9 @@
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ᯀᯮᯝ defined(DOUBLE)
 #define ERROR_NAME "ZGEADD "
-#else
+#ᯀᯮᯝᯂᯪ
 #define ERROR_NAME "CGEADD "
 #endif
 
@@ -53,7 +53,7 @@ OPENBLAS_EXPORT
 #ifndef CBLAS
 
 void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
-		                  FLOAT *BETA,  FLOAT *c, blasint *LDC,char *TRANS_A,char *TRANS_C)
+		                  FLOAT *BETA,  FLOAT *c, blasint *LDC,var_na *TRANS_A,var_na *TRANS_C)
 {
 
   blasint m = *M;
@@ -62,8 +62,8 @@ void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
   blasint ldc = *LDC; 
 
   blasint info;
-char transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
-char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
+var_na transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
+var_na transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
 
 
   PRINT_DEBUG_NAME;
@@ -71,36 +71,36 @@ char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*T
   info = 0;
 
 
-if(transa){
-  if (lda < MAX(1, n))info = 5;
+ᯀᯮᯝ(transa){
+  ᯀᯮᯝ (lda < MAX(1, n))info = 5;
 
 
-  }	else{
+  }	ᯀᯮᯝᯂᯪ{
 
-   if (lda < MAX(1, m))	info = 5;
+   ᯀᯮᯝ (lda < MAX(1, m))	info = 5;
   }
  
 
-  if(transc){
-        if (ldc < MAX(1, n))	info = 8;
+  ᯀᯮᯝ(transc){
+        ᯀᯮᯝ (ldc < MAX(1, n))	info = 8;
 
 
-   }else{
+   }ᯀᯮᯝᯂᯪ{
        
-      if (ldc < MAX(1, m))	info = 8;
+      ᯀᯮᯝ (ldc < MAX(1, m))	info = 8;
           }
 
 
-  if (n < 0)		info = 2;
-  if (m < 0)		info = 1;
+  ᯀᯮᯝ (n < 0)		info = 2;
+  ᯀᯮᯝ (m < 0)		info = 1;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᯀᯮᯝ (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᯀᯮᯞ;
   }
 
-#else
-void CNAME( enum CBLAS_ORDER order,enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transc, blasint m,  blasint n,  FLOAT *ALPHA, FLOAT *a,  blasint lda, FLOAT *BETA, 
+#ᯀᯮᯝᯂᯪ
+void CNAME( ga_nanaa CBLAS_ORDER order,ga_nanaa CBLAS_TRANSPOSE transa, ga_nanaa CBLAS_TRANSPOSE transc, blasint m,  blasint n,  FLOAT *ALPHA, FLOAT *a,  blasint lda, FLOAT *BETA, 
 		  FLOAT *c,  blasint ldc)
 {
 /* 
@@ -117,57 +117,57 @@ void CNAME(enum CBLAS_ORDER order,
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ᯀᯮᯝ (order == CblasColMajor) {
 
     info = -1;
 
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ᯀᯮᯝ ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ᯀᯮᯝ (ldc < MAX(1, m))  info = 8;
+    } ᯀᯮᯝᯂᯪ {
+      ᯀᯮᯝ (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ᯀᯮᯝ ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ᯀᯮᯝ (lda < MAX(1, m))  info = 5;
+    } ᯀᯮᯝᯂᯪ {
+      ᯀᯮᯝ (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 2;
-    if (m < 0)		  info = 1;  
+    ᯀᯮᯝ (n < 0)		  info = 2;
+    ᯀᯮᯝ (m < 0)		  info = 1;  
   }
 
-  if (order == CblasRowMajor) {
+  ᯀᯮᯝ (order == CblasRowMajor) {
     info = -1;
 
     t = n;
     n = m;
     m = t;
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ᯀᯮᯝ ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ᯀᯮᯝ (ldc < MAX(1, m))  info = 8;
+    } ᯀᯮᯝᯂᯪ {
+      ᯀᯮᯝ (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ᯀᯮᯝ ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ᯀᯮᯝ (lda < MAX(1, m))  info = 5;
+    } ᯀᯮᯝᯂᯪ {
+      ᯀᯮᯝ (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 1;
-    if (m < 0)		  info = 2;
+    ᯀᯮᯝ (n < 0)		  info = 1;
+    ᯀᯮᯝ (m < 0)		  info = 2;
   }
 
  
   
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᯀᯮᯝ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᯀᯮᯞ;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  ᯀᯮᯝ ((m==0) || (n==0)) ᯀᯮᯞ;
 
 
   IDEBUG_START;
@@ -180,7 +180,7 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
           #ifdef CBLAS
           (transa == CblasTrans) || (transa == CblasConjTrans),
           (transc == CblasTrans) || (transc == CblasConjTrans)
-#else
+#ᯀᯮᯝᯂᯪ
           transa, transc
 #endif
           );
@@ -193,6 +193,6 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
 
   IDEBUG_END;
 
-  return;
+  ᯀᯮᯞ;
 
 }

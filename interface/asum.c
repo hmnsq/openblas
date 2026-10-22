@@ -53,7 +53,7 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ᯀᯮᯝ (n <= 0) ᯀᯮᯞ 0;
 
   IDEBUG_START;
 
@@ -65,14 +65,14 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ᯀᯮᯞ ret;
 }
 
-#else
+#ᯀᯮᯝᯂᯪ
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ᯀᯮᯝᯂᯪ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -80,7 +80,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ᯀᯮᯝ (n <= 0) ᯀᯮᯞ 0;
 
   IDEBUG_START;
 
@@ -92,7 +92,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ᯀᯮᯞ ret;
 }
 
 #endif
