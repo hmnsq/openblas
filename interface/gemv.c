@@ -37,28 +37,28 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#include "l1param.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ಅನ್ತರ್ಭಾವ "l1param.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ಅನ್ತರ್ಭಾವ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGEMV "
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
 #define ERROR_NAME "DGEMV "
-#else
+#ಅನ್ಯಥಾ
 #define ERROR_NAME "SGEMV "
 #endif
 
 #ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, ಪೂರ್ಣಾಙ್ಕ) = {
 #ifdef XDOUBLE
   qgemv_thread_n, qgemv_thread_t,
-#elif defined DOUBLE
+#ನೋಚೇದ್ಯದಿ defined DOUBLE
   dgemv_thread_n, dgemv_thread_t,
-#else
+#ಅನ್ಯಥಾ
   sgemv_thread_n, sgemv_thread_t,
 #endif
 };
@@ -66,13 +66,13 @@ static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT
 
 #ifdef SMP
 #ifdef DYNAMIC_ARCH
- extern char* gotoblas_corename(void);
+ ಬಾಹ್ಯ ವರ್ಣ* gotoblas_corename(ಶೂನ್ಯ);
 #endif
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
-static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
+#ಯದಿ defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಪೂರ್ಣಾಙ್ಕ get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, ಪೂರ್ಣಾಙ್ಕ ncpu) {
   #ifdef DOUBLE
-      return (MN < 8100L)      ? 1
+      ಪ್ರತ್ಯಾಗಮ (MN < 8100L)      ? 1
           : (MN < 12100L)     ? MIN(ncpu, 2)
           : (MN < 36100L)     ? MIN(ncpu, 4)
           : (MN < 84100L)     ? MIN(ncpu, 8)
@@ -81,8 +81,8 @@ static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
           : (MN < 810000L)    ? MIN(ncpu, 32)
           : (MN < 1050625L)   ? MIN(ncpu, 40)
           : ncpu;
-  #else
-      return
+  #ಅನ್ಯಥಾ
+      ಪ್ರತ್ಯಾಗಮ
             (MN < 25600L)     ? 1
           : (MN < 63001L)     ? MIN(ncpu, 4)
           : (MN < 202500L)    ? MIN(ncpu, 8)
@@ -93,9 +93,9 @@ static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
 }
 #endif
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
-static inline int get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, int ncpu) {
-  return
+#ಯದಿ defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಪೂರ್ಣಾಙ್ಕ get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, ಪೂರ್ಣಾಙ್ಕ ncpu) {
+  ಪ್ರತ್ಯಾಗಮ
       MN < 24964L    ? 1
     : MN < 145924L    ? MIN(ncpu, 8)
     : MN < 692224L   ? MIN(ncpu, 16)
@@ -104,30 +104,30 @@ static inline int get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, int ncpu) {
 }
 #endif
 
-static inline int get_gemv_optimal_nthreads(BLASLONG MN) {
-  int ncpu = num_cpu_avail(3);
-#if defined(_WIN64) && defined(_M_ARM64)
-  if (MN > 100000000L)
-    return num_cpu_avail(4);
-  return 1;
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಪೂರ್ಣಾಙ್ಕ get_gemv_optimal_nthreads(BLASLONG MN) {
+  ಪೂರ್ಣಾಙ್ಕ ncpu = ಅಂಕೆ_cpu_avail(3);
+#ಯದಿ defined(_WIN64) && defined(_M_ARM64)
+  ಯದಿ (MN > 100000000L)
+    ಪ್ರತ್ಯಾಗಮ ಅಂಕೆ_cpu_avail(4);
+  ಪ್ರತ್ಯಾಗಮ 1;
 #endif
-#if defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(BFLOAT16)
-  return get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
-#elif defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)
-  return get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
-#elif defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(BFLOAT16)
-  if (strcmp(gotoblas_corename(), "neoversev1") == 0) {
-    return get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
+#ಯದಿ defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(BFLOAT16)
+  ಪ್ರತ್ಯಾಗಮ get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
+#ನೋಚೇದ್ಯದಿ defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)
+  ಪ್ರತ್ಯಾಗಮ get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
+#ನೋಚೇದ್ಯದಿ defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(BFLOAT16)
+  ಯದಿ (strcmp(gotoblas_corename(), "neoversev1") == 0) {
+    ಪ್ರತ್ಯಾಗಮ get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
   }
-  if (strcmp(gotoblas_corename(), "neoversev2") == 0) {
-    return get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
+  ಯದಿ (strcmp(gotoblas_corename(), "neoversev2") == 0) {
+    ಪ್ರತ್ಯಾಗಮ get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
   }
 #endif
 
-  if ( MN < 115200L * GEMM_MULTITHREAD_THRESHOLD )
-    return 1;
-  else
-    return num_cpu_avail(2);
+  ಯದಿ ( MN < 115200L * GEMM_MULTITHREAD_THRESHOLD )
+    ಪ್ರತ್ಯಾಗಮ 1;
+  ಅನ್ಯಥಾ
+    ಪ್ರತ್ಯಾಗಮ ಅಂಕೆ_cpu_avail(2);
 }
 #endif
 
@@ -135,12 +135,12 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+ಶೂನ್ಯ NAME(ವರ್ಣ *TRANS, blasint *M, blasint *N,
 	   FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	   FLOAT *x, blasint *INCX,
 	   FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  ವರ್ಣ trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint lda = *LDA;
@@ -149,12 +149,12 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   FLOAT alpha = *ALPHA;
   FLOAT beta  = *BETA;
   FLOAT *buffer;
-  int buffer_size;
+  ಪೂರ್ಣಾಙ್ಕ buffer_size;
 #ifdef SMP
-  int nthreads;
+  ಪೂರ್ಣಾಙ್ಕ nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  ಪೂರ್ಣಾಙ್ಕ (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     GEMV_N, GEMV_T,
   };
 
@@ -170,29 +170,29 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N') i = 0;
-  if (trans == 'T') i = 1;
-  if (trans == 'R') i = 0;
-  if (trans == 'C') i = 1;
+  ಯದಿ (trans == 'N') i = 0;
+  ಯದಿ (trans == 'T') i = 1;
+  ಯದಿ (trans == 'R') i = 0;
+  ಯದಿ (trans == 'C') i = 1;
 
-  if (incy == 0)	info = 11;
-  if (incx == 0)	info = 8;
-  if (lda < MAX(1, m))	info = 6;
-  if (n < 0)		info = 3;
-  if (m < 0)		info = 2;
-  if (i < 0)          info = 1;
+  ಯದಿ (incy == 0)	info = 11;
+  ಯದಿ (incx == 0)	info = 8;
+  ಯದಿ (lda < MAX(1, m))	info = 6;
+  ಯದಿ (n < 0)		info = 3;
+  ಯದಿ (m < 0)		info = 2;
+  ಯದಿ (i < 0)          info = 1;
 
   trans = i;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಯದಿ (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
-#else
+#ಅನ್ಯಥಾ
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+ಶೂನ್ಯ CNAME(ಗಣನಾ CBLAS_ORDER order,
+	   ಗಣನಾ CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *a, blasint lda,
@@ -202,13 +202,13 @@ void CNAME(enum CBLAS_ORDER order,
 
   FLOAT *buffer;
   blasint lenx, leny;
-  int trans, buffer_size;
+  ಪೂರ್ಣಾಙ್ಕ trans, buffer_size;
   blasint info, t;
 #ifdef SMP
-  int nthreads;
+  ಪೂರ್ಣಾಙ್ಕ nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  ಪೂರ್ಣಾಙ್ಕ (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     GEMV_N, GEMV_T,
   };
 
@@ -217,28 +217,28 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+  ಯದಿ (order == CblasColMajor) {
+    ಯದಿ (TransA == CblasNoTrans)     trans = 0;
+    ಯದಿ (TransA == CblasTrans)       trans = 1;
+    ಯದಿ (TransA == CblasConjNoTrans) trans = 0;
+    ಯದಿ (TransA == CblasConjTrans)   trans = 1;
 
     info = -1;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    ಯದಿ (incy == 0)	  info = 11;
+    ಯದಿ (incx == 0)	  info = 8;
+    ಯದಿ (lda < MAX(1, m))  info = 6;
+    ಯದಿ (n < 0)		  info = 3;
+    ಯದಿ (m < 0)		  info = 2;
+    ಯದಿ (trans < 0)        info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
+  ಯದಿ (order == CblasRowMajor) {
+    ಯದಿ (TransA == CblasNoTrans)     trans = 1;
+    ಯದಿ (TransA == CblasTrans)       trans = 0;
+    ಯದಿ (TransA == CblasConjNoTrans) trans = 1;
+    ಯದಿ (TransA == CblasConjTrans)   trans = 0;
 
     info = -1;
 
@@ -246,68 +246,68 @@ void CNAME(enum CBLAS_ORDER order,
     n = m;
     m = t;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    ಯದಿ (incy == 0)	  info = 11;
+    ಯದಿ (incx == 0)	  info = 8;
+    ಯದಿ (lda < MAX(1, m))  info = 6;
+    ಯದಿ (n < 0)		  info = 3;
+    ಯದಿ (m < 0)		  info = 2;
+    ಯದಿ (trans < 0)        info = 1;
 
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಯದಿ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
 #endif
-  if ((m==0) || (n==0)) return;
+  ಯದಿ ((m==0) || (n==0)) ಪ್ರತ್ಯಾಗಮ;
 
   lenx = n;
   leny = m;
-  if (trans) lenx = m;
-  if (trans) leny = n;
+  ಯದಿ (trans) lenx = m;
+  ಯದಿ (trans) leny = n;
 
-  if (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  ಯದಿ (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), ರಿಕ್ತ, 0, ರಿಕ್ತ, 0);
 
-  if (alpha == ZERO) return;
+  ಯದಿ (alpha == ZERO) ಪ್ರತ್ಯಾಗಮ;
 	
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx - 1) * incx;
-  if (incy < 0) y -= (leny - 1) * incy;
+  ಯದಿ (incx < 0) x -= (lenx - 1) * incx;
+  ಯದಿ (incy < 0) y -= (leny - 1) * incy;
 
-  buffer_size = m + n + 128 / sizeof(FLOAT);
+  buffer_size = m + n + 128 / ಪರಿಮಾಣ(FLOAT);
 #ifdef WINDOWS_ABI
-  buffer_size += 160 / sizeof(FLOAT) ;
+  buffer_size += 160 / ಪರಿಮಾಣ(FLOAT) ;
 #endif
   // for alignment
   buffer_size = (buffer_size + 3) & ~3;
-  STACK_ALLOC(buffer_size, FLOAT, buffer);
+  ರಾಶಿ_ALLOC(buffer_size, FLOAT, buffer);
 
 #ifdef SMP
   nthreads = get_gemv_optimal_nthreads(1L * m * n);
 
-  if (nthreads == 1) {
+  ಯದಿ (nthreads == 1) {
 #endif
 
-    (gemv[(int)trans])(m, n, 0, alpha, a, lda, x, incx, y, incy, buffer);
+    (gemv[(ಪೂರ್ಣಾಙ್ಕ)trans])(m, n, 0, alpha, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } ಅನ್ಯಥಾ {
 
-    (gemv_thread[(int)trans])(m, n, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gemv_thread[(ಪೂರ್ಣಾಙ್ಕ)trans])(m, n, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
 
   }
 #endif
 
-  STACK_FREE(buffer);
+  ರಾಶಿ_FREE(buffer);
   FUNCTION_PROFILE_END(1, m * n + m + n,  2 * m * n);
 
   IDEBUG_END;
 
-  return;
+  ಪ್ರತ್ಯಾಗಮ;
 
 }

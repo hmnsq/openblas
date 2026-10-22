@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ಅನ್ತರ್ಭಾವ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETF2"
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
 #define ERROR_NAME "DGETF2"
-#else
+#ಅನ್ಯಥಾ
 #define ERROR_NAME "SGETF2"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+ಶೂನ್ಯ NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  ಬಾಹ್ಯ
 #endif
   FLOAT *sa, *sb;
 
@@ -66,22 +66,22 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (ಶೂನ್ಯ *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (ಶೂನ್ಯ *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ಯದಿ (args.lda < MAX(1,args.m)) info = 4;
+  ಯದಿ (args.n   < 0)             info = 2;
+  ಯದಿ (args.m   < 0)             info = 1;
+  ಯದಿ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  ಯದಿ (args.m == 0 || args.n == 0) ಪ್ರತ್ಯಾಗಮ;
 
   IDEBUG_START;
 
@@ -94,7 +94,7 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = GETF2(&args, NULL, NULL, sa, sb, 0);
+  info = GETF2(&args, ರಿಕ್ತ, ರಿಕ್ತ, sa, sb, 0);
 
   *Info = info;
 
@@ -106,5 +106,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  ಪ್ರತ್ಯಾಗಮ;
 }

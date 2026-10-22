@@ -30,18 +30,18 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 
-#if defined(DOUBLE)
+#ಯದಿ defined(DOUBLE)
 #define ERROR_NAME "DLAED3"
-#else
+#ಅನ್ಯಥಾ
 #define ERROR_NAME "SLAED3"
 #endif
 
 /* ===================================================================== */
 OPENBLAS_EXPORT
-void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
+ಶೂನ್ಯ NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
         FLOAT *q, blasint *ldq, FLOAT *rho, FLOAT *dlamda,
         FLOAT *q2, blasint *indx, blasint *ctot, FLOAT *w, 
         FLOAT *s, blasint *Info)
@@ -54,36 +54,36 @@ void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d,
 
 /*   Test the input parameters. */
   info = 0;
-  if (kval < 0) {
+  ಯದಿ (kval < 0) {
     info = 1;
-  } else if (nval < kval) {
+  } ಅನ್ಯಥಾ ಯದಿ (nval < kval) {
     info = 2;
-  } else if (qdim < nval || qdim < 1) {
+  } ಅನ್ಯಥಾ ಯದಿ (qdim < nval || qdim < 1) {
     info = 6;
   }
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ಯದಿ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
 /*   Quick return if possible */
 
   *Info = 0;
-  if (kval == 0) return;
+  ಯದಿ (kval == 0) ಪ್ರತ್ಯಾಗಮ;
 
 #ifdef SMP
-  int nthreads = 1;
-  if (nval >= 64) nthreads = num_cpu_avail(4);
+  ಪೂರ್ಣಾಙ್ಕ nthreads = 1;
+  ಯದಿ (nval >= 64) nthreads = ಅಂಕೆ_cpu_avail(4);
 
-  if (nthreads == 1) {
+  ಯದಿ (nthreads == 1) {
 #endif
     LAED3_SINGLE(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
 #ifdef SMP
-  } else {
+  } ಅನ್ಯಥಾ {
     LAED3_PARALLEL(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
   }
 #endif
 
-  return;
+  ಪ್ರತ್ಯಾಗಮ;
 }

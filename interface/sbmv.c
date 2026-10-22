@@ -36,11 +36,11 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <ctype.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ಅನ್ತರ್ಭಾವ "functable.h"
 #endif
 
 /*
@@ -53,29 +53,29 @@
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QSBMV "
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
 #define ERROR_NAME "DSBMV "
-#else
+#ಅನ್ಯಥಾ
 #define ERROR_NAME "SSBMV "
 #endif
 
-static  int (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+ಸ್ಥಿರ  ಪೂರ್ಣಾಙ್ಕ (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, ಶೂನ್ಯ *) = {
 #ifdef XDOUBLE
   qsbmv_U, qsbmv_L,
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
   dsbmv_U, dsbmv_L,
-#else
+#ಅನ್ಯಥಾ
   ssbmv_U, ssbmv_L,
 #endif
 };
 
 #ifdef SMPTEST
-static  int (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+ಸ್ಥಿರ  ಪೂರ್ಣಾಙ್ಕ (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ಪೂರ್ಣಾಙ್ಕ) = {
 #ifdef XDOUBLE
   qsbmv_thread_U, qsbmv_thread_L,
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
   dsbmv_thread_U, dsbmv_thread_L,
-#else
+#ಅನ್ಯಥಾ
   ssbmv_thread_U, ssbmv_thread_L,
 #endif
 };
@@ -85,10 +85,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
+ಶೂನ್ಯ NAME(ವರ್ಣ *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
             FLOAT  *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  ವರ್ಣ uplo_arg = *UPLO;
   blasint n	= *N;
   blasint k	= *K;
   FLOAT alpha	= *ALPHA;
@@ -98,10 +98,10 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ಪೂರ್ಣಾಙ್ಕ uplo;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  ಪೂರ್ಣಾಙ್ಕ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -109,27 +109,27 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ಯದಿ (uplo_arg  == 'U') uplo  = 0;
+  ಯದಿ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info = 11;
-  if (incx == 0)          info =  8;
-  if (lda  < k + 1)       info =  6;
-  if (k < 0)              info =  3;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ಯದಿ (incy == 0)          info = 11;
+  ಯದಿ (incx == 0)          info =  8;
+  ಯದಿ (lda  < k + 1)       info =  6;
+  ಯದಿ (k < 0)              info =  3;
+  ಯದಿ (n < 0)              info =  2;
+  ಯದಿ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಯದಿ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
-#else
+#ಅನ್ಯಥಾ
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+ಶೂನ್ಯ CNAME(ಗಣನಾ CBLAS_ORDER order,
+	   ಗಣನಾ CBLAS_UPLO Uplo,
 	   blasint n, blasint k,
 	   FLOAT alpha,
 	   FLOAT  *a, blasint lda,
@@ -138,10 +138,10 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT  *y, blasint incy){
 
   FLOAT *buffer;
-  int uplo;
+  ಪೂರ್ಣಾಙ್ಕ uplo;
   blasint info;
 #ifdef SMPTEST
-  int nthreads;
+  ಪೂರ್ಣಾಙ್ಕ nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -149,71 +149,71 @@ void CNAME(enum CBLAS_ORDER order,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ಯದಿ (order == CblasColMajor) {
+    ಯದಿ (Uplo == CblasUpper)         uplo  = 0;
+    ಯದಿ (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info = 11;
-    if (incx == 0)          info =  8;
-    if (lda  < k + 1)       info =  6;
-    if (k < 0)              info =  3;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ಯದಿ (incy == 0)          info = 11;
+    ಯದಿ (incx == 0)          info =  8;
+    ಯದಿ (lda  < k + 1)       info =  6;
+    ಯದಿ (k < 0)              info =  3;
+    ಯದಿ (n < 0)              info =  2;
+    ಯದಿ (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  ಯದಿ (order == CblasRowMajor) {
+    ಯದಿ (Uplo == CblasUpper)         uplo  = 1;
+    ಯದಿ (Uplo == CblasLower)         uplo  = 0;
 
     info = -1;
 
-    if (incy == 0)          info = 11;
-    if (incx == 0)          info =  8;
-    if (lda  < k + 1)       info =  6;
-    if (k < 0)              info =  3;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ಯದಿ (incy == 0)          info = 11;
+    ಯದಿ (incx == 0)          info =  8;
+    ಯದಿ (lda  < k + 1)       info =  6;
+    ಯದಿ (k < 0)              info =  3;
+    ಯದಿ (n < 0)              info =  2;
+    ಯದಿ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಯದಿ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
 #endif
 
-  if (n == 0) return;
+  ಯದಿ (n == 0) ಪ್ರತ್ಯಾಗಮ;
 
-  if (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  ಯದಿ (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), ರಿಕ್ತ, 0, ರಿಕ್ತ, 0);
 
-  if (alpha == ZERO) return;
+  ಯದಿ (alpha == ZERO) ಪ್ರತ್ಯಾಗಮ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  ಯದಿ (incx < 0 ) x -= (n - 1) * incx;
+  ಯದಿ (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ಯದಿ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
 #ifdef SMPTEST
-  nthreads = num_cpu_avail(2);
+  nthreads = ಅಂಕೆ_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ಯದಿ (nthreads == 1) {
 #endif
 
   (sbmv[uplo])(n, k, alpha, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMPTEST
-  } else {
+  } ಅನ್ಯಥಾ {
 
     (sbmv_thread[uplo])(n, k, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
 
@@ -226,5 +226,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ಪ್ರತ್ಯಾಗಮ;
 }

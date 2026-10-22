@@ -32,9 +32,9 @@
 /*                                                                   */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 
 #define SMP_THRESHOLD_MIN 65536.0
 #define ERROR_NAME "SBGEMMT "
@@ -47,7 +47,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+ಶೂನ್ಯ NAME(ವರ್ಣ *UPLO, ವರ್ಣ *TRANSA, ವರ್ಣ *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -56,10 +56,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	ಪೂರ್ಣಾಙ್ಕ transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	ವರ್ಣ transA, transB, Uplo;
 	blasint nrowa, nrowb;
 	IFLOAT *buffer;
 	IFLOAT *aa, *bb;
@@ -89,62 +89,62 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	ಯದಿ (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	ಯದಿ (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	ಯದಿ (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	ಯದಿ (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	ಯದಿ (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	ಯದಿ (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	ಯದಿ (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	ಯದಿ (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	ಯದಿ (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	ಯದಿ (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	ಯದಿ (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	ಯದಿ (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	ಯದಿ (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	ಯದಿ (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	ಯದಿ (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	ಯದಿ (k < 0)
 		info = 5;
-	if (m < 0)
+	ಯದಿ (m < 0)
 		info = 4;
-	if (transb < 0)
+	ಯದಿ (transb < 0)
 		info = 3;
-	if (transa < 0)
+	ಯದಿ (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	ಯದಿ (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ಯದಿ (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+		ಪ್ರತ್ಯಾಗಮ;
 	}
-#else
+#ಅನ್ಯಥಾ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+ಶೂನ್ಯ CNAME(ಗಣನಾ CBLAS_ORDER order, ಗಣನಾ CBLAS_UPLO Uplo,
+	   ಗಣನಾ CBLAS_TRANSPOSE TransA, ಗಣನಾ CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	ಪೂರ್ಣಾಙ್ಕ transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,32 +166,32 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	ಯದಿ (order == CblasColMajor) {
+		ಯದಿ (Uplo == CblasUpper) uplo = 0;
+		ಯದಿ (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		ಯದಿ (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		ಯದಿ (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ಯದಿ (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		ಯದಿ (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		ಯದಿ (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		ಯದಿ (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ಯದಿ (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		ಯದಿ (TransB == CblasConjTrans)
 			transb = 1;
 
-		a = (void *)A;
-		b = (void *)B;
+		a = (ಶೂನ್ಯ *)A;
+		b = (ಶೂನ್ಯ *)B;
 		lda = LDA;
 		ldb = LDB;
 
@@ -200,57 +200,57 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		ಯದಿ (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		ಯದಿ (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		ಯದಿ (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		ಯದಿ (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		ಯದಿ (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		ಯದಿ (k < 0)
 			info = 5;
-		if (m < 0)
+		ಯದಿ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ಯದಿ (transb < 0)
 			info = 3;
-		if (transa < 0)
+		ಯದಿ (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		ಯದಿ (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	ಯದಿ (order == CblasRowMajor) {
 
-		a = (void *)B;
-		b = (void *)A;
+		a = (ಶೂನ್ಯ *)B;
+		b = (ಶೂನ್ಯ *)A;
 
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		ಯದಿ (Uplo == CblasUpper) uplo = 0;
+		ಯದಿ (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		ಯದಿ (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		ಯದಿ (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ಯದಿ (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		ಯದಿ (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		ಯದಿ (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		ಯದಿ (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ಯದಿ (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		ಯದಿ (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,191 +259,191 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		ಯದಿ (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		ಯದಿ (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		ಯದಿ (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		ಯದಿ (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		ಯದಿ (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		ಯದಿ (k < 0)
 			info = 5;
-		if (m < 0)
+		ಯದಿ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ಯದಿ (transb < 0)
 			info = 2;
-		if (transa < 0)
+		ಯದಿ (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		ಯದಿ (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ಯದಿ (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+		ಪ್ರತ್ಯಾಗಮ;
 	}
 
 #endif
-	int buffer_size;
+	ಪೂರ್ಣಾಙ್ಕ buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	ಪೂರ್ಣಾಙ್ಕ nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, ಪೂರ್ಣಾಙ್ಕ) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	ಪೂರ್ಣಾಙ್ಕ (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	ಯದಿ (m == 0)
+		ಪ್ರತ್ಯಾಗಮ;
 
 	IDEBUG_START;
 
-	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
+	ಧ್ರುವ blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
-		for (i = 0; i < m; i++) {
+	ಯದಿ (uplo == 1) {
+		ಪ್ರತಿ (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			ಯದಿ (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			ಯದಿ (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#ಯದಿ 0
+			ಯದಿ (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, ರಿಕ್ತ, 0, ರಿಕ್ತ, 0);
 
-			if (alpha == ZERO)
-				continue;
+			ಯದಿ (alpha == ZERO)
+				ಅನುವರ್ತ;
 #endif
 
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / ಪರಿಮಾಣ(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / ಪರಿಮಾಣ(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			ರಾಶಿ_ALLOC(buffer_size, IFLOAT, buffer);
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ಯದಿ (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
-				nthreads = num_cpu_avail(2);
+			ಅನ್ಯಥಾ
+				nthreads = ಅಂಕೆ_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ಯದಿ (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				ಯದಿ (!(transa & 1))
+				(gemv[(ಪೂರ್ಣಾಙ್ಕ)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				ಅನ್ಯಥಾ
+				(gemv[(ಪೂರ್ಣಾಙ್ಕ)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} ಅನ್ಯಥಾ {
+				ಯದಿ (!(transa & 1))
+				(gemv_thread[(ಪೂರ್ಣಾಙ್ಕ)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				ಅನ್ಯಥಾ
+				(gemv_thread[(ಪೂರ್ಣಾಙ್ಕ)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
 			}
 #endif
 
-			STACK_FREE(buffer);
+			ರಾಶಿ_FREE(buffer);
 		}
-	} else {
+	} ಅನ್ಯಥಾ {
 
-		for (i = 0; i < m; i++) {
+		ಪ್ರತಿ (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			ಯದಿ (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#ಯದಿ 0
+			ಯದಿ (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, ರಿಕ್ತ, 0, ರಿಕ್ತ, 0);
 
-			if (alpha == ZERO)
-				continue;
+			ಯದಿ (alpha == ZERO)
+				ಅನುವರ್ತ;
 #endif
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / ಪರಿಮಾಣ(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / ಪರಿಮಾಣ(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			ರಾಶಿ_ALLOC(buffer_size, IFLOAT, buffer);
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ಯದಿ (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
-				nthreads = num_cpu_avail(2);
+			ಅನ್ಯಥಾ
+				nthreads = ಅಂಕೆ_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ಯದಿ (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				ಯದಿ (!(transa & 1))
+				(gemv[(ಪೂರ್ಣಾಙ್ಕ)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				ಅನ್ಯಥಾ
+				(gemv[(ಪೂರ್ಣಾಙ್ಕ)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} ಅನ್ಯಥಾ {
+				ಯದಿ (!(transa & 1))
+				(gemv_thread[(ಪೂರ್ಣಾಙ್ಕ)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				ಅನ್ಯಥಾ
+				(gemv_thread[(ಪೂರ್ಣಾಙ್ಕ)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
 #endif
 
-			STACK_FREE(buffer);
+			ರಾಶಿ_FREE(buffer);
 		}
 	}
 
 	IDEBUG_END;
 
-	return;
+	ಪ್ರತ್ಯಾಗಮ;
 }

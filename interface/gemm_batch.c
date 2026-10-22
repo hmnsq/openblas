@@ -31,116 +31,116 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 **********************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+ಶೂನ್ಯ openblas_warning(ಪೂರ್ಣಾಙ್ಕ verbose, ಧ್ರುವ ವರ್ಣ * ಸಂದೇಶ);
 
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define ERROR_NAME "QGEMM_BATCH "
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
 #define ERROR_NAME "DGEMM_BATCH "
 #define GEMM_BATCH_THREAD dgemm_batch_thread
-#else
+#ಅನ್ಯಥಾ
 #define ERROR_NAME "SGEMM_BATCH "
 #define GEMM_BATCH_THREAD sgemm_batch_thread
 #endif
-#else
+#ಅನ್ಯಥಾ
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMM_BATCH "
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
 #define ERROR_NAME "ZGEMM_BATCH "
 #define GEMM_BATCH_THREAD zgemm_batch_thread
-#else
+#ಅನ್ಯಥಾ
 #define ERROR_NAME "CGEMM_BATCH "
 #define GEMM_BATCH_THREAD cgemm_batch_thread
 #endif
 #endif
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
+#ಯದಿ defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
 #define USE_SMALL_MATRIX_OPT 1
-#else
+#ಅನ್ಯಥಾ
 #define USE_SMALL_MATRIX_OPT 0
 #endif
 
-#if USE_SMALL_MATRIX_OPT
+#ಯದಿ USE_SMALL_MATRIX_OPT
 #ifndef DYNAMIC_ARCH
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
+#define SMALL_KERNEL_ADDR(table, idx) ((ಶೂನ್ಯ *)(table[idx]))
+#ಅನ್ಯಥಾ
+#define SMALL_KERNEL_ADDR(table, idx) ((ಶೂನ್ಯ *)(*(uintptr_t *)((ವರ್ಣ *)gotoblas + (size_t)(table[idx]))))
 #endif
 
 
 #ifndef COMPLEX
-static size_t gemm_small_kernel[] = {
+ಸ್ಥಿರ size_t gemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, 0, 0,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, 0, 0,
 };
 
 
-static size_t gemm_small_kernel_b0[] = {
+ಸ್ಥಿರ size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, 0, 0,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#define GEMM_SMALL_KERNEL_B0(idx) (ಪೂರ್ಣಾಙ್ಕ (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#define GEMM_SMALL_KERNEL(idx) (ಪೂರ್ಣಾಙ್ಕ (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#ಅನ್ಯಥಾ
 
-static size_t zgemm_small_kernel[] = {
+ಸ್ಥಿರ size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, GEMM_SMALL_KERNEL_RT, GEMM_SMALL_KERNEL_CT,
 	GEMM_SMALL_KERNEL_NR, GEMM_SMALL_KERNEL_TR, GEMM_SMALL_KERNEL_RR, GEMM_SMALL_KERNEL_CR,
 	GEMM_SMALL_KERNEL_NC, GEMM_SMALL_KERNEL_TC, GEMM_SMALL_KERNEL_RC, GEMM_SMALL_KERNEL_CC,
 };
 
-static size_t zgemm_small_kernel_b0[] = {
+ಸ್ಥಿರ size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, GEMM_SMALL_KERNEL_B0_RN, GEMM_SMALL_KERNEL_B0_CN,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, GEMM_SMALL_KERNEL_B0_RT, GEMM_SMALL_KERNEL_B0_CT,
 	GEMM_SMALL_KERNEL_B0_NR, GEMM_SMALL_KERNEL_B0_TR, GEMM_SMALL_KERNEL_B0_RR, GEMM_SMALL_KERNEL_B0_CR,
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#define ZGEMM_SMALL_KERNEL(idx) (ಪೂರ್ಣಾಙ್ಕ (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#define ZGEMM_SMALL_KERNEL_B0(idx) (ಪೂರ್ಣಾಙ್ಕ (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
 #endif
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME(char *transa_array, char *transb_array,
+ಶೂನ್ಯ NAME(ವರ್ಣ *transa_array, ವರ್ಣ *transb_array,
 	   blasint * m_array, blasint * n_array, blasint * k_array,
 	   FLOAT * alpha_array,
 	   IFLOAT ** a_array, blasint * lda_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
 	   FLOAT ** c_array, blasint * ldc_array, blasint * gcount, blasint * group_size) {
-       blasint group_count = *gcount;
-#else
+       blasint group_ಎಣಿಕೆ = *gcount;
+#ಅನ್ಯಥಾ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CBLAS_TRANSPOSE * transb_array,
+ಶೂನ್ಯ CNAME(ಗಣನಾ CBLAS_ORDER order, ಗಣನಾ CBLAS_TRANSPOSE *  transa_array, ಗಣನಾ CBLAS_TRANSPOSE * transb_array,
 	   blasint * m_array, blasint * n_array, blasint * k_array,
 #ifndef COMPLEX
 	   FLOAT * alpha_array,
 	   IFLOAT ** a_array, blasint * lda_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
-	   FLOAT ** c_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
-#else
-	   void * valpha_array,
-	   void ** va_array, blasint * lda_array,
-	   void ** vb_array, blasint * ldb_array,
-	   void * vbeta_array,
-	   void ** vc_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
+	   FLOAT ** c_array, blasint * ldc_array, blasint group_ಎಣಿಕೆ, blasint * group_size) {
+#ಅನ್ಯಥಾ
+	   ಶೂನ್ಯ * valpha_array,
+	   ಶೂನ್ಯ ** va_array, blasint * lda_array,
+	   ಶೂನ್ಯ ** vb_array, blasint * ldb_array,
+	   ಶೂನ್ಯ * vbeta_array,
+	   ಶೂನ್ಯ ** vc_array, blasint * ldc_array, blasint group_ಎಣಿಕೆ, blasint * group_size) {
 
   FLOAT * alpha_array=(FLOAT *)valpha_array;
   FLOAT * beta_array=(FLOAT *)vbeta_array;
@@ -152,63 +152,63 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
   BLASLONG group_m, group_n, group_k;
   BLASLONG group_lda, group_ldb, group_ldc;
 
-  blas_arg_t * args_array=NULL;
+  blas_arg_t * args_array=ರಿಕ್ತ;
 
-  int mode=0, group_mode=0;
-  blasint total_num=0;
+  ಪೂರ್ಣಾಙ್ಕ mode=0, group_mode=0;
+  blasint total_ಅಂಕೆ=0;
 
-  blasint i=0, j=0, matrix_idx=0, count=0;
+  blasint i=0, j=0, matrix_idx=0, ಎಣಿಕೆ=0;
 
-  int group_transa, group_transb;
+  ಪೂರ್ಣಾಙ್ಕ group_transa, group_transb;
   BLASLONG group_nrowa, group_nrowb;
   blasint info;
 
-  void * group_alpha, * group_beta;
-  void * group_routine=NULL;
+  ಶೂನ್ಯ * group_alpha, * group_beta;
+  ಶೂನ್ಯ * group_routine=ರಿಕ್ತ;
 #ifdef SMALL_MATRIX_OPT
-  void * group_small_matrix_opt_routine=NULL;
+  ಶೂನ್ಯ * group_small_matrix_opt_routine=ರಿಕ್ತ;
 #endif
   
-#if defined (SMP) || defined(SMALL_MATRIX_OPT)
-  double MNK;
+#ಯದಿ defined (SMP) || defined(SMALL_MATRIX_OPT)
+  ದ್ವಿಗುಣ MNK;
 #endif
 
   PRINT_DEBUG_CNAME;
     
-  for(i=0; i<group_count; i++){
-    total_num+=group_size[i];
+  ಪ್ರತಿ(i=0; i<group_ಎಣಿಕೆ; i++){
+    total_ಅಂಕೆ+=group_size[i];
   }
 
-  args_array=(blas_arg_t *)malloc(total_num * sizeof(blas_arg_t));
+  args_array=(blas_arg_t *)malloc(total_ಅಂಕೆ * ಪರಿಮಾಣ(blas_arg_t));
   
-  if(args_array == NULL){
+  ಯದಿ(args_array == ರಿಕ್ತ){
     openblas_warning(0, "memory alloc failed!\n");
-    return;
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#ಅನ್ಯಥಾ
   mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#ಅನ್ಯಥಾ
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
+#ನೋಚೇದ್ಯದಿ defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#ಅನ್ಯಥಾ
   mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
   
-  for(i=0; i<group_count; matrix_idx+=group_size[i], i++){
-    group_alpha = (void *)&alpha_array[i * COMPSIZE];
-    group_beta = (void *)&beta_array[i * COMPSIZE];
+  ಪ್ರತಿ(i=0; i<group_ಎಣಿಕೆ; matrix_idx+=group_size[i], i++){
+    group_alpha = (ಶೂನ್ಯ *)&alpha_array[i * COMPSIZE];
+    group_beta = (ಶೂನ್ಯ *)&beta_array[i * COMPSIZE];
 
     group_m = group_n = group_k = 0;
     group_lda = group_ldb = group_ldc = 0;
@@ -216,8 +216,8 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
     group_transb = -1;
     info   = 0;
    
-#if defined(CBLAS) 
-    if (order == CblasColMajor) {
+#ಯದಿ defined(CBLAS) 
+    ಯದಿ (order == CblasColMajor) {
       group_m = m_array[i];
       group_n = n_array[i];
       group_k = k_array[i];
@@ -226,41 +226,41 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       group_ldb = ldb_array[i];
       group_ldc = ldc_array[i];
       
-      if (transa_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transa_array[i] == CblasTrans)       group_transa = 1;
+      ಯದಿ (transa_array[i] == CblasNoTrans)     group_transa = 0;
+      ಯದಿ (transa_array[i] == CblasTrans)       group_transa = 1;
 #ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 3;
+      ಯದಿ (transa_array[i] == CblasConjNoTrans) group_transa = 0;
+      ಯದಿ (transa_array[i] == CblasConjTrans)   group_transa = 1;
+#ಅನ್ಯಥಾ
+      ಯದಿ (transa_array[i] == CblasConjNoTrans) group_transa = 2;
+      ಯದಿ (transa_array[i] == CblasConjTrans)   group_transa = 3;
 #endif
-      if (transb_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transb_array[i] == CblasTrans)       group_transb = 1;
+      ಯದಿ (transb_array[i] == CblasNoTrans)     group_transb = 0;
+      ಯದಿ (transb_array[i] == CblasTrans)       group_transb = 1;
 #ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 3;
+      ಯದಿ (transb_array[i] == CblasConjNoTrans) group_transb = 0;
+      ಯದಿ (transb_array[i] == CblasConjTrans)   group_transb = 1;
+#ಅನ್ಯಥಾ
+      ಯದಿ (transb_array[i] == CblasConjNoTrans) group_transb = 2;
+      ಯದಿ (transb_array[i] == CblasConjTrans)   group_transb = 3;
 #endif
       group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
+      ಯದಿ (group_transa & 1) group_nrowa = group_k;
       group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ಯದಿ (group_transb & 1) group_nrowb = group_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;
+      ಯದಿ (group_ldc < group_m) info = 13;
+      ಯದಿ (group_ldb < group_nrowb)  info = 10;
+      ಯದಿ (group_lda < group_nrowa)  info =  8;
+      ಯದಿ (group_k < 0)        info =  5;
+      ಯದಿ (group_n < 0)        info =  4;
+      ಯದಿ (group_m < 0)        info =  3;
+      ಯದಿ (group_transb < 0)        info =  2;
+      ಯದಿ (group_transa < 0)        info =  1;
 
-    }else if (order == CblasRowMajor) {
+    }ಅನ್ಯಥಾ ಯದಿ (order == CblasRowMajor) {
       
       group_m = n_array[i];
       group_n = m_array[i];
@@ -270,26 +270,26 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       group_ldb = lda_array[i];
       group_ldc = ldc_array[i];
 
-      if (transb_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transb_array[i] == CblasTrans)       group_transa = 1;
+      ಯದಿ (transb_array[i] == CblasNoTrans)     group_transa = 0;
+      ಯದಿ (transb_array[i] == CblasTrans)       group_transa = 1;
 #ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 3;
+      ಯದಿ (transb_array[i] == CblasConjNoTrans) group_transa = 0;
+      ಯದಿ (transb_array[i] == CblasConjTrans)   group_transa = 1;
+#ಅನ್ಯಥಾ
+      ಯದಿ (transb_array[i] == CblasConjNoTrans) group_transa = 2;
+      ಯದಿ (transb_array[i] == CblasConjTrans)   group_transa = 3;
 #endif
-      if (transa_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transa_array[i] == CblasTrans)       group_transb = 1;
+      ಯದಿ (transa_array[i] == CblasNoTrans)     group_transb = 0;
+      ಯದಿ (transa_array[i] == CblasTrans)       group_transb = 1;
 #ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 3;
+      ಯದಿ (transa_array[i] == CblasConjNoTrans) group_transb = 0;
+      ಯದಿ (transa_array[i] == CblasConjTrans)   group_transb = 1;
+#ಅನ್ಯಥಾ
+      ಯದಿ (transa_array[i] == CblasConjNoTrans) group_transb = 2;
+      ಯದಿ (transa_array[i] == CblasConjTrans)   group_transb = 3;
 #endif
 
-#else
+#ಅನ್ಯಥಾ
       group_m = m_array[i];
       group_n = n_array[i];
       group_k = k_array[i];
@@ -298,130 +298,130 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       group_ldb = ldb_array[i];
       group_ldc = ldc_array[i];
       
-      if (transa_array[i] == 'N')   group_transa = 0;
-      if (transa_array[i] == 'T')   group_transa = 1;
+      ಯದಿ (transa_array[i] == 'N')   group_transa = 0;
+      ಯದಿ (transa_array[i] == 'T')   group_transa = 1;
 #ifndef COMPLEX
-      if (transa_array[i] == 'C')   group_transa = 1;
-#else
-      if (transa_array[i] == 'C')   group_transa = 3;
+      ಯದಿ (transa_array[i] == 'C')   group_transa = 1;
+#ಅನ್ಯಥಾ
+      ಯದಿ (transa_array[i] == 'C')   group_transa = 3;
 #endif
-      if (transb_array[i] == 'N')   group_transb = 0;
-      if (transb_array[i] == 'T')   group_transb = 1;
+      ಯದಿ (transb_array[i] == 'N')   group_transb = 0;
+      ಯದಿ (transb_array[i] == 'T')   group_transb = 1;
 #ifndef COMPLEX
-      if (transb_array[i] == 'C')   group_transb = 1;
-#else
-      if (transb_array[i] == 'C')   group_transb = 3;
+      ಯದಿ (transb_array[i] == 'C')   group_transb = 1;
+#ಅನ್ಯಥಾ
+      ಯದಿ (transb_array[i] == 'C')   group_transb = 3;
 #endif
 #endif
 
       group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
+      ಯದಿ (group_transa & 1) group_nrowa = group_k;
       group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ಯದಿ (group_transb & 1) group_nrowb = group_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;      
-#if defined(CBLAS)
+      ಯದಿ (group_ldc < group_m) info = 13;
+      ಯದಿ (group_ldb < group_nrowb)  info = 10;
+      ಯದಿ (group_lda < group_nrowa)  info =  8;
+      ಯದಿ (group_k < 0)        info =  5;
+      ಯದಿ (group_n < 0)        info =  4;
+      ಯದಿ (group_m < 0)        info =  3;
+      ಯದಿ (group_transb < 0)        info =  2;
+      ಯದಿ (group_transa < 0)        info =  1;      
+#ಯದಿ defined(CBLAS)
     }
 #endif
 
-    if (info >= 0) {
-      BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-      free(args_array);
-      return;
+    ಯದಿ (info >= 0) {
+      BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+      ಮುಕ್ತ(args_array);
+      ಪ್ರತ್ಯಾಗಮ;
     }
 
-    if (group_m == 0 || group_n == 0) continue;
+    ಯದಿ (group_m == 0 || group_n == 0) ಅನುವರ್ತ;
 
     group_mode=mode;
 
-#if defined(SMP) || defined(SMALL_MATRIX_OPT)
-    MNK = (double) group_m * (double) group_n * (double) group_k;
+#ಯದಿ defined(SMP) || defined(SMALL_MATRIX_OPT)
+    MNK = (ದ್ವಿಗುಣ) group_m * (ದ್ವಿಗುಣ) group_n * (ದ್ವಿಗುಣ) group_k;
 #endif
 
 #ifdef SMALL_MATRIX_OPT
-#if !defined(COMPLEX)
-    if (*(FLOAT *)(group_alpha) != ZERO &&
+#ಯದಿ !defined(COMPLEX)
+    ಯದಿ (*(FLOAT *)(group_alpha) != ZERO &&
         GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
                                  *(FLOAT *)(group_alpha), *(FLOAT *)(group_beta))){
-#else
-    if (((FLOAT *)(group_alpha))[0] != ZERO &&
+#ಅನ್ಯಥಾ
+    ಯದಿ (((FLOAT *)(group_alpha))[0] != ZERO &&
         GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
                                  ((FLOAT *)(group_alpha))[0], ((FLOAT *)(group_alpha))[1],
                                  ((FLOAT *)(group_beta))[0], ((FLOAT *)(group_beta))[1])){
 #endif
-      group_routine=NULL;
-#if !defined(COMPLEX)
-      if(*(FLOAT *)(group_beta) == 0.0){
+      group_routine=ರಿಕ್ತ;
+#ಯದಿ !defined(COMPLEX)
+      ಯದಿ(*(FLOAT *)(group_beta) == 0.0){
 	group_mode=mode | BLAS_SMALL_B0_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
+      }ಅನ್ಯಥಾ{
 	group_mode=mode | BLAS_SMALL_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((group_transb<<2)|group_transa));
       }
-#else
-      if(((FLOAT *)(group_beta))[0] == 0.0 && ((FLOAT *)(group_beta))[1] == 0.0){
+#ಅನ್ಯಥಾ
+      ಯದಿ(((FLOAT *)(group_beta))[0] == 0.0 && ((FLOAT *)(group_beta))[1] == 0.0){
 	group_mode=mode | BLAS_SMALL_B0_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
+      }ಅನ್ಯಥಾ{
 	group_mode=mode | BLAS_SMALL_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((group_transb<<2)|group_transa));
       }
 
 #endif
       
-    }else{
+    }ಅನ್ಯಥಾ{
 #endif
-      group_routine=(void*)(gemm[(group_transb<<2)|group_transa]);
+      group_routine=(ಶೂನ್ಯ*)(gemm[(group_transb<<2)|group_transa]);
 #ifdef SMALL_MATRIX_OPT
     }
 #endif    
 
     
-    for(j=0; j<group_size[i]; j++){
-      args_array[count].m=group_m;
-      args_array[count].n=group_n;
-      args_array[count].k=group_k;
-      args_array[count].lda=group_lda;
-      args_array[count].ldb=group_ldb;
-      args_array[count].ldc=group_ldc;
-      args_array[count].alpha=group_alpha;
-      args_array[count].beta=group_beta;
+    ಪ್ರತಿ(j=0; j<group_size[i]; j++){
+      args_array[ಎಣಿಕೆ].m=group_m;
+      args_array[ಎಣಿಕೆ].n=group_n;
+      args_array[ಎಣಿಕೆ].k=group_k;
+      args_array[ಎಣಿಕೆ].lda=group_lda;
+      args_array[ಎಣಿಕೆ].ldb=group_ldb;
+      args_array[ಎಣಿಕೆ].ldc=group_ldc;
+      args_array[ಎಣಿಕೆ].alpha=group_alpha;
+      args_array[ಎಣಿಕೆ].beta=group_beta;
 
-#if defined(CBLAS)
-      if (order == CblasRowMajor) {
-	args_array[count].a=(b_array[matrix_idx+j]);
-	args_array[count].b=(a_array[matrix_idx+j]);
-      } else
+#ಯದಿ defined(CBLAS)
+      ಯದಿ (order == CblasRowMajor) {
+	args_array[ಎಣಿಕೆ].a=(b_array[matrix_idx+j]);
+	args_array[ಎಣಿಕೆ].b=(a_array[matrix_idx+j]);
+      } ಅನ್ಯಥಾ
 #endif
       {
-	args_array[count].a=(a_array[matrix_idx+j]);
-	args_array[count].b=(b_array[matrix_idx+j]);
+	args_array[ಎಣಿಕೆ].a=(a_array[matrix_idx+j]);
+	args_array[ಎಣಿಕೆ].b=(b_array[matrix_idx+j]);
       }
       
-      args_array[count].c=(c_array[matrix_idx+j]);
+      args_array[ಎಣಿಕೆ].c=(c_array[matrix_idx+j]);
       
-      args_array[count].routine_mode=group_mode;
-      args_array[count].routine=group_routine;
+      args_array[ಎಣಿಕೆ].routine_mode=group_mode;
+      args_array[ಎಣಿಕೆ].routine=group_routine;
 #ifdef SMALL_MATRIX_OPT
-      if (!group_routine)
-        args_array[count].routine=group_small_matrix_opt_routine;
+      ಯದಿ (!group_routine)
+        args_array[ಎಣಿಕೆ].routine=group_small_matrix_opt_routine;
 #endif      
-      count++;
+      ಎಣಿಕೆ++;
     }
   }
 
-  if(count>0){
-    GEMM_BATCH_THREAD(args_array,count);
+  ಯದಿ(ಎಣಿಕೆ>0){
+    GEMM_BATCH_THREAD(args_array,ಎಣಿಕೆ);
   }
 
-  free(args_array);
+  ಮುಕ್ತ(args_array);
 }

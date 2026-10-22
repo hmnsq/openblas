@@ -29,16 +29,16 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2014/06/09 Saar
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ಅನ್ತರ್ಭಾವ "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ಯದಿ defined(DOUBLE)
 #define ERROR_NAME "DOMATCOPY"
-#else
+#ಅನ್ಯಥಾ
 #define ERROR_NAME "SOMATCOPY"
 #endif
 
@@ -50,11 +50,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS 
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+ಶೂನ್ಯ NAME( ವರ್ಣ* ORDER, ವರ್ಣ* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	ವರ್ಣ Order, Trans;
+	ಪೂರ್ಣಾಙ್ಕ order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -63,25 +63,25 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
+	ಯದಿ ( Order == 'C' ) order = BlasColMajor;
+	ಯದಿ ( Order == 'R' ) order = BlasRowMajor;
+	ಯದಿ ( Trans == 'N' ) trans = BlasNoTrans;
+	ಯದಿ ( Trans == 'R' ) trans = BlasNoTrans;
+	ಯದಿ ( Trans == 'T' ) trans = BlasTrans;
+	ಯದಿ ( Trans == 'C' ) trans = BlasTrans;
+#ಅನ್ಯಥಾ 
+ಶೂನ್ಯ CNAME(ಗಣನಾ CBLAS_ORDER CORDER, ಗಣನಾ CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
 	FLOAT   *alpha; 
-	int order=-1,trans=-1;
+	ಪೂರ್ಣಾಙ್ಕ order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	ಯದಿ ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	ಯದಿ ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
+	ಯದಿ ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
+	ಯದಿ ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -90,55 +90,55 @@ void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, 
 	alpha = &calpha; 
 
 #endif
-	if ( order == BlasColMajor)
+	ಯದಿ ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ಯದಿ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ಯದಿ ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	ಯದಿ ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ಯದಿ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ಯದಿ ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ಯದಿ ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	ಯದಿ ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	ಯದಿ ( *cols < 0 ) info = 4;
+	ಯದಿ ( *rows < 0 ) info = 3;
+	ಯದಿ ( trans < 0 ) info = 2;
+	ಯದಿ ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ಯದಿ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, ಪರಿಮಾಣ(ERROR_NAME));
+    		ಪ್ರತ್ಯಾಗಮ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ಯದಿ ((*rows == 0) || (*cols == 0)) ಪ್ರತ್ಯಾಗಮ;
 
-	if ( order == BlasColMajor )
+	ಯದಿ ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		ಯದಿ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		ಅನ್ಯಥಾ
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
-	else
+	ಅನ್ಯಥಾ
 	{
-		if ( trans == BlasNoTrans )
+		ಯದಿ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		ಅನ್ಯಥಾ
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
 
-	return;
+	ಪ್ರತ್ಯಾಗಮ;
 
 }
 

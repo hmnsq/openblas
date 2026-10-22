@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ಅನ್ತರ್ಭಾವ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
 
-double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
+ದ್ವಿಗುಣ NAME(blasint *N, ಭಿನ್ನ *x, blasint *INCX, ಭಿನ್ನ *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-  double ret = 0.0;
+  ದ್ವಿಗುಣ ret = 0.0;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ಯದಿ (n <= 0) ಪ್ರತ್ಯಾಗಮ 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ಯದಿ (incx < 0) x -= (n - 1) * incx;
+  ಯದಿ (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
@@ -69,26 +69,26 @@ double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
 
   IDEBUG_END;
 
-  return ret;
+  ಪ್ರತ್ಯಾಗಮ ret;
 
 }
 
-#else
+#ಅನ್ಯಥಾ
 
-double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
+ದ್ವಿಗುಣ CNAME(blasint n, ಭಿನ್ನ *x, blasint incx, ಭಿನ್ನ *y, blasint incy){
 
-  double ret = 0.0;
+  ದ್ವಿಗುಣ ret = 0.0;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ಯದಿ (n <= 0) ಪ್ರತ್ಯಾಗಮ 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ಯದಿ (incx < 0) x -= (n - 1) * incx;
+  ಯದಿ (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
@@ -96,7 +96,7 @@ double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
 
   IDEBUG_END;
 
-  return ret;
+  ಪ್ರತ್ಯಾಗಮ ret;
 
 }
 
