@@ -47,27 +47,27 @@
 #define ERROR_NAME "XSPR  "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSPR  "
-#else
+#否则
 #define ERROR_NAME "CSPR  "
 #endif
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static 整数 (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xspr_U, xspr_L,
 #elif defined(DOUBLE)
   zspr_U, zspr_L,
-#else
+#否则
   cspr_U, cspr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static 整数 (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, 整数) = {
 #ifdef XDOUBLE
   xspr_thread_U, xspr_thread_L,
 #elif defined(DOUBLE)
   zspr_thread_U, zspr_thread_L,
-#else
+#否则
   cspr_thread_U, cspr_thread_L,
 #endif
 };
@@ -84,10 +84,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  整数 uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -95,50 +95,50 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  もし (uplo_arg  == 'U') uplo  = 0;
+  もし (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  もし (incx == 0)          info =  5;
+  もし (n < 0)              info =  2;
+  もし (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  もし (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
-  if (n == 0) return;
+  もし (n == 0) 戻る;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  もし ((alpha_r == ZERO) && (alpha_i == ZERO)) 戻る;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  もし (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  もし (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  もし (n < 50) nthreads = 1;
+  もし (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  もし (nthreads == 1) {
 #endif
 
     (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, buffer);
 
 #ifdef SMP
-  } else {
+  } 否则 {
 
     (spr_thread[uplo])(n, ALPHA, x, incx, a, buffer, nthreads);
 
@@ -151,5 +151,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  戻る;
 }

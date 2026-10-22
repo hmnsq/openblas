@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHPMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHPMV "
-#else
+#否则
 #define ERROR_NAME "CHPMV "
 #endif
 
-static  int (*hpmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static  整数 (*hpmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xhpmv_U, xhpmv_L, xhpmv_V, xhpmv_M,
 #elif defined(DOUBLE)
   zhpmv_U, zhpmv_L, zhpmv_V, zhpmv_M,
-#else
+#否则
   chpmv_U, chpmv_L, chpmv_V, chpmv_M,
 #endif
 };
 
 #ifdef SMP
-static  int (*hpmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static  整数 (*hpmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, 整数) = {
 #ifdef XDOUBLE
   xhpmv_thread_U, xhpmv_thread_L, xhpmv_thread_V, xhpmv_thread_M,
 #elif defined(DOUBLE)
   zhpmv_thread_U, zhpmv_thread_L, zhpmv_thread_V, zhpmv_thread_M,
-#else
+#否则
   chpmv_thread_U, chpmv_thread_L, chpmv_thread_V, chpmv_thread_M,
 #endif
 };
@@ -90,10 +90,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  整数 uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -101,22 +101,22 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  もし (uplo_arg  == 'U') uplo  = 0;
+  もし (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  9;
-  if (incx == 0)          info =  6;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  もし (incy == 0)          info =  9;
+  もし (incx == 0)          info =  6;
+  もし (n < 0)              info =  2;
+  もし (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  もし (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
-#else
+#否则
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_UPLO Uplo,
@@ -138,10 +138,10 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT beta_r	= BETA[0];
   FLOAT beta_i	= BETA[1];
   FLOAT *buffer;
-  int uplo;
+  整数 uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -149,70 +149,70 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  もし (order == CblasColMajor) {
+    もし (Uplo == CblasUpper)         uplo  = 0;
+    もし (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  9;
-    if (incx == 0)          info =  6;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    もし (incy == 0)          info =  9;
+    もし (incx == 0)          info =  6;
+    もし (n < 0)              info =  2;
+    もし (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  もし (order == CblasRowMajor) {
+    もし (Uplo == CblasUpper)         uplo  = 3;
+    もし (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incy == 0)          info =  9;
-    if (incx == 0)          info =  6;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    もし (incy == 0)          info =  9;
+    もし (incx == 0)          info =  6;
+    もし (n < 0)              info =  2;
+    もし (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  もし (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
 #endif
 
-  if (n == 0) return;
+  もし (n == 0) 戻る;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  もし ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  もし ((alpha_r == ZERO) && (alpha_i == ZERO)) 戻る;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  もし (incx < 0 ) x -= (n - 1) * incx * 2;
+  もし (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  もし (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  もし (n < 50) nthreads = 1;
+  もし (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  もし (nthreads == 1) {
 #endif
 
   (hpmv[uplo])(n, alpha_r, alpha_i, a, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } 否则 {
 
     (hpmv_thread[uplo])(n, ALPHA, a, x, incx, y, incy, buffer, nthreads);
 
@@ -225,5 +225,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  戻る;
 }

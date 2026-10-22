@@ -36,9 +36,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#もし defined(DOUBLE)
 #define ERROR_NAME "ZOMATCOPY"
-#else
+#否则
 #define ERROR_NAME "COMATCOPY"
 #endif
 
@@ -56,7 +56,7 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 {
 
 	char Order, Trans;
-	int order=-1,trans=-1;
+	整数 order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -65,114 +65,114 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTransConj;
-	if ( Trans == 'R' ) trans = BlasConj;
+	もし ( Order == 'C' ) order = BlasColMajor;
+	もし ( Order == 'R' ) order = BlasRowMajor;
+	もし ( Trans == 'N' ) trans = BlasNoTrans;
+	もし ( Trans == 'T' ) trans = BlasTrans;
+	もし ( Trans == 'C' ) trans = BlasTransConj;
+	もし ( Trans == 'R' ) trans = BlasConj;
 
-#else 
+#否则 
 void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
-	int order=-1,trans=-1;
+	整数 order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	もし ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	もし ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
-	if ( CTRANS == CblasTrans) trans = BlasTrans; 
-	if ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
+	もし ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
+	もし ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
+	もし ( CTRANS == CblasTrans) trans = BlasTrans; 
+	もし ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
 
 	rows = &crows; 
 	cols = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
 #endif
-	if ( order == BlasColMajor)
+	もし ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	もし ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	もし ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
+        	もし ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
+        	もし ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	もし ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	もし ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	もし ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
+        	もし ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	もし ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	もし ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	もし ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	もし ( *cols < 0 ) info = 4;
+	もし ( *rows < 0 ) info = 3;
+	もし ( trans < 0 ) info = 2;
+	もし ( order < 0 ) info = 1;
 
-	if (info >= 0) {
+	もし (info >= 0) {
     		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+    		戻る;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	もし ((*rows == 0) || (*cols == 0)) 戻る;
 
-	if ( order == BlasColMajor )
+	もし ( order == BlasColMajor )
 	{
 
-		if ( trans == BlasNoTrans )
+		もし ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
-		if ( trans == BlasConj )
+		もし ( trans == BlasConj )
 		{
 			OMATCOPY_K_CNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
-		if ( trans == BlasTrans )
+		もし ( trans == BlasTrans )
 		{
 			OMATCOPY_K_CT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
-		if ( trans == BlasTransConj )
+		もし ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_CTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
 
 	}
-	else
+	否则
 	{
 
-		if ( trans == BlasNoTrans )
+		もし ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
-		if ( trans == BlasConj )
+		もし ( trans == BlasConj )
 		{
 			OMATCOPY_K_RNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
-		if ( trans == BlasTrans )
+		もし ( trans == BlasTrans )
 		{
 			OMATCOPY_K_RT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
-		if ( trans == BlasTransConj )
+		もし ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_RTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			戻る;
 		}
 
 	}
 
-	return;
+	戻る;
 
 }
 

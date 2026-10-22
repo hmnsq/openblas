@@ -46,7 +46,7 @@
 #define ERROR_NAME "QGBMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGBMV "
-#else
+#否则
 #define ERROR_NAME "SGBMV "
 #endif
 
@@ -56,19 +56,19 @@ static void (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
       qgbmv_n, qgbmv_t,
 #elif defined(DOUBLE)
       dgbmv_n, dgbmv_t,
-#else
+#否则
       sgbmv_n, sgbmv_t,
 #endif
 };
 
 #ifdef SMP
-static int (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static 整数 (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, 整数) = {
 #ifdef XDOUBLE
       qgbmv_thread_n, qgbmv_thread_t,
 #elif defined(DOUBLE)
       dgbmv_thread_n, dgbmv_thread_t,
-#else
+#否则
       sgbmv_thread_n, sgbmv_thread_t,
 #endif
 };
@@ -93,7 +93,7 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint incy = *INCY;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   FLOAT alpha = *ALPHA;
@@ -111,28 +111,28 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N') i = 0;
-  if (trans == 'T') i = 1;
-  if (trans == 'R') i = 0;
-  if (trans == 'C') i = 1;
+  もし (trans == 'N') i = 0;
+  もし (trans == 'T') i = 1;
+  もし (trans == 'R') i = 0;
+  もし (trans == 'C') i = 1;
 
-  if (incy == 0)	 info = 13;
-  if (incx == 0)	 info = 10;
-  if (lda < kl + ku + 1) info = 8;
-  if (kl < 0)		 info = 5;
-  if (ku < 0)		 info = 4;
-  if (n < 0)		 info = 3;
-  if (m < 0)		 info = 2;
-  if (i < 0)		 info = 1;
+  もし (incy == 0)	 info = 13;
+  もし (incx == 0)	 info = 10;
+  もし (lda < kl + ku + 1) info = 8;
+  もし (kl < 0)		 info = 5;
+  もし (ku < 0)		 info = 4;
+  もし (n < 0)		 info = 3;
+  もし (m < 0)		 info = 2;
+  もし (i < 0)		 info = 1;
 
   trans = i;
 
-  if (info != 0){
+  もし (info != 0){
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
-#else
+#否则
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_TRANSPOSE TransA,
@@ -146,9 +146,9 @@ void CNAME(enum CBLAS_ORDER order,
 
   FLOAT *buffer;
   blasint lenx, leny, info, t;
-  int trans;
+  整数 trans;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -156,29 +156,29 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+  もし (order == CblasColMajor) {
+    もし (TransA == CblasNoTrans)     trans = 0;
+    もし (TransA == CblasTrans)       trans = 1;
+    もし (TransA == CblasConjNoTrans) trans = 0;
+    もし (TransA == CblasConjTrans)   trans = 1;
 
     info = -1;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    もし (incy == 0)	 info = 13;
+    もし (incx == 0)	 info = 10;
+    もし (lda < kl + ku + 1) info = 8;
+    もし (kl < 0)		 info = 5;
+    もし (ku < 0)		 info = 4;
+    もし (n < 0)		 info = 3;
+    もし (m < 0)		 info = 2;
+    もし (trans < 0)	 info = 1;
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
+  もし (order == CblasRowMajor) {
+    もし (TransA == CblasNoTrans)     trans = 1;
+    もし (TransA == CblasTrans)       trans = 0;
+    もし (TransA == CblasConjNoTrans) trans = 1;
+    もし (TransA == CblasConjTrans)   trans = 0;
 
     info = -1;
 
@@ -190,63 +190,63 @@ void CNAME(enum CBLAS_ORDER order,
     ku = kl;
     kl = t;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    もし (incy == 0)	 info = 13;
+    もし (incx == 0)	 info = 10;
+    もし (lda < kl + ku + 1) info = 8;
+    もし (kl < 0)		 info = 5;
+    もし (ku < 0)		 info = 4;
+    もし (n < 0)		 info = 3;
+    もし (m < 0)		 info = 2;
+    もし (trans < 0)	 info = 1;
   }
 
-  if (info >= 0) {
+  もし (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  もし ((m==0) || (n==0)) 戻る;
 
   lenx = n;
   leny = m;
-  if (trans) lenx = m;
-  if (trans) leny = n;
+  もし (trans) lenx = m;
+  もし (trans) leny = n;
 
-  if (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  もし (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if (alpha == ZERO) return;
+  もし (alpha == ZERO) 戻る;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx-1)*incx;
-  if (incy < 0) y -= (leny-1)*incy;
+  もし (incx < 0) x -= (lenx-1)*incx;
+  もし (incy < 0) y -= (leny-1)*incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  もし (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    戻る;
   }
 
 #ifdef SMP
-  if (m * n < 250000 || kl+ku < 15 )
+  もし (m * n < 250000 || kl+ku < 15 )
     nthreads = 1;
-  else
+  否则
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  もし (nthreads == 1) {
 #endif
 
-  (gbmv[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer);
+  (gbmv[(整数)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } 否则 {
 
-    (gbmv_thread[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gbmv_thread[(整数)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
 
   }
 #endif
@@ -257,5 +257,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  戻る;
 }

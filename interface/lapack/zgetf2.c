@@ -46,7 +46,7 @@
 #define ERROR_NAME "XGETF2"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGETF2"
-#else
+#否则
 #define ERROR_NAME "CGETF2"
 #endif
 
@@ -71,17 +71,17 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   args.c    = (void *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
+  もし (args.lda < MAX(1,args.m)) info = 4;
+  もし (args.n   < 0)             info = 2;
+  もし (args.m   < 0)             info = 1;
+  もし (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    戻る;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  もし (args.m == 0 || args.n == 0) 戻る;
 
   IDEBUG_START;
 
@@ -106,5 +106,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  戻る;
 }
