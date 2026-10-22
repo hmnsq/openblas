@@ -36,44 +36,44 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XGBMV "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZGBMV "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CGBMV "
 #endif
 
-static void (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+நிலையான வெறுமை (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, வெறுமை *) = {
 #ifdef XDOUBLE
       xgbmv_n, xgbmv_t, xgbmv_r, xgbmv_c,
       xgbmv_o, xgbmv_u, xgbmv_s, xgbmv_d,
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
       zgbmv_n, zgbmv_t, zgbmv_r, zgbmv_c,
       zgbmv_o, zgbmv_u, zgbmv_s, zgbmv_d,
-#else
+#இல்லையெனில்
       cgbmv_n, cgbmv_t, cgbmv_r, cgbmv_c,
       cgbmv_o, cgbmv_u, cgbmv_s, cgbmv_d,
 #endif
 };
 
 #ifdef SMP
-static int (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT *,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+நிலையான முழு (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT *,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, முழு) = {
 #ifdef XDOUBLE
       xgbmv_thread_n, xgbmv_thread_t, xgbmv_thread_r, xgbmv_thread_c,
       xgbmv_thread_o, xgbmv_thread_u, xgbmv_thread_s, xgbmv_thread_d,
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
       zgbmv_thread_n, zgbmv_thread_t, zgbmv_thread_r, zgbmv_thread_c,
       zgbmv_thread_o, zgbmv_thread_u, zgbmv_thread_s, zgbmv_thread_d,
-#else
+#இல்லையெனில்
       cgbmv_thread_n, cgbmv_thread_t, cgbmv_thread_r, cgbmv_thread_c,
       cgbmv_thread_o, cgbmv_thread_u, cgbmv_thread_s, cgbmv_thread_d,
 #endif
@@ -84,13 +84,13 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+வெறுமை NAME(எழுத்து *TRANS, blasint *M, blasint *N,
 	 blasint *KU, blasint *KL,
 	 FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	 FLOAT *x, blasint *INCX,
 	 FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  எழுத்து trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint ku = *KU;
@@ -100,7 +100,7 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint incy = *INCY;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  முழு nthreads;
 #endif
 
   FLOAT alpha_r = ALPHA[0];
@@ -120,42 +120,42 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N')  i = 0;
-  if (trans == 'T')  i = 1;
-  if (trans == 'R')  i = 2;
-  if (trans == 'C')  i = 3;
-  if (trans == 'O')  i = 4;
-  if (trans == 'U')  i = 5;
-  if (trans == 'S')  i = 6;
-  if (trans == 'D')  i = 7;
+  எனில் (trans == 'N')  i = 0;
+  எனில் (trans == 'T')  i = 1;
+  எனில் (trans == 'R')  i = 2;
+  எனில் (trans == 'C')  i = 3;
+  எனில் (trans == 'O')  i = 4;
+  எனில் (trans == 'U')  i = 5;
+  எனில் (trans == 'S')  i = 6;
+  எனில் (trans == 'D')  i = 7;
 
-  if (incy == 0)	 info = 13;
-  if (incx == 0)	 info = 10;
-  if (lda < kl + ku + 1) info = 8;
-  if (kl < 0)		 info = 5;
-  if (ku < 0)		 info = 4;
-  if (n < 0)		 info = 3;
-  if (m < 0)		 info = 2;
-  if (i < 0)		 info = 1;
+  எனில் (incy == 0)	 info = 13;
+  எனில் (incx == 0)	 info = 10;
+  எனில் (lda < kl + ku + 1) info = 8;
+  எனில் (kl < 0)		 info = 5;
+  எனில் (ku < 0)		 info = 4;
+  எனில் (n < 0)		 info = 3;
+  எனில் (m < 0)		 info = 2;
+  எனில் (i < 0)		 info = 1;
 
   trans = i;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
-#else
+#இல்லையெனில்
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+வெறுமை CNAME(எண்ணிக்கை CBLAS_ORDER order,
+	   எண்ணிக்கை CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
 	   blasint ku, blasint kl,
-	   void *VALPHA,
-	   void  *va, blasint lda,
-	   void  *vx, blasint incx,
-	   void *VBETA,
-	   void  *vy, blasint incy){
+	   வெறுமை *VALPHA,
+	   வெறுமை  *va, blasint lda,
+	   வெறுமை  *vx, blasint incx,
+	   வெறுமை *VBETA,
+	   வெறுமை  *vy, blasint incy){
 
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* BETA = (FLOAT*) VBETA;
@@ -170,10 +170,10 @@ void CNAME(enum CBLAS_ORDER order,
 
   FLOAT *buffer;
   blasint lenx, leny;
-  int trans;
+  முழு trans;
   blasint info, t;
 #ifdef SMP
-  int nthreads;
+  முழு nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -181,29 +181,29 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+  எனில் (order == CblasColMajor) {
+    எனில் (TransA == CblasNoTrans)     trans = 0;
+    எனில் (TransA == CblasTrans)       trans = 1;
+    எனில் (TransA == CblasConjNoTrans) trans = 2;
+    எனில் (TransA == CblasConjTrans)   trans = 3;
 
     info = -1;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    எனில் (incy == 0)	 info = 13;
+    எனில் (incx == 0)	 info = 10;
+    எனில் (lda < kl + ku + 1) info = 8;
+    எனில் (kl < 0)		 info = 5;
+    எனில் (ku < 0)		 info = 4;
+    எனில் (n < 0)		 info = 3;
+    எனில் (m < 0)		 info = 2;
+    எனில் (trans < 0)	 info = 1;
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
+  எனில் (order == CblasRowMajor) {
+    எனில் (TransA == CblasNoTrans)     trans = 1;
+    எனில் (TransA == CblasTrans)       trans = 0;
+    எனில் (TransA == CblasConjNoTrans) trans = 3;
+    எனில் (TransA == CblasConjTrans)   trans = 2;
 
     info = -1;
 
@@ -215,64 +215,64 @@ void CNAME(enum CBLAS_ORDER order,
     ku = kl;
     kl = t;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    எனில் (incy == 0)	 info = 13;
+    எனில் (incx == 0)	 info = 10;
+    எனில் (lda < kl + ku + 1) info = 8;
+    எனில் (kl < 0)		 info = 5;
+    எனில் (ku < 0)		 info = 4;
+    எனில் (n < 0)		 info = 3;
+    எனில் (m < 0)		 info = 2;
+    எனில் (trans < 0)	 info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  எனில் ((m==0) || (n==0)) திரும்பு;
 
   lenx = n;
   leny = m;
-  if (trans & 1) lenx = m;
-  if (trans & 1) leny = n;
+  எனில் (trans & 1) lenx = m;
+  எனில் (trans & 1) leny = n;
 
-  if (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  எனில் (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), வெற்று, 0, வெற்று, 0);
 
-  if (alpha_r == ZERO && alpha_i == ZERO) return;
+  எனில் (alpha_r == ZERO && alpha_i == ZERO) திரும்பு;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx - 1) * incx * 2;
-  if (incy < 0) y -= (leny - 1) * incy * 2;
+  எனில் (incx < 0) x -= (lenx - 1) * incx * 2;
+  எனில் (incy < 0) y -= (leny - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  எனில் (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
 #ifdef SMP
-  if (m * n  < 125000 || ku + kl < 15) 
+  எனில் (m * n  < 125000 || ku + kl < 15) 
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  இல்லையெனில்
+    nthreads = இலக்கம்_cpu_avail(2);
 
-  if (nthreads == 1) {
+  எனில் (nthreads == 1) {
 #endif
 
-  (gbmv[(int)trans])(m, n, kl, ku, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
+  (gbmv[(முழு)trans])(m, n, kl, ku, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
 
-  } else {
+  } இல்லையெனில் {
 
-    (gbmv_thread[(int)trans])(m, n, kl, ku, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gbmv_thread[(முழு)trans])(m, n, kl, ku, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
 
   }
 #endif
@@ -283,5 +283,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 }

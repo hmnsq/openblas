@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
@@ -55,14 +55,14 @@ FLOATRET NAME(blasint *N, FLOAT *a, FLOAT *x, blasint *INCX, FLOAT *y, blasint *
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return(*a) ;
+  எனில் (n <= 0) திரும்பு(*a) ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  எனில் (incx < 0) x -= (n - 1) * incx;
+  எனில் (incy < 0) y -= (n - 1) * incy;
 
   ret = (FLOATRET)(SDSDOT_K(n, x, incx, y, incy) + *a);
 
@@ -70,11 +70,11 @@ FLOATRET NAME(blasint *N, FLOAT *a, FLOAT *x, blasint *INCX, FLOAT *y, blasint *
 
   IDEBUG_END;
 
-  return ret;
+  திரும்பு ret;
 
 }
 
-#else
+#இல்லையெனில்
 
 FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
@@ -82,14 +82,14 @@ FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint in
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return (alpha);
+  எனில் (n <= 0) திரும்பு (alpha);
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  எனில் (incx < 0) x -= (n - 1) * incx;
+  எனில் (incy < 0) y -= (n - 1) * incy;
 
   ret = SDSDOT_K(n, x, incx, y, incy) + alpha;
 
@@ -97,7 +97,7 @@ FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint in
 
   IDEBUG_END;
 
-  return ret;
+  திரும்பு ret;
 }
 
 #endif

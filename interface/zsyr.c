@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ <ctype.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XSYR  "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZSYR  "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CSYR  "
 #endif
 
-static int (*syr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+நிலையான முழு (*syr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   xsyr_U, xsyr_L,
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
   zsyr_U, zsyr_L,
-#else
+#இல்லையெனில்
   csyr_U, csyr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+நிலையான முழு (*syr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, முழு) = {
 #ifdef XDOUBLE
   xsyr_thread_U, xsyr_thread_L,
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
   zsyr_thread_U, zsyr_thread_L,
-#else
+#இல்லையெனில்
   csyr_thread_U, csyr_thread_L,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+வெறுமை NAME(எழுத்து *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  எழுத்து uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  முழு uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  முழு nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,34 +99,34 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  எனில் (uplo_arg  == 'U') uplo  = 0;
+  எனில் (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  எனில் (lda  < MAX(1, n))   info =  7;
+  எனில் (incx == 0)          info =  5;
+  எனில் (n < 0)              info =  2;
+  எனில் (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
 
-#else
+#இல்லையெனில்
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, int n, void* valpha, FLOAT *x, int incx, FLOAT *a, int lda) {
+வெறுமை CNAME(எண்ணிக்கை CBLAS_ORDER order, எண்ணிக்கை CBLAS_UPLO Uplo, முழு n, வெறுமை* valpha, FLOAT *x, முழு incx, FLOAT *a, முழு lda) {
 
   FLOAT *buffer;
-  int uplo;
+  முழு uplo;
   blasint info;
   FLOAT * ALPHA = (FLOAT*)valpha;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
 #ifdef SMP
-  int nthreads;
+  முழு nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -134,96 +134,96 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, int n, void* valpha, FL
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  எனில் (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    எனில் (Uplo == CblasUpper) uplo  = 0;
+    எனில் (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    எனில் (lda  < MAX(1, n))   info =  7;
+    எனில் (incx == 0)          info =  5;
+    எனில் (n < 0)              info =  2;
+    எனில் (uplo  < 0)          info =  1;
+
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (order == CblasRowMajor) {
+
+    எனில் (Uplo == CblasUpper) uplo  = 1;
+    எனில் (Uplo == CblasLower) uplo  = 0;
+
+    info = -1;
+
+    எனில் (lda  < MAX(1, n))   info =  7;
+    எனில் (incx == 0)          info =  5;
+    எனில் (n < 0)              info =  2;
+    எனில் (uplo  < 0)          info =  1;
+  }
+
+  எனில் (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
 #endif
 
-  if (n == 0) return;
+  எனில் (n == 0) திரும்பு;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  எனில் ((alpha_r == ZERO) && (alpha_i == ZERO)) திரும்பு;
 
-  if (incx == 1 && n < 50) {
+  எனில் (incx == 1 && n < 50) {
     blasint i;
-    if (!uplo) {
-      for (i = 0; i < n; i++){
-        if ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
+    எனில் (!uplo) {
+      க்கு (i = 0; i < n; i++){
+        எனில் ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
           AXPYU_K(i + 1, 0, 0,
               alpha_r * x[i * 2 + 0] - alpha_i * x[i * 2 + 1],
               alpha_i * x[i * 2 + 0] + alpha_r * x[i * 2 + 1],
-              x,         1, a, 1, NULL, 0);
+              x,         1, a, 1, வெற்று, 0);
         }
         a += lda * 2;
       }
-    } else {
-      for (i = 0; i < n; i++){
-        if ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
+    } இல்லையெனில் {
+      க்கு (i = 0; i < n; i++){
+        எனில் ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
           AXPYU_K(n - i, 0, 0,
               alpha_r * x[i * 2 + 0] - alpha_i * x[i * 2 + 1],
               alpha_i * x[i * 2 + 0] + alpha_r * x[i * 2 + 1],
-              x + i * 2, 1, a, 1, NULL, 0);
+              x + i * 2, 1, a, 1, வெற்று, 0);
         }
         a += 2 + lda * 2;
       }
     }
-    return;
+    திரும்பு;
   }
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  எனில் (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  எனில் (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
 #ifdef SMP
-  nthreads = num_cpu_avail(2);
+  nthreads = இலக்கம்_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  எனில் (n < 50) nthreads = 1;
+  எனில் (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  எனில் (nthreads == 1) {
 #endif
 
   (syr[uplo])(n, alpha_r, alpha_i, x, incx, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } இல்லையெனில் {
 
     (syr_thread[uplo])(n, ALPHA, x, incx, a, lda, buffer, nthreads);
 
@@ -236,5 +236,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, int n, void* valpha, FL
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 }

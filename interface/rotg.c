@@ -1,65 +1,65 @@
-#include <math.h>
-#include <float.h>
-#include "common.h"
+#அந்தர்பாவ <math.h>
+#அந்தர்பாவ <float.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+வெறுமை NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#இல்லையெனில்
 
-void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+வெறுமை CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
 #endif
 
 #ifdef DOUBLE
-  long double safmin = DBL_MIN;
-#else
-  long double safmin = FLT_MIN;
+  long இரட்டை safmin = DBL_MIN;
+#இல்லையெனில்
+  long இரட்டை safmin = FLT_MIN;
 #endif
 
-#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
+#எனில் defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
 
-  long double da = *DA;
-  long double db = *DB;
-  long double c;
-  long double s;
-  long double r, z;
-  long double sigma, dascal,dbscal;
+  long இரட்டை da = *DA;
+  long இரட்டை db = *DB;
+  long இரட்டை c;
+  long இரட்டை s;
+  long இரட்டை r, z;
+  long இரட்டை sigma, dascal,dbscal;
 
-  long double ada = fabsl(da);
-  long double adb = fabsl(db);
-  long double maxab = MAX(ada,adb);
-  long double safmax;
-  long double scale;
+  long இரட்டை ada = fabsl(da);
+  long இரட்டை adb = fabsl(db);
+  long இரட்டை maxab = MAX(ada,adb);
+  long இரட்டை safmax;
+  long இரட்டை scale;
 
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#இல்லையெனில்
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (adb == ZERO) {
+  எனில் (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } இல்லையெனில் எனில் (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } இல்லையெனில் {
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
-    if (ada > adb)
+    எனில் (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    இல்லையெனில்
 	sigma = copysign(1.,db);
     dascal = da / scale;
     dbscal = db / scale;
@@ -67,8 +67,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    எனில் (ada > adb) z = s;
+    எனில் ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -76,7 +76,7 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     *DB = z;
   }
 
-#else
+#இல்லையெனில்
   FLOAT da = *DA;
   FLOAT db = *DB;
   FLOAT c  = *C;
@@ -87,34 +87,34 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   FLOAT ada = fabs(da);
   FLOAT adb = fabs(db);
   FLOAT maxab = MAX(ada,adb);
-  long double safmax ;
+  long இரட்டை safmax ;
   FLOAT scale ;
 
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
 
-  if (ada > adb)
+  எனில் (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    இல்லையெனில்
 	sigma = copysign(1.,db);
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#இல்லையெனில்
   PRINT_DEBUG_CNAME;
 #endif
 
 
-  if (adb == ZERO) {
+  எனில் (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } இல்லையெனில் எனில் (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } இல்லையெனில் {
     FLOAT aa = da / scale;
     FLOAT bb = db / scale;
 
@@ -122,8 +122,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    எனில் (ada > adb) z = s;
+    எனில் ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -132,5 +132,5 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   }
 #endif
 
-  return;
+  திரும்பு;
 }

@@ -36,57 +36,57 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ <ctype.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 #ifndef COMPLEX
 #define SMP_THRESHOLD_MIN 65536.
 #ifdef XDOUBLE
 #define ERROR_NAME "QSYMM "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "DSYMM "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "SSYMM "
 #endif
-#else
+#இல்லையெனில்
 #define SMP_THRESHOLD_MIN 8192.
 #ifndef GEMM3M
 #ifndef HEMM
 #ifdef XDOUBLE
 #define ERROR_NAME "XSYMM "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZSYMM "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CSYMM "
 #endif
-#else
+#இல்லையெனில்
 #ifdef XDOUBLE
 #define ERROR_NAME "XHEMM "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZHEMM "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CHEMM "
 #endif
 #endif
-#else
+#இல்லையெனில்
 #ifndef HEMM
 #ifdef XDOUBLE
 #define ERROR_NAME "XSYMM3M "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZSYMM3M "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CSYMM3M "
 #endif
-#else
+#இல்லையெனில்
 #ifdef XDOUBLE
 #define ERROR_NAME "XHEMM3M "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZHEMM3M "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CHEMM3M "
 #endif
 #endif
@@ -98,51 +98,51 @@
 #endif
 
 #ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);                                
+வெளி எழுத்து* gotoblas_corename(வெறுமை);                                
 #endif                                                               
 
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define MODE	(BLAS_XDOUBLE | BLAS_REAL)
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define MODE	(BLAS_DOUBLE  | BLAS_REAL)
-#else
+#இல்லையெனில்
 #define MODE	(BLAS_SINGLE  | BLAS_REAL)
 #endif
-#else
+#இல்லையெனில்
 #ifdef XDOUBLE
 #define MODE	(BLAS_XDOUBLE | BLAS_COMPLEX)
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define MODE	(BLAS_DOUBLE  | BLAS_COMPLEX)
-#else
+#இல்லையெனில்
 #define MODE	(BLAS_SINGLE  | BLAS_COMPLEX)
 #endif
 #endif
 #endif
 
-static int (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+நிலையான முழு (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef GEMM3M
 #ifndef HEMM
   SYMM_LU, SYMM_LL, SYMM_RU, SYMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#எனில் defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM_THREAD_LU, SYMM_THREAD_LL, SYMM_THREAD_RU, SYMM_THREAD_RL,
 #endif
-#else
+#இல்லையெனில்
   HEMM_LU, HEMM_LL, HEMM_RU, HEMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#எனில் defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM_THREAD_LU, HEMM_THREAD_LL, HEMM_THREAD_RU, HEMM_THREAD_RL,
 #endif
 #endif
-#else
+#இல்லையெனில்
 #ifndef HEMM
   SYMM3M_LU, SYMM3M_LL, SYMM3M_RU, SYMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#எனில் defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM3M_THREAD_LU, SYMM3M_THREAD_LL, SYMM3M_THREAD_RU, SYMM3M_THREAD_RL,
 #endif
-#else
+#இல்லையெனில்
   HEMM3M_LU, HEMM3M_LL, HEMM3M_RU, HEMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#எனில் defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM3M_THREAD_LU, HEMM3M_THREAD_LL, HEMM3M_THREAD_RU, HEMM3M_THREAD_RL,
 #endif
 #endif
@@ -153,34 +153,34 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *SIDE, char *UPLO,
+வெறுமை NAME(எழுத்து *SIDE, எழுத்து *UPLO,
          blasint *M, blasint *N,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
          FLOAT *b, blasint *ldB,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char side_arg  = *SIDE;
-  char uplo_arg  = *UPLO;
+  எழுத்து side_arg  = *SIDE;
+  எழுத்து uplo_arg  = *UPLO;
 
   blas_arg_t args;
 
   FLOAT *buffer;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
+#எனில் defined(SMP) && !defined(NO_AFFINITY)
+  முழு nodes;
 #endif
-# if defined(SMP)
-  double MN;
+# எனில் defined(SMP)
+  இரட்டை MN;
 #endif
   blasint info;
-  int side;
-  int uplo;
+  முழு side;
+  முழு uplo;
 
   PRINT_DEBUG_NAME;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  args.alpha = (வெறுமை *)alpha;
+  args.beta  = (வெறுமை *)beta;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -188,56 +188,56 @@ void NAME(char *SIDE, char *UPLO,
   side  = -1;
   uplo  = -1;
 
-  if (side_arg  == 'L') side  = 0;
-  if (side_arg  == 'R') side  = 1;
+  எனில் (side_arg  == 'L') side  = 0;
+  எனில் (side_arg  == 'R') side  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  எனில் (uplo_arg  == 'U') uplo  = 0;
+  எனில் (uplo_arg  == 'L') uplo  = 1;
 
   args.m = *M;
   args.n = *N;
 
-  args.c = (void *)c;
+  args.c = (வெறுமை *)c;
   args.ldc = *ldC;
 
   info = 0;
 
-  if (args.ldc < MAX(1, args.m)) info = 12;
+  எனில் (args.ldc < MAX(1, args.m)) info = 12;
 
-  if (!side) {
-    args.a = (void *)a;
-    args.b = (void *)b;
+  எனில் (!side) {
+    args.a = (வெறுமை *)a;
+    args.b = (வெறுமை *)b;
 
     args.lda = *ldA;
     args.ldb = *ldB;
 
-    if (args.ldb < MAX(1, args.m)) info =  9;
-    if (args.lda < MAX(1, args.m)) info =  7;
+    எனில் (args.ldb < MAX(1, args.m)) info =  9;
+    எனில் (args.lda < MAX(1, args.m)) info =  7;
 
-  } else {
-    args.a = (void *)b;
-    args.b = (void *)a;
+  } இல்லையெனில் {
+    args.a = (வெறுமை *)b;
+    args.b = (வெறுமை *)a;
 
     args.lda = *ldB;
     args.ldb = *ldA;
 
-  if (args.lda < MAX(1, args.m)) info =  9;
-  if (args.ldb < MAX(1, args.n)) info =  7;
+  எனில் (args.lda < MAX(1, args.m)) info =  9;
+  எனில் (args.ldb < MAX(1, args.n)) info =  7;
   }
 
-  if (args.n   < 0)              info =  4;
-  if (args.m   < 0)              info =  3;
-  if (uplo     < 0)              info =  2;
-  if (side     < 0)              info =  1;
+  எனில் (args.n   < 0)              info =  4;
+  எனில் (args.m   < 0)              info =  3;
+  எனில் (uplo     < 0)              info =  2;
+  எனில் (side     < 0)              info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
-#else
+#இல்லையெனில்
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
+வெறுமை CNAME(எண்ணிக்கை CBLAS_ORDER order, எண்ணிக்கை CBLAS_SIDE Side, எண்ணிக்கை CBLAS_UPLO Uplo,
 	   blasint m, blasint n,
 #ifndef COMPLEX
 	   FLOAT alpha,
@@ -245,12 +245,12 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
 	   FLOAT *b, blasint ldb,
 	   FLOAT beta,
 	   FLOAT *c, blasint ldc) {
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb,
-	   void *vbeta,
-	   void *vc, blasint ldc) {
+#இல்லையெனில்
+	   வெறுமை *valpha,
+	   வெறுமை *va, blasint lda,
+	   வெறுமை *vb, blasint ldb,
+	   வெறுமை *vbeta,
+	   வெறுமை *vc, blasint ldc) {
   FLOAT *alpha = (FLOAT*) valpha;
   FLOAT *beta  = (FLOAT*) vbeta;
   FLOAT *a = (FLOAT*) va;
@@ -259,140 +259,140 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
 #endif
 
   blas_arg_t args;
-  int side, uplo;
+  முழு side, uplo;
   blasint info;
 
   FLOAT *buffer;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
+#எனில் defined(SMP) && !defined(NO_AFFINITY)
+  முழு nodes;
 #endif
-#if defined(SMP)
-  double MN;
+#எனில் defined(SMP)
+  இரட்டை MN;
 #endif
 
   PRINT_DEBUG_CNAME;
 
 #ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
-#else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  args.alpha = (வெறுமை *)&alpha;
+  args.beta  = (வெறுமை *)&beta;
+#இல்லையெனில்
+  args.alpha = (வெறுமை *)alpha;
+  args.beta  = (வெறுமை *)beta;
 #endif
 
-  args.c = (void *)c;
+  args.c = (வெறுமை *)c;
   args.ldc = ldc;
 
   side  = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Side == CblasLeft)  side = 0;
-    if (Side == CblasRight) side = 1;
+  எனில் (order == CblasColMajor) {
+    எனில் (Side == Cblas_இடது)  side = 0;
+    எனில் (Side == Cblas_வலது) side = 1;
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+    எனில் (Uplo == CblasUpper) uplo  = 0;
+    எனில் (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
     args.m = m;
     args.n = n;
 
-    if (args.ldc < MAX(1, args.m)) info = 12;
+    எனில் (args.ldc < MAX(1, args.m)) info = 12;
 
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
+    எனில் (!side) {
+      args.a = (வெறுமை *)a;
+      args.b = (வெறுமை *)b;
 
       args.lda = lda;
       args.ldb = ldb;
 
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
+      எனில் (args.ldb < MAX(1, args.m)) info =  9;
+      எனில் (args.lda < MAX(1, args.m)) info =  7;
 
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
+    } இல்லையெனில் {
+      args.a = (வெறுமை *)b;
+      args.b = (வெறுமை *)a;
 
       args.lda = ldb;
       args.ldb = lda;
 
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
+      எனில் (args.lda < MAX(1, args.m)) info =  9;
+      எனில் (args.ldb < MAX(1, args.n)) info =  7;
     }
 
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
+    எனில் (args.n   < 0)              info =  4;
+    எனில் (args.m   < 0)              info =  3;
+    எனில் (uplo     < 0)              info =  2;
+    எனில் (side     < 0)              info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Side == CblasLeft)  side = 1;
-    if (Side == CblasRight) side = 0;
+  எனில் (order == CblasRowMajor) {
+    எனில் (Side == Cblas_இடது)  side = 1;
+    எனில் (Side == Cblas_வலது) side = 0;
 
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    எனில் (Uplo == CblasUpper) uplo  = 1;
+    எனில் (Uplo == CblasLower) uplo  = 0;
 
     info = -1;
 
     args.m = n;
     args.n = m;
 
-    if (args.ldc < MAX(1, args.m)) info = 12;
+    எனில் (args.ldc < MAX(1, args.m)) info = 12;
 
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
+    எனில் (!side) {
+      args.a = (வெறுமை *)a;
+      args.b = (வெறுமை *)b;
 
       args.lda = lda;
       args.ldb = ldb;
 
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
+      எனில் (args.ldb < MAX(1, args.m)) info =  9;
+      எனில் (args.lda < MAX(1, args.m)) info =  7;
 
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
+    } இல்லையெனில் {
+      args.a = (வெறுமை *)b;
+      args.b = (வெறுமை *)a;
 
       args.lda = ldb;
       args.ldb = lda;
 
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
+      எனில் (args.lda < MAX(1, args.m)) info =  9;
+      எனில் (args.ldb < MAX(1, args.n)) info =  7;
     }
 
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
+    எனில் (args.n   < 0)              info =  4;
+    எனில் (args.m   < 0)              info =  3;
+    எனில் (uplo     < 0)              info =  2;
+    எனில் (side     < 0)              info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
-   if (args.m == 0 || args.n == 0) return;
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+   எனில் (args.m == 0 || args.n == 0) திரும்பு;
+#எனில் !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#எனில் defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#எனில் defined(DYNAMIC_ARCH)
+எனில் (strcmp(gotoblas_corename(), "armv9sme") == 0
+#எனில் defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
 #endif
 )
 #endif
-   if (order == CblasRowMajor && m == lda && n == ldb && n == ldc)
+   எனில் (order == CblasRowMajor && m == lda && n == ldb && n == ldc)
    {
-     if (Side == CblasLeft && Uplo == CblasUpper) {
-       SSYMM_DIRECT_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     எனில் (Side == Cblas_இடது && Uplo == CblasUpper) {
+       SSYMM_DIRECT_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); திரும்பு;
      }
-     else if (Side == CblasLeft && Uplo == CblasLower) {
-       SSYMM_DIRECT_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     இல்லையெனில் எனில் (Side == Cblas_இடது && Uplo == CblasLower) {
+       SSYMM_DIRECT_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); திரும்பு;
      }
    }
 #endif
@@ -405,51 +405,51 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   FUNCTION_PROFILE_START();
 
   buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  எனில் (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
   sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 
 #ifdef SMP
-  args.common = NULL;
-  MN = 2.* (double) args.m * (double)args.m * (double) args.n;
-  if (MN <= (SMP_THRESHOLD_MIN * (double) GEMM_MULTITHREAD_THRESHOLD) ) {
+  args.common = வெற்று;
+  MN = 2.* (இரட்டை) args.m * (இரட்டை)args.m * (இரட்டை) args.n;
+  எனில் (MN <= (SMP_THRESHOLD_MIN * (இரட்டை) GEMM_MULTITHREAD_THRESHOLD) ) {
 	  args.nthreads = 1;
-  } else {
-	 args.nthreads = num_cpu_avail(3);
+  } இல்லையெனில் {
+	 args.nthreads = இலக்கம்_cpu_avail(3);
   }
-  if (args.nthreads == 1) {
+  எனில் (args.nthreads == 1) {
 #endif
 
-    (symm[(side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+    (symm[(side << 1) | uplo ])(&args, வெற்று, வெற்று, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } இல்லையெனில் {
 
 #ifndef NO_AFFINITY
-    nodes = get_num_nodes();
+    nodes = get_இலக்கம்_nodes();
 
-    if (nodes > 1) {
+    எனில் (nodes > 1) {
 
       args.nthreads /= nodes;
 
-      gemm_thread_mn(MODE, &args, NULL, NULL,
+      gemm_thread_mn(MODE, &args, வெற்று, வெற்று,
 		     symm[4 | (side << 1) | uplo ], sa, sb, nodes);
 
-    } else {
+    } இல்லையெனில் {
 #endif
 
 #ifndef USE_SIMPLE_THREADED_LEVEL3
 
-      (symm[4 | (side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+      (symm[4 | (side << 1) | uplo ])(&args, வெற்று, வெற்று, sa, sb, 0);
 
-#else
+#இல்லையெனில்
 
-      GEMM_THREAD(MODE, &args, NULL, NULL, symm[(side << 1) | uplo ], sa, sb, args.nthreads);
+      GEMM_THREAD(MODE, &args, வெற்று, வெற்று, symm[(side << 1) | uplo ], sa, sb, args.nthreads);
 
 #endif
 
@@ -468,5 +468,5 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 }

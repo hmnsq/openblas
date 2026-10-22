@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ <ctype.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XHPR  "
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZHPR  "
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CHPR  "
 #endif
 
-static int (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+நிலையான முழு (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr_U, xhpr_L, xhpr_V, xhpr_M,
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
   zhpr_U, zhpr_L, zhpr_V, zhpr_M,
-#else
+#இல்லையெனில்
   chpr_U, chpr_L, chpr_V, chpr_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+நிலையான முழு (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, முழு) = {
 #ifdef XDOUBLE
   xhpr_thread_U, xhpr_thread_L, xhpr_thread_V, xhpr_thread_M,
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
   zhpr_thread_U, zhpr_thread_L, zhpr_thread_V, zhpr_thread_M,
-#else
+#இல்லையெனில்
   chpr_thread_U, chpr_thread_L, chpr_thread_V, chpr_thread_M,
 #endif
 };
@@ -77,19 +77,19 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+வெறுமை NAME(எழுத்து *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  எழுத்து uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  முழு uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  முழு nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,37 +97,37 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  எனில் (uplo_arg  == 'U') uplo  = 0;
+  எனில் (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  எனில் (incx == 0)          info =  5;
+  எனில் (n < 0)              info =  2;
+  எனில் (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
-#else
+#இல்லையெனில்
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+வெறுமை CNAME(எண்ணிக்கை CBLAS_ORDER order,
+	   எண்ணிக்கை CBLAS_UPLO Uplo,
 	   blasint n,
 	   FLOAT alpha,
-	   void  *vx, blasint incx,
-	   void  *va) {
+	   வெறுமை  *vx, blasint incx,
+	   வெறுமை  *va) {
 
   FLOAT* x = (FLOAT*) vx;
   FLOAT* a = (FLOAT*) va;
 
   FLOAT *buffer;
-  int uplo;
+  முழு uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  முழு nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -135,66 +135,66 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  எனில் (order == CblasColMajor) {
+    எனில் (Uplo == CblasUpper)         uplo  = 0;
+    எனில் (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    எனில் (incx == 0)          info =  5;
+    எனில் (n < 0)              info =  2;
+    எனில் (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  எனில் (order == CblasRowMajor) {
+    எனில் (Uplo == CblasUpper)         uplo  = 3;
+    எனில் (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    எனில் (incx == 0)          info =  5;
+    எனில் (n < 0)              info =  2;
+    எனில் (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  எனில் (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
 #endif
 
-  if (n == 0) return;
+  எனில் (n == 0) திரும்பு;
 
-  if (alpha == ZERO) return;
+  எனில் (alpha == ZERO) திரும்பு;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  எனில் (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  எனில் (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    திரும்பு;
   }
 
 #ifdef SMP
-  if (n < 100)
+  எனில் (n < 100)
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  இல்லையெனில்
+    nthreads = இலக்கம்_cpu_avail(2);
 
-  if (nthreads == 1) {
+  எனில் (nthreads == 1) {
 #endif
 
   (hpr[uplo])(n, alpha, x, incx, a, buffer);
 
 #ifdef SMP
 
-  } else {
+  } இல்லையெனில் {
 
     (hpr_thread[uplo])(n, alpha, x, incx, a, buffer, nthreads);
 
@@ -207,5 +207,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 }

@@ -1,60 +1,60 @@
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
+#எனில் defined(DOUBLE_PREC)
+#define FLOAT_TYPE இரட்டை
+#அல்லதெனில் defined(SINGLE_PREC)
+#define FLOAT_TYPE தசம
+#இல்லையெனில்
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
-void NAME(blasint *N, bfloat16 *in, blasint *INC_IN, FLOAT_TYPE *out, blasint *INC_OUT){
+வெறுமை NAME(blasint *N, bfloat16 *in, blasint *INC_IN, FLOAT_TYPE *out, blasint *INC_OUT){
   BLASLONG n    = *N;
   BLASLONG inc_in = *INC_IN;
   BLASLONG inc_out = *INC_OUT;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return;
+  எனில் (n <= 0) திரும்பு;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  எனில் (inc_in < 0)   in -= (n - 1) * inc_in;
+  எனில் (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#எனில் defined(DOUBLE_PREC)
   D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#அல்லதெனில் defined(SINGLE_PREC)
   S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
+#இல்லையெனில்
 #endif
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
   IDEBUG_END;
 }
-#else
-void CNAME(blasint n, bfloat16 * in, blasint inc_in, FLOAT_TYPE * out, blasint inc_out){
+#இல்லையெனில்
+வெறுமை CNAME(blasint n, bfloat16 * in, blasint inc_in, FLOAT_TYPE * out, blasint inc_out){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  எனில் (n <= 0) திரும்பு;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  எனில் (inc_in < 0)   in -= (n - 1) * inc_in;
+  எனில் (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#எனில் defined(DOUBLE_PREC)
   D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#அல்லதெனில் defined(SINGLE_PREC)
   S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
+#இல்லையெனில்
 #endif
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);

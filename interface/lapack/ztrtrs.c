@@ -36,45 +36,45 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XTRTRS"
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZTRTRS"
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CTRTRS"
 #endif
 
-static blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+நிலையான blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_SINGLE, TRTRS_UNN_SINGLE, TRTRS_UTU_SINGLE, TRTRS_UTN_SINGLE, TRTRS_URU_SINGLE, TRTRS_URN_SINGLE, TRTRS_UCU_SINGLE, TRTRS_UCN_SINGLE, TRTRS_LNU_SINGLE, TRTRS_LNN_SINGLE, TRTRS_LTU_SINGLE, TRTRS_LTN_SINGLE, TRTRS_LRU_SINGLE, TRTRS_LRN_SINGLE, TRTRS_LCU_SINGLE, TRTRS_LCN_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+நிலையான blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_PARALLEL, TRTRS_UNN_PARALLEL, TRTRS_UTU_PARALLEL, TRTRS_UTN_PARALLEL, TRTRS_URU_PARALLEL, TRTRS_URN_PARALLEL, TRTRS_UCU_PARALLEL, TRTRS_UCN_PARALLEL, TRTRS_LNU_PARALLEL, TRTRS_LNN_PARALLEL, TRTRS_LTU_PARALLEL, TRTRS_LTN_PARALLEL, TRTRS_LRU_PARALLEL, TRTRS_LRN_PARALLEL, TRTRS_LCU_PARALLEL, TRTRS_LCN_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+வெறுமை NAME(எழுத்து *UPLO, எழுத்து* TRANS, எழுத்து* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   FLOAT *b, blasint *ldB, blasint *Info){
 
-    char uplo_arg = *UPLO;
-    char trans_arg = *TRANS;
-    char diag_arg = *DIAG;
+    எழுத்து uplo_arg = *UPLO;
+    எழுத்து trans_arg = *TRANS;
+    எழுத்து diag_arg = *DIAG;
 
   blas_arg_t args;
 
   blasint info;
-  int uplo, trans, diag;
+  முழு uplo, trans, diag;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  வெளி
 #endif
   FLOAT *sa, *sb;
 
@@ -82,55 +82,55 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (வெறுமை *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (வெறுமை *)b;
   args.ldb  = *ldB;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  எனில் (trans_arg == 'N') trans = 0;
+  எனில் (trans_arg == 'T') trans = 1;
+  எனில் (trans_arg == 'R') trans = 2;
+  எனில் (trans_arg == 'C') trans = 3;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  எனில் (uplo_arg == 'U') uplo = 0;
+  எனில் (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  எனில் (diag_arg == 'U') diag = 0;
+  எனில் (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  எனில் (args.ldb  < MAX(1, args.m)) info = 9;
+  எனில் (args.lda  < MAX(1, args.m)) info = 7;
+  எனில் (args.n    < 0) info = 5;
+  எனில் (args.m    < 0) info = 4;
+  எனில் (trans     < 0) info = 2;
+  எனில் (uplo      < 0) info = 1;
+  எனில் (diag      < 0) info = 3;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  எனில் (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    திரும்பு;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = வெற்று;
+  args.beta  = வெற்று;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  எனில் (args.m == 0) திரும்பு;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
+  எனில் (diag) {
+    எனில் (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+      திரும்பு;
     }
   }
 
@@ -147,21 +147,21 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
+  args.common = வெற்று;
+  எனில் (args.m < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } இல்லையெனில் {
+    args.nthreads = இலக்கம்_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  எனில் (args.nthreads == 1) {
 #endif
 
-      (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+      (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&args, வெற்று, வெற்று, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  } இல்லையெனில் {
+    (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&args, வெற்று, வெற்று, sa, sb, 0);
   }
 #endif
 
@@ -173,6 +173,6 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 
 }

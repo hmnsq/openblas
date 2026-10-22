@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XGETF2"
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZGETF2"
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CGETF2"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+வெறுமை NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  வெளி
 #endif
   FLOAT *sa, *sb;
 
@@ -66,22 +66,22 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (வெறுமை *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (வெறுமை *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  எனில் (args.lda < MAX(1,args.m)) info = 4;
+  எனில் (args.n   < 0)             info = 2;
+  எனில் (args.m   < 0)             info = 1;
+  எனில் (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    திரும்பு;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  எனில் (args.m == 0 || args.n == 0) திரும்பு;
 
   IDEBUG_START;
 
@@ -94,7 +94,7 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = GETF2(&args, NULL, NULL, sa, sb, 0);
+  info = GETF2(&args, வெற்று, வெற்று, sa, sb, 0);
 
   *Info = info;
 
@@ -106,5 +106,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 }

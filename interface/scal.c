@@ -37,48 +37,48 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+வெறுமை NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#இல்லையெனில்
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+வெறுமை CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  முழு mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#இல்லையெனில்
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  எனில் (incx <= 0 || n <= 0) திரும்பு;
 
 #ifdef BGEMM
-  float alpha_float;
+  தசம alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#இல்லையெனில்
   FLOAT alpha_float = alpha;
 #endif
 
-  if (alpha_float == ONE) return;
+  எனில் (alpha_float == ONE) திரும்பு;
 
   IDEBUG_START;
 
@@ -86,33 +86,33 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 
 #ifdef SMP
-  if (n <= 1048576 )
+  எனில் (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  இல்லையெனில்
+	nthreads = இலக்கம்_cpu_avail(1);
 
 
-  if (nthreads == 1) {
+  எனில் (nthreads == 1) {
 #endif
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, வெற்று, 0, வெற்று, 1);
 
 #ifdef SMP
-  } else {
+  } இல்லையெனில் {
 
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#இல்லையெனில்
     mode  =  BLAS_SINGLE | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0,
 #ifndef CBLAS
 		       ALPHA,
-#else
+#இல்லையெனில்
 		       &alpha,
 #endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+		       x, incx, வெற்று, 0, வெற்று, 1,  (முழு (*)(வெறுமை))SCAL_K, nthreads);
 
   }
 #endif
@@ -121,6 +121,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 
 }

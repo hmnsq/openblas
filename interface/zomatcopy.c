@@ -29,16 +29,16 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2014/06/09 Saar
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ <stdlib.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#எனில் defined(DOUBLE)
 #define ERROR_NAME "ZOMATCOPY"
-#else
+#இல்லையெனில்
 #define ERROR_NAME "COMATCOPY"
 #endif
 
@@ -52,11 +52,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+வெறுமை NAME( எழுத்து* ORDER, எழுத்து* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	எழுத்து Order, Trans;
+	முழு order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -65,114 +65,114 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTransConj;
-	if ( Trans == 'R' ) trans = BlasConj;
+	எனில் ( Order == 'C' ) order = BlasColMajor;
+	எனில் ( Order == 'R' ) order = BlasRowMajor;
+	எனில் ( Trans == 'N' ) trans = BlasNoTrans;
+	எனில் ( Trans == 'T' ) trans = BlasTrans;
+	எனில் ( Trans == 'C' ) trans = BlasTransConj;
+	எனில் ( Trans == 'R' ) trans = BlasConj;
 
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
+#இல்லையெனில் 
+வெறுமை CNAME(எண்ணிக்கை CBLAS_ORDER CORDER, எண்ணிக்கை CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
-	int order=-1,trans=-1;
+	முழு order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	எனில் ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	எனில் ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
-	if ( CTRANS == CblasTrans) trans = BlasTrans; 
-	if ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
+	எனில் ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
+	எனில் ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
+	எனில் ( CTRANS == CblasTrans) trans = BlasTrans; 
+	எனில் ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
 
 	rows = &crows; 
 	cols = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
 #endif
-	if ( order == BlasColMajor)
+	எனில் ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	எனில் ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	எனில் ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
+        	எனில் ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
+        	எனில் ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	எனில் ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	எனில் ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	எனில் ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
+        	எனில் ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	எனில் ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	எனில் ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	எனில் ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	எனில் ( *cols < 0 ) info = 4;
+	எனில் ( *rows < 0 ) info = 3;
+	எனில் ( trans < 0 ) info = 2;
+	எனில் ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	எனில் (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME));
+    		திரும்பு;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	எனில் ((*rows == 0) || (*cols == 0)) திரும்பு;
 
-	if ( order == BlasColMajor )
+	எனில் ( order == BlasColMajor )
 	{
 
-		if ( trans == BlasNoTrans )
+		எனில் ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
-		if ( trans == BlasConj )
+		எனில் ( trans == BlasConj )
 		{
 			OMATCOPY_K_CNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
-		if ( trans == BlasTrans )
+		எனில் ( trans == BlasTrans )
 		{
 			OMATCOPY_K_CT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
-		if ( trans == BlasTransConj )
+		எனில் ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_CTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
 
 	}
-	else
+	இல்லையெனில்
 	{
 
-		if ( trans == BlasNoTrans )
+		எனில் ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
-		if ( trans == BlasConj )
+		எனில் ( trans == BlasConj )
 		{
 			OMATCOPY_K_RNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
-		if ( trans == BlasTrans )
+		எனில் ( trans == BlasTrans )
 		{
 			OMATCOPY_K_RT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
-		if ( trans == BlasTransConj )
+		எனில் ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_RTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			திரும்பு;
 		}
 
 	}
 
-	return;
+	திரும்பு;
 
 }
 

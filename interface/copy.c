@@ -36,16 +36,16 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+வெறுமை NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
@@ -53,28 +53,28 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   PRINT_DEBUG_NAME;
 
-#else
+#இல்லையெனில்
 
 #ifdef COMPLEX
-void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+வெறுமை CNAME(blasint n, வெறுமை *vx, blasint incx, வெறுமை *vy, blasint incy){
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#இல்லையெனில்
+வெறுமை CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 #endif
 
   PRINT_DEBUG_CNAME;
 
 #endif
 
-  if (n <= 0) return;
+  எனில் (n <= 0) திரும்பு;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0) y -= (n - 1) * incy * COMPSIZE;
+  எனில் (incx < 0) x -= (n - 1) * incx * COMPSIZE;
+  எனில் (incy < 0) y -= (n - 1) * incy * COMPSIZE;
 
   COPY_K(n, x, incx, y, incy);
 
@@ -82,6 +82,6 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 
 }

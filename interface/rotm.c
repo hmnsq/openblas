@@ -1,22 +1,22 @@
-#include "common.h"
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *dx, blasint *INCX, FLOAT *dy, blasint *INCY, FLOAT *dparam){
+வெறுமை NAME(blasint *N, FLOAT *dx, blasint *INCX, FLOAT *dy, blasint *INCY, FLOAT *dparam){
 
     blasint n = *N;
     blasint incx = *INCX;
     blasint incy = *INCY;
 
     PRINT_DEBUG_NAME
-#else
+#இல்லையெனில்
 
-void CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *dparam){
+வெறுமை CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *dparam){
 
     PRINT_DEBUG_CNAME;
 
@@ -24,6 +24,6 @@ void CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *d
 
     ROTM_K(n, dx, incx, dy, incy, dparam);
 
-    return;
+    திரும்பு;
 }
 

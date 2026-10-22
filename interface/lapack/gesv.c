@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#அந்தர்பாவ "functable.h"
 #endif
 
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define ERROR_NAME "QGESV"
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "DGESV"
-#else
+#இல்லையெனில்
 #define ERROR_NAME "SGESV"
 #endif
-#else
+#இல்லையெனில்
 #ifdef XDOUBLE
 #define ERROR_NAME "XGESV"
-#elif defined(DOUBLE)
+#அல்லதெனில் defined(DOUBLE)
 #define ERROR_NAME "ZGESV"
-#else
+#இல்லையெனில்
 #define ERROR_NAME "CGESV"
 #endif
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
+வெறுமை NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
          FLOAT *b, blasint *ldB, blasint *Info){
 
   blas_arg_t args;
@@ -69,7 +69,7 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  வெளி
 #endif
   FLOAT *sa, *sb;
 
@@ -77,30 +77,30 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (வெறுமை *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (வெறுமை *)b;
   args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  args.c    = (வெறுமை *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  எனில் (args.ldb < MAX(1,args.m)) info = 7;
+  எனில் (args.lda < MAX(1,args.m)) info = 4;
+  எனில் (args.n   < 0)             info = 2;
+  எனில் (args.m   < 0)             info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  எனில் (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, அளவு(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    திரும்பு;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = வெற்று;
+  args.beta  = வெற்று;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  எனில் (args.m == 0) திரும்பு;
 
   IDEBUG_START;
 
@@ -114,50 +114,50 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  args.common = வெற்று;
 
-#if defined(_WIN64) && defined(_M_ARM64)
+#எனில் defined(_WIN64) && defined(_M_ARM64)
   #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
+    எனில் (args.m * args.m <= 300) 
+  #இல்லையெனில்
+    எனில் (args.m * args.m <= 500) 
   #endif
       args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
+  இல்லையெனில் எனில் (args.m * args.m <= 1000)
     args.nthreads = 4;
-  else
-    args.nthreads = num_cpu_avail(4);
-#else
+  இல்லையெனில்
+    args.nthreads = இலக்கம்_cpu_avail(4);
+#இல்லையெனில்
   #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
+    எனில் (args.m * args.m < 40000)
+  #இல்லையெனில்
+    எனில் (args.m * args.m < 10000)
   #endif
       args.nthreads = 1;
-    else
-      args.nthreads = num_cpu_avail(4);
+    இல்லையெனில்
+      args.nthreads = இலக்கம்_cpu_avail(4);
 #endif
 
-  if (args.nthreads == 1) {
+  எனில் (args.nthreads == 1) {
 #endif
 
     args.n    = *N;
-    info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    info = GETRF_SINGLE(&args, வெற்று, வெற்று, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
+    எனில் (info == 0 && *NRHS >0){
       args.n    = *NRHS;
-      GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
+      GETRS_N_SINGLE(&args, வெற்று, வெற்று, sa, sb, 0);
     }
 
 #ifdef SMP
-  } else {
+  } இல்லையெனில் {
 
     args.n    = *N;
-    info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    info = GETRF_PARALLEL(&args, வெற்று, வெற்று, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
+    எனில் (info == 0 && *NRHS > 0){
       args.n    = *NRHS;
-      GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+      GETRS_N_PARALLEL(&args, வெற்று, வெற்று, sa, sb, 0);
     }
   }
 #endif
@@ -172,5 +172,5 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   IDEBUG_END;
 
-  return;
+  திரும்பு;
 }
