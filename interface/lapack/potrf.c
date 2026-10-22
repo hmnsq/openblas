@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QPOTRF"
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "DPOTRF"
-#else
+#अन्यथा
 #define ERROR_NAME "SPOTRF"
 #endif
 
-static blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+स्थिर blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_SINGLE, POTRF_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+स्थिर blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_PARALLEL, POTRF_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+शून्य NAME(वर्ण *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -70,35 +70,35 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  बाह्य
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (शून्य *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  यदि (uplo_arg == 'U') uplo = 0;
+  यदि (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  यदि (args.lda < MAX(1,args.n)) info = 4;
+  यदि (args.n   < 0)             info = 2;
+  यदि (uplo     < 0)             info = 1;
+  यदि (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    प्रत्यागम;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  यदि (args.n == 0) प्रत्यागम;
 
   IDEBUG_START;
 
@@ -112,28 +112,28 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  args.common = रिक्त;
 #ifndef DOUBLE
-  int nmax = 128;
-#else 
-  int nmax = 64;
+  पूर्णाङ्क nmax = 128;
+#अन्यथा 
+  पूर्णाङ्क nmax = 64;
 #endif
-  if (args.n <nmax) {
+  यदि (args.n <nmax) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
-    if (args.n/args.nthreads <nmax)
+  } अन्यथा {
+    args.nthreads = अंक_cpu_avail(4);
+    यदि (args.n/args.nthreads <nmax)
 	    args.nthreads = args.n/nmax;
   }
 
-  if (args.nthreads == 1) {
+  यदि (args.nthreads == 1) {
 #endif
 
-    *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_single[uplo])(&args, रिक्त, रिक्त, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+  } अन्यथा {
+    *Info = (potrf_parallel[uplo])(&args, रिक्त, रिक्त, sa, sb, 0);
   }
 #endif
 
@@ -147,5 +147,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  प्रत्यागम;
 }
