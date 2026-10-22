@@ -46,9 +46,9 @@
 
 #ifdef USE_ABS
 
-#if defined(DOUBLE)
+#ᨀᨘ defined(DOUBLE)
 #define ABS fabs
-#else
+#ᨀᨘᨁ
 #define ABS fabsf
 #endif
 
@@ -60,20 +60,20 @@
 #define MAX_K	QAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMAX_K
-#else
+#ᨀᨘᨁ
 #define MAX_K	SAMAX_K
 #endif
-#else
+#ᨀᨘᨁ
 #ifdef XDOUBLE
 #define MAX_K	XAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMAX_K
-#else
+#ᨀᨘᨁ
 #define MAX_K	CAMAX_K
 #endif
 #endif
 
-#else
+#ᨀᨘᨁ
 
 /* ABS & MIN */
 #ifndef COMPLEX
@@ -81,22 +81,22 @@
 #define MAX_K	QAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMIN_K
-#else
+#ᨀᨘᨁ
 #define MAX_K	SAMIN_K
 #endif
-#else
+#ᨀᨘᨁ
 #ifdef XDOUBLE
 #define MAX_K	XAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMIN_K
-#else
+#ᨀᨘᨁ
 #define MAX_K	CAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#ᨀᨘᨁ
 
 #define ABS
 
@@ -107,18 +107,18 @@
 #define MAX_K	QMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DMAX_K
-#else
+#ᨀᨘᨁ
 #define MAX_K	SMAX_K
 #endif
 
-#else
+#ᨀᨘᨁ
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	QMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DMIN_K
-#else
+#ᨀᨘᨁ
 #define MAX_K	SMIN_K
 #endif
 
@@ -138,12 +138,12 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ᨀᨘ (n <= 0) ᨀᨘᨒ 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ᨀᨘ (incx == 0) ᨀᨘᨒ (ABS(*x));
+#ᨀᨘᨁ
+  ᨀᨘ (incx == 0) ᨀᨘᨒ (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -156,15 +156,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ᨀᨘᨒ ret;
 }
 
-#else
+#ᨀᨘᨁ
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ᨀᨘᨁ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
   
@@ -172,12 +172,12 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ᨀᨘ (n <= 0) ᨀᨘᨒ 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ᨀᨘ (incx == 0) ᨀᨘᨒ (ABS(*x));
+#ᨀᨘᨁ
+  ᨀᨘ (incx == 0) ᨀᨘᨒ (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -190,7 +190,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ᨀᨘᨒ ret;
 }
 
 #endif

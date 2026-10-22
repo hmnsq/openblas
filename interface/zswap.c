@@ -42,9 +42,9 @@
 #include "functable.h"
 #endif
 
-#if defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
+#ᨀᨘ defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
 // Multithreaded swap gives performance benefits in ThunderX2T99
-#else
+#ᨀᨘᨁ
 // Disable multi-threading as it does not show any performance
 // benefits. Keep the multi-threading code for the record.
 #undef SMP
@@ -60,7 +60,7 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
+#ᨀᨘᨁ
 
 void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
 FLOAT *x = (FLOAT*)vx;
@@ -68,47 +68,47 @@ FLOAT *y = (FLOAT*)vy;
 #endif
 
 #ifdef SMP
-  int mode;
+  puur_naa_nka mode;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-  int nthreads;
+  puur_naa_nka nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ᨀᨘᨁ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (n <= 0) return;
+  ᨀᨘ (n <= 0) ᨀᨘᨒ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ᨀᨘ (incx < 0) x -= (n - 1) * incx * 2;
+  ᨀᨘ (incy < 0) y -= (n - 1) * incy * 2;
 
 #ifdef SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
-  if (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / sizeof(FLOAT))
+  ᨀᨘ (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / parimaa_na(FLOAT))
 	  nthreads = 1;
-  else
+  ᨀᨘᨁ
 	  nthreads = num_cpu_avail(1);
 
-  if (nthreads == 1) {
+  ᨀᨘ (nthreads == 1) {
 #endif
 
   SWAP_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, NULL, 0);
 
 #ifdef SMP
-  } else {
+  } ᨀᨘᨁ {
 
 #ifdef XDOUBLE
     mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
     mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#ᨀᨘᨁ
     mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 
@@ -122,6 +122,6 @@ FLOAT *y = (FLOAT*)vy;
 
   IDEBUG_END;
 
-  return;
+  ᨀᨘᨒ;
 
 }

@@ -36,9 +36,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ᨀᨘ defined(DOUBLE)
 #define ERROR_NAME "DOMATCOPY"
-#else
+#ᨀᨘᨁ
 #define ERROR_NAME "SOMATCOPY"
 #endif
 
@@ -50,11 +50,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS 
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+void NAME( var_na* ORDER, var_na* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	var_na Order, Trans;
+	puur_naa_nka order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -63,25 +63,25 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
+	ᨀᨘ ( Order == 'C' ) order = BlasColMajor;
+	ᨀᨘ ( Order == 'R' ) order = BlasRowMajor;
+	ᨀᨘ ( Trans == 'N' ) trans = BlasNoTrans;
+	ᨀᨘ ( Trans == 'R' ) trans = BlasNoTrans;
+	ᨀᨘ ( Trans == 'T' ) trans = BlasTrans;
+	ᨀᨘ ( Trans == 'C' ) trans = BlasTrans;
+#ᨀᨘᨁ 
+void CNAME(ga_nanaa CBLAS_ORDER CORDER, ga_nanaa CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
 	FLOAT   *alpha; 
-	int order=-1,trans=-1;
+	puur_naa_nka order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	ᨀᨘ ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	ᨀᨘ ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
+	ᨀᨘ ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
+	ᨀᨘ ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -90,55 +90,55 @@ void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, 
 	alpha = &calpha; 
 
 #endif
-	if ( order == BlasColMajor)
+	ᨀᨘ ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ᨀᨘ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ᨀᨘ ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	ᨀᨘ ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ᨀᨘ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ᨀᨘ ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ᨀᨘ ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	ᨀᨘ ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	ᨀᨘ ( *cols < 0 ) info = 4;
+	ᨀᨘ ( *rows < 0 ) info = 3;
+	ᨀᨘ ( trans < 0 ) info = 2;
+	ᨀᨘ ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ᨀᨘ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    		ᨀᨘᨒ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ᨀᨘ ((*rows == 0) || (*cols == 0)) ᨀᨘᨒ;
 
-	if ( order == BlasColMajor )
+	ᨀᨘ ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		ᨀᨘ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		ᨀᨘᨁ
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
-	else
+	ᨀᨘᨁ
 	{
-		if ( trans == BlasNoTrans )
+		ᨀᨘ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		ᨀᨘᨁ
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
 
-	return;
+	ᨀᨘᨒ;
 
 }
 

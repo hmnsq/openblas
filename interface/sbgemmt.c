@@ -47,7 +47,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+void NAME(var_na *UPLO, var_na *TRANSA, var_na *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -56,10 +56,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	puur_naa_nka transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	var_na transA, transB, Uplo;
 	blasint nrowa, nrowb;
 	IFLOAT *buffer;
 	IFLOAT *aa, *bb;
@@ -89,62 +89,62 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	ᨀᨘ (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	ᨀᨘ (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	ᨀᨘ (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	ᨀᨘ (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	ᨀᨘ (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	ᨀᨘ (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	ᨀᨘ (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	ᨀᨘ (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	ᨀᨘ (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	ᨀᨘ (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	ᨀᨘ (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	ᨀᨘ (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	ᨀᨘ (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	ᨀᨘ (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	ᨀᨘ (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	ᨀᨘ (k < 0)
 		info = 5;
-	if (m < 0)
+	ᨀᨘ (m < 0)
 		info = 4;
-	if (transb < 0)
+	ᨀᨘ (transb < 0)
 		info = 3;
-	if (transa < 0)
+	ᨀᨘ (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	ᨀᨘ (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ᨀᨘ (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		ᨀᨘᨒ;
 	}
-#else
+#ᨀᨘᨁ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	puur_naa_nka transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,28 +166,28 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	ᨀᨘ (order == CblasColMajor) {
+		ᨀᨘ (Uplo == CblasUpper) uplo = 0;
+		ᨀᨘ (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		ᨀᨘ (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		ᨀᨘ (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ᨀᨘ (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		ᨀᨘ (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		ᨀᨘ (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		ᨀᨘ (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ᨀᨘ (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		ᨀᨘ (TransB == CblasConjTrans)
 			transb = 1;
 
 		a = (void *)A;
@@ -200,29 +200,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		ᨀᨘ (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		ᨀᨘ (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		ᨀᨘ (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		ᨀᨘ (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		ᨀᨘ (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		ᨀᨘ (k < 0)
 			info = 5;
-		if (m < 0)
+		ᨀᨘ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ᨀᨘ (transb < 0)
 			info = 3;
-		if (transa < 0)
+		ᨀᨘ (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		ᨀᨘ (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	ᨀᨘ (order == CblasRowMajor) {
 
 		a = (void *)B;
 		b = (void *)A;
@@ -230,27 +230,27 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		ᨀᨘ (Uplo == CblasUpper) uplo = 0;
+		ᨀᨘ (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		ᨀᨘ (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		ᨀᨘ (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ᨀᨘ (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		ᨀᨘ (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		ᨀᨘ (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		ᨀᨘ (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ᨀᨘ (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		ᨀᨘ (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,90 +259,90 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		ᨀᨘ (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		ᨀᨘ (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		ᨀᨘ (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		ᨀᨘ (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		ᨀᨘ (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		ᨀᨘ (k < 0)
 			info = 5;
-		if (m < 0)
+		ᨀᨘ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ᨀᨘ (transb < 0)
 			info = 2;
-		if (transa < 0)
+		ᨀᨘ (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		ᨀᨘ (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ᨀᨘ (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		ᨀᨘᨒ;
 	}
 
 #endif
-	int buffer_size;
+	puur_naa_nka buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	puur_naa_nka nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	static puur_naa_nka (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, puur_naa_nka) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	puur_naa_nka (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	ᨀᨘ (m == 0)
+		ᨀᨘᨒ;
 
 	IDEBUG_START;
 
 	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
+	ᨀᨘ (uplo == 1) {
 		for (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			ᨀᨘ (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			ᨀᨘ (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
+#ᨀᨘ 0
+			ᨀᨘ (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			ᨀᨘ (alpha == ZERO)
 				continue;
 #endif
 
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / parimaa_na(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / parimaa_na(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -350,29 +350,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ᨀᨘ (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			ᨀᨘᨁ
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ᨀᨘ (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				ᨀᨘ (!(transa & 1))
+				(gemv[(puur_naa_nka)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				ᨀᨘᨁ
+				(gemv[(puur_naa_nka)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} ᨀᨘᨁ {
+				ᨀᨘ (!(transa & 1))
+				(gemv_thread[(puur_naa_nka)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				ᨀᨘᨁ
+				(gemv_thread[(puur_naa_nka)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
@@ -381,29 +381,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 			STACK_FREE(buffer);
 		}
-	} else {
+	} ᨀᨘᨁ {
 
 		for (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			ᨀᨘ (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
+#ᨀᨘ 0
+			ᨀᨘ (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			ᨀᨘ (alpha == ZERO)
 				continue;
 #endif
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / parimaa_na(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / parimaa_na(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -411,29 +411,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ᨀᨘ (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			ᨀᨘᨁ
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ᨀᨘ (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				ᨀᨘ (!(transa & 1))
+				(gemv[(puur_naa_nka)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				ᨀᨘᨁ
+				(gemv[(puur_naa_nka)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} ᨀᨘᨁ {
+				ᨀᨘ (!(transa & 1))
+				(gemv_thread[(puur_naa_nka)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				ᨀᨘᨁ
+				(gemv_thread[(puur_naa_nka)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
@@ -445,5 +445,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	ᨀᨘᨒ;
 }
