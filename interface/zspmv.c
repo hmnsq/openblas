@@ -36,49 +36,49 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن <ctype.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef XDOUBLE
-#define ERROR_NAME "ZSPMV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSPMV "
-#else
-#define ERROR_NAME "CSPMV "
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "ZSPMV "
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "ZSPMV "
+#وإلا
+#وصف_ڪريو ERROR_NAME "CSPMV "
+#جيڪڏهن_پورو
 
-static  int (*spmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
-#ifdef XDOUBLE
+ساكن  صحيح (*spmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, فراغ *) = {
+#جيڪڏهن_وصف_ٿيل XDOUBLE
   xspmv_U, xspmv_L,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   zspmv_U, zspmv_L,
-#else
+#وإلا
   cspmv_U, cspmv_L,
-#endif
+#جيڪڏهن_پورو
 };
 
-#ifdef SMPTEST
-static  int (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#جيڪڏهن_وصف_ٿيل SMPTEST
+ساكن  صحيح (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, صحيح) = {
+#جيڪڏهن_وصف_ٿيل XDOUBLE
   xspmv_thread_U, xspmv_thread_L,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   zspmv_thread_U, zspmv_thread_L,
-#else
+#وإلا
   cspmv_thread_U, cspmv_thread_L,
-#endif
+#جيڪڏهن_پورو
 };
-#endif
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
+فراغ NAME(حرف *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
             FLOAT  *b, blasint *INCX, FLOAT *BETA, FLOAT *c, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  حرف uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,74 +88,74 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+  صحيح uplo;
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل SMPTEST
+  صحيح nthreads;
+#جيڪڏهن_پورو
 
   PRINT_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  إذا (uplo_arg  == 'U') uplo  = 0;
+  إذا (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  9;
-  if (incx == 0)          info =  6;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  إذا (incy == 0)          info =  9;
+  إذا (incx == 0)          info =  6;
+  إذا (n < 0)              info =  2;
+  إذا (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-  if (n == 0) return;
+  إذا (n == 0) أرجع;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, abs(incy), NULL, 0, NULL, 0);
+  إذا ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, مطلق_قدر(incy), عدم, 0, عدم, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  إذا ((alpha_r == ZERO) && (alpha_i == ZERO)) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
+  إذا (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
+  إذا (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  بفر = (FLOAT *)blas_يادگيري_alloc(1);
+  إذا (!بفر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#ifdef SMPTEST
-  nthreads = num_cpu_avail(2);
+#جيڪڏهن_وصف_ٿيل SMPTEST
+  nthreads = انگ_cpu_avail(2);
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جيڪڏهن_پورو
 
-  (spmv[uplo])(n, alpha_r, alpha_i, a, b, incx, c, incy, buffer);
+  (spmv[uplo])(n, alpha_r, alpha_i, a, b, incx, c, incy, بفر);
 
-#ifdef SMPTEST
+#جيڪڏهن_وصف_ٿيل SMPTEST
 
-  } else {
+  } وإلا {
 
-    (spmv_thread[uplo])(n, ALPHA, a, b, incx, c, incy, buffer, nthreads);
+    (spmv_thread[uplo])(n, ALPHA, a, b, incx, c, incy, بفر, nthreads);
 
   }
-#endif
+#جيڪڏهن_پورو
 
-  blas_memory_free(buffer);
+  blas_يادگيري_free(بفر);
 
-  FUNCTION_PROFILE_END(4, n * n / 2 + n, n * n);
+  FUNCTION_PROFILE_پڇاڙي(4, n * n / 2 + n, n * n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }

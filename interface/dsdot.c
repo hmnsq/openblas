@@ -36,68 +36,68 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
+مزدوج NAME(blasint *N, عائم *x, blasint *INCX, عائم *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-  double ret = 0.0;
+  مزدوج ret = 0.0;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  إذا (incx < 0) x -= (n - 1) * incx;
+  إذا (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_پڇاڙي(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return ret;
+  أرجع ret;
 
 }
 
-#else
+#وإلا
 
-double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
+مزدوج CNAME(blasint n, عائم *x, blasint incx, عائم *y, blasint incy){
 
-  double ret = 0.0;
+  مزدوج ret = 0.0;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  إذا (incx < 0) x -= (n - 1) * incx;
+  إذا (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_پڇاڙي(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return ret;
+  أرجع ret;
 
 }
 
-#endif
+#جيڪڏهن_پورو

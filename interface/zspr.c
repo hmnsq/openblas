@@ -36,120 +36,120 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن <ctype.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XSPR  "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSPR  "
-#else
-#define ERROR_NAME "CSPR  "
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "XSPR  "
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "ZSPR  "
+#وإلا
+#وصف_ڪريو ERROR_NAME "CSPR  "
+#جيڪڏهن_پورو
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
-#ifdef XDOUBLE
+ساكن صحيح (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+#جيڪڏهن_وصف_ٿيل XDOUBLE
   xspr_U, xspr_L,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   zspr_U, zspr_L,
-#else
+#وإلا
   cspr_U, cspr_L,
-#endif
+#جيڪڏهن_پورو
 };
 
-#ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
-#ifdef XDOUBLE
+#جيڪڏهن_وصف_ٿيل SMP
+ساكن صحيح (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, صحيح) = {
+#جيڪڏهن_وصف_ٿيل XDOUBLE
   xspr_thread_U, xspr_thread_L,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   zspr_thread_U, zspr_thread_L,
-#else
+#وإلا
   cspr_thread_U, cspr_thread_L,
-#endif
+#جيڪڏهن_پورو
 };
-#endif
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+فراغ NAME(حرف *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  حرف uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  صحيح uplo;
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل SMP
+  صحيح nthreads;
+#جيڪڏهن_پورو
 
   PRINT_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  إذا (uplo_arg  == 'U') uplo  = 0;
+  إذا (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  إذا (incx == 0)          info =  5;
+  إذا (n < 0)              info =  2;
+  إذا (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-  if (n == 0) return;
+  إذا (n == 0) أرجع;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  إذا ((alpha_r == ZERO) && (alpha_i == ZERO)) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  إذا (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  بفر = (FLOAT *)blas_يادگيري_alloc(1);
+  إذا (!بفر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#ifdef SMP
-  nthreads = num_cpu_avail(2);
+#جيڪڏهن_وصف_ٿيل SMP
+  nthreads = انگ_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  إذا (n < 50) nthreads = 1;
+  إذا (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جيڪڏهن_پورو
 
-    (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, buffer);
+    (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, بفر);
 
-#ifdef SMP
-  } else {
+#جيڪڏهن_وصف_ٿيل SMP
+  } وإلا {
 
-    (spr_thread[uplo])(n, ALPHA, x, incx, a, buffer, nthreads);
+    (spr_thread[uplo])(n, ALPHA, x, incx, a, بفر, nthreads);
 
   }
-#endif
+#جيڪڏهن_پورو
 
-  blas_memory_free(buffer);
+  blas_يادگيري_free(بفر);
 
-  FUNCTION_PROFILE_END(4, n * n / 2 + n, n * n);
+  FUNCTION_PROFILE_پڇاڙي(4, n * n / 2 + n, n * n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }

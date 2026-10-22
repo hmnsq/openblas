@@ -36,113 +36,113 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
-#if  defined(Z13)
-#define MULTI_THREAD_MINIMAL  200000
-#else
-#define MULTI_THREAD_MINIMAL  10000
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
+#إذا  defined(Z13)
+#وصف_ڪريو MULTI_THREAD_گهٽتر  200000
+#وإلا
+#وصف_ڪريو MULTI_THREAD_گهٽتر  10000
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+فراغ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   blasint n    = *N;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
-#ifdef COMPLEX
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy){
+#وإلا
+#جيڪڏهن_وصف_ٿيل COMPLEX
+فراغ CNAME(blasint n, فراغ *VALPHA, فراغ *vx, blasint incx, فراغ *vy, blasint incy){
 FLOAT *ALPHA = (FLOAT*) VALPHA;
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
-#endif
-#endif
+#وإلا
+فراغ CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
   FLOAT alpha_r = *(ALPHA + 0);
   FLOAT alpha_i = *(ALPHA + 1);
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#جيڪڏهن_وصف_ٿيل SMP
+  صحيح گهڻائي, nthreads;
+#جيڪڏهن_پورو
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#جيڪڏهن_پورو
 
-  if (n <= 0) return;
+  إذا (n <= 0) أرجع;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  إذا ((alpha_r == ZERO) && (alpha_i == ZERO)) أرجع;
 
-  if (incx == 0 && incy == 0) {
+  إذا (incx == 0 && incy == 0) {
   *y += n * (alpha_r * (*x) - alpha_i* (*(x+1)) );
   *(y+1) += n * (alpha_i * (*x) + alpha_r * (*(x +1)) );
-  return;
+  أرجع;
   }
   
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  إذا (incx < 0) x -= (n - 1) * incx * 2;
+  إذا (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef SMP
+#جيڪڏهن_وصف_ٿيل SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  إذا (incx == 0 || incy == 0 || n <= MULTI_THREAD_گهٽتر)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  وإلا
+	  nthreads = انگ_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جيڪڏهن_پورو
 
-#ifndef CONJ
-    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#else
-    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#endif
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, عدم, 0);
+#وإلا
+    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, عدم, 0);
+#جيڪڏهن_پورو
 
-#ifdef SMP
-  } else {
+#جيڪڏهن_وصف_ٿيل SMP
+  } وإلا {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+    گهڻائي  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وإلاإذا defined(DOUBLE)
+    گهڻائي  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#وإلا
+    گهڻائي  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#جيڪڏهن_پورو
 
-    blas_level1_thread(mode, n, 0, 0, ALPHA, x, incx, y, incy, NULL, 0,
-#ifndef CONJ
-                       (int (*)(void))AXPYU_K,
-#else
-                       (int (*)(void))AXPYC_K,
-#endif
+    blas_level1_thread(گهڻائي, n, 0, 0, ALPHA, x, incx, y, incy, عدم, 0,
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+                       (صحيح (*)(فراغ))AXPYU_K,
+#وإلا
+                       (صحيح (*)(فراغ))AXPYC_K,
+#جيڪڏهن_پورو
 		       nthreads);
   }
-#endif
+#جيڪڏهن_پورو
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_پڇاڙي(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 
 }

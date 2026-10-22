@@ -36,45 +36,45 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن <ctype.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QTBSV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DTBSV "
-#else
-#define ERROR_NAME "STBSV "
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "QTBSV "
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "DTBSV "
+#وإلا
+#وصف_ڪريو ERROR_NAME "STBSV "
+#جيڪڏهن_پورو
 
-static int (*tbsv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
-#ifdef XDOUBLE
+ساكن صحيح (*tbsv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, فراغ *) = {
+#جيڪڏهن_وصف_ٿيل XDOUBLE
   qtbsv_NUU, qtbsv_NUN, qtbsv_NLU, qtbsv_NLN,
   qtbsv_TUU, qtbsv_TUN, qtbsv_TLU, qtbsv_TLN,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   dtbsv_NUU, dtbsv_NUN, dtbsv_NLU, dtbsv_NLN,
   dtbsv_TUU, dtbsv_TUN, dtbsv_TLU, dtbsv_TLN,
-#else
+#وإلا
   stbsv_NUU, stbsv_NUN, stbsv_NLU, stbsv_NLN,
   stbsv_TUU, stbsv_TUN, stbsv_TLU, stbsv_TLN,
-#endif
+#جيڪڏهن_پورو
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+فراغ NAME(حرف *UPLO, حرف *TRANS, حرف *DIAG,
 	 blasint *N, blasint *K,
 	 FLOAT *a, blasint *LDA, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  حرف uplo_arg  = *UPLO;
+  حرف trans_arg = *TRANS;
+  حرف diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint k    = *K;
@@ -82,10 +82,10 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
-  FLOAT *buffer;
+  صحيح uplo;
+  صحيح unit;
+  صحيح trans;
+  FLOAT *بفر;
 
   PRINT_DEBUG_NAME;
 
@@ -97,41 +97,41 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  إذا (trans_arg == 'N') trans = 0;
+  إذا (trans_arg == 'T') trans = 1;
+  إذا (trans_arg == 'R') trans = 0;
+  إذا (trans_arg == 'C') trans = 1;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  إذا (diag_arg  == 'U') unit  = 0;
+  إذا (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  إذا (uplo_arg  == 'U') uplo  = 0;
+  إذا (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  9;
-  if (lda < k + 1)        info =  7;
-  if (k < 0)              info =  5;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  إذا (incx == 0)          info =  9;
+  إذا (lda < k + 1)        info =  7;
+  إذا (k < 0)              info =  5;
+  إذا (n < 0)              info =  4;
+  إذا (unit  < 0)          info =  3;
+  إذا (trans < 0)          info =  2;
+  إذا (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#else
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
+فراغ CNAME(تعداد CBLAS_ترتيب ترتيب, تعداد CBLAS_UPLO Uplo,
+	   تعداد CBLAS_TRANSPOSE TransA, تعداد CBLAS_DIAG Diag,
 	   blasint n, blasint k, FLOAT  *a, blasint lda, FLOAT  *x, blasint incx) {
 
-  int trans, uplo, unit;
+  صحيح trans, uplo, unit;
   blasint info;
-  FLOAT *buffer;
+  FLOAT *بفر;
 
   PRINT_DEBUG_CNAME;
 
@@ -140,81 +140,81 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  إذا (ترتيب == Cblas_کانو_Major) {
+    إذا (Uplo == Cblas_مٿانهون)         uplo  = 0;
+    إذا (Uplo == Cblas_هيٺاهون)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+    إذا (TransA == CblasNoTrans)     trans = 0;
+    إذا (TransA == CblasTrans)       trans = 1;
+    إذا (TransA == CblasConjNoTrans) trans = 0;
+    إذا (TransA == CblasConjTrans)   trans = 1;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  9;
-    if (lda < k + 1)        info =  7;
-    if (k < 0)              info =  5;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    إذا (Diag == CblasUnit)          unit  = 0;
+    إذا (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  9;
-    if (lda < k + 1)        info =  7;
-    if (k < 0)              info =  5;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    إذا (incx == 0)          info =  9;
+    إذا (lda < k + 1)        info =  7;
+    إذا (k < 0)              info =  5;
+    إذا (n < 0)              info =  4;
+    إذا (unit  < 0)          info =  3;
+    إذا (trans < 0)          info =  2;
+    إذا (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (ترتيب == Cblas_صف_Major) {
+    إذا (Uplo == Cblas_مٿانهون)         uplo  = 1;
+    إذا (Uplo == Cblas_هيٺاهون)         uplo  = 0;
+
+    إذا (TransA == CblasNoTrans)     trans = 1;
+    إذا (TransA == CblasTrans)       trans = 0;
+    إذا (TransA == CblasConjNoTrans) trans = 1;
+    إذا (TransA == CblasConjTrans)   trans = 0;
+
+    إذا (Diag == CblasUnit)          unit  = 0;
+    إذا (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    إذا (incx == 0)          info =  9;
+    إذا (lda < k + 1)        info =  7;
+    إذا (k < 0)              info =  5;
+    إذا (n < 0)              info =  4;
+    إذا (unit  < 0)          info =  3;
+    إذا (trans < 0)          info =  2;
+    إذا (uplo  < 0)          info =  1;
   }
 
-#endif
+  إذا (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
+  }
 
-  if (n == 0) return;
+#جيڪڏهن_پورو
 
-  IDEBUG_START;
+  إذا (n == 0) أرجع;
 
-  FUNCTION_PROFILE_START();
+  IDEBUG_شروعات;
 
-  if (incx < 0 ) x -= (n - 1) * incx;
+  FUNCTION_PROFILE_شروعات();
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  إذا (incx < 0 ) x -= (n - 1) * incx;
+
+  بفر = (FLOAT *)blas_يادگيري_alloc(1);
+  إذا (!بفر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-  (tbsv[(trans<<2) | (uplo<<1) | unit])(n, k, a, lda, x, incx, buffer);
+  (tbsv[(trans<<2) | (uplo<<1) | unit])(n, k, a, lda, x, incx, بفر);
 
-  blas_memory_free(buffer);
+  blas_يادگيري_free(بفر);
 
-  FUNCTION_PROFILE_END(1, n * k / 2 + n, n * k);
+  FUNCTION_PROFILE_پڇاڙي(1, n * k / 2 + n, n * k);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }

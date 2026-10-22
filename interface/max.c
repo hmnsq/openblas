@@ -36,99 +36,99 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#undef MAX_K
+#وصف_رد MAX_K
 
-#ifdef USE_ABS
+#جيڪڏهن_وصف_ٿيل USE_ABS
 
-#if defined(DOUBLE)
-#define ABS fabs
-#else
-#define ABS fabsf
-#endif
+#إذا defined(DOUBLE)
+#وصف_ڪريو ABS fabs
+#وإلا
+#وصف_ڪريو ABS fabsf
+#جيڪڏهن_پورو
 
-#ifndef USE_MIN
+#جيڪڏهن_وصف_نه_ٿيل USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMAX_K
-#else
-#define MAX_K	SAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMAX_K
-#else
-#define MAX_K	CAMAX_K
-#endif
-#endif
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو MAX_K	QAMAX_K
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو MAX_K	DAMAX_K
+#وإلا
+#وصف_ڪريو MAX_K	SAMAX_K
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو MAX_K	XAMAX_K
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو MAX_K	ZAMAX_K
+#وإلا
+#وصف_ڪريو MAX_K	CAMAX_K
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#else
+#وإلا
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMIN_K
-#else
-#define MAX_K	SAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMIN_K
-#else
-#define MAX_K	CAMIN_K
-#endif
-#endif
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو MAX_K	QAMIN_K
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو MAX_K	DAMIN_K
+#وإلا
+#وصف_ڪريو MAX_K	SAMIN_K
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو MAX_K	XAMIN_K
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو MAX_K	ZAMIN_K
+#وإلا
+#وصف_ڪريو MAX_K	CAMIN_K
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#endif
+#جيڪڏهن_پورو
 
-#else
+#وإلا
 
-#define ABS
+#وصف_ڪريو ABS
 
-#ifndef USE_MIN
+#جيڪڏهن_وصف_نه_ٿيل USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	QMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DMAX_K
-#else
-#define MAX_K	SMAX_K
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو MAX_K	QMAX_K
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو MAX_K	DMAX_K
+#وإلا
+#وصف_ڪريو MAX_K	SMAX_K
+#جيڪڏهن_پورو
 
-#else
+#وإلا
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	QMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DMIN_K
-#else
-#define MAX_K	SMIN_K
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو MAX_K	QMIN_K
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو MAX_K	DMIN_K
+#وإلا
+#وصف_ڪريو MAX_K	SMIN_K
+#جيڪڏهن_پورو
 
-#endif
+#جيڪڏهن_پورو
 
-#endif
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -138,59 +138,59 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+  إذا (incx == 0) أرجع (ABS(*x));
+#وإلا
+  إذا (incx == 0) أرجع (ABS(*x) + ABS(*(x+1)));
+#جيڪڏهن_پورو
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
   ret = (FLOATRET)MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_پڇاڙي(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return ret;
+  أرجع ret;
 }
 
-#else
+#وإلا
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#جيڪڏهن_وصف_ٿيل COMPLEX
+FLOAT CNAME(blasint n, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#وإلا
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#جيڪڏهن_پورو
   
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+  إذا (incx == 0) أرجع (ABS(*x));
+#وإلا
+  إذا (incx == 0) أرجع (ABS(*x) + ABS(*(x+1)));
+#جيڪڏهن_پورو
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
   ret = MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_پڇاڙي(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return ret;
+  أرجع ret;
 }
 
-#endif
+#جيڪڏهن_پورو

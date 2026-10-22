@@ -36,96 +36,96 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
-#if  defined(Z13)
-#define MULTI_THREAD_MINIMAL  200000
-#else
-#define MULTI_THREAD_MINIMAL  10000
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
+#إذا  defined(Z13)
+#وصف_ڪريو MULTI_THREAD_گهٽتر  200000
+#وإلا
+#وصف_ڪريو MULTI_THREAD_گهٽتر  10000
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+فراغ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
   FLOAT alpha = *ALPHA;
 
-#else
+#وإلا
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+فراغ CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
-#endif
+#جيڪڏهن_پورو
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#جيڪڏهن_وصف_ٿيل SMP
+  صحيح گهڻائي, nthreads;
+#جيڪڏهن_پورو
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#جيڪڏهن_پورو
 
-  if (n <= 0) return;
+  إذا (n <= 0) أرجع;
 
-  if (alpha == ZERO) return;
+  إذا (alpha == ZERO) أرجع;
 
-  if (incx == 0 && incy == 0) {
+  إذا (incx == 0 && incy == 0) {
     *y += n * alpha *(*x);
-    return;
+    أرجع;
   }
     
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  إذا (incx < 0) x -= (n - 1) * incx;
+  إذا (incy < 0) y -= (n - 1) * incy;
 
-#ifdef SMP
+#جيڪڏهن_وصف_ٿيل SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  إذا (incx == 0 || incy == 0 || n <= MULTI_THREAD_گهٽتر)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  وإلا
+	  nthreads = انگ_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جيڪڏهن_پورو
 
-  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, NULL, 0);
+  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, عدم, 0);
 
-#ifdef SMP
-  } else {
+#جيڪڏهن_وصف_ٿيل SMP
+  } وإلا {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+    گهڻائي  =  BLAS_XDOUBLE | BLAS_REAL;
+#وإلاإذا defined(DOUBLE)
+    گهڻائي  =  BLAS_DOUBLE  | BLAS_REAL;
+#وإلا
+    گهڻائي  =  BLAS_SINGLE  | BLAS_REAL;
+#جيڪڏهن_پورو
 
-    blas_level1_thread(mode, n, 0, 0, &alpha,
-		       x, incx, y, incy, NULL, 0,  (int (*)(void))AXPYU_K, nthreads);
+    blas_level1_thread(گهڻائي, n, 0, 0, &alpha,
+		       x, incx, y, incy, عدم, 0,  (صحيح (*)(فراغ))AXPYU_K, nthreads);
 
   }
-#endif
+#جيڪڏهن_پورو
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_پڇاڙي(1, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 
 }

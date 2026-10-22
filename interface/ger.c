@@ -36,41 +36,41 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef SMP
-#ifdef __64BIT__
-#define SMPTEST 1
-#endif
-#endif
+#جيڪڏهن_وصف_ٿيل SMP
+#جيڪڏهن_وصف_ٿيل __64BIT__
+#وصف_ڪريو SMPTEST 1
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGER  "
-#elif defined DOUBLE
-#define ERROR_NAME "DGER  "
-#else
-#define ERROR_NAME "SGER  "
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "QGER  "
+#وإلاإذا defined DOUBLE
+#وصف_ڪريو ERROR_NAME "DGER  "
+#وإلا
+#وصف_ڪريو ERROR_NAME "SGER  "
+#جيڪڏهن_پورو
 
-#define GER		GERU_K
+#وصف_ڪريو GER		GERU_K
 
-#if   defined XDOUBLE
-#define GER_THREAD	qger_thread
-#elif defined DOUBLE
-#define GER_THREAD	dger_thread
-#else
-#define GER_THREAD	sger_thread
-#endif
+#إذا   defined XDOUBLE
+#وصف_ڪريو GER_THREAD	qger_thread
+#وإلاإذا defined DOUBLE
+#وصف_ڪريو GER_THREAD	dger_thread
+#وإلا
+#وصف_ڪريو GER_THREAD	sger_thread
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+فراغ NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -81,10 +81,10 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    incx  = *INCX;
   blasint    incy  = *INCY;
   blasint    lda   = *LDA;
-  FLOAT *buffer;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل SMPTEST
+  صحيح nthreads;
+#جيڪڏهن_پورو
 
   blasint info;
 
@@ -92,47 +92,47 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  إذا (lda < MAX(1,m)) info = 9;
+  إذا (incy == 0)      info = 7;
+  إذا (incx == 0)      info = 5;
+  إذا (n < 0)          info = 2;
+  إذا (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#else
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order,
+فراغ CNAME(تعداد CBLAS_ترتيب ترتيب,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
 	   FLOAT  *y, blasint incy,
 	   FLOAT  *a, blasint lda) {
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   blasint info, t;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+#جيڪڏهن_وصف_ٿيل SMPTEST
+  صحيح nthreads;
+#جيڪڏهن_پورو
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  إذا (ترتيب == Cblas_کانو_Major) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    إذا (lda < MAX(1,m)) info = 9;
+    إذا (incy == 0)      info = 7;
+    إذا (incx == 0)      info = 5;
+    إذا (n < 0)          info = 2;
+    إذا (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  إذا (ترتيب == Cblas_صف_Major) {
     info = -1;
 
     t = n;
@@ -143,68 +143,68 @@ void CNAME(enum CBLAS_ORDER order,
     incx = incy;
     incy = t;
 
-    buffer = x;
+    بفر = x;
     x = y;
-    y = buffer;
+    y = بفر;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    إذا (lda < MAX(1,m)) info = 9;
+    إذا (incy == 0)      info = 7;
+    إذا (incx == 0)      info = 5;
+    إذا (n < 0)          info = 2;
+    إذا (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#endif
+#جيڪڏهن_پورو
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
-  if (alpha == 0.) return;
+  إذا (m == 0 || n == 0) أرجع;
+  إذا (alpha == 0.) أرجع;
 
-  if (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, NULL);
-    return;
+  إذا (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_حد) {
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, عدم);
+    أرجع;
   }  
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incy < 0) y -= (n - 1) * incy;
-  if (incx < 0) x -= (m - 1) * incx;
+  إذا (incy < 0) y -= (n - 1) * incy;
+  إذا (incx < 0) x -= (m - 1) * incx;
 
-  STACK_ALLOC(m, FLOAT, buffer);
+  ڍير_ALLOC(m, FLOAT, بفر);
 
-#ifdef SMPTEST
+#جيڪڏهن_وصف_ٿيل SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else if(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
-	  nthreads = MIN(3,num_cpu_avail(2));
-  else
+  إذا(1L * m * n > 20480L * GEMM_MULTITHREAD_حد)
+    nthreads = انگ_cpu_avail(2);
+  وإلا إذا(1L * m * n > 2048L * GEMM_MULTITHREAD_حد)
+	  nthreads = MIN(3,انگ_cpu_avail(2));
+  وإلا
     nthreads = 1;
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جيڪڏهن_پورو
 
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, buffer);
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, بفر);
 
-#ifdef SMPTEST
-  } else {
+#جيڪڏهن_وصف_ٿيل SMPTEST
+  } وإلا {
 
-    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
+    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, بفر, nthreads);
 
   }
-#endif
+#جيڪڏهن_پورو
 
-  STACK_FREE(buffer);
-  FUNCTION_PROFILE_END(1, m * n + m + n, 2 * m * n);
+  ڍير_FREE(بفر);
+  FUNCTION_PROFILE_پڇاڙي(1, m * n + m + n, 2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }

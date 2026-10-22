@@ -37,90 +37,90 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+فراغ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#وإلا
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+فراغ CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
-#endif
+#جيڪڏهن_پورو
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#جيڪڏهن_وصف_ٿيل SMP
+  صحيح گهڻائي, nthreads;
+#جيڪڏهن_پورو
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#جيڪڏهن_پورو
 
-  if (incx <= 0 || n <= 0) return;
+  إذا (incx <= 0 || n <= 0) أرجع;
 
-#ifdef BGEMM
-  float alpha_float;
+#جيڪڏهن_وصف_ٿيل BGEMM
+  عائم alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#وإلا
   FLOAT alpha_float = alpha;
-#endif
+#جيڪڏهن_پورو
 
-  if (alpha_float == ONE) return;
+  إذا (alpha_float == ONE) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
 
-#ifdef SMP
-  if (n <= 1048576 )
+#جيڪڏهن_وصف_ٿيل SMP
+  إذا (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  وإلا
+	nthreads = انگ_cpu_avail(1);
 
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جيڪڏهن_پورو
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, عدم, 0, عدم, 1);
 
-#ifdef SMP
-  } else {
+#جيڪڏهن_وصف_ٿيل SMP
+  } وإلا {
 
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE | BLAS_REAL;
-#endif
+#جيڪڏهن_وصف_ٿيل DOUBLE
+    گهڻائي  =  BLAS_DOUBLE | BLAS_REAL;
+#وإلا
+    گهڻائي  =  BLAS_SINGLE | BLAS_REAL;
+#جيڪڏهن_پورو
 
-    blas_level1_thread(mode, n, 0, 0,
-#ifndef CBLAS
+    blas_level1_thread(گهڻائي, n, 0, 0,
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 		       ALPHA,
-#else
+#وإلا
 		       &alpha,
-#endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+#جيڪڏهن_پورو
+		       x, incx, عدم, 0, عدم, 1,  (صحيح (*)(فراغ))SCAL_K, nthreads);
 
   }
-#endif
+#جيڪڏهن_پورو
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_پڇاڙي(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 
 }

@@ -36,100 +36,100 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRTI2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRTI2"
-#else
-#define ERROR_NAME "CTRTI2"
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "XTRTI2"
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "ZTRTI2"
+#وإلا
+#وصف_ڪريو ERROR_NAME "CTRTI2"
+#جيڪڏهن_پورو
 
-static blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifdef XDOUBLE
+ساكن blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#جيڪڏهن_وصف_ٿيل XDOUBLE
   xtrti2_UU, xtrti2_UN, xtrti2_LU, xtrti2_LN,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   ztrti2_UU, ztrti2_UN, ztrti2_LU, ztrti2_LN,
-#else
+#وإلا
   ctrti2_UU, ctrti2_UN, ctrti2_LU, ctrti2_LN,
-#endif
+#جيڪڏهن_پورو
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, حرف *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t دليلون;
 
   blasint uplo_arg = *UPLO;
   blasint diag_arg = *DIAG;
   blasint uplo, diag;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل PPC440
+  خارجي
+#جيڪڏهن_پورو
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  دليلون.n    = *N;
+  دليلون.a    = (فراغ *)a;
+  دليلون.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  إذا (diag_arg == 'U') diag = 0;
+  إذا (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (دليلون.lda  < MAX(1,دليلون.n)) info = 5;
+  إذا (دليلون.n    < 0)             info = 3;
+  إذا (diag < 0)                  info = 2;
+  إذا (uplo < 0)                  info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  إذا (دليلون.n <= 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  بفر = (FLOAT *)blas_يادگيري_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وٿي_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائيز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وٿي_B);
+#جيڪڏهن_پورو
 
-  info = (trti2[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  info = (trti2[(uplo << 1) | diag])(&دليلون, عدم, عدم, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  blas_يادگيري_free(بفر);
+#جيڪڏهن_پورو
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		          2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_پڇاڙي(1, .5 * دليلون.n * دليلون.n,
+		          2. * دليلون.n * (1./3. + دليلون.n * ( 1./2. + دليلون.n * 1./6.))
+		       +  6. * دليلون.n * (1./3. + دليلون.n * (-1./2. + دليلون.n * 1./6.)));
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }

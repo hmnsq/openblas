@@ -36,75 +36,75 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGETF2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGETF2"
-#else
-#define ERROR_NAME "SGETF2"
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "QGETF2"
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "DGETF2"
+#وإلا
+#وصف_ڪريو ERROR_NAME "SGETF2"
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+فراغ NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t دليلون;
 
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل PPC440
+  خارجي
+#جيڪڏهن_پورو
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *M;
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  دليلون.m    = *M;
+  دليلون.n    = *N;
+  دليلون.a    = (فراغ *)a;
+  دليلون.lda  = *ldA;
+  دليلون.c    = (فراغ *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (دليلون.lda < MAX(1,دليلون.m)) info = 4;
+  إذا (دليلون.n   < 0)             info = 2;
+  إذا (دليلون.m   < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  إذا (دليلون.m == 0 || دليلون.n == 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  بفر = (FLOAT *)blas_يادگيري_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وٿي_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائيز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وٿي_B);
+#جيڪڏهن_پورو
 
-  info = GETF2(&args, NULL, NULL, sa, sb, 0);
+  info = GETF2(&دليلون, عدم, عدم, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  blas_يادگيري_free(بفر);
+#جيڪڏهن_پورو
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n,  2. / 3. * args.m * args.n * args.n);
+  FUNCTION_PROFILE_پڇاڙي(COMPSIZE * COMPSIZE, دليلون.m * دليلون.n,  2. / 3. * دليلون.m * دليلون.n * دليلون.n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }

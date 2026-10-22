@@ -36,76 +36,76 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef SMP
-#ifdef __64BIT__
-#define SMPTEST 1
-#endif
-#endif
+#جيڪڏهن_وصف_ٿيل SMP
+#جيڪڏهن_وصف_ٿيل __64BIT__
+#وصف_ڪريو SMPTEST 1
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
 
-#ifdef XDOUBLE
-#ifndef CONJ
-#define ERROR_NAME "XGERU  "
-#else
-#define ERROR_NAME "XGERC  "
-#endif
-#elif defined DOUBLE
-#ifndef CONJ
-#define ERROR_NAME "ZGERU  "
-#else
-#define ERROR_NAME "ZGERC  "
-#endif
-#else
-#ifndef CONJ
-#define ERROR_NAME "CGERU  "
-#else
-#define ERROR_NAME "CGERC "
-#endif
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+#وصف_ڪريو ERROR_NAME "XGERU  "
+#وإلا
+#وصف_ڪريو ERROR_NAME "XGERC  "
+#جيڪڏهن_پورو
+#وإلاإذا defined DOUBLE
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+#وصف_ڪريو ERROR_NAME "ZGERU  "
+#وإلا
+#وصف_ڪريو ERROR_NAME "ZGERC  "
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+#وصف_ڪريو ERROR_NAME "CGERU  "
+#وإلا
+#وصف_ڪريو ERROR_NAME "CGERC "
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#if   defined XDOUBLE
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	xger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	xger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	xger_thread_V
-#endif
-#elif defined DOUBLE
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	zger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	zger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	zger_thread_V
-#endif
-#else
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	cger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	cger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	cger_thread_V
-#endif
-#endif
+#إذا   defined XDOUBLE
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+#وصف_ڪريو GER		GERU_K
+#وصف_ڪريو GER_THREAD	xger_thread_U
+#وإلا
+#وصف_ڪريو GER		GERC_K
+#وصف_ڪريو GER_THREAD	xger_thread_C
+#وصف_ڪريو GERV		GERV_K
+#وصف_ڪريو GERV_THREAD	xger_thread_V
+#جيڪڏهن_پورو
+#وإلاإذا defined DOUBLE
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+#وصف_ڪريو GER		GERU_K
+#وصف_ڪريو GER_THREAD	zger_thread_U
+#وإلا
+#وصف_ڪريو GER		GERC_K
+#وصف_ڪريو GER_THREAD	zger_thread_C
+#وصف_ڪريو GERV		GERV_K
+#وصف_ڪريو GERV_THREAD	zger_thread_V
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_نه_ٿيل CONJ
+#وصف_ڪريو GER		GERU_K
+#وصف_ڪريو GER_THREAD	cger_thread_U
+#وإلا
+#وصف_ڪريو GER		GERC_K
+#وصف_ڪريو GER_THREAD	cger_thread_C
+#وصف_ڪريو GERV		GERV_K
+#وصف_ڪريو GERV_THREAD	cger_thread_V
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+فراغ NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -117,10 +117,10 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    incx  = *INCX;
   blasint    incy  = *INCY;
   blasint    lda   = *LDA;
-  FLOAT *buffer;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل SMPTEST
+  صحيح nthreads;
+#جيڪڏهن_پورو
 
   blasint info;
 
@@ -128,25 +128,25 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  إذا (lda < MAX(1,m)) info = 9;
+  إذا (incy == 0)      info = 7;
+  إذا (incx == 0)      info = 5;
+  إذا (n < 0)          info = 2;
+  إذا (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#else
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order,
+فراغ CNAME(تعداد CBLAS_ترتيب ترتيب,
 	   blasint m, blasint n,
-	   void *VAlpha,
-	   void  *vx, blasint incx,
-	   void  *vy, blasint incy,
-	   void  *va, blasint lda) {
+	   فراغ *VAlpha,
+	   فراغ  *vx, blasint incx,
+	   فراغ  *vy, blasint incy,
+	   فراغ  *va, blasint lda) {
 
   FLOAT* Alpha = (FLOAT*) VAlpha;
   FLOAT* a = (FLOAT*) va;
@@ -156,27 +156,27 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT  alpha_r = Alpha[0];
   FLOAT  alpha_i = Alpha[1];
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   blasint info, t;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+#جيڪڏهن_وصف_ٿيل SMPTEST
+  صحيح nthreads;
+#جيڪڏهن_پورو
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  إذا (ترتيب == Cblas_کانو_Major) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    إذا (lda < MAX(1,m)) info = 9;
+    إذا (incy == 0)      info = 7;
+    إذا (incx == 0)      info = 5;
+    إذا (n < 0)          info = 2;
+    إذا (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  إذا (ترتيب == Cblas_صف_Major) {
     info = -1;
 
     t = n;
@@ -187,81 +187,81 @@ void CNAME(enum CBLAS_ORDER order,
     incx = incy;
     incy = t;
 
-    buffer = x;
+    بفر = x;
     x = y;
-    y = buffer;
+    y = بفر;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    إذا (lda < MAX(1,m)) info = 9;
+    إذا (incy == 0)      info = 7;
+    إذا (incx == 0)      info = 5;
+    إذا (n < 0)          info = 2;
+    إذا (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#endif
+#جيڪڏهن_پورو
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
+  إذا (m == 0 || n == 0) أرجع;
 
-  if ((alpha_r == 0.) && (alpha_i == 0.)) return;
+  إذا ((alpha_r == 0.) && (alpha_i == 0.)) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  if (incy < 0) y -= (n - 1) * incy * 2;
-  if (incx < 0) x -= (m - 1) * incx * 2;
+  إذا (incy < 0) y -= (n - 1) * incy * 2;
+  إذا (incx < 0) x -= (m - 1) * incx * 2;
 
-  STACK_ALLOC(2 * m, FLOAT, buffer);
+  ڍير_ALLOC(2 * m, FLOAT, بفر);
 
-#ifdef SMPTEST
+#جيڪڏهن_وصف_ٿيل SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else
+  إذا(1L * m * n > 36L * حجم(FLOAT) * حجم(FLOAT) * GEMM_MULTITHREAD_حد)
+    nthreads = انگ_cpu_avail(2);
+  وإلا
     nthreads = 1;
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جيڪڏهن_پورو
 
-#if !defined(CBLAS) || !defined(CONJ)
-  GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-#else
-  if (order == CblasColMajor) {
-    GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-  } else {
-    GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
+#إذا !defined(CBLAS) || !defined(CONJ)
+  GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, بفر);
+#وإلا
+  إذا (ترتيب == Cblas_کانو_Major) {
+    GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, بفر);
+  } وإلا {
+    GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, بفر);
   }
-#endif
+#جيڪڏهن_پورو
 
-#ifdef SMPTEST
+#جيڪڏهن_وصف_ٿيل SMPTEST
 
-  } else {
+  } وإلا {
 
-#if !defined(CBLAS) || !defined(CONJ)
-      GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-#else
-      if (order == CblasColMajor) {
-	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-      } else {
-	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
+#إذا !defined(CBLAS) || !defined(CONJ)
+      GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, بفر, nthreads);
+#وإلا
+      إذا (ترتيب == Cblas_کانو_Major) {
+	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, بفر, nthreads);
+      } وإلا {
+	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, بفر, nthreads);
       }
-#endif
+#جيڪڏهن_پورو
 
   }
-#endif
+#جيڪڏهن_پورو
 
-  STACK_FREE(buffer);
+  ڍير_FREE(بفر);
 
-  FUNCTION_PROFILE_END(4, m * n + m + n, 2 * m * n);
+  FUNCTION_PROFILE_پڇاڙي(4, m * n + m + n, 2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 
 }

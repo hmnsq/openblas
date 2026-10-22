@@ -36,63 +36,63 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن <ctype.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifndef TRMM
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QTRSM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DTRSM "
-#else
-#define ERROR_NAME "STRSM "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRSM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRSM "
-#else
-#define ERROR_NAME "CTRSM "
-#endif
-#endif
-#else
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QTRMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DTRMM "
-#else
-#define ERROR_NAME "STRMM "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRMM "
-#else
-#define ERROR_NAME "CTRMM "
-#endif
-#endif
-#endif
+#جيڪڏهن_وصف_نه_ٿيل TRMM
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "QTRSM "
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "DTRSM "
+#وإلا
+#وصف_ڪريو ERROR_NAME "STRSM "
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "XTRSM "
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "ZTRSM "
+#وإلا
+#وصف_ڪريو ERROR_NAME "CTRSM "
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "QTRMM "
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "DTRMM "
+#وإلا
+#وصف_ڪريو ERROR_NAME "STRMM "
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "XTRMM "
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "ZTRMM "
+#وإلا
+#وصف_ڪريو ERROR_NAME "CTRMM "
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#ifndef COMPLEX
-#define SMP_FACTOR 256
-#else
-#define SMP_FACTOR 128
-#endif
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#وصف_ڪريو SMP_ضرب_ڪندڙ 256
+#وإلا
+#وصف_ڪريو SMP_ضرب_ڪندڙ 128
+#جيڪڏهن_پورو
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);                                
-#endif                                                               
+#جيڪڏهن_وصف_ٿيل DYNAMIC_ARCH
+خارجي حرف* gotoblas_corename(فراغ);                                
+#جيڪڏهن_پورو                                                               
 
-static int (*trsm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef TRMM
+ساكن صحيح (*trsm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#جيڪڏهن_وصف_نه_ٿيل TRMM
   TRSM_LNUU, TRSM_LNUN, TRSM_LNLU, TRSM_LNLN,
   TRSM_LTUU, TRSM_LTUN, TRSM_LTLU, TRSM_LTLN,
   TRSM_LRUU, TRSM_LRUN, TRSM_LRLU, TRSM_LRLN,
@@ -101,7 +101,7 @@ static int (*trsm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLA
   TRSM_RTUU, TRSM_RTUN, TRSM_RTLU, TRSM_RTLN,
   TRSM_RRUU, TRSM_RRUN, TRSM_RRLU, TRSM_RRLN,
   TRSM_RCUU, TRSM_RCUN, TRSM_RCLU, TRSM_RCLN,
-#else
+#وإلا
   TRMM_LNUU, TRMM_LNUN, TRMM_LNLU, TRMM_LNLN,
   TRMM_LTUU, TRMM_LTUN, TRMM_LTLU, TRMM_LTLN,
   TRMM_LRUU, TRMM_LRUN, TRMM_LRLU, TRMM_LRLN,
@@ -110,66 +110,66 @@ static int (*trsm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLA
   TRMM_RTUU, TRMM_RTUN, TRMM_RTLU, TRMM_RTLN,
   TRMM_RRUU, TRMM_RRUN, TRMM_RRLU, TRMM_RRLN,
   TRMM_RCUU, TRMM_RCUN, TRMM_RCLU, TRMM_RCLN,
-#endif
+#جيڪڏهن_پورو
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جيڪڏهن_وصف_نه_ٿيل CBLAS
 
-void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
+فراغ NAME(حرف *SIDE, حرف *UPLO, حرف *TRANS, حرف *DIAG,
 	   blasint *M, blasint *N, FLOAT *alpha,
 	   FLOAT *a, blasint *ldA, FLOAT *b, blasint *ldB){
 
-  char side_arg  = *SIDE;
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  حرف side_arg  = *SIDE;
+  حرف uplo_arg  = *UPLO;
+  حرف trans_arg = *TRANS;
+  حرف diag_arg  = *DIAG;
 
-  blas_arg_t args;
+  blas_arg_t دليلون;
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   FLOAT *sa, *sb;
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#جيڪڏهن_وصف_ٿيل SMP
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+  صحيح گهڻائي  =  BLAS_XDOUBLE | BLAS_REAL;
+#وإلاإذا defined(DOUBLE)
+  صحيح گهڻائي  =  BLAS_DOUBLE  | BLAS_REAL;
+#وإلا
+  صحيح گهڻائي  =  BLAS_SINGLE  | BLAS_REAL;
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+  صحيح گهڻائي  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وإلاإذا defined(DOUBLE)
+  صحيح گهڻائي  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#وإلا
+  صحيح گهڻائي  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
   blasint info;
-  int side;
-  int uplo;
-  int unit;
-  int trans;
-  int nrowa;
+  صحيح side;
+  صحيح uplo;
+  صحيح unit;
+  صحيح trans;
+  صحيح nrowa;
 
   PRINT_DEBUG_NAME;
 
-  args.m = *M;
-  args.n = *N;
+  دليلون.m = *M;
+  دليلون.n = *N;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
+  دليلون.a = (فراغ *)a;
+  دليلون.b = (فراغ *)b;
 
-  args.lda = *ldA;
-  args.ldb = *ldB;
+  دليلون.lda = *ldA;
+  دليلون.ldb = *ldB;
 
-  args.beta = (void *)alpha;
+  دليلون.beta = (فراغ *)alpha;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -181,98 +181,98 @@ void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (side_arg  == 'L') side  = 0;
-  if (side_arg  == 'R') side  = 1;
+  إذا (side_arg  == 'L') side  = 0;
+  إذا (side_arg  == 'R') side  = 1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  إذا (trans_arg == 'N') trans = 0;
+  إذا (trans_arg == 'T') trans = 1;
+  إذا (trans_arg == 'R') trans = 2;
+  إذا (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  إذا (diag_arg  == 'U') unit  = 0;
+  إذا (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  إذا (uplo_arg  == 'U') uplo  = 0;
+  إذا (uplo_arg  == 'L') uplo  = 1;
 
-  nrowa = args.m;
-  if (side & 1) nrowa = args.n;
+  nrowa = دليلون.m;
+  إذا (side & 1) nrowa = دليلون.n;
 
   info = 0;
 
-  if (args.ldb < MAX(1,args.m)) info = 11;
-  if (args.lda < MAX(1,nrowa))  info =  9;
-  if (args.n < 0)               info =  6;
-  if (args.m < 0)               info =  5;
-  if (unit < 0)                 info =  4;
-  if (trans < 0)                info =  3;
-  if (uplo  < 0)                info =  2;
-  if (side  < 0)                info =  1;
+  إذا (دليلون.ldb < MAX(1,دليلون.m)) info = 11;
+  إذا (دليلون.lda < MAX(1,nrowa))  info =  9;
+  إذا (دليلون.n < 0)               info =  6;
+  إذا (دليلون.m < 0)               info =  5;
+  إذا (unit < 0)                 info =  4;
+  إذا (trans < 0)                info =  3;
+  إذا (uplo  < 0)                info =  2;
+  إذا (side  < 0)                info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME)-1);
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME)-1);
+    أرجع;
   }
 
-#else
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_SIDE Side,  enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE Trans, enum CBLAS_DIAG Diag,
+فراغ CNAME(تعداد CBLAS_ترتيب ترتيب,
+	   تعداد CBLAS_SIDE Side,  تعداد CBLAS_UPLO Uplo,
+	   تعداد CBLAS_TRANSPOSE Trans, تعداد CBLAS_DIAG Diag,
 	   blasint m, blasint n,
-#ifndef COMPLEX
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb) {
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb) {
+#وإلا
+	   فراغ *valpha,
+	   فراغ *va, blasint lda,
+	   فراغ *vb, blasint ldb) {
   FLOAT *alpha = (FLOAT*) valpha;
   FLOAT *a = (FLOAT*) va;
   FLOAT *b = (FLOAT*) vb;
-#endif
+#جيڪڏهن_پورو
 
-  blas_arg_t args;
-  int side, uplo, trans, unit;
+  blas_arg_t دليلون;
+  صحيح side, uplo, trans, unit;
   blasint info, nrowa;
 
-  XFLOAT *buffer;
+  XFLOAT *بفر;
   XFLOAT *sa, *sb;
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#جيڪڏهن_وصف_ٿيل SMP
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+  صحيح گهڻائي  =  BLAS_XDOUBLE | BLAS_REAL;
+#وإلاإذا defined(DOUBLE)
+  صحيح گهڻائي  =  BLAS_DOUBLE  | BLAS_REAL;
+#وإلا
+  صحيح گهڻائي  =  BLAS_SINGLE  | BLAS_REAL;
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+  صحيح گهڻائي  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وإلاإذا defined(DOUBLE)
+  صحيح گهڻائي  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#وإلا
+  صحيح گهڻائي  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
   PRINT_DEBUG_CNAME;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
+  دليلون.a = (فراغ *)a;
+  دليلون.b = (فراغ *)b;
 
-  args.lda = lda;
-  args.ldb = ldb;
+  دليلون.lda = lda;
+  دليلون.ldb = ldb;
 
-#ifndef COMPLEX
-  args.beta = (void *)&alpha;
-#else
-  args.beta = (void *)alpha;
-#endif
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+  دليلون.beta = (فراغ *)&alpha;
+#وإلا
+  دليلون.beta = (فراغ *)alpha;
+#جيڪڏهن_پورو
 
   side   = -1;
   uplo   = -1;
@@ -280,135 +280,135 @@ void CNAME(enum CBLAS_ORDER order,
   unit   = -1;
   info   =  0;
 
-  if (order == CblasColMajor) {
-    args.m = m;
-    args.n = n;
+  إذا (ترتيب == Cblas_کانو_Major) {
+    دليلون.m = m;
+    دليلون.n = n;
 
-    if (Side == CblasLeft)         side  = 0;
-    if (Side == CblasRight)        side  = 1;
+    إذا (Side == Cblas_کاٻو)         side  = 0;
+    إذا (Side == Cblas_ساڄو)        side  = 1;
 
-    if (Uplo == CblasUpper)        uplo  = 0;
-    if (Uplo == CblasLower)        uplo  = 1;
+    إذا (Uplo == Cblas_مٿانهون)        uplo  = 0;
+    إذا (Uplo == Cblas_هيٺاهون)        uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
-    if (Trans == CblasTrans)       trans = 1;
-#ifndef COMPLEX
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#else
-    if (Trans == CblasConjNoTrans) trans = 2;
-    if (Trans == CblasConjTrans)   trans = 3;
-#endif
+    إذا (Trans == CblasNoTrans)     trans = 0;
+    إذا (Trans == CblasTrans)       trans = 1;
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+    إذا (Trans == CblasConjNoTrans) trans = 0;
+    إذا (Trans == CblasConjTrans)   trans = 1;
+#وإلا
+    إذا (Trans == CblasConjNoTrans) trans = 2;
+    إذا (Trans == CblasConjTrans)   trans = 3;
+#جيڪڏهن_پورو
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    nrowa = args.m;
-    if (side & 1) nrowa = args.n;
-
-    if (args.ldb < MAX(1,args.m)) info = 11;
-    if (args.lda < MAX(1,nrowa))  info =  9;
-    if (args.n < 0)               info =  6;
-    if (args.m < 0)               info =  5;
-    if (unit < 0)                 info =  4;
-    if (trans < 0)                info =  3;
-    if (uplo  < 0)                info =  2;
-    if (side  < 0)                info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    args.m = n;
-    args.n = m;
-
-    if (Side == CblasLeft)         side  = 1;
-    if (Side == CblasRight)        side  = 0;
-
-    if (Uplo == CblasUpper)        uplo  = 1;
-    if (Uplo == CblasLower)        uplo  = 0;
-
-    if (Trans == CblasNoTrans)     trans = 0;
-    if (Trans == CblasTrans)       trans = 1;
-#ifndef COMPLEX
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#else
-    if (Trans == CblasConjNoTrans) trans = 2;
-    if (Trans == CblasConjTrans)   trans = 3;
-#endif
-
-    if (Diag == CblasUnit)         unit  = 0;
-    if (Diag == CblasNonUnit)      unit  = 1;
+    إذا (Diag == CblasUnit)          unit  = 0;
+    إذا (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    nrowa = args.m;
-    if (side & 1) nrowa = args.n;
+    nrowa = دليلون.m;
+    إذا (side & 1) nrowa = دليلون.n;
 
-    if (args.ldb < MAX(1,args.m)) info = 11;
-    if (args.lda < MAX(1,nrowa))  info =  9;
-    if (args.n < 0)               info =  6;
-    if (args.m < 0)               info =  5;
-    if (unit < 0)                 info =  4;
-    if (trans < 0)                info =  3;
-    if (uplo  < 0)                info =  2;
-    if (side  < 0)                info =  1;
+    إذا (دليلون.ldb < MAX(1,دليلون.m)) info = 11;
+    إذا (دليلون.lda < MAX(1,nrowa))  info =  9;
+    إذا (دليلون.n < 0)               info =  6;
+    إذا (دليلون.m < 0)               info =  5;
+    إذا (unit < 0)                 info =  4;
+    إذا (trans < 0)                info =  3;
+    إذا (uplo  < 0)                info =  2;
+    إذا (side  < 0)                info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (ترتيب == Cblas_صف_Major) {
+    دليلون.m = n;
+    دليلون.n = m;
+
+    إذا (Side == Cblas_کاٻو)         side  = 1;
+    إذا (Side == Cblas_ساڄو)        side  = 0;
+
+    إذا (Uplo == Cblas_مٿانهون)        uplo  = 1;
+    إذا (Uplo == Cblas_هيٺاهون)        uplo  = 0;
+
+    إذا (Trans == CblasNoTrans)     trans = 0;
+    إذا (Trans == CblasTrans)       trans = 1;
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+    إذا (Trans == CblasConjNoTrans) trans = 0;
+    إذا (Trans == CblasConjTrans)   trans = 1;
+#وإلا
+    إذا (Trans == CblasConjNoTrans) trans = 2;
+    إذا (Trans == CblasConjTrans)   trans = 3;
+#جيڪڏهن_پورو
+
+    إذا (Diag == CblasUnit)         unit  = 0;
+    إذا (Diag == CblasNonUnit)      unit  = 1;
+
+    info = -1;
+
+    nrowa = دليلون.m;
+    إذا (side & 1) nrowa = دليلون.n;
+
+    إذا (دليلون.ldb < MAX(1,دليلون.m)) info = 11;
+    إذا (دليلون.lda < MAX(1,nrowa))  info =  9;
+    إذا (دليلون.n < 0)               info =  6;
+    إذا (دليلون.m < 0)               info =  5;
+    إذا (unit < 0)                 info =  4;
+    إذا (trans < 0)                info =  3;
+    إذا (uplo  < 0)                info =  2;
+    إذا (side  < 0)                info =  1;
   }
 
-  if (args.m == 0 || args.n == 0) return;
+  إذا (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
+  }
 
-#if defined(TRMM)
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_STRMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+  إذا (دليلون.m == 0 || دليلون.n == 0) أرجع;
+
+#إذا defined(TRMM)
+#إذا !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#إذا defined(ARCH_ARM64) && (defined(USE_STRMM_KERNEL_سڌو)||defined(DYNAMIC_ARCH))
+#إذا defined(DYNAMIC_ARCH)
+إذا (strcmp(gotoblas_corename(), "armv9sme") == 0
+#إذا defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#جيڪڏهن_پورو
 )
-#endif
-  if (order == CblasRowMajor && Diag == CblasNonUnit && Side == CblasLeft && m == lda && n == ldb) {
-    if (Trans == CblasNoTrans || Trans == CblasConjNoTrans) {
-      (Uplo == CblasUpper ? STRMM_DIRECT_LNUN : STRMM_DIRECT_LNLN)(m, n, alpha, a, lda, b, ldb);
-      return;
-    } else if (Trans == CblasTrans || Trans == CblasConjTrans) {
-      (Uplo == CblasUpper ? STRMM_DIRECT_LTUN : STRMM_DIRECT_LTLN)(m, n, alpha, a, lda, b, ldb);
-      return;
+#جيڪڏهن_پورو
+  إذا (ترتيب == Cblas_صف_Major && Diag == CblasNonUnit && Side == Cblas_کاٻو && m == lda && n == ldb) {
+    إذا (Trans == CblasNoTrans || Trans == CblasConjNoTrans) {
+      (Uplo == Cblas_مٿانهون ? STRMM_سڌو_LNUN : STRMM_سڌو_LNLN)(m, n, alpha, a, lda, b, ldb);
+      أرجع;
+    } وإلا إذا (Trans == CblasTrans || Trans == CblasConjTrans) {
+      (Uplo == Cblas_مٿانهون ? STRMM_سڌو_LTUN : STRMM_سڌو_LTLN)(m, n, alpha, a, lda, b, ldb);
+      أرجع;
     }
   }
-#endif
-#endif
-#endif
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
 
 
 //end of the ifndef CBLAS ... else ... section	
-#endif
+#جيڪڏهن_پورو
 
-  if ((args.m == 0) || (args.n == 0)) return;
-  IDEBUG_START;
+  إذا ((دليلون.m == 0) || (دليلون.n == 0)) أرجع;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  بفر = (FLOAT *)blas_يادگيري_alloc(0);
+  إذا (!بفر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وٿي_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائيز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وٿي_B);
 
-#ifdef SMP
-  mode |= (trans << BLAS_TRANSA_SHIFT);
-  mode |= (side  << BLAS_RSIDE_SHIFT);
+#جيڪڏهن_وصف_ٿيل SMP
+  گهڻائي |= (trans << BLAS_TRANSA_سرڪايو);
+  گهڻائي |= (side  << BLAS_RSIDE_سرڪايو);
 
 /*
   if ( args.m < 2 * GEMM_MULTITHREAD_THRESHOLD )
@@ -417,35 +417,35 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 	if ( args.n < 2 * GEMM_MULTITHREAD_THRESHOLD )
 		args.nthreads = 1;
 */
-  if ( args.m * args.n < SMP_FACTOR * GEMM_MULTITHREAD_THRESHOLD)
-	args.nthreads = 1;
-  else
-	args.nthreads = num_cpu_avail(3);
+  إذا ( دليلون.m * دليلون.n < SMP_ضرب_ڪندڙ * GEMM_MULTITHREAD_حد)
+	دليلون.nthreads = 1;
+  وإلا
+	دليلون.nthreads = انگ_cpu_avail(3);
 		
 
-  if (args.nthreads == 1) {
-#endif
+  إذا (دليلون.nthreads == 1) {
+#جيڪڏهن_پورو
 
-    (trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit])(&args, NULL, NULL, sa, sb, 0);
+    (trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit])(&دليلون, عدم, عدم, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    if (!side) {
-      gemm_thread_n(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
-    } else {
-      gemm_thread_m(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
+#جيڪڏهن_وصف_ٿيل SMP
+  } وإلا {
+    إذا (!side) {
+      gemm_thread_n(گهڻائي, &دليلون, عدم, عدم, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, دليلون.nthreads);
+    } وإلا {
+      gemm_thread_m(گهڻائي, &دليلون, عدم, عدم, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, دليلون.nthreads);
     }
   }
-#endif
+#جيڪڏهن_پورو
 
-  blas_memory_free(buffer);
+  blas_يادگيري_free(بفر);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE,
-		       (!side) ? args.m * (args.m + args.n) : args.n * (args.m + args.n),
-		       (!side) ? args.m * args.m * args.n : args.m * args.n * args.n);
+  FUNCTION_PROFILE_پڇاڙي(COMPSIZE * COMPSIZE,
+		       (!side) ? دليلون.m * (دليلون.m + دليلون.n) : دليلون.n * (دليلون.m + دليلون.n),
+		       (!side) ? دليلون.m * دليلون.m * دليلون.n : دليلون.m * دليلون.n * دليلون.n);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }
 

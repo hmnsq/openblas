@@ -36,125 +36,125 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QTRTRI"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DTRTRI"
-#else
-#define ERROR_NAME "STRTRI"
-#endif
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "QTRTRI"
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "DTRTRI"
+#وإلا
+#وصف_ڪريو ERROR_NAME "STRTRI"
+#جيڪڏهن_پورو
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ساكن blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_SINGLE, TRTRI_UN_SINGLE, TRTRI_LU_SINGLE, TRTRI_LN_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+#جيڪڏهن_وصف_ٿيل SMP
+ساكن blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_PARALLEL, TRTRI_UN_PARALLEL, TRTRI_LU_PARALLEL, TRTRI_LN_PARALLEL,
 };
-#endif
+#جيڪڏهن_پورو
 
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, حرف *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t دليلون;
 
   blasint uplo_arg = *UPLO;
   blasint diag_arg = *DIAG;
   blasint uplo, diag;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل PPC440
+  خارجي
+#جيڪڏهن_پورو
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  دليلون.n    = *N;
+  دليلون.a    = (فراغ *)a;
+  دليلون.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  إذا (diag_arg == 'U') diag = 0;
+  إذا (diag_arg == 'N') diag = 1;
 
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (دليلون.lda  < MAX(1,دليلون.n)) info = 5;
+  إذا (دليلون.n    < 0)             info = 3;
+  إذا (diag < 0)                  info = 2;
+  إذا (uplo < 0)                  info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  إذا (دليلون.n == 0) أرجع;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
-      *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+  إذا (diag) {
+    إذا (AMIN_K(دليلون.n, دليلون.a, دليلون.lda + 1) == ZERO) {
+      *Info = IAMIN_K(دليلون.n, دليلون.a, دليلون.lda + 1);
+      أرجع;
     }
   }
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  بفر = (FLOAT *)blas_يادگيري_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وٿي_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائيز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وٿي_B);
+#جيڪڏهن_پورو
 
-#ifdef SMP
-  if (args.n <= 150)
-    args.nthreads = 1;
-  else
-    args.nthreads = num_cpu_avail(4);
+#جيڪڏهن_وصف_ٿيل SMP
+  إذا (دليلون.n <= 150)
+    دليلون.nthreads = 1;
+  وإلا
+    دليلون.nthreads = انگ_cpu_avail(4);
 
-  if (args.nthreads == 1) {
-#endif
+  إذا (دليلون.nthreads == 1) {
+#جيڪڏهن_پورو
 
-    *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_single[(uplo << 1) | diag])(&دليلون, عدم, عدم, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#جيڪڏهن_وصف_ٿيل SMP
+  } وإلا {
 
-    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_parallel[(uplo << 1) | diag])(&دليلون, عدم, عدم, sa, sb, 0);
 
   }
-#endif
+#جيڪڏهن_پورو
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  blas_يادگيري_free(بفر);
+#جيڪڏهن_پورو
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, .5 * args.n * args.n,
-		          args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_پڇاڙي(COMPSIZE * COMPSIZE, .5 * دليلون.n * دليلون.n,
+		          دليلون.n * (1./3. + دليلون.n * ( 1./2. + دليلون.n * 1./6.))
+		       +  دليلون.n * (1./3. + دليلون.n * (-1./2. + دليلون.n * 1./6.)));
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }

@@ -36,141 +36,141 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جيڪڏهن_وصف_ٿيل FUNCTION_PROFILE
+#ضمن "functable.h"
+#جيڪڏهن_پورو
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QGESV"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGESV"
-#else
-#define ERROR_NAME "SGESV"
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGESV"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGESV"
-#else
-#define ERROR_NAME "CGESV"
-#endif
-#endif
+#جيڪڏهن_وصف_نه_ٿيل COMPLEX
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "QGESV"
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "DGESV"
+#وإلا
+#وصف_ڪريو ERROR_NAME "SGESV"
+#جيڪڏهن_پورو
+#وإلا
+#جيڪڏهن_وصف_ٿيل XDOUBLE
+#وصف_ڪريو ERROR_NAME "XGESV"
+#وإلاإذا defined(DOUBLE)
+#وصف_ڪريو ERROR_NAME "ZGESV"
+#وإلا
+#وصف_ڪريو ERROR_NAME "CGESV"
+#جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
+فراغ NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
          FLOAT *b, blasint *ldB, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t دليلون;
 
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *بفر;
+#جيڪڏهن_وصف_ٿيل PPC440
+  خارجي
+#جيڪڏهن_پورو
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  دليلون.m    = *N;
+  دليلون.n    = *NRHS;
+  دليلون.a    = (فراغ *)a;
+  دليلون.lda  = *ldA;
+  دليلون.b    = (فراغ *)b;
+  دليلون.ldb  = *ldB;
+  دليلون.c    = (فراغ *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  إذا (دليلون.ldb < MAX(1,دليلون.m)) info = 7;
+  إذا (دليلون.lda < MAX(1,دليلون.m)) info = 4;
+  إذا (دليلون.n   < 0)             info = 2;
+  إذا (دليلون.m   < 0)             info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  دليلون.alpha = عدم;
+  دليلون.beta  = عدم;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  إذا (دليلون.m == 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروعات;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروعات();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  بفر = (FLOAT *)blas_يادگيري_alloc(1);
   
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وٿي_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائيز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وٿي_B);
+#جيڪڏهن_پورو
 
-#ifdef SMP
-  args.common = NULL;
+#جيڪڏهن_وصف_ٿيل SMP
+  دليلون.common = عدم;
 
-#if defined(_WIN64) && defined(_M_ARM64)
-  #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
-  #endif
-      args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
-    args.nthreads = 4;
-  else
-    args.nthreads = num_cpu_avail(4);
-#else
-  #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
-  #endif
-      args.nthreads = 1;
-    else
-      args.nthreads = num_cpu_avail(4);
-#endif
+#إذا defined(_WIN64) && defined(_M_ARM64)
+  #جيڪڏهن_وصف_ٿيل COMPLEX
+    إذا (دليلون.m * دليلون.m <= 300) 
+  #وإلا
+    إذا (دليلون.m * دليلون.m <= 500) 
+  #جيڪڏهن_پورو
+      دليلون.nthreads = 1;
+  وإلا إذا (دليلون.m * دليلون.m <= 1000)
+    دليلون.nthreads = 4;
+  وإلا
+    دليلون.nthreads = انگ_cpu_avail(4);
+#وإلا
+  #جيڪڏهن_وصف_نه_ٿيل DOUBLE
+    إذا (دليلون.m * دليلون.m < 40000)
+  #وإلا
+    إذا (دليلون.m * دليلون.m < 10000)
+  #جيڪڏهن_پورو
+      دليلون.nthreads = 1;
+    وإلا
+      دليلون.nthreads = انگ_cpu_avail(4);
+#جيڪڏهن_پورو
 
-  if (args.nthreads == 1) {
-#endif
+  إذا (دليلون.nthreads == 1) {
+#جيڪڏهن_پورو
 
-    args.n    = *N;
-    info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    دليلون.n    = *N;
+    info = GETRF_SINGLE(&دليلون, عدم, عدم, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
-      args.n    = *NRHS;
-      GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    إذا (info == 0 && *NRHS >0){
+      دليلون.n    = *NRHS;
+      GETRS_N_SINGLE(&دليلون, عدم, عدم, sa, sb, 0);
     }
 
-#ifdef SMP
-  } else {
+#جيڪڏهن_وصف_ٿيل SMP
+  } وإلا {
 
-    args.n    = *N;
-    info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    دليلون.n    = *N;
+    info = GETRF_PARALLEL(&دليلون, عدم, عدم, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
-      args.n    = *NRHS;
-      GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    إذا (info == 0 && *NRHS > 0){
+      دليلون.n    = *NRHS;
+      GETRS_N_PARALLEL(&دليلون, عدم, عدم, sa, sb, 0);
     }
   }
-#endif
+#جيڪڏهن_پورو
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#جيڪڏهن_وصف_نه_ٿيل PPC440
+  blas_يادگيري_free(بفر);
+#جيڪڏهن_پورو
 
   *Info = info;
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, *N * *N, 2. / 3. * *N * *N * *N + *N * *N);
+  FUNCTION_PROFILE_پڇاڙي(COMPSIZE * COMPSIZE, *N * *N, 2. / 3. * *N * *N * *N + *N * *N);
 
-  IDEBUG_END;
+  IDEBUG_پڇاڙي;
 
-  return;
+  أرجع;
 }
