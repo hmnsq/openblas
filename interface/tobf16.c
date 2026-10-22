@@ -1,59 +1,59 @@
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
+#जर defined(DOUBLE_PREC)
+#define FLOAT_TYPE द्विगुण
+#किंवाजर defined(SINGLE_PREC)
+#define FLOAT_TYPE दशांश
+#अन्यथा
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *INC_OUT){
+शून्य NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *INC_OUT){
    BLASLONG n    = *N;
    BLASLONG inc_in = *INC_IN;
    BLASLONG inc_out = *INC_OUT;
 
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return;
+   जर (n <= 0) परत;
 
    IDEBUG_START;
    FUNCTION_PROFILE_START();
 
-   if (inc_in < 0)   in -= (n - 1) * inc_in;
-   if (inc_out < 0) out -= (n - 1) * inc_out;
+   जर (inc_in < 0)   in -= (n - 1) * inc_in;
+   जर (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#जर defined(DOUBLE_PREC)
    D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#किंवाजर defined(SINGLE_PREC)
    S_TO_BF16_K(n, in, inc_in, out, inc_out);
-#else
+#अन्यथा
 #endif
 
    FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
    IDEBUG_END;
 }
-#else
-void CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
+#अन्यथा
+शून्य CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  जर (n <= 0) परत;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  जर (inc_in < 0)   in -= (n - 1) * inc_in;
+  जर (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#जर defined(DOUBLE_PREC)
   D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#किंवाजर defined(SINGLE_PREC)
   S_TO_BF16_K(n, in, inc_in, out, inc_out);
 #endif
 

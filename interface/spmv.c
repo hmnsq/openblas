@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <ctype.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QSPMV "
-#elif defined(DOUBLE)
+#किंवाजर defined(DOUBLE)
 #define ERROR_NAME "DSPMV "
-#else
+#अन्यथा
 #define ERROR_NAME "SSPMV "
 #endif
 
-static  int (*spmv[])(BLASLONG, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+स्थिर  पूर्णांक (*spmv[])(BLASLONG, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, शून्य *) = {
 #ifdef XDOUBLE
   qspmv_U, qspmv_L,
-#elif defined(DOUBLE)
+#किंवाजर defined(DOUBLE)
   dspmv_U, dspmv_L,
-#else
+#अन्यथा
   sspmv_U, sspmv_L,
 #endif
 };
 
 #ifdef SMPTEST
-static  int (*spmv_thread[])(BLASLONG, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+स्थिर  पूर्णांक (*spmv_thread[])(BLASLONG, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, पूर्णांक) = {
 #ifdef XDOUBLE
   qspmv_thread_U, qspmv_thread_L,
-#elif defined(DOUBLE)
+#किंवाजर defined(DOUBLE)
   dspmv_thread_U, dspmv_thread_L,
-#else
+#अन्यथा
   sspmv_thread_U, sspmv_thread_L,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
+शून्य NAME(अक्षर *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
             FLOAT  *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  अक्षर uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint incx	= *INCX;
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  पूर्णांक uplo;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  पूर्णांक nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,25 +99,25 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  जर (uplo_arg  == 'U') uplo  = 0;
+  जर (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  9;
-  if (incx == 0)          info =  6;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  जर (incy == 0)          info =  9;
+  जर (incx == 0)          info =  6;
+  जर (n < 0)              info =  2;
+  जर (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  जर (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, आकार(ERROR_NAME));
+    परत;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+शून्य CNAME(गणना CBLAS_ORDER order,
+	   गणना CBLAS_UPLO Uplo,
 	   blasint n,
 	   FLOAT alpha,
 	   FLOAT  *a,
@@ -126,10 +126,10 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT  *y, blasint incy){
 
   FLOAT *buffer;
-  int uplo;
+  पूर्णांक uplo;
   blasint info;
 #ifdef SMPTEST
-  int nthreads;
+  पूर्णांक nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -137,67 +137,67 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  जर (order == CblasColMajor) {
+    जर (Uplo == CblasUpper)         uplo  = 0;
+    जर (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  9;
-    if (incx == 0)          info =  6;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    जर (incy == 0)          info =  9;
+    जर (incx == 0)          info =  6;
+    जर (n < 0)              info =  2;
+    जर (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  जर (order == CblasRowMajor) {
+    जर (Uplo == CblasUpper)         uplo  = 1;
+    जर (Uplo == CblasLower)         uplo  = 0;
 
     info = -1;
 
-    if (incy == 0)          info =  9;
-    if (incx == 0)          info =  6;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    जर (incy == 0)          info =  9;
+    जर (incx == 0)          info =  6;
+    जर (n < 0)              info =  2;
+    जर (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  जर (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, आकार(ERROR_NAME));
+    परत;
   }
 
 #endif
 
-  if (n == 0) return;
+  जर (n == 0) परत;
 
-  if (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  जर (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), रिक्त, 0, रिक्त, 0);
 
-  if (alpha == ZERO) return;
+  जर (alpha == ZERO) परत;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  जर (incx < 0 ) x -= (n - 1) * incx;
+  जर (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  जर (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, आकार(ERROR_NAME));
+    परत;
   }
 
 #ifdef SMPTEST
-  nthreads = num_cpu_avail(2);
+  nthreads = अंक_cpu_avail(2);
 
-  if (nthreads == 1) {
+  जर (nthreads == 1) {
 #endif
 
   (spmv[uplo])(n, alpha, a, x, incx, y, incy, buffer);
 
 #ifdef SMPTEST
-  } else {
+  } अन्यथा {
 
     (spmv_thread[uplo])(n, alpha, a, x, incx, y, incy, buffer, nthreads);
 
@@ -210,5 +210,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  परत;
 }

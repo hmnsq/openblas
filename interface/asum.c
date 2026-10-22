@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 OPENBLAS_EXPORT
@@ -53,7 +53,7 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  जर (n <= 0) परत 0;
 
   IDEBUG_START;
 
@@ -65,14 +65,14 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  परत ret;
 }
 
-#else
+#अन्यथा
 #ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+FLOAT CNAME(blasint n, शून्य *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#अन्यथा
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -80,7 +80,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  जर (n <= 0) परत 0;
 
   IDEBUG_START;
 
@@ -92,7 +92,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  परत ret;
 }
 
 #endif

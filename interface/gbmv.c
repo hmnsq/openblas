@@ -36,39 +36,39 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGBMV "
-#elif defined(DOUBLE)
+#किंवाजर defined(DOUBLE)
 #define ERROR_NAME "DGBMV "
-#else
+#अन्यथा
 #define ERROR_NAME "SGBMV "
 #endif
 
-static void (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+स्थिर शून्य (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, शून्य *) = {
 #ifdef XDOUBLE
       qgbmv_n, qgbmv_t,
-#elif defined(DOUBLE)
+#किंवाजर defined(DOUBLE)
       dgbmv_n, dgbmv_t,
-#else
+#अन्यथा
       sgbmv_n, sgbmv_t,
 #endif
 };
 
 #ifdef SMP
-static int (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+स्थिर पूर्णांक (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, पूर्णांक) = {
 #ifdef XDOUBLE
       qgbmv_thread_n, qgbmv_thread_t,
-#elif defined(DOUBLE)
+#किंवाजर defined(DOUBLE)
       dgbmv_thread_n, dgbmv_thread_t,
-#else
+#अन्यथा
       sgbmv_thread_n, sgbmv_thread_t,
 #endif
 };
@@ -77,13 +77,13 @@ static int (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
 OPENBLAS_EXPORT
 #ifndef CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+शून्य NAME(अक्षर *TRANS, blasint *M, blasint *N,
 	 blasint *KU, blasint *KL,
 	 FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	 FLOAT *x, blasint *INCX,
 	 FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  अक्षर trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint ku = *KU;
@@ -93,7 +93,7 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint incy = *INCY;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  पूर्णांक nthreads;
 #endif
 
   FLOAT alpha = *ALPHA;
@@ -111,31 +111,31 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N') i = 0;
-  if (trans == 'T') i = 1;
-  if (trans == 'R') i = 0;
-  if (trans == 'C') i = 1;
+  जर (trans == 'N') i = 0;
+  जर (trans == 'T') i = 1;
+  जर (trans == 'R') i = 0;
+  जर (trans == 'C') i = 1;
 
-  if (incy == 0)	 info = 13;
-  if (incx == 0)	 info = 10;
-  if (lda < kl + ku + 1) info = 8;
-  if (kl < 0)		 info = 5;
-  if (ku < 0)		 info = 4;
-  if (n < 0)		 info = 3;
-  if (m < 0)		 info = 2;
-  if (i < 0)		 info = 1;
+  जर (incy == 0)	 info = 13;
+  जर (incx == 0)	 info = 10;
+  जर (lda < kl + ku + 1) info = 8;
+  जर (kl < 0)		 info = 5;
+  जर (ku < 0)		 info = 4;
+  जर (n < 0)		 info = 3;
+  जर (m < 0)		 info = 2;
+  जर (i < 0)		 info = 1;
 
   trans = i;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  जर (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, आकार(ERROR_NAME));
+    परत;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+शून्य CNAME(गणना CBLAS_ORDER order,
+	   गणना CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
 	   blasint ku, blasint kl,
 	   FLOAT alpha,
@@ -146,9 +146,9 @@ void CNAME(enum CBLAS_ORDER order,
 
   FLOAT *buffer;
   blasint lenx, leny, info, t;
-  int trans;
+  पूर्णांक trans;
 #ifdef SMP
-  int nthreads;
+  पूर्णांक nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -156,29 +156,29 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+  जर (order == CblasColMajor) {
+    जर (TransA == CblasNoTrans)     trans = 0;
+    जर (TransA == CblasTrans)       trans = 1;
+    जर (TransA == CblasConjNoTrans) trans = 0;
+    जर (TransA == CblasConjTrans)   trans = 1;
 
     info = -1;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    जर (incy == 0)	 info = 13;
+    जर (incx == 0)	 info = 10;
+    जर (lda < kl + ku + 1) info = 8;
+    जर (kl < 0)		 info = 5;
+    जर (ku < 0)		 info = 4;
+    जर (n < 0)		 info = 3;
+    जर (m < 0)		 info = 2;
+    जर (trans < 0)	 info = 1;
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
+  जर (order == CblasRowMajor) {
+    जर (TransA == CblasNoTrans)     trans = 1;
+    जर (TransA == CblasTrans)       trans = 0;
+    जर (TransA == CblasConjNoTrans) trans = 1;
+    जर (TransA == CblasConjTrans)   trans = 0;
 
     info = -1;
 
@@ -190,63 +190,63 @@ void CNAME(enum CBLAS_ORDER order,
     ku = kl;
     kl = t;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    जर (incy == 0)	 info = 13;
+    जर (incx == 0)	 info = 10;
+    जर (lda < kl + ku + 1) info = 8;
+    जर (kl < 0)		 info = 5;
+    जर (ku < 0)		 info = 4;
+    जर (n < 0)		 info = 3;
+    जर (m < 0)		 info = 2;
+    जर (trans < 0)	 info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  जर (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, आकार(ERROR_NAME));
+    परत;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  जर ((m==0) || (n==0)) परत;
 
   lenx = n;
   leny = m;
-  if (trans) lenx = m;
-  if (trans) leny = n;
+  जर (trans) lenx = m;
+  जर (trans) leny = n;
 
-  if (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  जर (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), रिक्त, 0, रिक्त, 0);
 
-  if (alpha == ZERO) return;
+  जर (alpha == ZERO) परत;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx-1)*incx;
-  if (incy < 0) y -= (leny-1)*incy;
+  जर (incx < 0) x -= (lenx-1)*incx;
+  जर (incy < 0) y -= (leny-1)*incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  जर (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, आकार(ERROR_NAME));
+    परत;
   }
 
 #ifdef SMP
-  if (m * n < 250000 || kl+ku < 15 )
+  जर (m * n < 250000 || kl+ku < 15 )
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  अन्यथा
+    nthreads = अंक_cpu_avail(2);
 
-  if (nthreads == 1) {
+  जर (nthreads == 1) {
 #endif
 
-  (gbmv[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer);
+  (gbmv[(पूर्णांक)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } अन्यथा {
 
-    (gbmv_thread[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gbmv_thread[(पूर्णांक)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
 
   }
 #endif
@@ -257,5 +257,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  परत;
 }
