@@ -36,18 +36,18 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <ctype.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QSYMV "
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "DSYMV "
-#else
+#अन्यथा
 #define ERROR_NAME "SSYMV "
 #endif
 
@@ -55,10 +55,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
+शून्य NAME(वर्ण *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
             FLOAT  *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  वर्ण uplo_arg = *UPLO;
   blasint n	= *N;
   FLOAT alpha	= *ALPHA;
   blasint lda	= *LDA;
@@ -66,21 +66,21 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   FLOAT beta	= *BETA;
   blasint incy	= *INCY;
 
-  int (*symv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  पूर्णाङ्क (*symv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     SYMV_U, SYMV_L,
   };
 
 #ifdef SMP
-  int (*symv_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+  पूर्णाङ्क (*symv_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, पूर्णाङ्क) = {
     SYMV_THREAD_U, SYMV_THREAD_L,
   };
 #endif
 
   blasint info;
-  int uplo;
+  पूर्णाङ्क uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  पूर्णाङ्क nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -88,40 +88,40 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  यदि (uplo_arg  == 'U') uplo  = 0;
+  यदि (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info = 10;
-  if (incx == 0)          info =  7;
-  if (lda  < MAX(1, n))   info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  यदि (incy == 0)          info = 10;
+  यदि (incx == 0)          info =  7;
+  यदि (lda  < MAX(1, n))   info =  5;
+  यदि (n < 0)              info =  2;
+  यदि (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
+शून्य CNAME(गणना CBLAS_ORDER order, गणना CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
 	   FLOAT *a, blasint lda, FLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy) {
 
   FLOAT *buffer;
-  int uplo;
+  पूर्णाङ्क uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  पूर्णाङ्क nthreads;
 #endif
 
-  int (*symv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  पूर्णाङ्क (*symv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     SYMV_U, SYMV_L,
   };
 
 #ifdef SMP
-  int (*symv_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+  पूर्णाङ्क (*symv_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, पूर्णाङ्क) = {
     SYMV_THREAD_U, SYMV_THREAD_L,
   };
 #endif
@@ -131,74 +131,74 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  यदि (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (incy == 0)          info = 10;
-    if (incx == 0)          info =  7;
-    if (lda  < MAX(1, n))   info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    यदि (Uplo == CblasUpper) uplo  = 0;
+    यदि (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info = 10;
-    if (incx == 0)          info =  7;
-    if (lda  < MAX(1, n))   info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    यदि (incy == 0)          info = 10;
+    यदि (incx == 0)          info =  7;
+    यदि (lda  < MAX(1, n))   info =  5;
+    यदि (n < 0)              info =  2;
+    यदि (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (order == CblasRowMajor) {
+
+    यदि (Uplo == CblasUpper) uplo  = 1;
+    यदि (Uplo == CblasLower) uplo  = 0;
+
+    info = -1;
+
+    यदि (incy == 0)          info = 10;
+    यदि (incx == 0)          info =  7;
+    यदि (lda  < MAX(1, n))   info =  5;
+    यदि (n < 0)              info =  2;
+    यदि (uplo  < 0)          info =  1;
+  }
+
+  यदि (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
 #endif
 
-  if (n == 0) return;
+  यदि (n == 0) प्रत्यागम;
 
-  if (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  यदि (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), रिक्त, 0, रिक्त, 0);
 
-  if (alpha == ZERO) return;
+  यदि (alpha == ZERO) प्रत्यागम;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  यदि (incx < 0 ) x -= (n - 1) * incx;
+  यदि (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  यदि (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
 #ifdef SMP
-  if (n <200)
+  यदि (n <200)
 	  nthreads=1;
-  else
-  nthreads = num_cpu_avail(2);
+  अन्यथा
+  nthreads = अंक_cpu_avail(2);
 
-  if (nthreads == 1) {
+  यदि (nthreads == 1) {
 #endif
 
   (symv[uplo])(n, n, alpha, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } अन्यथा {
 
     (symv_thread[uplo])(n, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
 
@@ -211,5 +211,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
 
   IDEBUG_END;
 
-  return;
+  प्रत्यागम;
 }
