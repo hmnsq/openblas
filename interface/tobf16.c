@@ -1,59 +1,59 @@
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাৱ <stdio.h>
+#অন্তর্ভাৱ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাৱ "functable.h"
 #endif
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
+#যদি defined(DOUBLE_PREC)
+#define FLOAT_TYPE দ্ৱিগুণ
+#নোচেদ্যদি defined(SINGLE_PREC)
+#define FLOAT_TYPE ভিন্ন
+#অন্যথা
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *INC_OUT){
+শূন্য NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *INC_OUT){
    BLASLONG n    = *N;
    BLASLONG inc_in = *INC_IN;
    BLASLONG inc_out = *INC_OUT;
 
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return;
+   যদি (n <= 0) ঘূৰাই;
 
    IDEBUG_START;
    FUNCTION_PROFILE_START();
 
-   if (inc_in < 0)   in -= (n - 1) * inc_in;
-   if (inc_out < 0) out -= (n - 1) * inc_out;
+   যদি (inc_in < 0)   in -= (n - 1) * inc_in;
+   যদি (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#যদি defined(DOUBLE_PREC)
    D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#নোচেদ্যদি defined(SINGLE_PREC)
    S_TO_BF16_K(n, in, inc_in, out, inc_out);
-#else
+#অন্যথা
 #endif
 
    FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
    IDEBUG_END;
 }
-#else
-void CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
+#অন্যথা
+শূন্য CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  যদি (n <= 0) ঘূৰাই;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  যদি (inc_in < 0)   in -= (n - 1) * inc_in;
+  যদি (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#যদি defined(DOUBLE_PREC)
   D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
+#নোচেদ্যদি defined(SINGLE_PREC)
   S_TO_BF16_K(n, in, inc_in, out, inc_out);
 #endif
 

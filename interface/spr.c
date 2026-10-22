@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#অন্তর্ভাৱ <stdio.h>
+#অন্তর্ভাৱ <ctype.h>
+#অন্তর্ভাৱ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাৱ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QSPR  "
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
 #define ERROR_NAME "DSPR  "
-#else
+#অন্যথা
 #define ERROR_NAME "SSPR  "
 #endif
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+স্থির পূর্ণাঙ্ক (*spr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   qspr_U, qspr_L,
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
   dspr_U, dspr_L,
-#else
+#অন্যথা
   sspr_U, sspr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+স্থির পূর্ণাঙ্ক (*spr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, পূর্ণাঙ্ক) = {
 #ifdef XDOUBLE
   qspr_thread_U, qspr_thread_L,
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
   dspr_thread_U, dspr_thread_L,
-#else
+#অন্যথা
   sspr_thread_U, sspr_thread_L,
 #endif
 };
@@ -77,19 +77,19 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+শূন্য NAME(ৱর্ণ *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  ৱর্ণ uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  পূর্ণাঙ্ক uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  পূর্ণাঙ্ক nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,34 +97,34 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  যদি (uplo_arg  == 'U') uplo  = 0;
+  যদি (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  যদি (incx == 0)          info =  5;
+  যদি (n < 0)              info =  2;
+  যদি (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME));
+    ঘূৰাই;
   }
 
-#else
+#অন্যথা
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+শূন্য CNAME(গণনা CBLAS_ORDER order,
+	   গণনা CBLAS_UPLO Uplo,
 	   blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
 	   FLOAT  *a) {
 
   FLOAT *buffer;
-  int uplo;
+  পূর্ণাঙ্ক uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  পূর্ণাঙ্ক nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -132,85 +132,85 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  যদি (order == CblasColMajor) {
+    যদি (Uplo == CblasUpper)         uplo  = 0;
+    যদি (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    যদি (incx == 0)          info =  5;
+    যদি (n < 0)              info =  2;
+    যদি (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  যদি (order == CblasRowMajor) {
+    যদি (Uplo == CblasUpper)         uplo  = 1;
+    যদি (Uplo == CblasLower)         uplo  = 0;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    যদি (incx == 0)          info =  5;
+    যদি (n < 0)              info =  2;
+    যদি (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME));
+    ঘূৰাই;
   }
 
 #endif
 
-  if (n == 0) return;
+  যদি (n == 0) ঘূৰাই;
 
-  if (alpha == ZERO) return;
+  যদি (alpha == ZERO) ঘূৰাই;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx == 1 && n <100) {
+  যদি (incx == 1 && n <100) {
     blasint i;
-    if (uplo==0) {
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
-          AXPYU_K(i + 1, 0, 0, alpha * x[i], x,     1, a, 1, NULL, 0);
+    যদি (uplo==0) {
+      বাবে (i = 0; i < n; i++){
+        যদি (x[i] != ZERO) {
+          AXPYU_K(i + 1, 0, 0, alpha * x[i], x,     1, a, 1, রিক্ত, 0);
         }
         a += i + 1;
       }
-    } else { 
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
-          AXPYU_K(n - i, 0, 0, alpha * x[i], x + i, 1, a, 1, NULL, 0);
+    } অন্যথা { 
+      বাবে (i = 0; i < n; i++){
+        যদি (x[i] != ZERO) {
+          AXPYU_K(n - i, 0, 0, alpha * x[i], x + i, 1, a, 1, রিক্ত, 0);
         }
         a += n - i;
       }
     }
-    return;
+    ঘূৰাই;
   }
 
-  if (incx < 0 ) x -= (n - 1) * incx;
+  যদি (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  যদি (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME));
+    ঘূৰাই;
   }
 
 #ifdef SMP
-  nthreads = num_cpu_avail(2);
+  nthreads = অঙ্ক_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  যদি (n < 50) nthreads = 1;
+  যদি (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  যদি (nthreads == 1) {
 #endif
 
   (spr[uplo])(n, alpha, x, incx, a, buffer);
 
 #ifdef SMP
-  } else {
+  } অন্যথা {
 
     (spr_thread[uplo])(n, alpha, x, incx, a, buffer, nthreads);
 
@@ -223,5 +223,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ঘূৰাই;
 }

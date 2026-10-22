@@ -36,48 +36,48 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#অন্তর্ভাৱ <stdio.h>
+#অন্তর্ভাৱ <ctype.h>
+#অন্তর্ভাৱ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাৱ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QSYR2 "
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
 #define ERROR_NAME "ZSYR2 "
-#else
+#অন্যথা
 #define ERROR_NAME "CSYR2 "
 #endif
 
-static int (*syr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+স্থির পূর্ণাঙ্ক (*syr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   xsyr2_U, xsyr2_L,
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
   zsyr2_U, zsyr2_L,
-#else
+#অন্যথা
   csyr2_U, csyr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+স্থির পূর্ণাঙ্ক (*syr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, পূর্ণাঙ্ক) = {
 #ifdef XDOUBLE
   xsyr2_thread_U, xsyr2_thread_L,
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
   zsyr2_thread_U, zsyr2_thread_L,
-#else
+#অন্যথা
   csyr2_thread_U, csyr2_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+শূন্য NAME(ৱর্ণ *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  ৱর্ণ uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -86,10 +86,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  পূর্ণাঙ্ক uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  পূর্ণাঙ্ক nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,53 +97,53 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  যদি (uplo_arg  == 'U') uplo  = 0;
+  যদি (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  যদি (lda  < MAX(1, n))   info =  9;
+  যদি (incy == 0)          info =  7;
+  যদি (incx == 0)          info =  5;
+  যদি (n < 0)              info =  2;
+  যদি (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  যদি (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME));
+    ঘূৰাই;
   }
 
-  if (n == 0) return;
+  যদি (n == 0) ঘূৰাই;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  যদি ((alpha_r == ZERO) && (alpha_i == ZERO)) ঘূৰাই;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
+  যদি (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  যদি (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  যদি (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME));
+    ঘূৰাই;
   }
 
 #ifdef SMP
-  nthreads = num_cpu_avail(2);
+  nthreads = অঙ্ক_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  যদি (n < 50) nthreads = 1;
+  যদি (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  যদি (nthreads == 1) {
 #endif
 
     (syr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } অন্যথা {
 
     (syr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -156,5 +156,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  ঘূৰাই;
 }

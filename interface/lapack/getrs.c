@@ -36,43 +36,43 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাৱ <stdio.h>
+#অন্তর্ভাৱ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাৱ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETRS"
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
 #define ERROR_NAME "DGETRS"
-#else
+#অন্যথা
 #define ERROR_NAME "SGETRS"
 #endif
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+স্থির blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_SINGLE, GETRS_T_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+স্থির blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_PARALLEL, GETRS_T_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+শূন্য NAME(ৱর্ণ *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  ৱর্ণ trans_arg = *TRANS;
 
   blas_arg_t args;
 
   blasint info;
-  int trans;
+  পূর্ণাঙ্ক trans;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  বাহ্য
 #endif
   FLOAT *sa, *sb;
 
@@ -80,39 +80,39 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (শূন্য *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (শূন্য *)b;
   args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  args.c    = (শূন্য *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  যদি (trans_arg == 'N') trans = 0;
+  যদি (trans_arg == 'T') trans = 1;
+  যদি (trans_arg == 'R') trans = 0;
+  যদি (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  যদি (args.ldb  < MAX(1, args.m)) info = 8;
+  যদি (args.lda  < MAX(1, args.m)) info = 5;
+  যদি (args.n    < 0) info = 3;
+  যদি (args.m    < 0) info = 2;
+  যদি (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  যদি (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME) - 1);
+    ঘূৰাই;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = রিক্ত;
+  args.beta  = রিক্ত;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  যদি (args.m == 0 || args.n == 0) ঘূৰাই;
 
   IDEBUG_START;
 
@@ -126,21 +126,21 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
+  args.common = রিক্ত;
+  যদি (args.m < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } অন্যথা {
+    args.nthreads = অঙ্ক_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  যদি (args.nthreads == 1) {
 #endif
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&args, রিক্ত, রিক্ত, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+  } অন্যথা {
+    (getrs_parallel[trans])(&args, রিক্ত, রিক্ত, sa, sb, 0);
   }
 #endif
 
@@ -152,6 +152,6 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   IDEBUG_END;
 
-  return;
+  ঘূৰাই;
 
 }

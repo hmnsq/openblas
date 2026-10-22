@@ -36,45 +36,45 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#অন্তর্ভাৱ <stdio.h>
+#অন্তর্ভাৱ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাৱ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QTRTRS"
-#elif defined(DOUBLE)
+#নোচেদ্যদি defined(DOUBLE)
 #define ERROR_NAME "DTRTRS"
-#else
+#অন্যথা
 #define ERROR_NAME "STRTRS"
 #endif
 
-static blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+স্থির blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_SINGLE, TRTRS_UNN_SINGLE, TRTRS_UTU_SINGLE, TRTRS_UTN_SINGLE, TRTRS_LNU_SINGLE, TRTRS_LNN_SINGLE, TRTRS_LTU_SINGLE, TRTRS_LTN_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+স্থির blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_PARALLEL, TRTRS_UNN_PARALLEL, TRTRS_UTU_PARALLEL, TRTRS_UTN_PARALLEL, TRTRS_LNU_PARALLEL, TRTRS_LNN_PARALLEL, TRTRS_LTU_PARALLEL, TRTRS_LTN_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+শূন্য NAME(ৱর্ণ *UPLO, ৱর্ণ* TRANS, ৱর্ণ* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   FLOAT *b, blasint *ldB, blasint *Info){
 
-    char uplo_arg = *UPLO;
-    char trans_arg = *TRANS;
-    char diag_arg = *DIAG;
+    ৱর্ণ uplo_arg = *UPLO;
+    ৱর্ণ trans_arg = *TRANS;
+    ৱর্ণ diag_arg = *DIAG;
 
   blas_arg_t args;
 
   blasint info;
-  int uplo, trans, diag;
+  পূর্ণাঙ্ক uplo, trans, diag;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  বাহ্য
 #endif
   FLOAT *sa, *sb;
 
@@ -82,55 +82,55 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (শূন্য *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (শূন্য *)b;
   args.ldb  = *ldB;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  যদি (trans_arg == 'N') trans = 0;
+  যদি (trans_arg == 'T') trans = 1;
+  যদি (trans_arg == 'R') trans = 0;
+  যদি (trans_arg == 'C') trans = 1;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  যদি (uplo_arg == 'U') uplo = 0;
+  যদি (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  যদি (diag_arg == 'U') diag = 0;
+  যদি (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  যদি (args.ldb  < MAX(1, args.m)) info = 9;
+  যদি (args.lda  < MAX(1, args.m)) info = 7;
+  যদি (args.n    < 0) info = 5;
+  যদি (args.m    < 0) info = 4;
+  যদি (trans     < 0) info = 2;
+  যদি (uplo      < 0) info = 1;
+  যদি (diag      < 0) info = 3;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  যদি (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ঘূৰাই;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = রিক্ত;
+  args.beta  = রিক্ত;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  যদি (args.m == 0) ঘূৰাই;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
+  যদি (diag) {
+    যদি (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+      ঘূৰাই;
     }
   }
 
@@ -147,21 +147,21 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
+  args.common = রিক্ত;
+  যদি (args.m < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } অন্যথা {
+    args.nthreads = অঙ্ক_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  যদি (args.nthreads == 1) {
 #endif
 
-      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&args, রিক্ত, রিক্ত, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  } অন্যথা {
+    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&args, রিক্ত, রিক্ত, sa, sb, 0);
   }
 #endif
 
@@ -173,6 +173,6 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   IDEBUG_END;
 
-  return;
+  ঘূৰাই;
 
 }

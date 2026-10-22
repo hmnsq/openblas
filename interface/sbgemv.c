@@ -37,29 +37,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#include "l1param.h"
+#অন্তর্ভাৱ <stdio.h>
+#অন্তর্ভাৱ "common.h"
+#অন্তর্ভাৱ "l1param.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#অন্তর্ভাৱ "functable.h"
 #endif
 
 #ifdef BGEMM
 #define GEMV_THREAD_N bgemv_thread_n
 #define GEMV_THREAD_T bgemv_thread_t
 #define ERROR_NAME "BGEMV "
-#elif defined(HFLOAT16)
+#নোচেদ্যদি defined(HFLOAT16)
 #define GEMV_THREAD_N shgemv_thread_n
 #define GEMV_THREAD_T shgemv_thread_t
 #define ERROR_NAME "SHGEMV "
-#else
+#অন্যথা
 #define GEMV_THREAD_N sbgemv_thread_n
 #define GEMV_THREAD_T sbgemv_thread_t
 #define ERROR_NAME "SBGEMV "
 #endif 
 
 #ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, int) = {
+স্থির পূর্ণাঙ্ক (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, পূর্ণাঙ্ক) = {
     GEMV_THREAD_N, GEMV_THREAD_T,
 };
 #endif
@@ -68,9 +68,9 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint *LDA, IFLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
+শূন্য NAME(ৱর্ণ *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint *LDA, IFLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
 {
-    char trans = *TRANS;
+    ৱর্ণ trans = *TRANS;
     blasint m = *M;
     blasint n = *N;
     blasint lda = *LDA;
@@ -79,10 +79,10 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
     FLOAT alpha = *ALPHA;
     FLOAT beta  = *BETA;
 #ifdef SMP
-    int nthreads;
+    পূর্ণাঙ্ক nthreads;
 #endif
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    পূর্ণাঙ্ক (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -98,37 +98,37 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
 
     i = -1;
 
-    if (trans == 'N') {i = 0;}
-    if (trans == 'T') {i = 1;}
-    if (trans == 'R') {i = 0;}
-    if (trans == 'C') {i = 1;}
+    যদি (trans == 'N') {i = 0;}
+    যদি (trans == 'T') {i = 1;}
+    যদি (trans == 'R') {i = 0;}
+    যদি (trans == 'C') {i = 1;}
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (i < 0)           {info = 1;}
+    যদি (incy == 0)       {info = 11;}
+    যদি (incx == 0)       {info = 8;}
+    যদি (lda < MAX(1, m)) {info = 6;}
+    যদি (n < 0)           {info = 3;}
+    যদি (m < 0)           {info = 2;}
+    যদি (i < 0)           {info = 1;}
 
     trans = i;
 
-    if (info != 0) {
-        BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+    যদি (info != 0) {
+        BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME));
+        ঘূৰাই;
     }
 
-#else
+#অন্যথা
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasint n, FLOAT alpha, IFLOAT *a, blasint lda, IFLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
+শূন্য CNAME(গণনা CBLAS_ORDER order, গণনা CBLAS_TRANSPOSE TransA, blasint m, blasint n, FLOAT alpha, IFLOAT *a, blasint lda, IFLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
 {
     blasint lenx,  leny;
-    int     trans;
+    পূর্ণাঙ্ক     trans;
     blasint info,  t;
 #ifdef SMP
-    int     nthreads;
+    পূর্ণাঙ্ক     nthreads;
 #endif
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    পূর্ণাঙ্ক (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -137,16 +137,16 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
     trans = -1;
     info  =  0;
 
-    if (order == CblasColMajor) {   // Column Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    যদি (order == CblasColMajor) {   // Column Major
+        যদি (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 0;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } অন্যথা যদি (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 1;
         }
-    } else {                        // Row Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    } অন্যথা {                        // Row Major
+        যদি (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 1;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } অন্যথা যদি (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 0;
         }
 
@@ -157,67 +157,67 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
 
     info = -1;
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (trans < 0)       {info = 1;}
+    যদি (incy == 0)       {info = 11;}
+    যদি (incx == 0)       {info = 8;}
+    যদি (lda < MAX(1, m)) {info = 6;}
+    যদি (n < 0)           {info = 3;}
+    যদি (m < 0)           {info = 2;}
+    যদি (trans < 0)       {info = 1;}
 
-    if (info >= 0) {
-        BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+    যদি (info >= 0) {
+        BLASFUNC(xerbla)(ERROR_NAME, &info, পরিমাণ(ERROR_NAME));
+        ঘূৰাই;
     }
 
 #endif
 
-    if ((m==0) || (n==0)) return;
+    যদি ((m==0) || (n==0)) ঘূৰাই;
 
-    if (trans) {
+    যদি (trans) {
         lenx = m;
         leny = n;
-    } else {
+    } অন্যথা {
         lenx = n;
         leny = m;
     }
 
 #ifdef BGEMM
-  float alpha_float, beta_float;
+  ভিন্ন alpha_float, beta_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
   SBF16TOS_K(1, &beta, 1, &beta_float, 1);
-#else
-  float alpha_float = alpha;
-  float beta_float = beta;
+#অন্যথা
+  ভিন্ন alpha_float = alpha;
+  ভিন্ন beta_float = beta;
 #endif
 
-    if (alpha_float == ZERO) {
-        if (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
-        return;
+    যদি (alpha_float == ZERO) {
+        যদি (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), রিক্ত, 0, রিক্ত, 0);
+        ঘূৰাই;
     }
 
     IDEBUG_START;
     FUNCTION_PROFILE_START();
 
-    if (incx < 0) {x -= (lenx - 1) * incx;}
-    if (incy < 0) {y -= (leny - 1) * incy;}
+    যদি (incx < 0) {x -= (lenx - 1) * incx;}
+    যদি (incy < 0) {y -= (leny - 1) * incy;}
 
 #ifdef SMP
-    if ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
+    যদি ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
       nthreads = 1;
-    else
-      nthreads = num_cpu_avail(2);
+    অন্যথা
+      nthreads = অঙ্ক_cpu_avail(2);
 
-    if (nthreads == 1) {
+    যদি (nthreads == 1) {
 #endif
-        (gemv[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
+        (gemv[(পূর্ণাঙ্ক)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
 #ifdef SMP
-    } else {
-        (gemv_thread[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
+    } অন্যথা {
+        (gemv_thread[(পূর্ণাঙ্ক)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
     }
 #endif
 
     FUNCTION_PROFILE_END(1, m * n + m + n,  2 * m * n);
     IDEBUG_END;
 
-    return;
+    ঘূৰাই;
 }
