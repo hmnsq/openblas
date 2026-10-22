@@ -36,17 +36,17 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C, FLOAT *S){
+శూన్య NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C, FLOAT *S){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
@@ -56,29 +56,29 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C
 
   PRINT_DEBUG_NAME;
 
-#else
+#లేకపోతే
 
-void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT c, FLOAT s){
+శూన్య CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT c, FLOAT s){
 
   PRINT_DEBUG_CNAME;
 
-#endif
+#అయితే_ముగింపు
 
-  if (n <= 0) return;
+  ఒకవేళ (n <= 0) తిరిగి;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ఒకవేళ (incx < 0) x -= (n - 1) * incx;
+  ఒకవేళ (incy < 0) y -= (n - 1) * incy;
 
   ROT_K(n, x, incx, y, incy, c, s);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_చివర(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 
 }

@@ -30,16 +30,16 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************/
 
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
+శూన్య NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
 {
 
   BLASLONG n    = *N;
@@ -48,25 +48,25 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT 
   FLOAT alpha   = *ALPHA;
   FLOAT beta    = *BETA;
 
-#else
+#లేకపోతే
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
+శూన్య CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
 {
 
-#endif
+#అయితే_ముగింపు
 
-  if (n <= 0) return;
+  ఒకవేళ (n <= 0) తిరిగి;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ఒకవేళ (incx < 0) x -= (n - 1) * incx;
+  ఒకవేళ (incy < 0) y -= (n - 1) * incy;
 
   AXPBY_K(n, alpha, x, incx, beta, y, incy);
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_చివర(1, 2 * n, 2 * n);
 
-  return;
+  తిరిగి;
 
 }
 

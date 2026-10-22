@@ -36,96 +36,96 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
-#if  defined(Z13)
-#define MULTI_THREAD_MINIMAL  200000
-#else
-#define MULTI_THREAD_MINIMAL  10000
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
+#ఒకవేళ  defined(Z13)
+#నిర్వచించు MULTI_THREAD_కనీస  200000
+#లేకపోతే
+#నిర్వచించు MULTI_THREAD_కనీస  10000
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+శూన్య NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
   FLOAT alpha = *ALPHA;
 
-#else
+#లేకపోతే
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+శూన్య CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
-#endif
+#అయితే_ముగింపు
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#నిర్వచితమైతే SMP
+  పూర్ణాంకం బహుళకం, nthreads;
+#అయితే_ముగింపు
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
   PRINT_DEBUG_NAME;
-#else
+#లేకపోతే
   PRINT_DEBUG_CNAME;
-#endif
+#అయితే_ముగింపు
 
-  if (n <= 0) return;
+  ఒకవేళ (n <= 0) తిరిగి;
 
-  if (alpha == ZERO) return;
+  ఒకవేళ (alpha == ZERO) తిరిగి;
 
-  if (incx == 0 && incy == 0) {
+  ఒకవేళ (incx == 0 && incy == 0) {
     *y += n * alpha *(*x);
-    return;
+    తిరిగి;
   }
     
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ఒకవేళ (incx < 0) x -= (n - 1) * incx;
+  ఒకవేళ (incy < 0) y -= (n - 1) * incy;
 
-#ifdef SMP
+#నిర్వచితమైతే SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  ఒకవేళ (incx == 0 || incy == 0 || n <= MULTI_THREAD_కనీస)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  లేకపోతే
+	  nthreads = అంకె_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  ఒకవేళ (nthreads == 1) {
+#అయితే_ముగింపు
 
-  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, NULL, 0);
+  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, ఖాళీ, 0);
 
-#ifdef SMP
-  } else {
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
+#నిర్వచితమైతే XDOUBLE
+    బహుళకం  =  BLAS_XDOUBLE | BLAS_REAL;
+#లేదావేళ defined(DOUBLE)
+    బహుళకం  =  BLAS_DOUBLE  | BLAS_REAL;
+#లేకపోతే
+    బహుళకం  =  BLAS_SINGLE  | BLAS_REAL;
+#అయితే_ముగింపు
 
-    blas_level1_thread(mode, n, 0, 0, &alpha,
-		       x, incx, y, incy, NULL, 0,  (int (*)(void))AXPYU_K, nthreads);
+    blas_level1_thread(బహుళకం, n, 0, 0, &alpha,
+		       x, incx, y, incy, ఖాళీ, 0,  (పూర్ణాంకం (*)(శూన్య))AXPYU_K, nthreads);
 
   }
-#endif
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_చివర(1, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 
 }

@@ -36,100 +36,100 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QTRTI2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DTRTI2"
-#else
-#define ERROR_NAME "STRTI2"
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "QTRTI2"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DTRTI2"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "STRTI2"
+#అయితే_ముగింపు
 
-static blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifdef XDOUBLE
+స్థిర blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#నిర్వచితమైతే XDOUBLE
   qtrti2_UU, qtrti2_UN, qtrti2_LU, qtrti2_LN,
-#elif defined(DOUBLE)
+#లేదావేళ defined(DOUBLE)
   dtrti2_UU, dtrti2_UN, dtrti2_LU, dtrti2_LN,
-#else
+#లేకపోతే
   strti2_UU, strti2_UN, strti2_LU, strti2_LN,
-#endif
+#అయితే_ముగింపు
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+శూన్య NAME(అక్షరం *UPLO, అక్షరం *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t వాదనలు;
 
   blasint uplo_arg = *UPLO;
   blasint diag_arg = *DIAG;
   blasint uplo, diag;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *బఫరు;
+#నిర్వచితమైతే PPC440
+  బాహ్య
+#అయితే_ముగింపు
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  వాదనలు.n    = *N;
+  వాదనలు.a    = (శూన్య *)a;
+  వాదనలు.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ఒకవేళ (uplo_arg == 'U') uplo = 0;
+  ఒకవేళ (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ఒకవేళ (diag_arg == 'U') diag = 0;
+  ఒకవేళ (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ఒకవేళ (వాదనలు.lda  < MAX(1,వాదనలు.n)) info = 5;
+  ఒకవేళ (వాదనలు.n    < 0)             info = 3;
+  ఒకవేళ (diag < 0)                  info = 2;
+  ఒకవేళ (uplo < 0)                  info = 1;
+  ఒకవేళ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    తిరిగి;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  ఒకవేళ (వాదనలు.n <= 0) తిరిగి;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#నిర్వచితం_కాకపోతే PPC440
+  బఫరు = (FLOAT *)blas_జ్ఞాపకం_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)బఫరు + GEMM_స్థానభ్రంశం_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * కొలత + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_స్థానభ్రంశం_B);
+#అయితే_ముగింపు
 
-  info = (trti2[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  info = (trti2[(uplo << 1) | diag])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#నిర్వచితం_కాకపోతే PPC440
+  blas_జ్ఞాపకం_free(బఫరు);
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, .5 * args.n * args.n,
-		          args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_చివర(COMPSIZE * COMPSIZE, .5 * వాదనలు.n * వాదనలు.n,
+		          వాదనలు.n * (1./3. + వాదనలు.n * ( 1./2. + వాదనలు.n * 1./6.))
+		       +  వాదనలు.n * (1./3. + వాదనలు.n * (-1./2. + వాదనలు.n * 1./6.)));
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 }

@@ -31,397 +31,397 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 **********************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+శూన్య openblas_warning(పూర్ణాంకం verbose, స్థిరరాశి అక్షరం * సందేశం);
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMM_BATCH "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMM_BATCH "
-#define GEMM_BATCH_THREAD dgemm_batch_thread
-#else
-#define ERROR_NAME "SGEMM_BATCH "
-#define GEMM_BATCH_THREAD sgemm_batch_thread
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMM_BATCH "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMM_BATCH "
-#define GEMM_BATCH_THREAD zgemm_batch_thread
-#else
-#define ERROR_NAME "CGEMM_BATCH "
-#define GEMM_BATCH_THREAD cgemm_batch_thread
-#endif
-#endif
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "QGEMM_BATCH "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DGEMM_BATCH "
+#నిర్వచించు GEMM_BATCH_THREAD dgemm_batch_thread
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "SGEMM_BATCH "
+#నిర్వచించు GEMM_BATCH_THREAD sgemm_batch_thread
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XGEMM_BATCH "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZGEMM_BATCH "
+#నిర్వచించు GEMM_BATCH_THREAD zgemm_batch_thread
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CGEMM_BATCH "
+#నిర్వచించు GEMM_BATCH_THREAD cgemm_batch_thread
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+స్థిర పూర్ణాంకం (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
-#define USE_SMALL_MATRIX_OPT 1
-#else
-#define USE_SMALL_MATRIX_OPT 0
-#endif
+#ఒకవేళ defined(SMALL_మాతృక_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
+#నిర్వచించు USE_SMALL_మాతృక_OPT 1
+#లేకపోతే
+#నిర్వచించు USE_SMALL_మాతృక_OPT 0
+#అయితే_ముగింపు
 
-#if USE_SMALL_MATRIX_OPT
-#ifndef DYNAMIC_ARCH
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
-#endif
+#ఒకవేళ USE_SMALL_మాతృక_OPT
+#నిర్వచితం_కాకపోతే DYNAMIC_ARCH
+#నిర్వచించు SMALL_KERNEL_ADDR(పట్టిక, idx) ((శూన్య *)(పట్టిక[idx]))
+#లేకపోతే
+#నిర్వచించు SMALL_KERNEL_ADDR(పట్టిక, idx) ((శూన్య *)(*(uintptr_t *)((అక్షరం *)gotoblas + (size_t)(పట్టిక[idx]))))
+#అయితే_ముగింపు
 
 
-#ifndef COMPLEX
-static size_t gemm_small_kernel[] = {
+#నిర్వచితం_కాకపోతే COMPLEX
+స్థిర size_t gemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, 0, 0,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, 0, 0,
 };
 
 
-static size_t gemm_small_kernel_b0[] = {
+స్థిర size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, 0, 0,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#నిర్వచించు GEMM_SMALL_KERNEL_B0(idx) (పూర్ణాంకం (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#నిర్వచించు GEMM_SMALL_KERNEL(idx) (పూర్ణాంకం (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#లేకపోతే
 
-static size_t zgemm_small_kernel[] = {
+స్థిర size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, GEMM_SMALL_KERNEL_RT, GEMM_SMALL_KERNEL_CT,
 	GEMM_SMALL_KERNEL_NR, GEMM_SMALL_KERNEL_TR, GEMM_SMALL_KERNEL_RR, GEMM_SMALL_KERNEL_CR,
 	GEMM_SMALL_KERNEL_NC, GEMM_SMALL_KERNEL_TC, GEMM_SMALL_KERNEL_RC, GEMM_SMALL_KERNEL_CC,
 };
 
-static size_t zgemm_small_kernel_b0[] = {
+స్థిర size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, GEMM_SMALL_KERNEL_B0_RN, GEMM_SMALL_KERNEL_B0_CN,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, GEMM_SMALL_KERNEL_B0_RT, GEMM_SMALL_KERNEL_B0_CT,
 	GEMM_SMALL_KERNEL_B0_NR, GEMM_SMALL_KERNEL_B0_TR, GEMM_SMALL_KERNEL_B0_RR, GEMM_SMALL_KERNEL_B0_CR,
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
-#endif
-#endif
+#నిర్వచించు ZGEMM_SMALL_KERNEL(idx) (పూర్ణాంకం (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#నిర్వచించు ZGEMM_SMALL_KERNEL_B0(idx) (పూర్ణాంకం (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME(char *transa_array, char *transb_array,
+#నిర్వచితం_కాకపోతే CBLAS
+శూన్య NAME(అక్షరం *transa_array, అక్షరం *transb_array,
 	   blasint * m_array, blasint * n_array, blasint * k_array,
 	   FLOAT * alpha_array,
 	   IFLOAT ** a_array, blasint * lda_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
-	   FLOAT ** c_array, blasint * ldc_array, blasint * gcount, blasint * group_size) {
-       blasint group_count = *gcount;
-#else
+	   FLOAT ** c_array, blasint * ldc_array, blasint * gcount, blasint * సమూహం_కొలత) {
+       blasint సమూహం_లెక్క = *gcount;
+#లేకపోతే
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CBLAS_TRANSPOSE * transb_array,
+శూన్య CNAME(గణన CBLAS_క్రమం క్రమం, గణన CBLAS_TRANSPOSE *  transa_array, గణన CBLAS_TRANSPOSE * transb_array,
 	   blasint * m_array, blasint * n_array, blasint * k_array,
-#ifndef COMPLEX
+#నిర్వచితం_కాకపోతే COMPLEX
 	   FLOAT * alpha_array,
 	   IFLOAT ** a_array, blasint * lda_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
-	   FLOAT ** c_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
-#else
-	   void * valpha_array,
-	   void ** va_array, blasint * lda_array,
-	   void ** vb_array, blasint * ldb_array,
-	   void * vbeta_array,
-	   void ** vc_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
+	   FLOAT ** c_array, blasint * ldc_array, blasint సమూహం_లెక్క, blasint * సమూహం_కొలత) {
+#లేకపోతే
+	   శూన్య * valpha_array,
+	   శూన్య ** va_array, blasint * lda_array,
+	   శూన్య ** vb_array, blasint * ldb_array,
+	   శూన్య * vbeta_array,
+	   శూన్య ** vc_array, blasint * ldc_array, blasint సమూహం_లెక్క, blasint * సమూహం_కొలత) {
 
   FLOAT * alpha_array=(FLOAT *)valpha_array;
   FLOAT * beta_array=(FLOAT *)vbeta_array;
   FLOAT ** a_array=(FLOAT**)va_array;
   FLOAT ** b_array=(FLOAT**)vb_array;
   FLOAT ** c_array=(FLOAT**)vc_array;
-#endif
-#endif
-  BLASLONG group_m, group_n, group_k;
-  BLASLONG group_lda, group_ldb, group_ldc;
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+  BLASLONG సమూహం_m, సమూహం_n, సమూహం_k;
+  BLASLONG సమూహం_lda, సమూహం_ldb, సమూహం_ldc;
 
-  blas_arg_t * args_array=NULL;
+  blas_arg_t * వాదనలు_array=ఖాళీ;
 
-  int mode=0, group_mode=0;
-  blasint total_num=0;
+  పూర్ణాంకం బహుళకం=0, సమూహం_బహుళకం=0;
+  blasint మొత్తం_అంకె=0;
 
-  blasint i=0, j=0, matrix_idx=0, count=0;
+  blasint i=0, j=0, మాతృక_idx=0, లెక్క=0;
 
-  int group_transa, group_transb;
-  BLASLONG group_nrowa, group_nrowb;
+  పూర్ణాంకం సమూహం_transa, సమూహం_transb;
+  BLASLONG సమూహం_nrowa, సమూహం_nrowb;
   blasint info;
 
-  void * group_alpha, * group_beta;
-  void * group_routine=NULL;
-#ifdef SMALL_MATRIX_OPT
-  void * group_small_matrix_opt_routine=NULL;
-#endif
+  శూన్య * సమూహం_alpha, * సమూహం_beta;
+  శూన్య * సమూహం_routine=ఖాళీ;
+#నిర్వచితమైతే SMALL_మాతృక_OPT
+  శూన్య * సమూహం_small_మాతృక_opt_routine=ఖాళీ;
+#అయితే_ముగింపు
   
-#if defined (SMP) || defined(SMALL_MATRIX_OPT)
-  double MNK;
-#endif
+#ఒకవేళ defined (SMP) || defined(SMALL_మాతృక_OPT)
+  ద్విగుణ MNK;
+#అయితే_ముగింపు
 
   PRINT_DEBUG_CNAME;
     
-  for(i=0; i<group_count; i++){
-    total_num+=group_size[i];
+  కొరకు(i=0; i<సమూహం_లెక్క; i++){
+    మొత్తం_అంకె+=సమూహం_కొలత[i];
   }
 
-  args_array=(blas_arg_t *)malloc(total_num * sizeof(blas_arg_t));
+  వాదనలు_array=(blas_arg_t *)జ్ఞాపకం_ఇవ్వు(మొత్తం_అంకె * పరిమాణం(blas_arg_t));
   
-  if(args_array == NULL){
+  ఒకవేళ(వాదనలు_array == ఖాళీ){
     openblas_warning(0, "memory alloc failed!\n");
-    return;
+    తిరిగి;
   }
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#నిర్వచితమైతే SMP
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+  బహుళకం  =  BLAS_XDOUBLE | BLAS_REAL;
+#లేదావేళ defined(DOUBLE)
+  బహుళకం  =  BLAS_DOUBLE  | BLAS_REAL;
+#లేకపోతే
+  బహుళకం  =  BLAS_SINGLE  | BLAS_REAL;
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+  బహుళకం  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#లేదావేళ defined(DOUBLE)
+  బహుళకం  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#లేకపోతే
+  బహుళకం  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
   
-  for(i=0; i<group_count; matrix_idx+=group_size[i], i++){
-    group_alpha = (void *)&alpha_array[i * COMPSIZE];
-    group_beta = (void *)&beta_array[i * COMPSIZE];
+  కొరకు(i=0; i<సమూహం_లెక్క; మాతృక_idx+=సమూహం_కొలత[i], i++){
+    సమూహం_alpha = (శూన్య *)&alpha_array[i * COMPSIZE];
+    సమూహం_beta = (శూన్య *)&beta_array[i * COMPSIZE];
 
-    group_m = group_n = group_k = 0;
-    group_lda = group_ldb = group_ldc = 0;
-    group_transa = -1;
-    group_transb = -1;
+    సమూహం_m = సమూహం_n = సమూహం_k = 0;
+    సమూహం_lda = సమూహం_ldb = సమూహం_ldc = 0;
+    సమూహం_transa = -1;
+    సమూహం_transb = -1;
     info   = 0;
    
-#if defined(CBLAS) 
-    if (order == CblasColMajor) {
-      group_m = m_array[i];
-      group_n = n_array[i];
-      group_k = k_array[i];
+#ఒకవేళ defined(CBLAS) 
+    ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
+      సమూహం_m = m_array[i];
+      సమూహం_n = n_array[i];
+      సమూహం_k = k_array[i];
 
-      group_lda = lda_array[i];
-      group_ldb = ldb_array[i];
-      group_ldc = ldc_array[i];
+      సమూహం_lda = lda_array[i];
+      సమూహం_ldb = ldb_array[i];
+      సమూహం_ldc = ldc_array[i];
       
-      if (transa_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transa_array[i] == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transb_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transb_array[i] == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 3;
-#endif
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ఒకవేళ (transa_array[i] == CblasNoTrans)     సమూహం_transa = 0;
+      ఒకవేళ (transa_array[i] == CblasTrans)       సమూహం_transa = 1;
+#నిర్వచితం_కాకపోతే COMPLEX
+      ఒకవేళ (transa_array[i] == CblasConjNoTrans) సమూహం_transa = 0;
+      ఒకవేళ (transa_array[i] == CblasConjTrans)   సమూహం_transa = 1;
+#లేకపోతే
+      ఒకవేళ (transa_array[i] == CblasConjNoTrans) సమూహం_transa = 2;
+      ఒకవేళ (transa_array[i] == CblasConjTrans)   సమూహం_transa = 3;
+#అయితే_ముగింపు
+      ఒకవేళ (transb_array[i] == CblasNoTrans)     సమూహం_transb = 0;
+      ఒకవేళ (transb_array[i] == CblasTrans)       సమూహం_transb = 1;
+#నిర్వచితం_కాకపోతే COMPLEX
+      ఒకవేళ (transb_array[i] == CblasConjNoTrans) సమూహం_transb = 0;
+      ఒకవేళ (transb_array[i] == CblasConjTrans)   సమూహం_transb = 1;
+#లేకపోతే
+      ఒకవేళ (transb_array[i] == CblasConjNoTrans) సమూహం_transb = 2;
+      ఒకవేళ (transb_array[i] == CblasConjTrans)   సమూహం_transb = 3;
+#అయితే_ముగింపు
+      సమూహం_nrowa = సమూహం_m;
+      ఒకవేళ (సమూహం_transa & 1) సమూహం_nrowa = సమూహం_k;
+      సమూహం_nrowb = సమూహం_k;
+      ఒకవేళ (సమూహం_transb & 1) సమూహం_nrowb = సమూహం_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;
+      ఒకవేళ (సమూహం_ldc < సమూహం_m) info = 13;
+      ఒకవేళ (సమూహం_ldb < సమూహం_nrowb)  info = 10;
+      ఒకవేళ (సమూహం_lda < సమూహం_nrowa)  info =  8;
+      ఒకవేళ (సమూహం_k < 0)        info =  5;
+      ఒకవేళ (సమూహం_n < 0)        info =  4;
+      ఒకవేళ (సమూహం_m < 0)        info =  3;
+      ఒకవేళ (సమూహం_transb < 0)        info =  2;
+      ఒకవేళ (సమూహం_transa < 0)        info =  1;
 
-    }else if (order == CblasRowMajor) {
+    }లేకపోతే ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
       
-      group_m = n_array[i];
-      group_n = m_array[i];
-      group_k = k_array[i];
+      సమూహం_m = n_array[i];
+      సమూహం_n = m_array[i];
+      సమూహం_k = k_array[i];
 
-      group_lda = ldb_array[i];
-      group_ldb = lda_array[i];
-      group_ldc = ldc_array[i];
+      సమూహం_lda = ldb_array[i];
+      సమూహం_ldb = lda_array[i];
+      సమూహం_ldc = ldc_array[i];
 
-      if (transb_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transb_array[i] == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transa_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transa_array[i] == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 3;
-#endif
+      ఒకవేళ (transb_array[i] == CblasNoTrans)     సమూహం_transa = 0;
+      ఒకవేళ (transb_array[i] == CblasTrans)       సమూహం_transa = 1;
+#నిర్వచితం_కాకపోతే COMPLEX
+      ఒకవేళ (transb_array[i] == CblasConjNoTrans) సమూహం_transa = 0;
+      ఒకవేళ (transb_array[i] == CblasConjTrans)   సమూహం_transa = 1;
+#లేకపోతే
+      ఒకవేళ (transb_array[i] == CblasConjNoTrans) సమూహం_transa = 2;
+      ఒకవేళ (transb_array[i] == CblasConjTrans)   సమూహం_transa = 3;
+#అయితే_ముగింపు
+      ఒకవేళ (transa_array[i] == CblasNoTrans)     సమూహం_transb = 0;
+      ఒకవేళ (transa_array[i] == CblasTrans)       సమూహం_transb = 1;
+#నిర్వచితం_కాకపోతే COMPLEX
+      ఒకవేళ (transa_array[i] == CblasConjNoTrans) సమూహం_transb = 0;
+      ఒకవేళ (transa_array[i] == CblasConjTrans)   సమూహం_transb = 1;
+#లేకపోతే
+      ఒకవేళ (transa_array[i] == CblasConjNoTrans) సమూహం_transb = 2;
+      ఒకవేళ (transa_array[i] == CblasConjTrans)   సమూహం_transb = 3;
+#అయితే_ముగింపు
 
-#else
-      group_m = m_array[i];
-      group_n = n_array[i];
-      group_k = k_array[i];
+#లేకపోతే
+      సమూహం_m = m_array[i];
+      సమూహం_n = n_array[i];
+      సమూహం_k = k_array[i];
 
-      group_lda = lda_array[i];
-      group_ldb = ldb_array[i];
-      group_ldc = ldc_array[i];
+      సమూహం_lda = lda_array[i];
+      సమూహం_ldb = ldb_array[i];
+      సమూహం_ldc = ldc_array[i];
       
-      if (transa_array[i] == 'N')   group_transa = 0;
-      if (transa_array[i] == 'T')   group_transa = 1;
-#ifndef COMPLEX
-      if (transa_array[i] == 'C')   group_transa = 1;
-#else
-      if (transa_array[i] == 'C')   group_transa = 3;
-#endif
-      if (transb_array[i] == 'N')   group_transb = 0;
-      if (transb_array[i] == 'T')   group_transb = 1;
-#ifndef COMPLEX
-      if (transb_array[i] == 'C')   group_transb = 1;
-#else
-      if (transb_array[i] == 'C')   group_transb = 3;
-#endif
-#endif
+      ఒకవేళ (transa_array[i] == 'N')   సమూహం_transa = 0;
+      ఒకవేళ (transa_array[i] == 'T')   సమూహం_transa = 1;
+#నిర్వచితం_కాకపోతే COMPLEX
+      ఒకవేళ (transa_array[i] == 'C')   సమూహం_transa = 1;
+#లేకపోతే
+      ఒకవేళ (transa_array[i] == 'C')   సమూహం_transa = 3;
+#అయితే_ముగింపు
+      ఒకవేళ (transb_array[i] == 'N')   సమూహం_transb = 0;
+      ఒకవేళ (transb_array[i] == 'T')   సమూహం_transb = 1;
+#నిర్వచితం_కాకపోతే COMPLEX
+      ఒకవేళ (transb_array[i] == 'C')   సమూహం_transb = 1;
+#లేకపోతే
+      ఒకవేళ (transb_array[i] == 'C')   సమూహం_transb = 3;
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      సమూహం_nrowa = సమూహం_m;
+      ఒకవేళ (సమూహం_transa & 1) సమూహం_nrowa = సమూహం_k;
+      సమూహం_nrowb = సమూహం_k;
+      ఒకవేళ (సమూహం_transb & 1) సమూహం_nrowb = సమూహం_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;      
-#if defined(CBLAS)
+      ఒకవేళ (సమూహం_ldc < సమూహం_m) info = 13;
+      ఒకవేళ (సమూహం_ldb < సమూహం_nrowb)  info = 10;
+      ఒకవేళ (సమూహం_lda < సమూహం_nrowa)  info =  8;
+      ఒకవేళ (సమూహం_k < 0)        info =  5;
+      ఒకవేళ (సమూహం_n < 0)        info =  4;
+      ఒకవేళ (సమూహం_m < 0)        info =  3;
+      ఒకవేళ (సమూహం_transb < 0)        info =  2;
+      ఒకవేళ (సమూహం_transa < 0)        info =  1;      
+#ఒకవేళ defined(CBLAS)
     }
-#endif
+#అయితే_ముగింపు
 
-    if (info >= 0) {
-      BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-      free(args_array);
-      return;
+    ఒకవేళ (info >= 0) {
+      BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+      విడుదల(వాదనలు_array);
+      తిరిగి;
     }
 
-    if (group_m == 0 || group_n == 0) continue;
+    ఒకవేళ (సమూహం_m == 0 || సమూహం_n == 0) కొనసాగు;
 
-    group_mode=mode;
+    సమూహం_బహుళకం=బహుళకం;
 
-#if defined(SMP) || defined(SMALL_MATRIX_OPT)
-    MNK = (double) group_m * (double) group_n * (double) group_k;
-#endif
+#ఒకవేళ defined(SMP) || defined(SMALL_మాతృక_OPT)
+    MNK = (ద్విగుణ) సమూహం_m * (ద్విగుణ) సమూహం_n * (ద్విగుణ) సమూహం_k;
+#అయితే_ముగింపు
 
-#ifdef SMALL_MATRIX_OPT
-#if !defined(COMPLEX)
-    if (*(FLOAT *)(group_alpha) != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
-                                 *(FLOAT *)(group_alpha), *(FLOAT *)(group_beta))){
-#else
-    if (((FLOAT *)(group_alpha))[0] != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
-                                 ((FLOAT *)(group_alpha))[0], ((FLOAT *)(group_alpha))[1],
-                                 ((FLOAT *)(group_beta))[0], ((FLOAT *)(group_beta))[1])){
-#endif
-      group_routine=NULL;
-#if !defined(COMPLEX)
-      if(*(FLOAT *)(group_beta) == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((group_transb<<2)|group_transa));
+#నిర్వచితమైతే SMALL_మాతృక_OPT
+#ఒకవేళ !defined(COMPLEX)
+    ఒకవేళ (*(FLOAT *)(సమూహం_alpha) != ZERO &&
+        GEMM_SMALL_మాతృక_PERMIT(సమూహం_transa, సమూహం_transb, సమూహం_m, సమూహం_n, సమూహం_k,
+                                 *(FLOAT *)(సమూహం_alpha), *(FLOAT *)(సమూహం_beta))){
+#లేకపోతే
+    ఒకవేళ (((FLOAT *)(సమూహం_alpha))[0] != ZERO &&
+        GEMM_SMALL_మాతృక_PERMIT(సమూహం_transa, సమూహం_transb, సమూహం_m, సమూహం_n, సమూహం_k,
+                                 ((FLOAT *)(సమూహం_alpha))[0], ((FLOAT *)(సమూహం_alpha))[1],
+                                 ((FLOAT *)(సమూహం_beta))[0], ((FLOAT *)(సమూహం_beta))[1])){
+#అయితే_ముగింపు
+      సమూహం_routine=ఖాళీ;
+#ఒకవేళ !defined(COMPLEX)
+      ఒకవేళ(*(FLOAT *)(సమూహం_beta) == 0.0){
+	సమూహం_బహుళకం=బహుళకం | BLAS_SMALL_B0_OPT;
+	సమూహం_small_మాతృక_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((సమూహం_transb<<2)|సమూహం_transa));
+      }లేకపోతే{
+	సమూహం_బహుళకం=బహుళకం | BLAS_SMALL_OPT;
+	సమూహం_small_మాతృక_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((సమూహం_transb<<2)|సమూహం_transa));
       }
-#else
-      if(((FLOAT *)(group_beta))[0] == 0.0 && ((FLOAT *)(group_beta))[1] == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((group_transb<<2)|group_transa));
+#లేకపోతే
+      ఒకవేళ(((FLOAT *)(సమూహం_beta))[0] == 0.0 && ((FLOAT *)(సమూహం_beta))[1] == 0.0){
+	సమూహం_బహుళకం=బహుళకం | BLAS_SMALL_B0_OPT;
+	సమూహం_small_మాతృక_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((సమూహం_transb<<2)|సమూహం_transa));
+      }లేకపోతే{
+	సమూహం_బహుళకం=బహుళకం | BLAS_SMALL_OPT;
+	సమూహం_small_మాతృక_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((సమూహం_transb<<2)|సమూహం_transa));
       }
 
-#endif
+#అయితే_ముగింపు
       
-    }else{
-#endif
-      group_routine=(void*)(gemm[(group_transb<<2)|group_transa]);
-#ifdef SMALL_MATRIX_OPT
+    }లేకపోతే{
+#అయితే_ముగింపు
+      సమూహం_routine=(శూన్య*)(gemm[(సమూహం_transb<<2)|సమూహం_transa]);
+#నిర్వచితమైతే SMALL_మాతృక_OPT
     }
-#endif    
+#అయితే_ముగింపు    
 
     
-    for(j=0; j<group_size[i]; j++){
-      args_array[count].m=group_m;
-      args_array[count].n=group_n;
-      args_array[count].k=group_k;
-      args_array[count].lda=group_lda;
-      args_array[count].ldb=group_ldb;
-      args_array[count].ldc=group_ldc;
-      args_array[count].alpha=group_alpha;
-      args_array[count].beta=group_beta;
+    కొరకు(j=0; j<సమూహం_కొలత[i]; j++){
+      వాదనలు_array[లెక్క].m=సమూహం_m;
+      వాదనలు_array[లెక్క].n=సమూహం_n;
+      వాదనలు_array[లెక్క].k=సమూహం_k;
+      వాదనలు_array[లెక్క].lda=సమూహం_lda;
+      వాదనలు_array[లెక్క].ldb=సమూహం_ldb;
+      వాదనలు_array[లెక్క].ldc=సమూహం_ldc;
+      వాదనలు_array[లెక్క].alpha=సమూహం_alpha;
+      వాదనలు_array[లెక్క].beta=సమూహం_beta;
 
-#if defined(CBLAS)
-      if (order == CblasRowMajor) {
-	args_array[count].a=(b_array[matrix_idx+j]);
-	args_array[count].b=(a_array[matrix_idx+j]);
-      } else
-#endif
+#ఒకవేళ defined(CBLAS)
+      ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
+	వాదనలు_array[లెక్క].a=(b_array[మాతృక_idx+j]);
+	వాదనలు_array[లెక్క].b=(a_array[మాతృక_idx+j]);
+      } లేకపోతే
+#అయితే_ముగింపు
       {
-	args_array[count].a=(a_array[matrix_idx+j]);
-	args_array[count].b=(b_array[matrix_idx+j]);
+	వాదనలు_array[లెక్క].a=(a_array[మాతృక_idx+j]);
+	వాదనలు_array[లెక్క].b=(b_array[మాతృక_idx+j]);
       }
       
-      args_array[count].c=(c_array[matrix_idx+j]);
+      వాదనలు_array[లెక్క].c=(c_array[మాతృక_idx+j]);
       
-      args_array[count].routine_mode=group_mode;
-      args_array[count].routine=group_routine;
-#ifdef SMALL_MATRIX_OPT
-      if (!group_routine)
-        args_array[count].routine=group_small_matrix_opt_routine;
-#endif      
-      count++;
+      వాదనలు_array[లెక్క].routine_బహుళకం=సమూహం_బహుళకం;
+      వాదనలు_array[లెక్క].routine=సమూహం_routine;
+#నిర్వచితమైతే SMALL_మాతృక_OPT
+      ఒకవేళ (!సమూహం_routine)
+        వాదనలు_array[లెక్క].routine=సమూహం_small_మాతృక_opt_routine;
+#అయితే_ముగింపు      
+      లెక్క++;
     }
   }
 
-  if(count>0){
-    GEMM_BATCH_THREAD(args_array,count);
+  ఒకవేళ(లెక్క>0){
+    GEMM_BATCH_THREAD(వాదనలు_array,లెక్క);
   }
 
-  free(args_array);
+  విడుదల(వాదనలు_array);
 }

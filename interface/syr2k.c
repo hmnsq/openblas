@@ -36,107 +36,107 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <ctype.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QSYR2K"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSYR2K"
-#else
-#define ERROR_NAME "SSYR2K"
-#endif
-#else
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYR2K"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYR2K"
-#else
-#define ERROR_NAME "CSYR2K"
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHER2K"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHER2K"
-#else
-#define ERROR_NAME "CHER2K"
-#endif
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "QSYR2K"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DSYR2K"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "SSYR2K"
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితం_కాకపోతే HEMM
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XSYR2K"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZSYR2K"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CSYR2K"
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XHER2K"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZHER2K"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CHER2K"
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-static int (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef HEMM
+స్థిర పూర్ణాంకం (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#నిర్వచితం_కాకపోతే HEMM
   SYR2K_UN, SYR2K_UC, SYR2K_LN, SYR2K_LC,
-#else
+#లేకపోతే
   HER2K_UN, HER2K_UC, HER2K_LN, HER2K_LC,
-#endif
+#అయితే_ముగింపు
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(char *UPLO, char *TRANS,
+శూన్య NAME(అక్షరం *UPLO, అక్షరం *TRANS,
          blasint *N, blasint *K,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
 	               FLOAT *b, blasint *ldB,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
+  అక్షరం uplo_arg  = *UPLO;
+  అక్షరం trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t వాదనలు;
 
-  FLOAT *buffer;
+  FLOAT *బఫరు;
   FLOAT *sa, *sb;
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#నిర్వచితమైతే SMP
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+  పూర్ణాంకం బహుళకం  =  BLAS_XDOUBLE | BLAS_REAL;
+#లేదావేళ defined(DOUBLE)
+  పూర్ణాంకం బహుళకం  =  BLAS_DOUBLE  | BLAS_REAL;
+#లేకపోతే
+  పూర్ణాంకం బహుళకం  =  BLAS_SINGLE  | BLAS_REAL;
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+  పూర్ణాంకం బహుళకం  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#లేదావేళ defined(DOUBLE)
+  పూర్ణాంకం బహుళకం  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#లేకపోతే
+  పూర్ణాంకం బహుళకం  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
   blasint info;
-  int uplo;
-  int trans;
-  int nrowa;
+  పూర్ణాంకం uplo;
+  పూర్ణాంకం trans;
+  పూర్ణాంకం nrowa;
 
   PRINT_DEBUG_NAME;
 
-  args.n = *N;
-  args.k = *K;
+  వాదనలు.n = *N;
+  వాదనలు.k = *K;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
-  args.c = (void *)c;
+  వాదనలు.a = (శూన్య *)a;
+  వాదనలు.b = (శూన్య *)b;
+  వాదనలు.c = (శూన్య *)c;
 
-  args.lda = *ldA;
-  args.ldb = *ldB;
-  args.ldc = *ldC;
+  వాదనలు.lda = *ldA;
+  వాదనలు.ldb = *ldB;
+  వాదనలు.ldc = *ldC;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  వాదనలు.alpha = (శూన్య *)alpha;
+  వాదనలు.beta  = (శూన్య *)beta;
 
   TOUPPER(uplo_arg);
   TOUPPER(trans_arg);
@@ -144,298 +144,298 @@ void NAME(char *UPLO, char *TRANS,
   uplo  = -1;
   trans = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ఒకవేళ (uplo_arg  == 'U') uplo  = 0;
+  ఒకవేళ (uplo_arg  == 'L') uplo  = 1;
 
-#ifndef COMPLEX
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'C') trans = 1;
-#else
-#ifdef HEMM
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'C') trans = 1;
-#else
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+  ఒకవేళ (trans_arg == 'N') trans = 0;
+  ఒకవేళ (trans_arg == 'T') trans = 1;
+  ఒకవేళ (trans_arg == 'C') trans = 1;
+#లేకపోతే
+#నిర్వచితమైతే HEMM
+  ఒకవేళ (trans_arg == 'N') trans = 0;
+  ఒకవేళ (trans_arg == 'C') trans = 1;
+#లేకపోతే
+  ఒకవేళ (trans_arg == 'N') trans = 0;
+  ఒకవేళ (trans_arg == 'T') trans = 1;
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
 
-  nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  nrowa = వాదనలు.n;
+  ఒకవేళ (trans & 1) nrowa = వాదనలు.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 12;
-  if (args.ldb < MAX(1,nrowa))  info =  9;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
-  if (trans < 0)                info =  2;
-  if (uplo  < 0)                info =  1;
+  ఒకవేళ (వాదనలు.ldc < MAX(1,వాదనలు.n)) info = 12;
+  ఒకవేళ (వాదనలు.ldb < MAX(1,nrowa))  info =  9;
+  ఒకవేళ (వాదనలు.lda < MAX(1,nrowa))  info =  7;
+  ఒకవేళ (వాదనలు.k < 0)               info =  4;
+  ఒకవేళ (వాదనలు.n < 0)               info =  3;
+  ఒకవేళ (trans < 0)                info =  2;
+  ఒకవేళ (uplo  < 0)                info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#else
+#లేకపోతే
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Trans,
+శూన్య CNAME(గణన CBLAS_క్రమం క్రమం, గణన CBLAS_UPLO Uplo, గణన CBLAS_TRANSPOSE Trans,
 	   blasint n, blasint k,
-#ifndef COMPLEX
+#నిర్వచితం_కాకపోతే COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb,
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb,
-#endif
-#if !defined(COMPLEX) || defined(HEMM)
+#లేకపోతే
+	   శూన్య *valpha,
+	   శూన్య *va, blasint lda,
+	   శూన్య *vb, blasint ldb,
+#అయితే_ముగింపు
+#ఒకవేళ !defined(COMPLEX) || defined(HEMM)
 	   FLOAT beta,
-#else
-	   void *vbeta,
-#endif
-#ifndef COMPLEX
+#లేకపోతే
+	   శూన్య *vbeta,
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే COMPLEX
 	   FLOAT *c,
-#else
-	   void *vc,
-#endif
+#లేకపోతే
+	   శూన్య *vc,
+#అయితే_ముగింపు
            blasint ldc) {
 
-#ifdef COMPLEX
+#నిర్వచితమైతే COMPLEX
   FLOAT* alpha = (FLOAT*) valpha;
-#if !defined(HEMM)
+#ఒకవేళ !defined(HEMM)
   FLOAT* beta = (FLOAT*) vbeta;
-#endif
+#అయితే_ముగింపు
   FLOAT* a = (FLOAT*) va;
   FLOAT* b = (FLOAT*) vb;
   FLOAT* c = (FLOAT*) vc;
-#endif
+#అయితే_ముగింపు
 
-  blas_arg_t args;
-  int uplo, trans;
+  blas_arg_t వాదనలు;
+  పూర్ణాంకం uplo, trans;
   blasint info, nrowa;
 
-  FLOAT *buffer;
+  FLOAT *బఫరు;
   FLOAT *sa, *sb;
 
-#ifdef HEMM
+#నిర్వచితమైతే HEMM
   FLOAT CAlpha[2];
-#endif
+#అయితే_ముగింపు
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#నిర్వచితమైతే SMP
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+  పూర్ణాంకం బహుళకం  =  BLAS_XDOUBLE | BLAS_REAL;
+#లేదావేళ defined(DOUBLE)
+  పూర్ణాంకం బహుళకం  =  BLAS_DOUBLE  | BLAS_REAL;
+#లేకపోతే
+  పూర్ణాంకం బహుళకం  =  BLAS_SINGLE  | BLAS_REAL;
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+  పూర్ణాంకం బహుళకం  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#లేదావేళ defined(DOUBLE)
+  పూర్ణాంకం బహుళకం  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#లేకపోతే
+  పూర్ణాంకం బహుళకం  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
   PRINT_DEBUG_CNAME;
 
-  args.n = n;
-  args.k = k;
+  వాదనలు.n = n;
+  వాదనలు.k = k;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
-  args.c = (void *)c;
+  వాదనలు.a = (శూన్య *)a;
+  వాదనలు.b = (శూన్య *)b;
+  వాదనలు.c = (శూన్య *)c;
 
-  args.lda = lda;
-  args.ldb = ldb;
-  args.ldc = ldc;
+  వాదనలు.lda = lda;
+  వాదనలు.ldb = ldb;
+  వాదనలు.ldc = ldc;
 
-#ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-#else
-  args.alpha = (void *)alpha;
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+  వాదనలు.alpha = (శూన్య *)&alpha;
+#లేకపోతే
+  వాదనలు.alpha = (శూన్య *)alpha;
+#అయితే_ముగింపు
 
-#if !defined(COMPLEX) || defined(HEMM)
-  args.beta  = (void *)&beta;
-#else
-  args.beta  = (void *)beta;
-#endif
+#ఒకవేళ !defined(COMPLEX) || defined(HEMM)
+  వాదనలు.beta  = (శూన్య *)&beta;
+#లేకపోతే
+  వాదనలు.beta  = (శూన్య *)beta;
+#అయితే_ముగింపు
 
   trans = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+  ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
+    ఒకవేళ (Uplo == Cblas_పై) uplo  = 0;
+    ఒకవేళ (Uplo == Cblas_క్రింది) uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 1;
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 1;
-#else
-    if (Trans == CblasConjTrans)   trans = 1;
-#endif
+    ఒకవేళ (Trans == CblasNoTrans)     trans = 0;
+#నిర్వచితం_కాకపోతే COMPLEX
+    ఒకవేళ (Trans == CblasTrans)       trans = 1;
+    ఒకవేళ (Trans == CblasConjNoTrans) trans = 0;
+    ఒకవేళ (Trans == CblasConjTrans)   trans = 1;
+#లేదావేళ !defined(HEMM)
+    ఒకవేళ (Trans == CblasTrans)       trans = 1;
+#లేకపోతే
+    ఒకవేళ (Trans == CblasConjTrans)   trans = 1;
+#అయితే_ముగింపు
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = వాదనలు.n;
+    ఒకవేళ (trans & 1) nrowa = వాదనలు.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    ఒకవేళ (వాదనలు.ldc < MAX(1,వాదనలు.n)) info = 12;
+    ఒకవేళ (వాదనలు.ldb < MAX(1,nrowa))  info =  9;
+    ఒకవేళ (వాదనలు.lda < MAX(1,nrowa))  info =  7;
+    ఒకవేళ (వాదనలు.k < 0)               info =  4;
+    ఒకవేళ (వాదనలు.n < 0)               info =  3;
+    ఒకవేళ (trans < 0)                info =  2;
+    ఒకవేళ (uplo  < 0)                info =  1;
   }
 
-  if (order == CblasRowMajor) {
+  ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
 
-#ifdef HEMM
+#నిర్వచితమైతే HEMM
     CAlpha[0] =  alpha[0];
     CAlpha[1] = -alpha[1];
 
-    args.alpha = (void *)CAlpha;
-#endif
+    వాదనలు.alpha = (శూన్య *)CAlpha;
+#అయితే_ముగింపు
 
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    ఒకవేళ (Uplo == Cblas_పై) uplo  = 1;
+    ఒకవేళ (Uplo == Cblas_క్రింది) uplo  = 0;
 
-    if (Trans == CblasNoTrans)     trans = 1;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 0;
-    if (Trans == CblasConjNoTrans) trans = 1;
-    if (Trans == CblasConjTrans)   trans = 0;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 0;
-#else
-    if (Trans == CblasConjTrans)   trans = 0;
-#endif
+    ఒకవేళ (Trans == CblasNoTrans)     trans = 1;
+#నిర్వచితం_కాకపోతే COMPLEX
+    ఒకవేళ (Trans == CblasTrans)       trans = 0;
+    ఒకవేళ (Trans == CblasConjNoTrans) trans = 1;
+    ఒకవేళ (Trans == CblasConjTrans)   trans = 0;
+#లేదావేళ !defined(HEMM)
+    ఒకవేళ (Trans == CblasTrans)       trans = 0;
+#లేకపోతే
+    ఒకవేళ (Trans == CblasConjTrans)   trans = 0;
+#అయితే_ముగింపు
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = వాదనలు.n;
+    ఒకవేళ (trans & 1) nrowa = వాదనలు.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    ఒకవేళ (వాదనలు.ldc < MAX(1,వాదనలు.n)) info = 12;
+    ఒకవేళ (వాదనలు.ldb < MAX(1,nrowa))  info =  9;
+    ఒకవేళ (వాదనలు.lda < MAX(1,nrowa))  info =  7;
+    ఒకవేళ (వాదనలు.k < 0)               info =  4;
+    ఒకవేళ (వాదనలు.n < 0)               info =  3;
+    ఒకవేళ (trans < 0)                info =  2;
+    ఒకవేళ (uplo  < 0)                info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-  if (args.n == 0) return;
+  ఒకవేళ (వాదనలు.n == 0) తిరిగి;
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);
-#endif
+#నిర్వచితమైతే DYNAMIC_ARCH
+బాహ్య అక్షరం* gotoblas_corename(శూన్య);
+#అయితే_ముగింపు
 
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYR2K_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#ఒకవేళ !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#ఒకవేళ defined(ARCH_ARM64) && (defined(USE_SSYR2_K_KERNEL_ప్రత్యక్ష)||defined(DYNAMIC_ARCH))
+#ఒకవేళ defined(DYNAMIC_ARCH)
+ఒకవేళ (strcmp(gotoblas_corename(), "armv9sme") == 0
+#ఒకవేళ defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#అయితే_ముగింపు
 )
-#endif
-   if (order == CblasRowMajor && n == ldc) {
-     if (Trans == CblasNoTrans && k == lda && k == ldb) {
-      if (Uplo == CblasUpper) {
-        SSYR2K_DIRECT_ALPHA_BETA_UN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
-        SSYR2K_DIRECT_ALPHA_BETA_LN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+#అయితే_ముగింపు
+   ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major && n == ldc) {
+     ఒకవేళ (Trans == CblasNoTrans && k == lda && k == ldb) {
+      ఒకవేళ (Uplo == Cblas_పై) {
+        SSYR2_K_ప్రత్యక్ష_ALPHA_BETA_UN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        తిరిగి;
+      }లేకపోతే ఒకవేళ (Uplo == Cblas_క్రింది) {
+        SSYR2_K_ప్రత్యక్ష_ALPHA_BETA_LN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        తిరిగి;
       }
      }
-     else if (Trans == CblasTrans && n == lda && n ==ldb) {
-      if (Uplo == CblasUpper) {
-        SSYR2K_DIRECT_ALPHA_BETA_UT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
-        SSYR2K_DIRECT_ALPHA_BETA_LT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+     లేకపోతే ఒకవేళ (Trans == CblasTrans && n == lda && n ==ldb) {
+      ఒకవేళ (Uplo == Cblas_పై) {
+        SSYR2_K_ప్రత్యక్ష_ALPHA_BETA_UT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        తిరిగి;
+      }లేకపోతే ఒకవేళ (Uplo == Cblas_క్రింది) {
+        SSYR2_K_ప్రత్యక్ష_ALPHA_BETA_LT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        తిరిగి;
       }
      }
    }
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  బఫరు = (FLOAT *)blas_జ్ఞాపకం_alloc(0);
+  ఒకవేళ (!బఫరు) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)బఫరు + GEMM_స్థానభ్రంశం_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * కొలత + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_స్థానభ్రంశం_B);
 
-#ifdef SMP
-  if (!trans){
-    mode |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
-  } else {
-    mode |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
+#నిర్వచితమైతే SMP
+  ఒకవేళ (!trans){
+    బహుళకం |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
+  } లేకపోతే {
+    బహుళకం |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
   }
 
-  mode |= (uplo  << BLAS_UPLO_SHIFT);
+  బహుళకం |= (uplo  << BLAS_UPLO_జరుపు);
 
-  args.common = NULL;
-  if (args.n*args.k <1000)
-	  args.nthreads =1 ;
-  else
-  args.nthreads = num_cpu_avail(3);
+  వాదనలు.common = ఖాళీ;
+  ఒకవేళ (వాదనలు.n*వాదనలు.k <1000)
+	  వాదనలు.nthreads =1 ;
+  లేకపోతే
+  వాదనలు.nthreads = అంకె_cpu_avail(3);
 
-  if (args.nthreads == 1) {
-#endif
+  ఒకవేళ (వాదనలు.nthreads == 1) {
+#అయితే_ముగింపు
 
-    (syr2k[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syr2k[(uplo << 1) | trans ])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
-#ifdef SMP
+#నిర్వచితమైతే SMP
 
-  } else {
+  } లేకపోతే {
 
-    syrk_thread(mode, &args, NULL, NULL, syr2k[(uplo << 1) | trans ], sa, sb, args.nthreads);
+    syrk_thread(బహుళకం, &వాదనలు, ఖాళీ, ఖాళీ, syr2k[(uplo << 1) | trans ], sa, sb, వాదనలు.nthreads);
 
   }
-#endif
+#అయితే_ముగింపు
 
-  blas_memory_free(buffer);
+  blas_జ్ఞాపకం_free(బఫరు);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, 2 * args.n * args.k + args.n * args.n, 2 * args.n * args.n * args.k);
+  FUNCTION_PROFILE_చివర(COMPSIZE * COMPSIZE, 2 * వాదనలు.n * వాదనలు.k + వాదనలు.n * వాదనలు.n, 2 * వాదనలు.n * వాదనలు.n * వాదనలు.k);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 }

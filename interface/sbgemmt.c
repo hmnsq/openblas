@@ -32,22 +32,22 @@
 /*                                                                   */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ "common.h"
 
-#define SMP_THRESHOLD_MIN 65536.0
-#define ERROR_NAME "SBGEMMT "
+#నిర్వచించు SMP_పరిమితి_MIN 65536.0
+#నిర్వచించు ERROR_NAME "SBGEMMT "
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#నిర్వచితం_కాకపోతే GEMM_MULTITHREAD_పరిమితి
+#నిర్వచించు GEMM_MULTITHREAD_పరిమితి 4
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+శూన్య NAME(అక్షరం *UPLO, అక్షరం *TRANSA, అక్షరం *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -56,12 +56,12 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	పూర్ణాంకం transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	అక్షరం transA, transB, Uplo;
 	blasint nrowa, nrowb;
-	IFLOAT *buffer;
+	IFLOAT *బఫరు;
 	IFLOAT *aa, *bb;
 	FLOAT *cc;
 	FLOAT alpha, beta;
@@ -89,62 +89,62 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	ఒకవేళ (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	ఒకవేళ (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	ఒకవేళ (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	ఒకవేళ (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	ఒకవేళ (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	ఒకవేళ (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	ఒకవేళ (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	ఒకవేళ (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	ఒకవేళ (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	ఒకవేళ (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	ఒకవేళ (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	ఒకవేళ (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	ఒకవేళ (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	ఒకవేళ (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	ఒకవేళ (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	ఒకవేళ (k < 0)
 		info = 5;
-	if (m < 0)
+	ఒకవేళ (m < 0)
 		info = 4;
-	if (transb < 0)
+	ఒకవేళ (transb < 0)
 		info = 3;
-	if (transa < 0)
+	ఒకవేళ (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	ఒకవేళ (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ఒకవేళ (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+		తిరిగి;
 	}
-#else
+#లేకపోతే
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+శూన్య CNAME(గణన CBLAS_క్రమం క్రమం, గణన CBLAS_UPLO Uplo,
+	   గణన CBLAS_TRANSPOSE TransA, గణన CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
@@ -153,11 +153,11 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	పూర్ణాంకం transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
-	XFLOAT *buffer;
+	XFLOAT *బఫరు;
 
 	PRINT_DEBUG_CNAME;
 
@@ -166,32 +166,32 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
+		ఒకవేళ (Uplo == Cblas_పై) uplo = 0;
+		ఒకవేళ (Uplo == Cblas_క్రింది) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		ఒకవేళ (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		ఒకవేళ (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ఒకవేళ (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		ఒకవేళ (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		ఒకవేళ (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		ఒకవేళ (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ఒకవేళ (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		ఒకవేళ (TransB == CblasConjTrans)
 			transb = 1;
 
-		a = (void *)A;
-		b = (void *)B;
+		a = (శూన్య *)A;
+		b = (శూన్య *)B;
 		lda = LDA;
 		ldb = LDB;
 
@@ -200,57 +200,57 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		ఒకవేళ (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		ఒకవేళ (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		ఒకవేళ (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		ఒకవేళ (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		ఒకవేళ (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		ఒకవేళ (k < 0)
 			info = 5;
-		if (m < 0)
+		ఒకవేళ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ఒకవేళ (transb < 0)
 			info = 3;
-		if (transa < 0)
+		ఒకవేళ (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		ఒకవేళ (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
 
-		a = (void *)B;
-		b = (void *)A;
+		a = (శూన్య *)B;
+		b = (శూన్య *)A;
 
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		ఒకవేళ (Uplo == Cblas_పై) uplo = 0;
+		ఒకవేళ (Uplo == Cblas_క్రింది) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		ఒకవేళ (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		ఒకవేళ (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ఒకవేళ (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		ఒకవేళ (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		ఒకవేళ (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		ఒకవేళ (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ఒకవేళ (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		ఒకవేళ (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,191 +259,191 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		ఒకవేళ (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		ఒకవేళ (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		ఒకవేళ (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		ఒకవేళ (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		ఒకవేళ (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		ఒకవేళ (k < 0)
 			info = 5;
-		if (m < 0)
+		ఒకవేళ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ఒకవేళ (transb < 0)
 			info = 2;
-		if (transa < 0)
+		ఒకవేళ (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		ఒకవేళ (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ఒకవేళ (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+		తిరిగి;
 	}
 
-#endif
-	int buffer_size;
+#అయితే_ముగింపు
+	పూర్ణాంకం బఫరు_కొలత;
 	blasint i, j;
 
-#ifdef SMP
-	int nthreads;
-#endif
+#నిర్వచితమైతే SMP
+	పూర్ణాంకం nthreads;
+#అయితే_ముగింపు
 
 
-#ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+#నిర్వచితమైతే SMP
+	స్థిర పూర్ణాంకం (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, పూర్ణాంకం) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
-#endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+#అయితే_ముగింపు
+	పూర్ణాంకం (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	ఒకవేళ (m == 0)
+		తిరిగి;
 
-	IDEBUG_START;
+	IDEBUG_ప్రారంభం;
 
-	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
+	స్థిరరాశి blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
-		for (i = 0; i < m; i++) {
+	ఒకవేళ (uplo == 1) {
+		కొరకు (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			ఒకవేళ (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			ఒకవేళ (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#ఒకవేళ 0
+			ఒకవేళ (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, ఖాళీ, 0, ఖాళీ, 0);
 
-			if (alpha == ZERO)
-				continue;
-#endif
+			ఒకవేళ (alpha == ZERO)
+				కొనసాగు;
+#అయితే_ముగింపు
 
-			IDEBUG_START;
+			IDEBUG_ప్రారంభం;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
-#ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
-#endif
+			బఫరు_కొలత = j + k + 128 / పరిమాణం(FLOAT);
+#నిర్వచితమైతే WINDOWS_ABI
+			బఫరు_కొలత += 160 / పరిమాణం(FLOAT);
+#అయితే_ముగింపు
 			// for alignment
-			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			బఫరు_కొలత = (బఫరు_కొలత + 3) & ~3;
+			దొంతర_ALLOC(బఫరు_కొలత, IFLOAT, బఫరు);
 
-#ifdef SMP
+#నిర్వచితమైతే SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ఒకవేళ (1L * j * k < 2304L * GEMM_MULTITHREAD_పరిమితి)
 				nthreads = 1;
-			else
-				nthreads = num_cpu_avail(2);
+			లేకపోతే
+				nthreads = అంకె_cpu_avail(2);
 
-			if (nthreads == 1) {
-#endif
+			ఒకవేళ (nthreads == 1) {
+#అయితే_ముగింపు
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				ఒకవేళ (!(transa & 1))
+				(gemv[(పూర్ణాంకం)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				లేకపోతే
+				(gemv[(పూర్ణాంకం)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
-#ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+#నిర్వచితమైతే SMP
+			} లేకపోతే {
+				ఒకవేళ (!(transa & 1))
+				(gemv_thread[(పూర్ణాంకం)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				లేకపోతే
+				(gemv_thread[(పూర్ణాంకం)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
 			}
-#endif
+#అయితే_ముగింపు
 
-			STACK_FREE(buffer);
+			దొంతర_FREE(బఫరు);
 		}
-	} else {
+	} లేకపోతే {
 
-		for (i = 0; i < m; i++) {
+		కొరకు (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			ఒకవేళ (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#ఒకవేళ 0
+			ఒకవేళ (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, ఖాళీ, 0, ఖాళీ, 0);
 
-			if (alpha == ZERO)
-				continue;
-#endif
-			IDEBUG_START;
+			ఒకవేళ (alpha == ZERO)
+				కొనసాగు;
+#అయితే_ముగింపు
+			IDEBUG_ప్రారంభం;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
-#ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
-#endif
+			బఫరు_కొలత = j + k + 128 / పరిమాణం(FLOAT);
+#నిర్వచితమైతే WINDOWS_ABI
+			బఫరు_కొలత += 160 / పరిమాణం(FLOAT);
+#అయితే_ముగింపు
 			// for alignment
-			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			బఫరు_కొలత = (బఫరు_కొలత + 3) & ~3;
+			దొంతర_ALLOC(బఫరు_కొలత, IFLOAT, బఫరు);
 
-#ifdef SMP
+#నిర్వచితమైతే SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ఒకవేళ (1L * j * k < 2304L * GEMM_MULTITHREAD_పరిమితి)
 				nthreads = 1;
-			else
-				nthreads = num_cpu_avail(2);
+			లేకపోతే
+				nthreads = అంకె_cpu_avail(2);
 
-			if (nthreads == 1) {
-#endif
+			ఒకవేళ (nthreads == 1) {
+#అయితే_ముగింపు
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				ఒకవేళ (!(transa & 1))
+				(gemv[(పూర్ణాంకం)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				లేకపోతే
+				(gemv[(పూర్ణాంకం)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
-#ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+#నిర్వచితమైతే SMP
+			} లేకపోతే {
+				ఒకవేళ (!(transa & 1))
+				(gemv_thread[(పూర్ణాంకం)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				లేకపోతే
+				(gemv_thread[(పూర్ణాంకం)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
-#endif
+#అయితే_ముగింపు
 
-			STACK_FREE(buffer);
+			దొంతర_FREE(బఫరు);
 		}
 	}
 
-	IDEBUG_END;
+	IDEBUG_చివర;
 
-	return;
+	తిరిగి;
 }

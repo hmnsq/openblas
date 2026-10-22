@@ -1,24 +1,24 @@
-#ifdef CBLAS
+#నిర్వచితమైతే CBLAS
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
-#include "common.h"
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ <string.h>
+#అన్తర్భావ <stdarg.h>
+#అన్తర్భావ "common.h"
 
 OPENBLAS_EXPORT
 
-void CNAME(blasint p, char *rout, char *form, ...)
+శూన్య CNAME(blasint p, అక్షరం *rout, అక్షరం *form, ...)
 {
-   va_list args;
+   va_list వాదనలు;
 
-   va_start(args, form);
+   va_start(వాదనలు, form);
 
-   if (p)
-      fprintf(stderr, "Parameter %lld to routine %s was incorrect\n", (long long)p, rout);
-   vfprintf(stderr, form, args);
-   va_end(args);
-   exit(-1);
+   ఒకవేళ (p)
+      fprintf(stderr, "Parameter %lld to routine %s was incorrect\n", (దీర్ఘ దీర్ఘ)p, rout);
+   vfprintf(stderr, form, వాదనలు);
+   va_end(వాదనలు);
+   నిష్క్రమించు(-1);
 }
-#endif
+#అయితే_ముగింపు
 

@@ -36,76 +36,76 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifdef SMP
-#ifdef __64BIT__
-#define SMPTEST 1
-#endif
-#endif
+#నిర్వచితమైతే SMP
+#నిర్వచితమైతే __64BIT__
+#నిర్వచించు SMPTEST 1
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 
-#ifdef XDOUBLE
-#ifndef CONJ
-#define ERROR_NAME "XGERU  "
-#else
-#define ERROR_NAME "XGERC  "
-#endif
-#elif defined DOUBLE
-#ifndef CONJ
-#define ERROR_NAME "ZGERU  "
-#else
-#define ERROR_NAME "ZGERC  "
-#endif
-#else
-#ifndef CONJ
-#define ERROR_NAME "CGERU  "
-#else
-#define ERROR_NAME "CGERC "
-#endif
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచితం_కాకపోతే CONJ
+#నిర్వచించు ERROR_NAME "XGERU  "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "XGERC  "
+#అయితే_ముగింపు
+#లేదావేళ defined DOUBLE
+#నిర్వచితం_కాకపోతే CONJ
+#నిర్వచించు ERROR_NAME "ZGERU  "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "ZGERC  "
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితం_కాకపోతే CONJ
+#నిర్వచించు ERROR_NAME "CGERU  "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CGERC "
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#if   defined XDOUBLE
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	xger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	xger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	xger_thread_V
-#endif
-#elif defined DOUBLE
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	zger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	zger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	zger_thread_V
-#endif
-#else
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	cger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	cger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	cger_thread_V
-#endif
-#endif
+#ఒకవేళ   defined XDOUBLE
+#నిర్వచితం_కాకపోతే CONJ
+#నిర్వచించు GER		GERU_K
+#నిర్వచించు GER_THREAD	xger_thread_U
+#లేకపోతే
+#నిర్వచించు GER		GERC_K
+#నిర్వచించు GER_THREAD	xger_thread_C
+#నిర్వచించు GERV		GERV_K
+#నిర్వచించు GERV_THREAD	xger_thread_V
+#అయితే_ముగింపు
+#లేదావేళ defined DOUBLE
+#నిర్వచితం_కాకపోతే CONJ
+#నిర్వచించు GER		GERU_K
+#నిర్వచించు GER_THREAD	zger_thread_U
+#లేకపోతే
+#నిర్వచించు GER		GERC_K
+#నిర్వచించు GER_THREAD	zger_thread_C
+#నిర్వచించు GERV		GERV_K
+#నిర్వచించు GERV_THREAD	zger_thread_V
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితం_కాకపోతే CONJ
+#నిర్వచించు GER		GERU_K
+#నిర్వచించు GER_THREAD	cger_thread_U
+#లేకపోతే
+#నిర్వచించు GER		GERC_K
+#నిర్వచించు GER_THREAD	cger_thread_C
+#నిర్వచించు GERV		GERV_K
+#నిర్వచించు GERV_THREAD	cger_thread_V
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+శూన్య NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -117,10 +117,10 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    incx  = *INCX;
   blasint    incy  = *INCY;
   blasint    lda   = *LDA;
-  FLOAT *buffer;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+  FLOAT *బఫరు;
+#నిర్వచితమైతే SMPTEST
+  పూర్ణాంకం nthreads;
+#అయితే_ముగింపు
 
   blasint info;
 
@@ -128,25 +128,25 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  ఒకవేళ (lda < MAX(1,m)) info = 9;
+  ఒకవేళ (incy == 0)      info = 7;
+  ఒకవేళ (incx == 0)      info = 5;
+  ఒకవేళ (n < 0)          info = 2;
+  ఒకవేళ (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#else
+#లేకపోతే
 
-void CNAME(enum CBLAS_ORDER order,
+శూన్య CNAME(గణన CBLAS_క్రమం క్రమం,
 	   blasint m, blasint n,
-	   void *VAlpha,
-	   void  *vx, blasint incx,
-	   void  *vy, blasint incy,
-	   void  *va, blasint lda) {
+	   శూన్య *VAlpha,
+	   శూన్య  *vx, blasint incx,
+	   శూన్య  *vy, blasint incy,
+	   శూన్య  *va, blasint lda) {
 
   FLOAT* Alpha = (FLOAT*) VAlpha;
   FLOAT* a = (FLOAT*) va;
@@ -156,27 +156,27 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT  alpha_r = Alpha[0];
   FLOAT  alpha_i = Alpha[1];
 
-  FLOAT *buffer;
+  FLOAT *బఫరు;
   blasint info, t;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+#నిర్వచితమైతే SMPTEST
+  పూర్ణాంకం nthreads;
+#అయితే_ముగింపు
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ఒకవేళ (lda < MAX(1,m)) info = 9;
+    ఒకవేళ (incy == 0)      info = 7;
+    ఒకవేళ (incx == 0)      info = 5;
+    ఒకవేళ (n < 0)          info = 2;
+    ఒకవేళ (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
     info = -1;
 
     t = n;
@@ -187,81 +187,81 @@ void CNAME(enum CBLAS_ORDER order,
     incx = incy;
     incy = t;
 
-    buffer = x;
+    బఫరు = x;
     x = y;
-    y = buffer;
+    y = బఫరు;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ఒకవేళ (lda < MAX(1,m)) info = 9;
+    ఒకవేళ (incy == 0)      info = 7;
+    ఒకవేళ (incx == 0)      info = 5;
+    ఒకవేళ (n < 0)          info = 2;
+    ఒకవేళ (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#endif
+#అయితే_ముగింపు
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
+  ఒకవేళ (m == 0 || n == 0) తిరిగి;
 
-  if ((alpha_r == 0.) && (alpha_i == 0.)) return;
+  ఒకవేళ ((alpha_r == 0.) && (alpha_i == 0.)) తిరిగి;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (incy < 0) y -= (n - 1) * incy * 2;
-  if (incx < 0) x -= (m - 1) * incx * 2;
+  ఒకవేళ (incy < 0) y -= (n - 1) * incy * 2;
+  ఒకవేళ (incx < 0) x -= (m - 1) * incx * 2;
 
-  STACK_ALLOC(2 * m, FLOAT, buffer);
+  దొంతర_ALLOC(2 * m, FLOAT, బఫరు);
 
-#ifdef SMPTEST
+#నిర్వచితమైతే SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else
+  ఒకవేళ(1L * m * n > 36L * పరిమాణం(FLOAT) * పరిమాణం(FLOAT) * GEMM_MULTITHREAD_పరిమితి)
+    nthreads = అంకె_cpu_avail(2);
+  లేకపోతే
     nthreads = 1;
 
-  if (nthreads == 1) {
-#endif
+  ఒకవేళ (nthreads == 1) {
+#అయితే_ముగింపు
 
-#if !defined(CBLAS) || !defined(CONJ)
-  GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-#else
-  if (order == CblasColMajor) {
-    GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-  } else {
-    GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
+#ఒకవేళ !defined(CBLAS) || !defined(CONJ)
+  GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, బఫరు);
+#లేకపోతే
+  ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
+    GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, బఫరు);
+  } లేకపోతే {
+    GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, బఫరు);
   }
-#endif
+#అయితే_ముగింపు
 
-#ifdef SMPTEST
+#నిర్వచితమైతే SMPTEST
 
-  } else {
+  } లేకపోతే {
 
-#if !defined(CBLAS) || !defined(CONJ)
-      GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-#else
-      if (order == CblasColMajor) {
-	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-      } else {
-	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
+#ఒకవేళ !defined(CBLAS) || !defined(CONJ)
+      GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, బఫరు, nthreads);
+#లేకపోతే
+      ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
+	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, బఫరు, nthreads);
+      } లేకపోతే {
+	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, బఫరు, nthreads);
       }
-#endif
+#అయితే_ముగింపు
 
   }
-#endif
+#అయితే_ముగింపు
 
-  STACK_FREE(buffer);
+  దొంతర_FREE(బఫరు);
 
-  FUNCTION_PROFILE_END(4, m * n + m + n, 2 * m * n);
+  FUNCTION_PROFILE_చివర(4, m * n + m + n, 2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 
 }

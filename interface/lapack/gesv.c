@@ -36,141 +36,141 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QGESV"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGESV"
-#else
-#define ERROR_NAME "SGESV"
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGESV"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGESV"
-#else
-#define ERROR_NAME "CGESV"
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "QGESV"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DGESV"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "SGESV"
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XGESV"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZGESV"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CGESV"
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
+శూన్య NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
          FLOAT *b, blasint *ldB, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t వాదనలు;
 
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *బఫరు;
+#నిర్వచితమైతే PPC440
+  బాహ్య
+#అయితే_ముగింపు
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  వాదనలు.m    = *N;
+  వాదనలు.n    = *NRHS;
+  వాదనలు.a    = (శూన్య *)a;
+  వాదనలు.lda  = *ldA;
+  వాదనలు.b    = (శూన్య *)b;
+  వాదనలు.ldb  = *ldB;
+  వాదనలు.c    = (శూన్య *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  ఒకవేళ (వాదనలు.ldb < MAX(1,వాదనలు.m)) info = 7;
+  ఒకవేళ (వాదనలు.lda < MAX(1,వాదనలు.m)) info = 4;
+  ఒకవేళ (వాదనలు.n   < 0)             info = 2;
+  ఒకవేళ (వాదనలు.m   < 0)             info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ఒకవేళ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    తిరిగి;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  వాదనలు.alpha = ఖాళీ;
+  వాదనలు.beta  = ఖాళీ;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  ఒకవేళ (వాదనలు.m == 0) తిరిగి;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#నిర్వచితం_కాకపోతే PPC440
+  బఫరు = (FLOAT *)blas_జ్ఞాపకం_alloc(1);
   
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)బఫరు + GEMM_స్థానభ్రంశం_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * కొలత + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_స్థానభ్రంశం_B);
+#అయితే_ముగింపు
 
-#ifdef SMP
-  args.common = NULL;
+#నిర్వచితమైతే SMP
+  వాదనలు.common = ఖాళీ;
 
-#if defined(_WIN64) && defined(_M_ARM64)
-  #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
-  #endif
-      args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
-    args.nthreads = 4;
-  else
-    args.nthreads = num_cpu_avail(4);
-#else
-  #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
-  #endif
-      args.nthreads = 1;
-    else
-      args.nthreads = num_cpu_avail(4);
-#endif
+#ఒకవేళ defined(_WIN64) && defined(_M_ARM64)
+  #నిర్వచితమైతే COMPLEX
+    ఒకవేళ (వాదనలు.m * వాదనలు.m <= 300) 
+  #లేకపోతే
+    ఒకవేళ (వాదనలు.m * వాదనలు.m <= 500) 
+  #అయితే_ముగింపు
+      వాదనలు.nthreads = 1;
+  లేకపోతే ఒకవేళ (వాదనలు.m * వాదనలు.m <= 1000)
+    వాదనలు.nthreads = 4;
+  లేకపోతే
+    వాదనలు.nthreads = అంకె_cpu_avail(4);
+#లేకపోతే
+  #నిర్వచితం_కాకపోతే DOUBLE
+    ఒకవేళ (వాదనలు.m * వాదనలు.m < 40000)
+  #లేకపోతే
+    ఒకవేళ (వాదనలు.m * వాదనలు.m < 10000)
+  #అయితే_ముగింపు
+      వాదనలు.nthreads = 1;
+    లేకపోతే
+      వాదనలు.nthreads = అంకె_cpu_avail(4);
+#అయితే_ముగింపు
 
-  if (args.nthreads == 1) {
-#endif
+  ఒకవేళ (వాదనలు.nthreads == 1) {
+#అయితే_ముగింపు
 
-    args.n    = *N;
-    info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    వాదనలు.n    = *N;
+    info = GETRF_SINGLE(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
-      args.n    = *NRHS;
-      GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    ఒకవేళ (info == 0 && *NRHS >0){
+      వాదనలు.n    = *NRHS;
+      GETRS_N_SINGLE(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
     }
 
-#ifdef SMP
-  } else {
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
 
-    args.n    = *N;
-    info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    వాదనలు.n    = *N;
+    info = GETRF_PARALLEL(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
-      args.n    = *NRHS;
-      GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    ఒకవేళ (info == 0 && *NRHS > 0){
+      వాదనలు.n    = *NRHS;
+      GETRS_N_PARALLEL(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
     }
   }
-#endif
+#అయితే_ముగింపు
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#నిర్వచితం_కాకపోతే PPC440
+  blas_జ్ఞాపకం_free(బఫరు);
+#అయితే_ముగింపు
 
   *Info = info;
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, *N * *N, 2. / 3. * *N * *N * *N + *N * *N);
+  FUNCTION_PROFILE_చివర(COMPSIZE * COMPSIZE, *N * *N, 2. / 3. * *N * *N * *N + *N * *N);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 }

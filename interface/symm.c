@@ -36,151 +36,151 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <ctype.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifndef COMPLEX
-#define SMP_THRESHOLD_MIN 65536.
-#ifdef XDOUBLE
-#define ERROR_NAME "QSYMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSYMM "
-#else
-#define ERROR_NAME "SSYMM "
-#endif
-#else
-#define SMP_THRESHOLD_MIN 8192.
-#ifndef GEMM3M
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYMM "
-#else
-#define ERROR_NAME "CSYMM "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHEMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHEMM "
-#else
-#define ERROR_NAME "CHEMM "
-#endif
-#endif
-#else
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYMM3M "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYMM3M "
-#else
-#define ERROR_NAME "CSYMM3M "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHEMM3M "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHEMM3M "
-#else
-#define ERROR_NAME "CHEMM3M "
-#endif
-#endif
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచించు SMP_పరిమితి_MIN 65536.
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "QSYMM "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DSYMM "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "SSYMM "
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచించు SMP_పరిమితి_MIN 8192.
+#నిర్వచితం_కాకపోతే GEMM3M
+#నిర్వచితం_కాకపోతే HEMM
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XSYMM "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZSYMM "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CSYMM "
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XHEMM "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZHEMM "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CHEMM "
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితం_కాకపోతే HEMM
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XSYMM3M "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZSYMM3M "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CSYMM3M "
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XHEMM3M "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZHEMM3M "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CHEMM3M "
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#నిర్వచితం_కాకపోతే GEMM_MULTITHREAD_పరిమితి
+#నిర్వచించు GEMM_MULTITHREAD_పరిమితి 4
+#అయితే_ముగింపు
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);                                
-#endif                                                               
+#నిర్వచితమైతే DYNAMIC_ARCH
+బాహ్య అక్షరం* gotoblas_corename(శూన్య);                                
+#అయితే_ముగింపు                                                               
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MODE	(BLAS_XDOUBLE | BLAS_REAL)
-#elif defined(DOUBLE)
-#define MODE	(BLAS_DOUBLE  | BLAS_REAL)
-#else
-#define MODE	(BLAS_SINGLE  | BLAS_REAL)
-#endif
-#else
-#ifdef XDOUBLE
-#define MODE	(BLAS_XDOUBLE | BLAS_COMPLEX)
-#elif defined(DOUBLE)
-#define MODE	(BLAS_DOUBLE  | BLAS_COMPLEX)
-#else
-#define MODE	(BLAS_SINGLE  | BLAS_COMPLEX)
-#endif
-#endif
-#endif
+#నిర్వచితమైతే SMP
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు బహుళకం_2	(BLAS_XDOUBLE | BLAS_REAL)
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు బహుళకం_2	(BLAS_DOUBLE  | BLAS_REAL)
+#లేకపోతే
+#నిర్వచించు బహుళకం_2	(BLAS_SINGLE  | BLAS_REAL)
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు బహుళకం_2	(BLAS_XDOUBLE | BLAS_COMPLEX)
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు బహుళకం_2	(BLAS_DOUBLE  | BLAS_COMPLEX)
+#లేకపోతే
+#నిర్వచించు బహుళకం_2	(BLAS_SINGLE  | BLAS_COMPLEX)
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-static int (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef GEMM3M
-#ifndef HEMM
+స్థిర పూర్ణాంకం (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#నిర్వచితం_కాకపోతే GEMM3M
+#నిర్వచితం_కాకపోతే HEMM
   SYMM_LU, SYMM_LL, SYMM_RU, SYMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ఒకవేళ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM_THREAD_LU, SYMM_THREAD_LL, SYMM_THREAD_RU, SYMM_THREAD_RL,
-#endif
-#else
+#అయితే_ముగింపు
+#లేకపోతే
   HEMM_LU, HEMM_LL, HEMM_RU, HEMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ఒకవేళ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM_THREAD_LU, HEMM_THREAD_LL, HEMM_THREAD_RU, HEMM_THREAD_RL,
-#endif
-#endif
-#else
-#ifndef HEMM
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితం_కాకపోతే HEMM
   SYMM3M_LU, SYMM3M_LL, SYMM3M_RU, SYMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ఒకవేళ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM3M_THREAD_LU, SYMM3M_THREAD_LL, SYMM3M_THREAD_RU, SYMM3M_THREAD_RL,
-#endif
-#else
+#అయితే_ముగింపు
+#లేకపోతే
   HEMM3M_LU, HEMM3M_LL, HEMM3M_RU, HEMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ఒకవేళ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM3M_THREAD_LU, HEMM3M_THREAD_LL, HEMM3M_THREAD_RU, HEMM3M_THREAD_RL,
-#endif
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(char *SIDE, char *UPLO,
+శూన్య NAME(అక్షరం *SIDE, అక్షరం *UPLO,
          blasint *M, blasint *N,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
          FLOAT *b, blasint *ldB,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char side_arg  = *SIDE;
-  char uplo_arg  = *UPLO;
+  అక్షరం side_arg  = *SIDE;
+  అక్షరం uplo_arg  = *UPLO;
 
-  blas_arg_t args;
+  blas_arg_t వాదనలు;
 
-  FLOAT *buffer;
+  FLOAT *బఫరు;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
-#endif
-# if defined(SMP)
-  double MN;
-#endif
+#ఒకవేళ defined(SMP) && !defined(NO_AFFINITY)
+  పూర్ణాంకం nodes;
+#అయితే_ముగింపు
+# ఒకవేళ defined(SMP)
+  ద్విగుణ MN;
+#అయితే_ముగింపు
   blasint info;
-  int side;
-  int uplo;
+  పూర్ణాంకం side;
+  పూర్ణాంకం uplo;
 
   PRINT_DEBUG_NAME;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  వాదనలు.alpha = (శూన్య *)alpha;
+  వాదనలు.beta  = (శూన్య *)beta;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -188,285 +188,285 @@ void NAME(char *SIDE, char *UPLO,
   side  = -1;
   uplo  = -1;
 
-  if (side_arg  == 'L') side  = 0;
-  if (side_arg  == 'R') side  = 1;
+  ఒకవేళ (side_arg  == 'L') side  = 0;
+  ఒకవేళ (side_arg  == 'R') side  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ఒకవేళ (uplo_arg  == 'U') uplo  = 0;
+  ఒకవేళ (uplo_arg  == 'L') uplo  = 1;
 
-  args.m = *M;
-  args.n = *N;
+  వాదనలు.m = *M;
+  వాదనలు.n = *N;
 
-  args.c = (void *)c;
-  args.ldc = *ldC;
+  వాదనలు.c = (శూన్య *)c;
+  వాదనలు.ldc = *ldC;
 
   info = 0;
 
-  if (args.ldc < MAX(1, args.m)) info = 12;
+  ఒకవేళ (వాదనలు.ldc < MAX(1, వాదనలు.m)) info = 12;
 
-  if (!side) {
-    args.a = (void *)a;
-    args.b = (void *)b;
+  ఒకవేళ (!side) {
+    వాదనలు.a = (శూన్య *)a;
+    వాదనలు.b = (శూన్య *)b;
 
-    args.lda = *ldA;
-    args.ldb = *ldB;
+    వాదనలు.lda = *ldA;
+    వాదనలు.ldb = *ldB;
 
-    if (args.ldb < MAX(1, args.m)) info =  9;
-    if (args.lda < MAX(1, args.m)) info =  7;
+    ఒకవేళ (వాదనలు.ldb < MAX(1, వాదనలు.m)) info =  9;
+    ఒకవేళ (వాదనలు.lda < MAX(1, వాదనలు.m)) info =  7;
 
-  } else {
-    args.a = (void *)b;
-    args.b = (void *)a;
+  } లేకపోతే {
+    వాదనలు.a = (శూన్య *)b;
+    వాదనలు.b = (శూన్య *)a;
 
-    args.lda = *ldB;
-    args.ldb = *ldA;
+    వాదనలు.lda = *ldB;
+    వాదనలు.ldb = *ldA;
 
-  if (args.lda < MAX(1, args.m)) info =  9;
-  if (args.ldb < MAX(1, args.n)) info =  7;
+  ఒకవేళ (వాదనలు.lda < MAX(1, వాదనలు.m)) info =  9;
+  ఒకవేళ (వాదనలు.ldb < MAX(1, వాదనలు.n)) info =  7;
   }
 
-  if (args.n   < 0)              info =  4;
-  if (args.m   < 0)              info =  3;
-  if (uplo     < 0)              info =  2;
-  if (side     < 0)              info =  1;
+  ఒకవేళ (వాదనలు.n   < 0)              info =  4;
+  ఒకవేళ (వాదనలు.m   < 0)              info =  3;
+  ఒకవేళ (uplo     < 0)              info =  2;
+  ఒకవేళ (side     < 0)              info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#else
+#లేకపోతే
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
+శూన్య CNAME(గణన CBLAS_క్రమం క్రమం, గణన CBLAS_SIDE Side, గణన CBLAS_UPLO Uplo,
 	   blasint m, blasint n,
-#ifndef COMPLEX
+#నిర్వచితం_కాకపోతే COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb,
 	   FLOAT beta,
 	   FLOAT *c, blasint ldc) {
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb,
-	   void *vbeta,
-	   void *vc, blasint ldc) {
+#లేకపోతే
+	   శూన్య *valpha,
+	   శూన్య *va, blasint lda,
+	   శూన్య *vb, blasint ldb,
+	   శూన్య *vbeta,
+	   శూన్య *vc, blasint ldc) {
   FLOAT *alpha = (FLOAT*) valpha;
   FLOAT *beta  = (FLOAT*) vbeta;
   FLOAT *a = (FLOAT*) va;
   FLOAT *b = (FLOAT*) vb;
   FLOAT *c = (FLOAT*) vc;	   
-#endif
+#అయితే_ముగింపు
 
-  blas_arg_t args;
-  int side, uplo;
+  blas_arg_t వాదనలు;
+  పూర్ణాంకం side, uplo;
   blasint info;
 
-  FLOAT *buffer;
+  FLOAT *బఫరు;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
-#endif
-#if defined(SMP)
-  double MN;
-#endif
+#ఒకవేళ defined(SMP) && !defined(NO_AFFINITY)
+  పూర్ణాంకం nodes;
+#అయితే_ముగింపు
+#ఒకవేళ defined(SMP)
+  ద్విగుణ MN;
+#అయితే_ముగింపు
 
   PRINT_DEBUG_CNAME;
 
-#ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
-#else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+  వాదనలు.alpha = (శూన్య *)&alpha;
+  వాదనలు.beta  = (శూన్య *)&beta;
+#లేకపోతే
+  వాదనలు.alpha = (శూన్య *)alpha;
+  వాదనలు.beta  = (శూన్య *)beta;
+#అయితే_ముగింపు
 
-  args.c = (void *)c;
-  args.ldc = ldc;
+  వాదనలు.c = (శూన్య *)c;
+  వాదనలు.ldc = ldc;
 
   side  = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Side == CblasLeft)  side = 0;
-    if (Side == CblasRight) side = 1;
+  ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
+    ఒకవేళ (Side == Cblas_ఎడమ)  side = 0;
+    ఒకవేళ (Side == Cblas_కుడి) side = 1;
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    args.m = m;
-    args.n = n;
-
-    if (args.ldc < MAX(1, args.m)) info = 12;
-
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
-
-      args.lda = lda;
-      args.ldb = ldb;
-
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
-
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
-
-      args.lda = ldb;
-      args.ldb = lda;
-
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
-    }
-
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Side == CblasLeft)  side = 1;
-    if (Side == CblasRight) side = 0;
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    ఒకవేళ (Uplo == Cblas_పై) uplo  = 0;
+    ఒకవేళ (Uplo == Cblas_క్రింది) uplo  = 1;
 
     info = -1;
 
-    args.m = n;
-    args.n = m;
+    వాదనలు.m = m;
+    వాదనలు.n = n;
 
-    if (args.ldc < MAX(1, args.m)) info = 12;
+    ఒకవేళ (వాదనలు.ldc < MAX(1, వాదనలు.m)) info = 12;
 
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
+    ఒకవేళ (!side) {
+      వాదనలు.a = (శూన్య *)a;
+      వాదనలు.b = (శూన్య *)b;
 
-      args.lda = lda;
-      args.ldb = ldb;
+      వాదనలు.lda = lda;
+      వాదనలు.ldb = ldb;
 
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
+      ఒకవేళ (వాదనలు.ldb < MAX(1, వాదనలు.m)) info =  9;
+      ఒకవేళ (వాదనలు.lda < MAX(1, వాదనలు.m)) info =  7;
 
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
+    } లేకపోతే {
+      వాదనలు.a = (శూన్య *)b;
+      వాదనలు.b = (శూన్య *)a;
 
-      args.lda = ldb;
-      args.ldb = lda;
+      వాదనలు.lda = ldb;
+      వాదనలు.ldb = lda;
 
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
+      ఒకవేళ (వాదనలు.lda < MAX(1, వాదనలు.m)) info =  9;
+      ఒకవేళ (వాదనలు.ldb < MAX(1, వాదనలు.n)) info =  7;
     }
 
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
+    ఒకవేళ (వాదనలు.n   < 0)              info =  4;
+    ఒకవేళ (వాదనలు.m   < 0)              info =  3;
+    ఒకవేళ (uplo     < 0)              info =  2;
+    ఒకవేళ (side     < 0)              info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
+    ఒకవేళ (Side == Cblas_ఎడమ)  side = 1;
+    ఒకవేళ (Side == Cblas_కుడి) side = 0;
+
+    ఒకవేళ (Uplo == Cblas_పై) uplo  = 1;
+    ఒకవేళ (Uplo == Cblas_క్రింది) uplo  = 0;
+
+    info = -1;
+
+    వాదనలు.m = n;
+    వాదనలు.n = m;
+
+    ఒకవేళ (వాదనలు.ldc < MAX(1, వాదనలు.m)) info = 12;
+
+    ఒకవేళ (!side) {
+      వాదనలు.a = (శూన్య *)a;
+      వాదనలు.b = (శూన్య *)b;
+
+      వాదనలు.lda = lda;
+      వాదనలు.ldb = ldb;
+
+      ఒకవేళ (వాదనలు.ldb < MAX(1, వాదనలు.m)) info =  9;
+      ఒకవేళ (వాదనలు.lda < MAX(1, వాదనలు.m)) info =  7;
+
+    } లేకపోతే {
+      వాదనలు.a = (శూన్య *)b;
+      వాదనలు.b = (శూన్య *)a;
+
+      వాదనలు.lda = ldb;
+      వాదనలు.ldb = lda;
+
+      ఒకవేళ (వాదనలు.lda < MAX(1, వాదనలు.m)) info =  9;
+      ఒకవేళ (వాదనలు.ldb < MAX(1, వాదనలు.n)) info =  7;
+    }
+
+    ఒకవేళ (వాదనలు.n   < 0)              info =  4;
+    ఒకవేళ (వాదనలు.m   < 0)              info =  3;
+    ఒకవేళ (uplo     < 0)              info =  2;
+    ఒకవేళ (side     < 0)              info =  1;
   }
 
-   if (args.m == 0 || args.n == 0) return;
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+  ఒకవేళ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
+  }
+
+   ఒకవేళ (వాదనలు.m == 0 || వాదనలు.n == 0) తిరిగి;
+#ఒకవేళ !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#ఒకవేళ defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_ప్రత్యక్ష)||defined(DYNAMIC_ARCH))
+#ఒకవేళ defined(DYNAMIC_ARCH)
+ఒకవేళ (strcmp(gotoblas_corename(), "armv9sme") == 0
+#ఒకవేళ defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#అయితే_ముగింపు
 )
-#endif
-   if (order == CblasRowMajor && m == lda && n == ldb && n == ldc)
+#అయితే_ముగింపు
+   ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major && m == lda && n == ldb && n == ldc)
    {
-     if (Side == CblasLeft && Uplo == CblasUpper) {
-       SSYMM_DIRECT_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     ఒకవేళ (Side == Cblas_ఎడమ && Uplo == Cblas_పై) {
+       SSYMM_ప్రత్యక్ష_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); తిరిగి;
      }
-     else if (Side == CblasLeft && Uplo == CblasLower) {
-       SSYMM_DIRECT_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     లేకపోతే ఒకవేళ (Side == Cblas_ఎడమ && Uplo == Cblas_క్రింది) {
+       SSYMM_ప్రత్యక్ష_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); తిరిగి;
      }
    }
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  బఫరు = (FLOAT *)blas_జ్ఞాపకం_alloc(0);
+  ఒకవేళ (!బఫరు) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)బఫరు + GEMM_స్థానభ్రంశం_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * కొలత + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_స్థానభ్రంశం_B);
 
-#ifdef SMP
-  args.common = NULL;
-  MN = 2.* (double) args.m * (double)args.m * (double) args.n;
-  if (MN <= (SMP_THRESHOLD_MIN * (double) GEMM_MULTITHREAD_THRESHOLD) ) {
-	  args.nthreads = 1;
-  } else {
-	 args.nthreads = num_cpu_avail(3);
+#నిర్వచితమైతే SMP
+  వాదనలు.common = ఖాళీ;
+  MN = 2.* (ద్విగుణ) వాదనలు.m * (ద్విగుణ)వాదనలు.m * (ద్విగుణ) వాదనలు.n;
+  ఒకవేళ (MN <= (SMP_పరిమితి_MIN * (ద్విగుణ) GEMM_MULTITHREAD_పరిమితి) ) {
+	  వాదనలు.nthreads = 1;
+  } లేకపోతే {
+	 వాదనలు.nthreads = అంకె_cpu_avail(3);
   }
-  if (args.nthreads == 1) {
-#endif
+  ఒకవేళ (వాదనలు.nthreads == 1) {
+#అయితే_ముగింపు
 
-    (symm[(side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+    (symm[(side << 1) | uplo ])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
 
-#ifndef NO_AFFINITY
-    nodes = get_num_nodes();
+#నిర్వచితం_కాకపోతే NO_AFFINITY
+    nodes = get_అంకె_nodes();
 
-    if (nodes > 1) {
+    ఒకవేళ (nodes > 1) {
 
-      args.nthreads /= nodes;
+      వాదనలు.nthreads /= nodes;
 
-      gemm_thread_mn(MODE, &args, NULL, NULL,
+      gemm_thread_mn(బహుళకం_2, &వాదనలు, ఖాళీ, ఖాళీ,
 		     symm[4 | (side << 1) | uplo ], sa, sb, nodes);
 
-    } else {
-#endif
+    } లేకపోతే {
+#అయితే_ముగింపు
 
-#ifndef USE_SIMPLE_THREADED_LEVEL3
+#నిర్వచితం_కాకపోతే USE_SIMPLE_THREADED_LEVEL3
 
-      (symm[4 | (side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+      (symm[4 | (side << 1) | uplo ])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
-#else
+#లేకపోతే
 
-      GEMM_THREAD(MODE, &args, NULL, NULL, symm[(side << 1) | uplo ], sa, sb, args.nthreads);
+      GEMM_THREAD(బహుళకం_2, &వాదనలు, ఖాళీ, ఖాళీ, symm[(side << 1) | uplo ], sa, sb, వాదనలు.nthreads);
 
-#endif
+#అయితే_ముగింపు
 
-#ifndef NO_AFFINITY
+#నిర్వచితం_కాకపోతే NO_AFFINITY
     }
-#endif
+#అయితే_ముగింపు
 
   }
-#endif
+#అయితే_ముగింపు
 
- blas_memory_free(buffer);
+ blas_జ్ఞాపకం_free(బఫరు);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE,
-		       (!side)? args.m * (args.m / 2 + args.n) : args.n * (args.m + args.n / 2),
-		       (!side)? 2 * args.m * args.m * args.n : 2 * args.m * args.n * args.n);
+  FUNCTION_PROFILE_చివర(COMPSIZE * COMPSIZE,
+		       (!side)? వాదనలు.m * (వాదనలు.m / 2 + వాదనలు.n) : వాదనలు.n * (వాదనలు.m + వాదనలు.n / 2),
+		       (!side)? 2 * వాదనలు.m * వాదనలు.m * వాదనలు.n : 2 * వాదనలు.m * వాదనలు.n * వాదనలు.n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 }

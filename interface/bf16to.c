@@ -1,63 +1,63 @@
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
-#endif
+#ఒకవేళ defined(DOUBLE_PREC)
+#నిర్వచించు FLOAT_TYPE ద్విగుణ
+#లేదావేళ defined(SINGLE_PREC)
+#నిర్వచించు FLOAT_TYPE దశాంశం
+#లేకపోతే
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
-void NAME(blasint *N, bfloat16 *in, blasint *INC_IN, FLOAT_TYPE *out, blasint *INC_OUT){
+#నిర్వచితం_కాకపోతే CBLAS
+శూన్య NAME(blasint *N, bfloat16 *లోపల, blasint *INC_లోపల, FLOAT_TYPE *బహిర్గతం, blasint *INC_బహిర్గతం){
   BLASLONG n    = *N;
-  BLASLONG inc_in = *INC_IN;
-  BLASLONG inc_out = *INC_OUT;
+  BLASLONG inc_లోపల = *INC_లోపల;
+  BLASLONG inc_బహిర్గతం = *INC_బహిర్గతం;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return;
+  ఒకవేళ (n <= 0) తిరిగి;
 
-  IDEBUG_START;
-  FUNCTION_PROFILE_START();
+  IDEBUG_ప్రారంభం;
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  ఒకవేళ (inc_లోపల < 0)   లోపల -= (n - 1) * inc_లోపల;
+  ఒకవేళ (inc_బహిర్గతం < 0) బహిర్గతం -= (n - 1) * inc_బహిర్గతం;
 
-#if defined(DOUBLE_PREC)
-  D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-  S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
-#endif
+#ఒకవేళ defined(DOUBLE_PREC)
+  D_BF16_గమ్యం_K(n, లోపల, inc_లోపల, బహిర్గతం, inc_బహిర్గతం);
+#లేదావేళ defined(SINGLE_PREC)
+  S_BF16_గమ్యం_K(n, లోపల, inc_లోపల, బహిర్గతం, inc_బహిర్గతం);
+#లేకపోతే
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_చివర(1, 2 * n, 2 * n);
+  IDEBUG_చివర;
 }
-#else
-void CNAME(blasint n, bfloat16 * in, blasint inc_in, FLOAT_TYPE * out, blasint inc_out){
+#లేకపోతే
+శూన్య CNAME(blasint n, bfloat16 * లోపల, blasint inc_లోపల, FLOAT_TYPE * బహిర్గతం, blasint inc_బహిర్గతం){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  ఒకవేళ (n <= 0) తిరిగి;
 
-  IDEBUG_START;
-  FUNCTION_PROFILE_START();
+  IDEBUG_ప్రారంభం;
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  ఒకవేళ (inc_లోపల < 0)   లోపల -= (n - 1) * inc_లోపల;
+  ఒకవేళ (inc_బహిర్గతం < 0) బహిర్గతం -= (n - 1) * inc_బహిర్గతం;
 
-#if defined(DOUBLE_PREC)
-  D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-  S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
-#endif
+#ఒకవేళ defined(DOUBLE_PREC)
+  D_BF16_గమ్యం_K(n, లోపల, inc_లోపల, బహిర్గతం, inc_బహిర్గతం);
+#లేదావేళ defined(SINGLE_PREC)
+  S_BF16_గమ్యం_K(n, లోపల, inc_లోపల, బహిర్గతం, inc_బహిర్గతం);
+#లేకపోతే
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_చివర(1, 2 * n, 2 * n);
+  IDEBUG_చివర;
 }
-#endif
+#అయితే_ముగింపు

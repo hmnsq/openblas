@@ -30,18 +30,18 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DLAED3"
-#else
-#define ERROR_NAME "SLAED3"
-#endif
+#ఒకవేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DLAED3"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "SLAED3"
+#అయితే_ముగింపు
 
 /* ===================================================================== */
 OPENBLAS_EXPORT
-void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
+శూన్య NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
         FLOAT *q, blasint *ldq, FLOAT *rho, FLOAT *dlamda,
         FLOAT *q2, blasint *indx, blasint *ctot, FLOAT *w, 
         FLOAT *s, blasint *Info)
@@ -54,36 +54,36 @@ void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d,
 
 /*   Test the input parameters. */
   info = 0;
-  if (kval < 0) {
+  ఒకవేళ (kval < 0) {
     info = 1;
-  } else if (nval < kval) {
+  } లేకపోతే ఒకవేళ (nval < kval) {
     info = 2;
-  } else if (qdim < nval || qdim < 1) {
+  } లేకపోతే ఒకవేళ (qdim < nval || qdim < 1) {
     info = 6;
   }
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ఒకవేళ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    తిరిగి;
   }
 
 /*   Quick return if possible */
 
   *Info = 0;
-  if (kval == 0) return;
+  ఒకవేళ (kval == 0) తిరిగి;
 
-#ifdef SMP
-  int nthreads = 1;
-  if (nval >= 64) nthreads = num_cpu_avail(4);
+#నిర్వచితమైతే SMP
+  పూర్ణాంకం nthreads = 1;
+  ఒకవేళ (nval >= 64) nthreads = అంకె_cpu_avail(4);
 
-  if (nthreads == 1) {
-#endif
+  ఒకవేళ (nthreads == 1) {
+#అయితే_ముగింపు
     LAED3_SINGLE(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
-#ifdef SMP
-  } else {
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
     LAED3_PARALLEL(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
   }
-#endif
+#అయితే_ముగింపు
 
-  return;
+  తిరిగి;
 }

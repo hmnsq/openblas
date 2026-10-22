@@ -37,90 +37,90 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+శూన్య NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#లేకపోతే
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+శూన్య CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
-#endif
+#అయితే_ముగింపు
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#నిర్వచితమైతే SMP
+  పూర్ణాంకం బహుళకం, nthreads;
+#అయితే_ముగింపు
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
   PRINT_DEBUG_NAME;
-#else
+#లేకపోతే
   PRINT_DEBUG_CNAME;
-#endif
+#అయితే_ముగింపు
 
-  if (incx <= 0 || n <= 0) return;
+  ఒకవేళ (incx <= 0 || n <= 0) తిరిగి;
 
-#ifdef BGEMM
-  float alpha_float;
+#నిర్వచితమైతే BGEMM
+  దశాంశం alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#లేకపోతే
   FLOAT alpha_float = alpha;
-#endif
+#అయితే_ముగింపు
 
-  if (alpha_float == ONE) return;
+  ఒకవేళ (alpha_float == ONE) తిరిగి;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
 
-#ifdef SMP
-  if (n <= 1048576 )
+#నిర్వచితమైతే SMP
+  ఒకవేళ (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  లేకపోతే
+	nthreads = అంకె_cpu_avail(1);
 
 
-  if (nthreads == 1) {
-#endif
+  ఒకవేళ (nthreads == 1) {
+#అయితే_ముగింపు
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, ఖాళీ, 0, ఖాళీ, 1);
 
-#ifdef SMP
-  } else {
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
 
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE | BLAS_REAL;
-#endif
+#నిర్వచితమైతే DOUBLE
+    బహుళకం  =  BLAS_DOUBLE | BLAS_REAL;
+#లేకపోతే
+    బహుళకం  =  BLAS_SINGLE | BLAS_REAL;
+#అయితే_ముగింపు
 
-    blas_level1_thread(mode, n, 0, 0,
-#ifndef CBLAS
+    blas_level1_thread(బహుళకం, n, 0, 0,
+#నిర్వచితం_కాకపోతే CBLAS
 		       ALPHA,
-#else
+#లేకపోతే
 		       &alpha,
-#endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+#అయితే_ముగింపు
+		       x, incx, ఖాళీ, 0, ఖాళీ, 1,  (పూర్ణాంకం (*)(శూన్య))SCAL_K, nthreads);
 
   }
-#endif
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_చివర(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 
 }

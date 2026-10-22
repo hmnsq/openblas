@@ -36,114 +36,114 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XPOTRF"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZPOTRF"
-#else
-#define ERROR_NAME "CPOTRF"
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "XPOTRF"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZPOTRF"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "CPOTRF"
+#అయితే_ముగింపు
 
-static blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+స్థిర blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   POTRF_U_SINGLE, POTRF_L_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+#నిర్వచితమైతే SMP
+స్థిర blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   POTRF_U_PARALLEL, POTRF_L_PARALLEL,
 };
-#endif
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+శూన్య NAME(అక్షరం *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t వాదనలు;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *బఫరు;
+#నిర్వచితమైతే PPC440
+  బాహ్య
+#అయితే_ముగింపు
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  వాదనలు.n    = *N;
+  వాదనలు.a    = (శూన్య *)a;
+  వాదనలు.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ఒకవేళ (uplo_arg == 'U') uplo = 0;
+  ఒకవేళ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ఒకవేళ (వాదనలు.lda < MAX(1,వాదనలు.n)) info = 4;
+  ఒకవేళ (వాదనలు.n   < 0)             info = 2;
+  ఒకవేళ (uplo     < 0)             info = 1;
+  ఒకవేళ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    తిరిగి;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  ఒకవేళ (వాదనలు.n == 0) తిరిగి;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#నిర్వచితం_కాకపోతే PPC440
+  బఫరు = (FLOAT *)blas_జ్ఞాపకం_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)బఫరు + GEMM_స్థానభ్రంశం_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * కొలత + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_స్థానభ్రంశం_B);
+#అయితే_ముగింపు
 
-#ifdef SMP
-  args.common = NULL;
-#ifndef DOUBLE
-  if (args.n < 64)
-#else
-  if (args.n < 64)
-#endif
-    args.nthreads = 1;
-  else
-  args.nthreads = num_cpu_avail(4);
+#నిర్వచితమైతే SMP
+  వాదనలు.common = ఖాళీ;
+#నిర్వచితం_కాకపోతే DOUBLE
+  ఒకవేళ (వాదనలు.n < 64)
+#లేకపోతే
+  ఒకవేళ (వాదనలు.n < 64)
+#అయితే_ముగింపు
+    వాదనలు.nthreads = 1;
+  లేకపోతే
+  వాదనలు.nthreads = అంకె_cpu_avail(4);
 
-  if (args.nthreads == 1) {
-#endif
+  ఒకవేళ (వాదనలు.nthreads == 1) {
+#అయితే_ముగింపు
 
-    *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_single[uplo])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
 
-    *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_parallel[uplo])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
   }
-#endif
+#అయితే_ముగింపు
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#నిర్వచితం_కాకపోతే PPC440
+  blas_జ్ఞాపకం_free(బఫరు);
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * 1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_చివర(1, .5 * వాదనలు.n * వాదనలు.n,
+		       2. * వాదనలు.n * (1./3. + వాదనలు.n * ( 1./2. + వాదనలు.n * 1./6.))
+		       +  6. * 1./6. * వాదనలు.n * (వాదనలు.n * వాదనలు.n - 1));
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 }

@@ -36,143 +36,143 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QTRTRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DTRTRS"
-#else
-#define ERROR_NAME "STRTRS"
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "QTRTRS"
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DTRTRS"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "STRTRS"
+#అయితే_ముగింపు
 
-static blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+స్థిర blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_SINGLE, TRTRS_UNN_SINGLE, TRTRS_UTU_SINGLE, TRTRS_UTN_SINGLE, TRTRS_LNU_SINGLE, TRTRS_LNN_SINGLE, TRTRS_LTU_SINGLE, TRTRS_LTN_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#నిర్వచితమైతే SMP
+స్థిర blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_PARALLEL, TRTRS_UNN_PARALLEL, TRTRS_UTU_PARALLEL, TRTRS_UTN_PARALLEL, TRTRS_LNU_PARALLEL, TRTRS_LNN_PARALLEL, TRTRS_LTU_PARALLEL, TRTRS_LTN_PARALLEL,
 };
-#endif
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+శూన్య NAME(అక్షరం *UPLO, అక్షరం* TRANS, అక్షరం* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   FLOAT *b, blasint *ldB, blasint *Info){
 
-    char uplo_arg = *UPLO;
-    char trans_arg = *TRANS;
-    char diag_arg = *DIAG;
+    అక్షరం uplo_arg = *UPLO;
+    అక్షరం trans_arg = *TRANS;
+    అక్షరం diag_arg = *DIAG;
 
-  blas_arg_t args;
+  blas_arg_t వాదనలు;
 
   blasint info;
-  int uplo, trans, diag;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  పూర్ణాంకం uplo, trans, diag;
+  FLOAT *బఫరు;
+#నిర్వచితమైతే PPC440
+  బాహ్య
+#అయితే_ముగింపు
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
+  వాదనలు.m    = *N;
+  వాదనలు.n    = *NRHS;
+  వాదనలు.a    = (శూన్య *)a;
+  వాదనలు.lda  = *ldA;
+  వాదనలు.b    = (శూన్య *)b;
+  వాదనలు.ldb  = *ldB;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  ఒకవేళ (trans_arg == 'N') trans = 0;
+  ఒకవేళ (trans_arg == 'T') trans = 1;
+  ఒకవేళ (trans_arg == 'R') trans = 0;
+  ఒకవేళ (trans_arg == 'C') trans = 1;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ఒకవేళ (uplo_arg == 'U') uplo = 0;
+  ఒకవేళ (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ఒకవేళ (diag_arg == 'U') diag = 0;
+  ఒకవేళ (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  ఒకవేళ (వాదనలు.ldb  < MAX(1, వాదనలు.m)) info = 9;
+  ఒకవేళ (వాదనలు.lda  < MAX(1, వాదనలు.m)) info = 7;
+  ఒకవేళ (వాదనలు.n    < 0) info = 5;
+  ఒకవేళ (వాదనలు.m    < 0) info = 4;
+  ఒకవేళ (trans     < 0) info = 2;
+  ఒకవేళ (uplo      < 0) info = 1;
+  ఒకవేళ (diag      < 0) info = 3;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ఒకవేళ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    తిరిగి;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  వాదనలు.alpha = ఖాళీ;
+  వాదనలు.beta  = ఖాళీ;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  ఒకవేళ (వాదనలు.m == 0) తిరిగి;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
-      *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+  ఒకవేళ (diag) {
+    ఒకవేళ (AMIN_K(వాదనలు.m, వాదనలు.a, వాదనలు.lda + 1) == ZERO) {
+      *Info = IAMIN_K(వాదనలు.m, వాదనలు.a, వాదనలు.lda + 1);
+      తిరిగి;
     }
   }
 
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#నిర్వచితం_కాకపోతే PPC440
+  బఫరు = (FLOAT *)blas_జ్ఞాపకం_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)బఫరు + GEMM_స్థానభ్రంశం_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * కొలత + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_స్థానభ్రంశం_B);
+#అయితే_ముగింపు
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#నిర్వచితమైతే SMP
+  వాదనలు.common = ఖాళీ;
+  ఒకవేళ (వాదనలు.m < 64) {
+    వాదనలు.nthreads = 1;
+  } లేకపోతే {
+    వాదనలు.nthreads = అంకె_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  ఒకవేళ (వాదనలు.nthreads == 1) {
+#అయితే_ముగింపు
 
-      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
+    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&వాదనలు, ఖాళీ, ఖాళీ, sa, sb, 0);
   }
-#endif
+#అయితే_ముగింపు
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#నిర్వచితం_కాకపోతే PPC440
+  blas_జ్ఞాపకం_free(బఫరు);
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_చివర(COMPSIZE * COMPSIZE, వాదనలు.m * వాదనలు.n, 2 * వాదనలు.m * వాదనలు.m * వాదనలు.n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 
 }

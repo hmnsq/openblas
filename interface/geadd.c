@@ -36,24 +36,24 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DGEADD "
-#else
-#define ERROR_NAME "SGEADD "
-#endif
+#ఒకవేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DGEADD "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "SGEADD "
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
-                        FLOAT *BETA,  FLOAT *c, blasint *LDC, char *TRANS_A,char *TRANS_C)
+శూన్య NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
+                        FLOAT *BETA,  FLOAT *c, blasint *LDC, అక్షరం *TRANS_A,అక్షరం *TRANS_C)
 {
 
   blasint m = *M;
@@ -64,42 +64,42 @@ void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
   FLOAT beta  = *BETA;
 
   blasint info;
-char transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
-char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
+అక్షరం transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
+అక్షరం transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
 
 
   PRINT_DEBUG_NAME;
 
   info = 0;
- if(transa){
-  if (lda < MAX(1, n))info = 5;
+ ఒకవేళ(transa){
+  ఒకవేళ (lda < MAX(1, n))info = 5;
 
 
-  }	else{
+  }	లేకపోతే{
 
-   if (lda < MAX(1, m))	info = 5;
+   ఒకవేళ (lda < MAX(1, m))	info = 5;
   }
  
 
-  if(transc){
-        if (ldc < MAX(1, n))	info = 8;
+  ఒకవేళ(transc){
+        ఒకవేళ (ldc < MAX(1, n))	info = 8;
 
 
-   }else{
+   }లేకపోతే{
        
-      if (ldc < MAX(1, m))	info = 8;
+      ఒకవేళ (ldc < MAX(1, m))	info = 8;
           }
 
-  if (n < 0)		info = 2;
-  if (m < 0)		info = 1;
+  ఒకవేళ (n < 0)		info = 2;
+  ఒకవేళ (m < 0)		info = 1;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#else
-void CNAME( enum CBLAS_ORDER order,enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transc,blasint m,  blasint n,  FLOAT alpha, FLOAT *a,  blasint lda, FLOAT beta, 
+#లేకపోతే
+శూన్య CNAME( గణన CBLAS_క్రమం క్రమం,గణన CBLAS_TRANSPOSE transa, గణన CBLAS_TRANSPOSE transc,blasint m,  blasint n,  FLOAT alpha, FLOAT *a,  blasint lda, FLOAT beta, 
 		  FLOAT *c,  blasint ldc)
 {
 /* 
@@ -116,76 +116,76 @@ void CNAME(enum CBLAS_ORDER order,
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
 
     info = -1;
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ఒకవేళ ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ఒకవేళ (ldc < MAX(1, m))  info = 8;
+    } లేకపోతే {
+      ఒకవేళ (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ఒకవేళ ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ఒకవేళ (lda < MAX(1, m))  info = 5;
+    } లేకపోతే {
+      ఒకవేళ (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 2;
-    if (m < 0)		  info = 1;
+    ఒకవేళ (n < 0)		  info = 2;
+    ఒకవేళ (m < 0)		  info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
+  ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
     info = -1;
 
     t = n;
     n = m;
     m = t;
 
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ఒకవేళ ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ఒకవేళ (ldc < MAX(1, m))  info = 8;
+    } లేకపోతే {
+      ఒకవేళ (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ఒకవేళ ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ఒకవేళ (lda < MAX(1, m))  info = 5;
+    } లేకపోతే {
+      ఒకవేళ (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 1;
-    if (m < 0)		  info = 2;
+    ఒకవేళ (n < 0)		  info = 1;
+    ఒకవేళ (m < 0)		  info = 2;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#endif
+#అయితే_ముగింపు
 
-  if ((m==0) || (n==0)) return;
+  ఒకవేళ ((m==0) || (n==0)) తిరిగి;
 
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
 
   GEADD_K(m,n,alpha, a, lda, beta, c, ldc,
-#ifdef CBLAS
+#నిర్వచితమైతే CBLAS
           (transa == CblasTrans) || (transa == CblasConjTrans),
           (transc == CblasTrans) || (transc == CblasConjTrans)
-#else
+#లేకపోతే
           transa, transc
-#endif
+#అయితే_ముగింపు
           ); 
 
 
-  FUNCTION_PROFILE_END(1, 2* m * n ,  2 * m * n);
+  FUNCTION_PROFILE_చివర(1, 2* m * n ,  2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 
 }

@@ -36,91 +36,91 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#undef MAX_K
+#నిర్వచనం_రద్దు MAX_K
 
-#ifdef USE_ABS
+#నిర్వచితమైతే USE_ABS
 
-#ifndef USE_MIN
+#నిర్వచితం_కాకపోతే USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMAX_K
-#else
-#define MAX_K	ISAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMAX_K
-#else
-#define MAX_K	ICAMAX_K
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	IQAMAX_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	IDAMAX_K
+#లేకపోతే
+#నిర్వచించు MAX_K	ISAMAX_K
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	IXAMAX_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	IZAMAX_K
+#లేకపోతే
+#నిర్వచించు MAX_K	ICAMAX_K
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#else
+#లేకపోతే
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMIN_K
-#else
-#define MAX_K	ISAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMIN_K
-#else
-#define MAX_K	ICAMIN_K
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	IQAMIN_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	IDAMIN_K
+#లేకపోతే
+#నిర్వచించు MAX_K	ISAMIN_K
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	IXAMIN_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	IZAMIN_K
+#లేకపోతే
+#నిర్వచించు MAX_K	ICAMIN_K
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
-#else
+#లేకపోతే
 
-#ifndef USE_MIN
+#నిర్వచితం_కాకపోతే USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	IQMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMAX_K
-#else
-#define MAX_K	ISMAX_K
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	IQMAX_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	IDMAX_K
+#లేకపోతే
+#నిర్వచించు MAX_K	ISMAX_K
+#అయితే_ముగింపు
 
-#else
+#లేకపోతే
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	IQMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMIN_K
-#else
-#define MAX_K	ISMIN_K
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	IQMIN_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	IDMIN_K
+#లేకపోతే
+#నిర్వచించు MAX_K	ISMIN_K
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
 blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -130,52 +130,52 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ఒకవేళ (n <= 0) తిరిగి 0;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  ఒకవేళ(ret > n) ret=n;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_చివర(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 }
 
-#else
-#ifdef COMPLEX
-CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
+#లేకపోతే
+#నిర్వచితమైతే COMPLEX
+CBLAS_సూచీ CNAME(blasint n, శూన్య *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
-CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#లేకపోతే
+CBLAS_సూచీ CNAME(blasint n, FLOAT *x, blasint incx){
+#అయితే_ముగింపు
 
-  CBLAS_INDEX ret;
+  CBLAS_సూచీ ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ఒకవేళ (n <= 0) తిరిగి 0;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  ఒకవేళ (ret > n) ret=n;
 
-  if (ret) ret --;
+  ఒకవేళ (ret) ret --;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_చివర(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 }
 
-#endif
+#అయితే_ముగింపు

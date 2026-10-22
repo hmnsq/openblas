@@ -36,54 +36,54 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGBMV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGBMV "
-#else
-#define ERROR_NAME "SGBMV "
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు ERROR_NAME "QGBMV "
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "DGBMV "
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "SGBMV "
+#అయితే_ముగింపు
 
-static void (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
-#ifdef XDOUBLE
+స్థిర శూన్య (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, శూన్య *) = {
+#నిర్వచితమైతే XDOUBLE
       qgbmv_n, qgbmv_t,
-#elif defined(DOUBLE)
+#లేదావేళ defined(DOUBLE)
       dgbmv_n, dgbmv_t,
-#else
+#లేకపోతే
       sgbmv_n, sgbmv_t,
-#endif
+#అయితే_ముగింపు
 };
 
-#ifdef SMP
-static int (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#నిర్వచితమైతే SMP
+స్థిర పూర్ణాంకం (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, పూర్ణాంకం) = {
+#నిర్వచితమైతే XDOUBLE
       qgbmv_thread_n, qgbmv_thread_t,
-#elif defined(DOUBLE)
+#లేదావేళ defined(DOUBLE)
       dgbmv_thread_n, dgbmv_thread_t,
-#else
+#లేకపోతే
       sgbmv_thread_n, sgbmv_thread_t,
-#endif
+#అయితే_ముగింపు
 };
-#endif
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+శూన్య NAME(అక్షరం *TRANS, blasint *M, blasint *N,
 	 blasint *KU, blasint *KL,
 	 FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	 FLOAT *x, blasint *INCX,
 	 FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  అక్షరం trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint ku = *KU;
@@ -91,10 +91,10 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint lda = *LDA;
   blasint incx = *INCX;
   blasint incy = *INCY;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  FLOAT *బఫరు;
+#నిర్వచితమైతే SMP
+  పూర్ణాంకం nthreads;
+#అయితే_ముగింపు
 
   FLOAT alpha = *ALPHA;
   FLOAT beta  = *BETA;
@@ -111,31 +111,31 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N') i = 0;
-  if (trans == 'T') i = 1;
-  if (trans == 'R') i = 0;
-  if (trans == 'C') i = 1;
+  ఒకవేళ (trans == 'N') i = 0;
+  ఒకవేళ (trans == 'T') i = 1;
+  ఒకవేళ (trans == 'R') i = 0;
+  ఒకవేళ (trans == 'C') i = 1;
 
-  if (incy == 0)	 info = 13;
-  if (incx == 0)	 info = 10;
-  if (lda < kl + ku + 1) info = 8;
-  if (kl < 0)		 info = 5;
-  if (ku < 0)		 info = 4;
-  if (n < 0)		 info = 3;
-  if (m < 0)		 info = 2;
-  if (i < 0)		 info = 1;
+  ఒకవేళ (incy == 0)	 info = 13;
+  ఒకవేళ (incx == 0)	 info = 10;
+  ఒకవేళ (lda < kl + ku + 1) info = 8;
+  ఒకవేళ (kl < 0)		 info = 5;
+  ఒకవేళ (ku < 0)		 info = 4;
+  ఒకవేళ (n < 0)		 info = 3;
+  ఒకవేళ (m < 0)		 info = 2;
+  ఒకవేళ (i < 0)		 info = 1;
 
   trans = i;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#else
+#లేకపోతే
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+శూన్య CNAME(గణన CBLAS_క్రమం క్రమం,
+	   గణన CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
 	   blasint ku, blasint kl,
 	   FLOAT alpha,
@@ -144,41 +144,41 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT beta,
 	   FLOAT  *y, blasint incy){
 
-  FLOAT *buffer;
+  FLOAT *బఫరు;
   blasint lenx, leny, info, t;
-  int trans;
-#ifdef SMP
-  int nthreads;
-#endif
+  పూర్ణాంకం trans;
+#నిర్వచితమైతే SMP
+  పూర్ణాంకం nthreads;
+#అయితే_ముగింపు
 
   PRINT_DEBUG_CNAME;
 
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+  ఒకవేళ (క్రమం == Cblas_నిలువు_Major) {
+    ఒకవేళ (TransA == CblasNoTrans)     trans = 0;
+    ఒకవేళ (TransA == CblasTrans)       trans = 1;
+    ఒకవేళ (TransA == CblasConjNoTrans) trans = 0;
+    ఒకవేళ (TransA == CblasConjTrans)   trans = 1;
 
     info = -1;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    ఒకవేళ (incy == 0)	 info = 13;
+    ఒకవేళ (incx == 0)	 info = 10;
+    ఒకవేళ (lda < kl + ku + 1) info = 8;
+    ఒకవేళ (kl < 0)		 info = 5;
+    ఒకవేళ (ku < 0)		 info = 4;
+    ఒకవేళ (n < 0)		 info = 3;
+    ఒకవేళ (m < 0)		 info = 2;
+    ఒకవేళ (trans < 0)	 info = 1;
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
+  ఒకవేళ (క్రమం == Cblas_అడ్డువరుస_Major) {
+    ఒకవేళ (TransA == CblasNoTrans)     trans = 1;
+    ఒకవేళ (TransA == CblasTrans)       trans = 0;
+    ఒకవేళ (TransA == CblasConjNoTrans) trans = 1;
+    ఒకవేళ (TransA == CblasConjTrans)   trans = 0;
 
     info = -1;
 
@@ -190,72 +190,72 @@ void CNAME(enum CBLAS_ORDER order,
     ku = kl;
     kl = t;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    ఒకవేళ (incy == 0)	 info = 13;
+    ఒకవేళ (incx == 0)	 info = 10;
+    ఒకవేళ (lda < kl + ku + 1) info = 8;
+    ఒకవేళ (kl < 0)		 info = 5;
+    ఒకవేళ (ku < 0)		 info = 4;
+    ఒకవేళ (n < 0)		 info = 3;
+    ఒకవేళ (m < 0)		 info = 2;
+    ఒకవేళ (trans < 0)	 info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ఒకవేళ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#endif
+#అయితే_ముగింపు
 
-  if ((m==0) || (n==0)) return;
+  ఒకవేళ ((m==0) || (n==0)) తిరిగి;
 
   lenx = n;
   leny = m;
-  if (trans) lenx = m;
-  if (trans) leny = n;
+  ఒకవేళ (trans) lenx = m;
+  ఒకవేళ (trans) leny = n;
 
-  if (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  ఒకవేళ (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), ఖాళీ, 0, ఖాళీ, 0);
 
-  if (alpha == ZERO) return;
+  ఒకవేళ (alpha == ZERO) తిరిగి;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (incx < 0) x -= (lenx-1)*incx;
-  if (incy < 0) y -= (leny-1)*incy;
+  ఒకవేళ (incx < 0) x -= (lenx-1)*incx;
+  ఒకవేళ (incy < 0) y -= (leny-1)*incy;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  బఫరు = (FLOAT *)blas_జ్ఞాపకం_alloc(1);
+  ఒకవేళ (!బఫరు) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    తిరిగి;
   }
 
-#ifdef SMP
-  if (m * n < 250000 || kl+ku < 15 )
+#నిర్వచితమైతే SMP
+  ఒకవేళ (m * n < 250000 || kl+ku < 15 )
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  లేకపోతే
+    nthreads = అంకె_cpu_avail(2);
 
-  if (nthreads == 1) {
-#endif
+  ఒకవేళ (nthreads == 1) {
+#అయితే_ముగింపు
 
-  (gbmv[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer);
+  (gbmv[(పూర్ణాంకం)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, బఫరు);
 
-#ifdef SMP
-  } else {
+#నిర్వచితమైతే SMP
+  } లేకపోతే {
 
-    (gbmv_thread[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gbmv_thread[(పూర్ణాంకం)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, బఫరు, nthreads);
 
   }
-#endif
+#అయితే_ముగింపు
 
-  blas_memory_free(buffer);
+  blas_జ్ఞాపకం_free(బఫరు);
 
-  FUNCTION_PROFILE_END(1, m * n / 2 + n, m * n);
+  FUNCTION_PROFILE_చివర(1, m * n / 2 + n, m * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return;
+  తిరిగి;
 }

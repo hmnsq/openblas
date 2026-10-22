@@ -1,74 +1,74 @@
-#include <math.h>
-#include <float.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <math.h>
+#అన్తర్భావ <float.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+శూన్య NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#లేకపోతే
 
-void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+శూన్య CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#endif
+#అయితే_ముగింపు
 
-#ifdef DOUBLE
-  long double safmin = DBL_MIN;
-#else
-  long double safmin = FLT_MIN;
-#endif
+#నిర్వచితమైతే DOUBLE
+  దీర్ఘ ద్విగుణ safmin = DBL_MIN;
+#లేకపోతే
+  దీర్ఘ ద్విగుణ safmin = FLT_MIN;
+#అయితే_ముగింపు
 
-#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
+#ఒకవేళ defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
 
-  long double da = *DA;
-  long double db = *DB;
-  long double c;
-  long double s;
-  long double r, z;
-  long double sigma, dascal,dbscal;
+  దీర్ఘ ద్విగుణ da = *DA;
+  దీర్ఘ ద్విగుణ db = *DB;
+  దీర్ఘ ద్విగుణ c;
+  దీర్ఘ ద్విగుణ s;
+  దీర్ఘ ద్విగుణ r, z;
+  దీర్ఘ ద్విగుణ sigma, dascal,dbscal;
 
-  long double ada = fabsl(da);
-  long double adb = fabsl(db);
-  long double maxab = MAX(ada,adb);
-  long double safmax;
-  long double scale;
+  దీర్ఘ ద్విగుణ ada = fabsl(da);
+  దీర్ఘ ద్విగుణ adb = fabsl(db);
+  దీర్ఘ ద్విగుణ maxab = MAX(ada,adb);
+  దీర్ఘ ద్విగుణ safmax;
+  దీర్ఘ ద్విగుణ scale;
 
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
   PRINT_DEBUG_NAME;
-#else
+#లేకపోతే
   PRINT_DEBUG_CNAME;
-#endif
+#అయితే_ముగింపు
 
-  if (adb == ZERO) {
+  ఒకవేళ (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } లేకపోతే ఒకవేళ (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } లేకపోతే {
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
-    if (ada > adb)
+    ఒకవేళ (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    లేకపోతే
 	sigma = copysign(1.,db);
     dascal = da / scale;
     dbscal = db / scale;
-    r = sigma * (scale * sqrt(dascal * dascal + dbscal * dbscal));
+    r = sigma * (scale * వర్గమూలం(dascal * dascal + dbscal * dbscal));
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ఒకవేళ (ada > adb) z = s;
+    ఒకవేళ ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -76,7 +76,7 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     *DB = z;
   }
 
-#else
+#లేకపోతే
   FLOAT da = *DA;
   FLOAT db = *DB;
   FLOAT c  = *C;
@@ -87,50 +87,50 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   FLOAT ada = fabs(da);
   FLOAT adb = fabs(db);
   FLOAT maxab = MAX(ada,adb);
-  long double safmax ;
+  దీర్ఘ ద్విగుణ safmax ;
   FLOAT scale ;
 
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
 
-  if (ada > adb)
+  ఒకవేళ (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    లేకపోతే
 	sigma = copysign(1.,db);
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
   PRINT_DEBUG_NAME;
-#else
+#లేకపోతే
   PRINT_DEBUG_CNAME;
-#endif
+#అయితే_ముగింపు
 
 
-  if (adb == ZERO) {
+  ఒకవేళ (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } లేకపోతే ఒకవేళ (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } లేకపోతే {
     FLOAT aa = da / scale;
     FLOAT bb = db / scale;
 
-    r = sigma * scale * sqrt(aa * aa + bb * bb);
+    r = sigma * scale * వర్గమూలం(aa * aa + bb * bb);
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ఒకవేళ (ada > adb) z = s;
+    ఒకవేళ ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
     *DA = r;
     *DB = z;
   }
-#endif
+#అయితే_ముగింపు
 
-  return;
+  తిరిగి;
 }

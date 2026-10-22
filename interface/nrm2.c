@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -54,140 +54,140 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ఒకవేళ (n <= 0) తిరిగి 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+  ఒకవేళ (n == 1)
+#నిర్వచితమైతే DOUBLE
+    తిరిగి fabs(x[0]);
+#లేకపోతే
+    తిరిగి fabsf(x[0]);
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  ఒకవేళ (incx == 0)
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే DOUBLE
+  తిరిగి (వర్గమూలం((ద్విగుణ)n)*fabs(x[0]));
+#లేకపోతే
+  తిరిగి (వర్గమూలం((దశాంశం)n)*fabsf(x[0]));
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ద్విగుణ fr=fabs(x[0]);
+  ద్విగుణ fi=fabs(x[1]);
+  ద్విగుణ fmin=MIN(fr,fi);
+  ద్విగుణ fmax=MAX(fr,fi);
+  ఒకవేళ (fmax==0.) తిరిగి(fmax);
+  ఒకవేళ (fmax==fmin) తిరిగి(వర్గమూలం((ద్విగుణ)n)*వర్గమూలం(2.)*fmax);
+  తిరిగి (వర్గమూలం((ద్విగుణ)n) * fmax * వర్గమూలం (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#లేకపోతే
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  దశాంశం fr=fabs(x[0]);
+  దశాంశం fi=fabs(x[1]);
+  దశాంశం fmin=MIN(fr,fi);
+  దశాంశం fmax=MAX(fr,fi);
+  ఒకవేళ (fmax==0.) తిరిగి(fmax);
+  ఒకవేళ (fmax==fmin) తిరిగి(వర్గమూలం((దశాంశం)n)*వర్గమూలం(2.)*fmax);
+  తిరిగి (వర్గమూలం((దశాంశం)n) * fmax * వర్గమూలం (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  ఒకవేళ (incx < 0) 
+#నిర్వచితమైతే COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#లేకపోతే
     x -= (n - 1) * incx;
-#endif
-  IDEBUG_START;
+#అయితే_ముగింపు
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
   ret = (FLOATRET)NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_చివర(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 }
 
-#else
+#లేకపోతే
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#నిర్వచితమైతే COMPLEX
+FLOAT CNAME(blasint n, శూన్య *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#లేకపోతే
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#అయితే_ముగింపు
 
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ఒకవేళ (n <= 0) తిరిగి 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+  ఒకవేళ (n == 1)
+#నిర్వచితమైతే DOUBLE
+    తిరిగి fabs(x[0]);
+#లేకపోతే
+    తిరిగి fabsf(x[0]);
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  ఒకవేళ (incx == 0)
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే DOUBLE
+  తిరిగి (వర్గమూలం((ద్విగుణ)n)*fabs(x[0]));
+#లేకపోతే
+  తిరిగి (వర్గమూలం((దశాంశం)n)*fabsf(x[0]));
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ద్విగుణ fr=fabs(x[0]);
+  ద్విగుణ fi=fabs(x[1]);
+  ద్విగుణ fmin=MIN(fr,fi);
+  ద్విగుణ fmax=MAX(fr,fi);
+  ఒకవేళ (fmax==0.) తిరిగి(fmax);
+  ఒకవేళ (fmax==fmin) తిరిగి(వర్గమూలం((ద్విగుణ)n)*వర్గమూలం(2.)*fmax);
+  తిరిగి (వర్గమూలం((ద్విగుణ)n) * fmax * వర్గమూలం (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#లేకపోతే
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  దశాంశం fr=fabs(x[0]);
+  దశాంశం fi=fabs(x[1]);
+  దశాంశం fmin=MIN(fr,fi);
+  దశాంశం fmax=MAX(fr,fi);
+  ఒకవేళ (fmax==0.) తిరిగి(fmax);
+  ఒకవేళ (fmax==fmin) తిరిగి(వర్గమూలం((దశాంశం)n)*వర్గమూలం(2.)*fmax);
+  తిరిగి (వర్గమూలం((దశాంశం)n) * fmax * వర్గమూలం (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  ఒకవేళ (incx < 0) 
+#నిర్వచితమైతే COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#లేకపోతే
     x -= (n - 1) * incx;
-#endif
+#అయితే_ముగింపు
   
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
   ret = NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_చివర(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 }
 
-#endif
+#అయితే_ముగింపు

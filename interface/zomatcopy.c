@@ -29,150 +29,150 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2014/06/09 Saar
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#if defined(DOUBLE)
-#define ERROR_NAME "ZOMATCOPY"
-#else
-#define ERROR_NAME "COMATCOPY"
-#endif
+#ఒకవేళ defined(DOUBLE)
+#నిర్వచించు ERROR_NAME "ZOMATCOPY"
+#లేకపోతే
+#నిర్వచించు ERROR_NAME "COMATCOPY"
+#అయితే_ముగింపు
 
-#define BlasRowMajor     0
-#define BlasColMajor     1
-#define BlasNoTrans      0
-#define BlasTrans        1
-#define BlasTransConj    2
-#define BlasConj         3
+#నిర్వచించు Blas_అడ్డువరుస_Major     0
+#నిర్వచించు Blas_నిలువు_Major     1
+#నిర్వచించు BlasNoTrans      0
+#నిర్వచించు BlasTrans        1
+#నిర్వచించు BlasTransConj    2
+#నిర్వచించు BlasConj         3
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+#నిర్వచితం_కాకపోతే CBLAS
+శూన్య NAME( అక్షరం* క్రమం_2, అక్షరం* TRANS, blasint *అడ్డువరుసలు, blasint *నిలువుల_సంఖ్య, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	అక్షరం క్రమం_3, Trans;
+	పూర్ణాంకం క్రమం=-1,trans=-1;
 	blasint info = -1;
 
-	Order = *ORDER;
+	క్రమం_3 = *క్రమం_2;
 	Trans = *TRANS;
 
-	TOUPPER(Order);
+	TOUPPER(క్రమం_3);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTransConj;
-	if ( Trans == 'R' ) trans = BlasConj;
+	ఒకవేళ ( క్రమం_3 == 'C' ) క్రమం = Blas_నిలువు_Major;
+	ఒకవేళ ( క్రమం_3 == 'R' ) క్రమం = Blas_అడ్డువరుస_Major;
+	ఒకవేళ ( Trans == 'N' ) trans = BlasNoTrans;
+	ఒకవేళ ( Trans == 'T' ) trans = BlasTrans;
+	ఒకవేళ ( Trans == 'C' ) trans = BlasTransConj;
+	ఒకవేళ ( Trans == 'R' ) trans = BlasConj;
 
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
+#లేకపోతే 
+శూన్య CNAME(గణన CBLAS_క్రమం CORDER, గణన CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
 {
-	blasint *rows, *cols, *lda, *ldb; 
-	int order=-1,trans=-1;
+	blasint *అడ్డువరుసలు, *నిలువుల_సంఖ్య, *lda, *ldb; 
+	పూర్ణాంకం క్రమం=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	ఒకవేళ ( CORDER == Cblas_నిలువు_Major ) క్రమం = Blas_నిలువు_Major; 
+	ఒకవేళ ( CORDER == Cblas_అడ్డువరుస_Major ) క్రమం = Blas_అడ్డువరుస_Major; 
 
-	if ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
-	if ( CTRANS == CblasTrans) trans = BlasTrans; 
-	if ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
+	ఒకవేళ ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
+	ఒకవేళ ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
+	ఒకవేళ ( CTRANS == CblasTrans) trans = BlasTrans; 
+	ఒకవేళ ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
 
-	rows = &crows; 
-	cols = &ccols; 
+	అడ్డువరుసలు = &crows; 
+	నిలువుల_సంఖ్య = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
-#endif
-	if ( order == BlasColMajor)
+#అయితే_ముగింపు
+	ఒకవేళ ( క్రమం == Blas_నిలువు_Major)
 	{
-        	if ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ఒకవేళ ( trans == BlasNoTrans      &&  *ldb < MAX(1,*అడ్డువరుసలు) ) info = 9;
+        	ఒకవేళ ( trans == BlasConj         &&  *ldb < MAX(1,*అడ్డువరుసలు) ) info = 9;
+        	ఒకవేళ ( trans == BlasTrans        &&  *ldb < MAX(1,*నిలువుల_సంఖ్య) ) info = 9;
+        	ఒకవేళ ( trans == BlasTransConj    &&  *ldb < MAX(1,*నిలువుల_సంఖ్య) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	ఒకవేళ ( క్రమం == Blas_అడ్డువరుస_Major)
 	{
-        	if ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ఒకవేళ ( trans == BlasNoTrans    &&  *ldb < MAX(1,*నిలువుల_సంఖ్య) ) info = 9;
+        	ఒకవేళ ( trans == BlasConj       &&  *ldb < MAX(1,*నిలువుల_సంఖ్య) ) info = 9;
+        	ఒకవేళ ( trans == BlasTrans      &&  *ldb < MAX(1,*అడ్డువరుసలు) ) info = 9;
+        	ఒకవేళ ( trans == BlasTransConj  &&  *ldb < MAX(1,*అడ్డువరుసలు) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ఒకవేళ ( క్రమం == Blas_నిలువు_Major &&  *lda < MAX(1,*అడ్డువరుసలు) ) info = 7;
+	ఒకవేళ ( క్రమం == Blas_అడ్డువరుస_Major &&  *lda < MAX(1,*నిలువుల_సంఖ్య) ) info = 7;
+	ఒకవేళ ( *నిలువుల_సంఖ్య < 0 ) info = 4;
+	ఒకవేళ ( *అడ్డువరుసలు < 0 ) info = 3;
+	ఒకవేళ ( trans < 0 ) info = 2;
+	ఒకవేళ ( క్రమం < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ఒకవేళ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, పరిమాణం(ERROR_NAME));
+    		తిరిగి;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ఒకవేళ ((*అడ్డువరుసలు == 0) || (*నిలువుల_సంఖ్య == 0)) తిరిగి;
 
-	if ( order == BlasColMajor )
+	ఒకవేళ ( క్రమం == Blas_నిలువు_Major )
 	{
 
-		if ( trans == BlasNoTrans )
+		ఒకవేళ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_CN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CN(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
-		if ( trans == BlasConj )
+		ఒకవేళ ( trans == BlasConj )
 		{
-			OMATCOPY_K_CNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CNC(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
-		if ( trans == BlasTrans )
+		ఒకవేళ ( trans == BlasTrans )
 		{
-			OMATCOPY_K_CT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CT(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
-		if ( trans == BlasTransConj )
+		ఒకవేళ ( trans == BlasTransConj )
 		{
-			OMATCOPY_K_CTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CTC(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
 
 	}
-	else
+	లేకపోతే
 	{
 
-		if ( trans == BlasNoTrans )
+		ఒకవేళ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_RN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RN(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
-		if ( trans == BlasConj )
+		ఒకవేళ ( trans == BlasConj )
 		{
-			OMATCOPY_K_RNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RNC(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
-		if ( trans == BlasTrans )
+		ఒకవేళ ( trans == BlasTrans )
 		{
-			OMATCOPY_K_RT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RT(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
-		if ( trans == BlasTransConj )
+		ఒకవేళ ( trans == BlasTransConj )
 		{
-			OMATCOPY_K_RTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RTC(*అడ్డువరుసలు, *నిలువుల_సంఖ్య, alpha[0], alpha[1], a, *lda, b, *ldb );
+			తిరిగి;
 		}
 
 	}
 
-	return;
+	తిరిగి;
 
 }
 

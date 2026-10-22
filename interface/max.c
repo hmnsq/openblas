@@ -36,99 +36,99 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#undef MAX_K
+#నిర్వచనం_రద్దు MAX_K
 
-#ifdef USE_ABS
+#నిర్వచితమైతే USE_ABS
 
-#if defined(DOUBLE)
-#define ABS fabs
-#else
-#define ABS fabsf
-#endif
+#ఒకవేళ defined(DOUBLE)
+#నిర్వచించు ABS fabs
+#లేకపోతే
+#నిర్వచించు ABS fabsf
+#అయితే_ముగింపు
 
-#ifndef USE_MIN
+#నిర్వచితం_కాకపోతే USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMAX_K
-#else
-#define MAX_K	SAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMAX_K
-#else
-#define MAX_K	CAMAX_K
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	QAMAX_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	DAMAX_K
+#లేకపోతే
+#నిర్వచించు MAX_K	SAMAX_K
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	XAMAX_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	ZAMAX_K
+#లేకపోతే
+#నిర్వచించు MAX_K	CAMAX_K
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#else
+#లేకపోతే
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMIN_K
-#else
-#define MAX_K	SAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMIN_K
-#else
-#define MAX_K	CAMIN_K
-#endif
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	QAMIN_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	DAMIN_K
+#లేకపోతే
+#నిర్వచించు MAX_K	SAMIN_K
+#అయితే_ముగింపు
+#లేకపోతే
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	XAMIN_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	ZAMIN_K
+#లేకపోతే
+#నిర్వచించు MAX_K	CAMIN_K
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
-#else
+#లేకపోతే
 
-#define ABS
+#నిర్వచించు ABS
 
-#ifndef USE_MIN
+#నిర్వచితం_కాకపోతే USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	QMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DMAX_K
-#else
-#define MAX_K	SMAX_K
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	QMAX_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	DMAX_K
+#లేకపోతే
+#నిర్వచించు MAX_K	SMAX_K
+#అయితే_ముగింపు
 
-#else
+#లేకపోతే
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	QMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DMIN_K
-#else
-#define MAX_K	SMIN_K
-#endif
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MAX_K	QMIN_K
+#లేదావేళ defined(DOUBLE)
+#నిర్వచించు MAX_K	DMIN_K
+#లేకపోతే
+#నిర్వచించు MAX_K	SMIN_K
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -138,59 +138,59 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ఒకవేళ (n <= 0) తిరిగి 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+  ఒకవేళ (incx == 0) తిరిగి (ABS(*x));
+#లేకపోతే
+  ఒకవేళ (incx == 0) తిరిగి (ABS(*x) + ABS(*(x+1)));
+#అయితే_ముగింపు
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
   ret = (FLOATRET)MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_చివర(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 }
 
-#else
+#లేకపోతే
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#నిర్వచితమైతే COMPLEX
+FLOAT CNAME(blasint n, శూన్య *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#లేకపోతే
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#అయితే_ముగింపు
   
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ఒకవేళ (n <= 0) తిరిగి 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#నిర్వచితం_కాకపోతే COMPLEX
+  ఒకవేళ (incx == 0) తిరిగి (ABS(*x));
+#లేకపోతే
+  ఒకవేళ (incx == 0) తిరిగి (ABS(*x) + ABS(*(x+1)));
+#అయితే_ముగింపు
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
   ret = MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_చివర(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 }
 
-#endif
+#అయితే_ముగింపు

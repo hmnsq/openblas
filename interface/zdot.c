@@ -36,180 +36,180 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "common.h"
+#నిర్వచితమైతే FUNCTION_PROFILE
+#అన్తర్భావ "functable.h"
+#అయితే_ముగింపు
 
-#ifdef RETURN_BY_STRUCT
-#ifdef XDOUBLE
-#define MYTYPE myxcomplex_t
-#elif defined DOUBLE
-#define MYTYPE myzcomplex_t
-#else
-#define MYTYPE myccomplex_t
-#endif
-#endif
+#నిర్వచితమైతే RETURN_BY_STRUCT
+#నిర్వచితమైతే XDOUBLE
+#నిర్వచించు MYTYPE myxcomplex_t
+#లేదావేళ defined DOUBLE
+#నిర్వచించు MYTYPE myzcomplex_t
+#లేకపోతే
+#నిర్వచించు MYTYPE myccomplex_t
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#నిర్వచితం_కాకపోతే CBLAS
 
-#ifdef RETURN_BY_STRUCT
+#నిర్వచితమైతే RETURN_BY_STRUCT
 MYTYPE         NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#elif defined RETURN_BY_STACK
-void           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#else
+#లేదావేళ defined RETURN_BY_దొంతర
+శూన్య           NAME(OPENBLAS_COMPLEX_FLOAT *ఫలితం, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
+#లేకపోతే
 OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#endif
+#అయితే_ముగింపు
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-#ifndef RETURN_BY_STACK
+#నిర్వచితం_కాకపోతే RETURN_BY_దొంతర
   OPENBLAS_COMPLEX_FLOAT ret;
-#endif
-#ifdef RETURN_BY_STRUCT
+#అయితే_ముగింపు
+#నిర్వచితమైతే RETURN_BY_STRUCT
   MYTYPE  myret;
-#endif
+#అయితే_ముగింపు
 
-#ifndef RETURN_BY_STRUCT
+#నిర్వచితం_కాకపోతే RETURN_BY_STRUCT
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#అయితే_ముగింపు
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) {
-#ifdef RETURN_BY_STRUCT
+  ఒకవేళ (n <= 0) {
+#నిర్వచితమైతే RETURN_BY_STRUCT
     myret.r = 0.;
     myret.i = 0.;
-    return myret;
-#elif defined RETURN_BY_STACK
-    *result = zero;
-    return;
-#else
-    return zero;
-#endif
+    తిరిగి myret;
+#లేదావేళ defined RETURN_BY_దొంతర
+    *ఫలితం = zero;
+    తిరిగి;
+#లేకపోతే
+    తిరిగి zero;
+#అయితే_ముగింపు
   }
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ఒకవేళ (incx < 0) x -= (n - 1) * incx * 2;
+  ఒకవేళ (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef RETURN_BY_STRUCT
+#నిర్వచితమైతే RETURN_BY_STRUCT
 
-#ifndef CONJ
+#నిర్వచితం_కాకపోతే CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#లేకపోతే
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#అయితే_ముగింపు
 
   myret.r = CREAL ret;
   myret.i = CIMAG ret;
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_చివర(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return myret;
+  తిరిగి myret;
 
-#elif defined RETURN_BY_STACK
+#లేదావేళ defined RETURN_BY_దొంతర
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#నిర్వచితం_కాకపోతే CONJ
+  *ఫలితం = DOTU_K(n, x, incx, y, incy);
+#లేకపోతే
+  *ఫలితం = DOTC_K(n, x, incx, y, incy);
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_చివర(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-#else
+#లేకపోతే
 
-#ifndef CONJ
+#నిర్వచితం_కాకపోతే CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#లేకపోతే
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_చివర(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 
-#endif
+#అయితే_ముగింపు
 
 }
 
-#else
+#లేకపోతే
 
-#ifdef FORCE_USE_STACK
-void           CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy, void* vresult){
-OPENBLAS_COMPLEX_FLOAT *result= (OPENBLAS_COMPLEX_FLOAT*)vresult;
-#else
-OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#నిర్వచితమైతే FORCE_USE_దొంతర
+శూన్య           CNAME(blasint n, శూన్య *vx, blasint incx, శూన్య *vy, blasint incy, శూన్య* vresult){
+OPENBLAS_COMPLEX_FLOAT *ఫలితం= (OPENBLAS_COMPLEX_FLOAT*)vresult;
+#లేకపోతే
+OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, శూన్య *vx, blasint incx, శూన్య *vy, blasint incy){
 
   OPENBLAS_COMPLEX_FLOAT ret;
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#అయితే_ముగింపు
   FLOAT *x = (FLOAT*) vx;
   FLOAT *y = (FLOAT*) vy;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) {
-#ifdef FORCE_USE_STACK
+  ఒకవేళ (n <= 0) {
+#నిర్వచితమైతే FORCE_USE_దొంతర
     OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-    *result = zero;
+    *ఫలితం = zero;
 //	CREAL(*result) = 0.0;
 //	CIMAG(*result) = 0.0;
-    return;
-#else
-    return zero;
-#endif
+    తిరిగి;
+#లేకపోతే
+    తిరిగి zero;
+#అయితే_ముగింపు
   }
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ఒకవేళ (incx < 0) x -= (n - 1) * incx * 2;
+  ఒకవేళ (incy < 0) y -= (n - 1) * incy * 2;
 
-  IDEBUG_START;
+  IDEBUG_ప్రారంభం;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ప్రారంభం();
 
-#ifdef FORCE_USE_STACK
+#నిర్వచితమైతే FORCE_USE_దొంతర
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#నిర్వచితం_కాకపోతే CONJ
+  *ఫలితం = DOTU_K(n, x, incx, y, incy);
+#లేకపోతే
+  *ఫలితం = DOTC_K(n, x, incx, y, incy);
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_చివర(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-#else
+#లేకపోతే
 
-#ifndef CONJ
+#నిర్వచితం_కాకపోతే CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#లేకపోతే
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#అయితే_ముగింపు
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_చివర(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_చివర;
 
-  return ret;
+  తిరిగి ret;
 
-#endif
+#అయితే_ముగింపు
 
 }
 
-#endif
+#అయితే_ముగింపు
