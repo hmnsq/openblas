@@ -36,11 +36,11 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ <ctype.h>
+#ଅନ୍ତର୍ଭାଵ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 /*
@@ -53,29 +53,29 @@
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QSBMV "
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
 #define ERROR_NAME "DSBMV "
-#else
+#ଅନ୍ୟଥା
 #define ERROR_NAME "SSBMV "
 #endif
 
-static  int (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+ସ୍ଥିର  ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, ଶୂନ୍ୟ *) = {
 #ifdef XDOUBLE
   qsbmv_U, qsbmv_L,
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
   dsbmv_U, dsbmv_L,
-#else
+#ଅନ୍ୟଥା
   ssbmv_U, ssbmv_L,
 #endif
 };
 
 #ifdef SMPTEST
-static  int (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+ସ୍ଥିର  ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ପୂର୍ଣ୍ଣସଂଖ୍ୟା) = {
 #ifdef XDOUBLE
   qsbmv_thread_U, qsbmv_thread_L,
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
   dsbmv_thread_U, dsbmv_thread_L,
-#else
+#ଅନ୍ୟଥା
   ssbmv_thread_U, ssbmv_thread_L,
 #endif
 };
@@ -85,10 +85,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
+ଶୂନ୍ୟ NAME(ଅକ୍ଷର *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
             FLOAT  *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  ଅକ୍ଷର uplo_arg = *UPLO;
   blasint n	= *N;
   blasint k	= *K;
   FLOAT alpha	= *ALPHA;
@@ -98,10 +98,10 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା uplo;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -109,27 +109,27 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ଯଦି (uplo_arg  == 'U') uplo  = 0;
+  ଯଦି (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info = 11;
-  if (incx == 0)          info =  8;
-  if (lda  < k + 1)       info =  6;
-  if (k < 0)              info =  3;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ଯଦି (incy == 0)          info = 11;
+  ଯଦି (incx == 0)          info =  8;
+  ଯଦି (lda  < k + 1)       info =  6;
+  ଯଦି (k < 0)              info =  3;
+  ଯଦି (n < 0)              info =  2;
+  ଯଦି (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ଯଦି (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
-#else
+#ଅନ୍ୟଥା
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+ଶୂନ୍ୟ CNAME(ଗଣନା CBLAS_ORDER order,
+	   ଗଣନା CBLAS_UPLO Uplo,
 	   blasint n, blasint k,
 	   FLOAT alpha,
 	   FLOAT  *a, blasint lda,
@@ -138,10 +138,10 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT  *y, blasint incy){
 
   FLOAT *buffer;
-  int uplo;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା uplo;
   blasint info;
 #ifdef SMPTEST
-  int nthreads;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -149,71 +149,71 @@ void CNAME(enum CBLAS_ORDER order,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ଯଦି (order == CblasColMajor) {
+    ଯଦି (Uplo == CblasUpper)         uplo  = 0;
+    ଯଦି (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info = 11;
-    if (incx == 0)          info =  8;
-    if (lda  < k + 1)       info =  6;
-    if (k < 0)              info =  3;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ଯଦି (incy == 0)          info = 11;
+    ଯଦି (incx == 0)          info =  8;
+    ଯଦି (lda  < k + 1)       info =  6;
+    ଯଦି (k < 0)              info =  3;
+    ଯଦି (n < 0)              info =  2;
+    ଯଦି (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  ଯଦି (order == CblasRowMajor) {
+    ଯଦି (Uplo == CblasUpper)         uplo  = 1;
+    ଯଦି (Uplo == CblasLower)         uplo  = 0;
 
     info = -1;
 
-    if (incy == 0)          info = 11;
-    if (incx == 0)          info =  8;
-    if (lda  < k + 1)       info =  6;
-    if (k < 0)              info =  3;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ଯଦି (incy == 0)          info = 11;
+    ଯଦି (incx == 0)          info =  8;
+    ଯଦି (lda  < k + 1)       info =  6;
+    ଯଦି (k < 0)              info =  3;
+    ଯଦି (n < 0)              info =  2;
+    ଯଦି (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ଯଦି (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
 #endif
 
-  if (n == 0) return;
+  ଯଦି (n == 0) ଫେରନ୍ତୁ;
 
-  if (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  ଯଦି (beta != ONE) SCAL_K(n, 0, 0, beta, y, blasabs(incy), ଖାଲି, 0, ଖାଲି, 0);
 
-  if (alpha == ZERO) return;
+  ଯଦି (alpha == ZERO) ଫେରନ୍ତୁ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  ଯଦି (incx < 0 ) x -= (n - 1) * incx;
+  ଯଦି (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ଯଦି (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
 #ifdef SMPTEST
-  nthreads = num_cpu_avail(2);
+  nthreads = ଅଙ୍କ_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ଯଦି (nthreads == 1) {
 #endif
 
   (sbmv[uplo])(n, k, alpha, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMPTEST
-  } else {
+  } ଅନ୍ୟଥା {
 
     (sbmv_thread[uplo])(n, k, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
 
@@ -226,5 +226,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ଫେରନ୍ତୁ;
 }

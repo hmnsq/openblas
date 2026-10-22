@@ -37,29 +37,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#include "l1param.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ "common.h"
+#ଅନ୍ତର୍ଭାଵ "l1param.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 #ifdef BGEMM
 #define GEMV_THREAD_N bgemv_thread_n
 #define GEMV_THREAD_T bgemv_thread_t
 #define ERROR_NAME "BGEMV "
-#elif defined(HFLOAT16)
+#ନଚେତଯଦି defined(HFLOAT16)
 #define GEMV_THREAD_N shgemv_thread_n
 #define GEMV_THREAD_T shgemv_thread_t
 #define ERROR_NAME "SHGEMV "
-#else
+#ଅନ୍ୟଥା
 #define GEMV_THREAD_N sbgemv_thread_n
 #define GEMV_THREAD_T sbgemv_thread_t
 #define ERROR_NAME "SBGEMV "
 #endif 
 
 #ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, int) = {
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, ପୂର୍ଣ୍ଣସଂଖ୍ୟା) = {
     GEMV_THREAD_N, GEMV_THREAD_T,
 };
 #endif
@@ -68,9 +68,9 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint *LDA, IFLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
+ଶୂନ୍ୟ NAME(ଅକ୍ଷର *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint *LDA, IFLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
 {
-    char trans = *TRANS;
+    ଅକ୍ଷର trans = *TRANS;
     blasint m = *M;
     blasint n = *N;
     blasint lda = *LDA;
@@ -79,10 +79,10 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
     FLOAT alpha = *ALPHA;
     FLOAT beta  = *BETA;
 #ifdef SMP
-    int nthreads;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା nthreads;
 #endif
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -98,37 +98,37 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
 
     i = -1;
 
-    if (trans == 'N') {i = 0;}
-    if (trans == 'T') {i = 1;}
-    if (trans == 'R') {i = 0;}
-    if (trans == 'C') {i = 1;}
+    ଯଦି (trans == 'N') {i = 0;}
+    ଯଦି (trans == 'T') {i = 1;}
+    ଯଦି (trans == 'R') {i = 0;}
+    ଯଦି (trans == 'C') {i = 1;}
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (i < 0)           {info = 1;}
+    ଯଦି (incy == 0)       {info = 11;}
+    ଯଦି (incx == 0)       {info = 8;}
+    ଯଦି (lda < MAX(1, m)) {info = 6;}
+    ଯଦି (n < 0)           {info = 3;}
+    ଯଦି (m < 0)           {info = 2;}
+    ଯଦି (i < 0)           {info = 1;}
 
     trans = i;
 
-    if (info != 0) {
-        BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+    ଯଦି (info != 0) {
+        BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+        ଫେରନ୍ତୁ;
     }
 
-#else
+#ଅନ୍ୟଥା
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasint n, FLOAT alpha, IFLOAT *a, blasint lda, IFLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
+ଶୂନ୍ୟ CNAME(ଗଣନା CBLAS_ORDER order, ଗଣନା CBLAS_TRANSPOSE TransA, blasint m, blasint n, FLOAT alpha, IFLOAT *a, blasint lda, IFLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
 {
     blasint lenx,  leny;
-    int     trans;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା     trans;
     blasint info,  t;
 #ifdef SMP
-    int     nthreads;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା     nthreads;
 #endif
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -137,16 +137,16 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
     trans = -1;
     info  =  0;
 
-    if (order == CblasColMajor) {   // Column Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    ଯଦି (order == CblasColMajor) {   // Column Major
+        ଯଦି (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 0;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } ଅନ୍ୟଥା ଯଦି (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 1;
         }
-    } else {                        // Row Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    } ଅନ୍ୟଥା {                        // Row Major
+        ଯଦି (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 1;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } ଅନ୍ୟଥା ଯଦି (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 0;
         }
 
@@ -157,67 +157,67 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
 
     info = -1;
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (trans < 0)       {info = 1;}
+    ଯଦି (incy == 0)       {info = 11;}
+    ଯଦି (incx == 0)       {info = 8;}
+    ଯଦି (lda < MAX(1, m)) {info = 6;}
+    ଯଦି (n < 0)           {info = 3;}
+    ଯଦି (m < 0)           {info = 2;}
+    ଯଦି (trans < 0)       {info = 1;}
 
-    if (info >= 0) {
-        BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+    ଯଦି (info >= 0) {
+        BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+        ଫେରନ୍ତୁ;
     }
 
 #endif
 
-    if ((m==0) || (n==0)) return;
+    ଯଦି ((m==0) || (n==0)) ଫେରନ୍ତୁ;
 
-    if (trans) {
+    ଯଦି (trans) {
         lenx = m;
         leny = n;
-    } else {
+    } ଅନ୍ୟଥା {
         lenx = n;
         leny = m;
     }
 
 #ifdef BGEMM
-  float alpha_float, beta_float;
+  ଦଶମିକ alpha_float, beta_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
   SBF16TOS_K(1, &beta, 1, &beta_float, 1);
-#else
-  float alpha_float = alpha;
-  float beta_float = beta;
+#ଅନ୍ୟଥା
+  ଦଶମିକ alpha_float = alpha;
+  ଦଶମିକ beta_float = beta;
 #endif
 
-    if (alpha_float == ZERO) {
-        if (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
-        return;
+    ଯଦି (alpha_float == ZERO) {
+        ଯଦି (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), ଖାଲି, 0, ଖାଲି, 0);
+        ଫେରନ୍ତୁ;
     }
 
     IDEBUG_START;
     FUNCTION_PROFILE_START();
 
-    if (incx < 0) {x -= (lenx - 1) * incx;}
-    if (incy < 0) {y -= (leny - 1) * incy;}
+    ଯଦି (incx < 0) {x -= (lenx - 1) * incx;}
+    ଯଦି (incy < 0) {y -= (leny - 1) * incy;}
 
 #ifdef SMP
-    if ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
+    ଯଦି ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
       nthreads = 1;
-    else
-      nthreads = num_cpu_avail(2);
+    ଅନ୍ୟଥା
+      nthreads = ଅଙ୍କ_cpu_avail(2);
 
-    if (nthreads == 1) {
+    ଯଦି (nthreads == 1) {
 #endif
-        (gemv[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
+        (gemv[(ପୂର୍ଣ୍ଣସଂଖ୍ୟା)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
 #ifdef SMP
-    } else {
-        (gemv_thread[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
+    } ଅନ୍ୟଥା {
+        (gemv_thread[(ପୂର୍ଣ୍ଣସଂଖ୍ୟା)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
     }
 #endif
 
     FUNCTION_PROFILE_END(1, m * n + m + n,  2 * m * n);
     IDEBUG_END;
 
-    return;
+    ଫେରନ୍ତୁ;
 }

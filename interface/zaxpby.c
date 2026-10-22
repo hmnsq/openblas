@@ -31,17 +31,17 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **********************************************************************/
 
 
-#include <stdio.h>
-#include "common.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, void *VALPHA, FLOAT *x, blasint *INCX, void *VBETA, FLOAT *y, blasint *INCY)
+ଶୂନ୍ୟ NAME(blasint *N, ଶୂନ୍ୟ *VALPHA, FLOAT *x, blasint *INCX, ଶୂନ୍ୟ *VBETA, FLOAT *y, blasint *INCY)
 {
 
   blasint n    = *N;
@@ -50,9 +50,9 @@ void NAME(blasint *N, void *VALPHA, FLOAT *x, blasint *INCX, void *VBETA, FLOAT 
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* BETA = (FLOAT*) VBETA;
 
-#else
+#ଅନ୍ୟଥା
 
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *VBETA, void *vy, blasint incy)
+ଶୂନ୍ୟ CNAME(blasint n, ଶୂନ୍ୟ *VALPHA, ଶୂନ୍ୟ *vx, blasint incx, ଶୂନ୍ୟ *VBETA, ଶୂନ୍ୟ *vy, blasint incy)
 {
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* BETA = (FLOAT*) VBETA;
@@ -66,17 +66,17 @@ void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *VBETA, void *v
   FLOAT beta_r  = *(BETA  + 0);
   FLOAT beta_i  = *(BETA  + 1);
 
-  if (n <= 0) return;
+  ଯଦି (n <= 0) ଫେରନ୍ତୁ;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ଯଦି (incx < 0) x -= (n - 1) * incx * 2;
+  ଯଦି (incy < 0) y -= (n - 1) * incy * 2;
 
   AXPBY_K (n, alpha_r, alpha_i, x, incx, beta_r, beta_i, y, incy);
 
   FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
 
-  return;
+  ଫେରନ୍ତୁ;
 
 }

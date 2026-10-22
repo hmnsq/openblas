@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETRF"
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
 #define ERROR_NAME "DGETRF"
-#else
+#ଅନ୍ୟଥା
 #define ERROR_NAME "SGETRF"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+ଶୂନ୍ୟ NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  ବାହ୍ୟ
 #endif
   FLOAT *sa, *sb;
 
@@ -66,22 +66,22 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (ଶୂନ୍ୟ *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (ଶୂନ୍ୟ *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ଯଦି (args.lda < MAX(1,args.m)) info = 4;
+  ଯଦି (args.n   < 0)             info = 2;
+  ଯଦି (args.m   < 0)             info = 1;
+  ଯଦି (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ଫେରନ୍ତୁ;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  ଯଦି (args.m == 0 || args.n == 0) ଫେରନ୍ତୁ;
 
   IDEBUG_START;
 
@@ -95,30 +95,30 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  args.common = ଖାଲି;
 
 #ifndef DOUBLE
-  int nmax = 40000;
-#else 
-  int nmax = 10000;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା nmax = 40000;
+#ଅନ୍ୟଥା 
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା nmax = 10000;
 #endif
-  if (args.m*args.n <nmax) {
+  ଯଦି (args.m*args.n <nmax) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
-    if ((args.m*args.n)/args.nthreads <nmax)
+  } ଅନ୍ୟଥା {
+    args.nthreads = ଅଙ୍କ_cpu_avail(4);
+    ଯଦି ((args.m*args.n)/args.nthreads <nmax)
 	    args.nthreads = (args.m*args.n)/nmax;
   }
 
-  if (args.nthreads == 1) {
+  ଯଦି (args.nthreads == 1) {
 #endif
 
-  *Info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+  *Info = GETRF_SINGLE(&args, ଖାଲି, ଖାଲି, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } ଅନ୍ୟଥା {
 
-    *Info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    *Info = GETRF_PARALLEL(&args, ଖାଲି, ଖାଲି, sa, sb, 0);
   }
 #endif
 
@@ -130,5 +130,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  ଫେରନ୍ତୁ;
 }

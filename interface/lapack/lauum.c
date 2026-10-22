@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QLAUUM"
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
 #define ERROR_NAME "DLAUUM"
-#else
+#ଅନ୍ୟଥା
 #define ERROR_NAME "SLAUUM"
 #endif
 
-static blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ସ୍ଥିର blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   LAUUM_U_SINGLE, LAUUM_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ସ୍ଥିର blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   LAUUM_U_PARALLEL, LAUUM_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+ଶୂନ୍ୟ NAME(ଅକ୍ଷର *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -70,35 +70,35 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  ବାହ୍ୟ
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (ଶୂନ୍ୟ *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ଯଦି (uplo_arg == 'U') uplo = 0;
+  ଯଦି (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ଯଦି (args.lda < MAX(1,args.n)) info = 4;
+  ଯଦି (args.n   < 0)             info = 2;
+  ଯଦି (uplo     < 0)             info = 1;
+  ଯଦି (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ଫେରନ୍ତୁ;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  ଯଦି (args.n == 0) ଫେରନ୍ତୁ;
 
   IDEBUG_START;
 
@@ -112,21 +112,21 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.n < 64) {
+  args.common = ଖାଲି;
+  ଯଦି (args.n < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } ଅନ୍ୟଥା {
+    args.nthreads = ଅଙ୍କ_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  ଯଦି (args.nthreads == 1) {
 #endif
 
-    *Info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (lauum_single[uplo])(&args, ଖାଲି, ଖାଲି, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    *Info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+  } ଅନ୍ୟଥା {
+    *Info = (lauum_parallel[uplo])(&args, ଖାଲି, ଖାଲି, sa, sb, 0);
   }
 #endif
 
@@ -140,5 +140,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  ଫେରନ୍ତୁ;
 }

@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ <ctype.h>
+#ଅନ୍ତର୍ଭାଵ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XHPR  "
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
 #define ERROR_NAME "ZHPR  "
-#else
+#ଅନ୍ୟଥା
 #define ERROR_NAME "CHPR  "
 #endif
 
-static int (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr_U, xhpr_L, xhpr_V, xhpr_M,
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
   zhpr_U, zhpr_L, zhpr_V, zhpr_M,
-#else
+#ଅନ୍ୟଥା
   chpr_U, chpr_L, chpr_V, chpr_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, ପୂର୍ଣ୍ଣସଂଖ୍ୟା) = {
 #ifdef XDOUBLE
   xhpr_thread_U, xhpr_thread_L, xhpr_thread_V, xhpr_thread_M,
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
   zhpr_thread_U, zhpr_thread_L, zhpr_thread_V, zhpr_thread_M,
-#else
+#ଅନ୍ୟଥା
   chpr_thread_U, chpr_thread_L, chpr_thread_V, chpr_thread_M,
 #endif
 };
@@ -77,19 +77,19 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+ଶୂନ୍ୟ NAME(ଅକ୍ଷର *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  ଅକ୍ଷର uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,37 +97,37 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ଯଦି (uplo_arg  == 'U') uplo  = 0;
+  ଯଦି (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ଯଦି (incx == 0)          info =  5;
+  ଯଦି (n < 0)              info =  2;
+  ଯଦି (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ଯଦି (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
-#else
+#ଅନ୍ୟଥା
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+ଶୂନ୍ୟ CNAME(ଗଣନା CBLAS_ORDER order,
+	   ଗଣନା CBLAS_UPLO Uplo,
 	   blasint n,
 	   FLOAT alpha,
-	   void  *vx, blasint incx,
-	   void  *va) {
+	   ଶୂନ୍ୟ  *vx, blasint incx,
+	   ଶୂନ୍ୟ  *va) {
 
   FLOAT* x = (FLOAT*) vx;
   FLOAT* a = (FLOAT*) va;
 
   FLOAT *buffer;
-  int uplo;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -135,66 +135,66 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ଯଦି (order == CblasColMajor) {
+    ଯଦି (Uplo == CblasUpper)         uplo  = 0;
+    ଯଦି (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ଯଦି (incx == 0)          info =  5;
+    ଯଦି (n < 0)              info =  2;
+    ଯଦି (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  ଯଦି (order == CblasRowMajor) {
+    ଯଦି (Uplo == CblasUpper)         uplo  = 3;
+    ଯଦି (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ଯଦି (incx == 0)          info =  5;
+    ଯଦି (n < 0)              info =  2;
+    ଯଦି (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ଯଦି (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
 #endif
 
-  if (n == 0) return;
+  ଯଦି (n == 0) ଫେରନ୍ତୁ;
 
-  if (alpha == ZERO) return;
+  ଯଦି (alpha == ZERO) ଫେରନ୍ତୁ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  ଯଦି (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ଯଦି (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
 #ifdef SMP
-  if (n < 100)
+  ଯଦି (n < 100)
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  ଅନ୍ୟଥା
+    nthreads = ଅଙ୍କ_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ଯଦି (nthreads == 1) {
 #endif
 
   (hpr[uplo])(n, alpha, x, incx, a, buffer);
 
 #ifdef SMP
 
-  } else {
+  } ଅନ୍ୟଥା {
 
     (hpr_thread[uplo])(n, alpha, x, incx, a, buffer, nthreads);
 
@@ -207,5 +207,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ଫେରନ୍ତୁ;
 }

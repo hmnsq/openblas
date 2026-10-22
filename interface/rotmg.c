@@ -33,9 +33,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **************************************************************************************/
 
 
-#include "common.h"
+#ଅନ୍ତର୍ଭାଵ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 #define  GAM     4096.e0
@@ -46,7 +46,7 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef DOUBLE
 #define ABS(x) fabs(x)
-#else
+#ଅନ୍ୟଥା
 #define ABS(x) fabsf(x)
 #endif
 
@@ -54,26 +54,26 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT *DY1, FLOAT *dparam){
+ଶୂନ୍ୟ NAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT *DY1, FLOAT *dparam){
 
   FLOAT	dy1 = *DY1;
 
-#else
+#ଅନ୍ୟଥା
 
-void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
+ଶୂନ୍ୟ CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 
 #endif
 
 	FLOAT du, dp1, dp2, dq2, dq1, dh11=ZERO, dh21=ZERO, dh12=ZERO, dh22=ZERO, dflag=-ONE, dtemp;
 
-	if (*dd2 == ZERO || dy1 == ZERO)
+	ଯଦି (*dd2 == ZERO || dy1 == ZERO)
 	{
 		dflag = -TWO;
 		dparam[0] = dflag;
-		return;
+		ଫେରନ୍ତୁ;
 	}
 		
-	if(*dd1 < ZERO)
+	ଯଦି(*dd1 < ZERO)
 	{
 		dflag = -ONE;
 		dh11  = ZERO;
@@ -85,7 +85,7 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 		*dd2  = ZERO;
 		*dx1  = ZERO;
 	}
-	else if ((*dd1 == ZERO || *dx1 == ZERO) && *dd2 > ZERO)
+	ଅନ୍ୟଥା ଯଦି ((*dd1 == ZERO || *dx1 == ZERO) && *dd2 > ZERO)
 	{
 		dflag = ONE;
 		dh12 = 1;
@@ -95,13 +95,13 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 		*dd1 = *dd2;
 		*dd2 = dtemp;
 	} 
-	else
+	ଅନ୍ୟଥା
 	{
 		dp2 = *dd2 * dy1;
 		dp1 = *dd1 * *dx1;
 		dq2 =  dp2 * dy1;
 		dq1 =  dp1 * *dx1;
-		if(ABS(dq1) > ABS(dq2))
+		ଯଦି(ABS(dq1) > ABS(dq2))
 		{
 			dh11  =  ONE;
 			dh22  =  ONE;
@@ -109,7 +109,7 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 			dh12 =    dp2 /  dp1;
 
 			du   = ONE - dh12 * dh21;
-			if(du <= ZERO)
+			ଯଦି(du <= ZERO)
 			{
 				/* This can only happen through rounding: the
 				   branch was chosen on ABS(dq1) > ABS(dq2),
@@ -127,7 +127,7 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 				*dd2  = ZERO;
 				*dx1  = ZERO;
 			}
-			else
+			ଅନ୍ୟଥା
 			{
 			dflag = ZERO;
 			*dd1  = *dd1 / du;
@@ -135,9 +135,9 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 			*dx1  = *dx1 * du;
 			}
 		}
-		else
+		ଅନ୍ୟଥା
 		{
-			if(dq2 < ZERO)
+			ଯଦି(dq2 < ZERO)
 			{
 				dflag = -ONE;
 
@@ -150,7 +150,7 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 				*dd2  = ZERO;
 				*dx1  = ZERO;
 			}
-			else
+			ଅନ୍ୟଥା
 			{
 				dflag =  ONE;
 				dh21  = -ONE;
@@ -168,7 +168,7 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 		}
 
 
-		while ( *dd1 <= RGAMSQ && *dd1 != ZERO)
+		ଯେତେବେଳେ ( *dd1 <= RGAMSQ && *dd1 != ZERO)
 		{
 			dflag = -ONE;
 			*dd1  = *dd1 * (GAM * GAM);
@@ -176,7 +176,7 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 			dh11  = dh11 / GAM;
 			dh12  = dh12 / GAM;
 		}
-		while (ABS(*dd1) > GAMSQ) {
+		ଯେତେବେଳେ (ABS(*dd1) > GAMSQ) {
 			dflag = -ONE;
 			*dd1  = *dd1 / (GAM * GAM);
 			*dx1  = *dx1 * GAM;
@@ -184,13 +184,13 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 			dh12  = dh12 * GAM;
 		}
 
-		while (ABS(*dd2) <= RGAMSQ && *dd2 != ZERO) {
+		ଯେତେବେଳେ (ABS(*dd2) <= RGAMSQ && *dd2 != ZERO) {
 			dflag = -ONE;
 			*dd2  = *dd2 * (GAM * GAM);
 			dh21  = dh21 / GAM;
 			dh22  = dh22 / GAM;
 		}
-		while (ABS(*dd2) > GAMSQ) {
+		ଯେତେବେଳେ (ABS(*dd2) > GAMSQ) {
 			dflag = -ONE;
 			*dd2  = *dd2 / (GAM * GAM);
 			dh21  = dh21 * GAM;
@@ -199,21 +199,21 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 
 	}
 
-	if(dflag < ZERO)
+	ଯଦି(dflag < ZERO)
 	{
 		dparam[1] = dh11;
 		dparam[2] = dh21;
 		dparam[3] = dh12;
 		dparam[4] = dh22;
 	}
-	else
+	ଅନ୍ୟଥା
 	{
-		if(dflag == ZERO)
+		ଯଦି(dflag == ZERO)
 		{
 			dparam[2] = dh21;
 			dparam[3] = dh12;
 		}
-		else
+		ଅନ୍ୟଥା
 		{
 			dparam[1] = dh11;
 			dparam[4] = dh22;
@@ -222,7 +222,7 @@ void CNAME(FLOAT *dd1, FLOAT *dd2, FLOAT *dx1, FLOAT dy1, FLOAT *dparam){
 
 
 	dparam[0] = dflag;
-	return;
+	ଫେରନ୍ତୁ;
 }
 
 

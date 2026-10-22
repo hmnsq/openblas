@@ -36,11 +36,11 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ <ctype.h>
+#ଅନ୍ତର୍ଭାଵ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ଅନ୍ତର୍ଭାଵ "functable.h"
 #endif
 
 /*
@@ -53,39 +53,39 @@
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XSBMV "
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
 #define ERROR_NAME "ZSBMV "
-#else
+#ଅନ୍ୟଥା
 #define ERROR_NAME "CSBMV "
 #endif
 
-static  int (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+ସ୍ଥିର  ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*sbmv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, ଶୂନ୍ୟ *) = {
 #ifdef XDOUBLE
   xsbmv_U, xsbmv_L,
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
   zsbmv_U, zsbmv_L,
-#else
+#ଅନ୍ୟଥା
   csbmv_U, csbmv_L,
 #endif
 };
 
 #ifdef SMPTEST
-static  int (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+ସ୍ଥିର  ପୂର୍ଣ୍ଣସଂଖ୍ୟା (*sbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ପୂର୍ଣ୍ଣସଂଖ୍ୟା) = {
 #ifdef XDOUBLE
   xsbmv_thread_U, xsbmv_thread_L,
-#elif defined(DOUBLE)
+#ନଚେତଯଦି defined(DOUBLE)
   zsbmv_thread_U, zsbmv_thread_L,
-#else
+#ଅନ୍ୟଥା
   csbmv_thread_U, csbmv_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
+ଶୂନ୍ୟ NAME(ଅକ୍ଷର *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
             FLOAT  *b, blasint *INCX, FLOAT *BETA, FLOAT *c, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  ଅକ୍ଷର uplo_arg = *UPLO;
   blasint n	= *N;
   blasint k	= *K;
   FLOAT alpha_r	= ALPHA[0];
@@ -97,10 +97,10 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା uplo;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -108,53 +108,53 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ଯଦି (uplo_arg  == 'U') uplo  = 0;
+  ଯଦି (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info = 11;
-  if (incx == 0)          info =  8;
-  if (lda  < k + 1)       info =  6;
-  if (k < 0)              info =  3;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ଯଦି (incy == 0)          info = 11;
+  ଯଦି (incx == 0)          info =  8;
+  ଯଦି (lda  < k + 1)       info =  6;
+  ଯଦି (k < 0)              info =  3;
+  ଯଦି (n < 0)              info =  2;
+  ଯଦି (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ଯଦି (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
-  if (n == 0) return;
+  ଯଦି (n == 0) ଫେରନ୍ତୁ;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, blasabs(incy), NULL, 0, NULL, 0);
+  ଯଦି ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, blasabs(incy), ଖାଲି, 0, ଖାଲି, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ଯଦି ((alpha_r == ZERO) && (alpha_i == ZERO)) ଫେରନ୍ତୁ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
+  ଯଦି (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
+  ଯଦି (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ଯଦି (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ଆକାର(ERROR_NAME));
+    ଫେରନ୍ତୁ;
   }
 
 #ifdef SMPTEST
-  nthreads = num_cpu_avail(2);
+  nthreads = ଅଙ୍କ_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ଯଦି (nthreads == 1) {
 #endif
 
   (sbmv[uplo])(n, k, alpha_r, alpha_i, a, lda, b, incx, c, incy, buffer);
 
 #ifdef SMPTEST
-  } else {
+  } ଅନ୍ୟଥା {
 
     (sbmv_thread[uplo])(n, k, ALPHA, a, lda, b, incx, c, incy, buffer, nthreads);
 
@@ -167,5 +167,5 @@ void NAME(char *UPLO, blasint *N, blasint *K, FLOAT  *ALPHA, FLOAT *a, blasint *
 
   IDEBUG_END;
 
-  return;
+  ଫେରନ୍ତୁ;
 }
