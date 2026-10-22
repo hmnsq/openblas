@@ -35,7 +35,7 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+void openblas_warning(int verbose, const char * मेनसाहे);
 
 #ifndef COMPLEX
 #ifdef XDOUBLE
@@ -129,7 +129,7 @@ void NAME(char *transa, char *transb,
  	  
            char ta = *transa;
    	   char tb = *transb;	   
-	   blasint count = *matcount;
+	   blasint बिलांग = *matcount;
 	   blasint stridea= *stride_a;
 	   blasint strideb= *stride_b;
 	   blasint stridec= *stride_c;
@@ -155,13 +155,13 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
 	   IFLOAT * a, blasint lda, blasint stridea,
 	   IFLOAT * b, blasint ldb, blasint strideb,
 	   FLOAT beta,
-	   FLOAT * c, blasint ldc, blasint stridec, blasint count) {
+	   FLOAT * c, blasint ldc, blasint stridec, blasint बिलांग) {
 #else
 	   void * valpha,
 	   void * va, blasint lda, blasint stridea,
 	   void * vb, blasint ldb, blasint strideb,
 	   void * vbeta,
-	   void * vc, blasint ldc, blasint stridec, blasint count) {
+	   void * vc, blasint ldc, blasint stridec, blasint बिलांग) {
 
   FLOAT * alpha=(FLOAT *)valpha;
   FLOAT * beta=(FLOAT *)vbeta;
@@ -173,7 +173,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
   BLASLONG group_m, group_n, group_k;
   BLASLONG group_lda, group_ldb, group_ldc;
 
-  blas_arg_t * args_array=NULL;
+  blas_arg_t * मगा_कातविरान_array=NULL;
 
   int mode=0, group_mode=0;
 
@@ -192,11 +192,11 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
   double MNK;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
-  args_array=(blas_arg_t *)malloc(count * sizeof(blas_arg_t));
+  मगा_कातविरान_array=(blas_arg_t *)malloc(बिलांग * sizeof(blas_arg_t));
   
-  if(args_array == NULL){
+  if(मगा_कातविरान_array == NULL){
     openblas_warning(0, "memory alloc failed!\n");
     return;
   }
@@ -221,7 +221,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
 #endif
 #endif
   
-  for(i=0; i<count; i++) {
+  for(i=0; i<बिलांग; i++) {
 
     group_m = group_n = group_k = 0;
     group_lda = group_ldb = group_ldc = 0;
@@ -348,12 +348,12 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
 
     if (info >= 0) {
       BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-      free(args_array);
+      free(मगा_कातविरान_array);
       return;
     }
 
     /* Every member shares M and N: an empty member means an empty batch. */
-    if (group_m == 0 || group_n == 0) { free(args_array); return; }
+    if (group_m == 0 || group_n == 0) { free(मगा_कातविरान_array); return; }
 
     group_mode=mode;
 
@@ -400,46 +400,46 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
 #endif    
 
     
-      args_array[i].m=group_m;
-      args_array[i].n=group_n;
-      args_array[i].k=group_k;
-      args_array[i].lda=group_lda;
-      args_array[i].ldb=group_ldb;
-      args_array[i].ldc=group_ldc;
+      मगा_कातविरान_array[i].m=group_m;
+      मगा_कातविरान_array[i].n=group_n;
+      मगा_कातविरान_array[i].k=group_k;
+      मगा_कातविरान_array[i].lda=group_lda;
+      मगा_कातविरान_array[i].ldb=group_ldb;
+      मगा_कातविरान_array[i].ldc=group_ldc;
 #ifdef COMPLEX
-      args_array[i].alpha=alpha;
-      args_array[i].beta=beta;
+      मगा_कातविरान_array[i].alpha=alpha;
+      मगा_कातविरान_array[i].beta=beta;
 #else
-      args_array[i].alpha=&alpha;
-      args_array[i].beta=&beta;
+      मगा_कातविरान_array[i].alpha=&alpha;
+      मगा_कातविरान_array[i].beta=&beta;
 #endif
 
 #if defined(CBLAS)
       if (order == CblasColMajor) {      
-	args_array[i].a=&(a[i*stridea]);
-	args_array[i].b=&(b[i*strideb]);
+	मगा_कातविरान_array[i].a=&(a[i*stridea]);
+	मगा_कातविरान_array[i].b=&(b[i*strideb]);
       }else if(order == CblasRowMajor){
-	args_array[i].a=&(b[i*strideb]);
-	args_array[i].b=&(a[i*stridea]);
+	मगा_कातविरान_array[i].a=&(b[i*strideb]);
+	मगा_कातविरान_array[i].b=&(a[i*stridea]);
       }
 #else
-	args_array[i].a=&(a[i*stridea]);
-	args_array[i].b=&(b[i*strideb]);
+	मगा_कातविरान_array[i].a=&(a[i*stridea]);
+	मगा_कातविरान_array[i].b=&(b[i*strideb]);
 #endif
       
-      args_array[i].c= &c[i*stridec];
+      मगा_कातविरान_array[i].c= &c[i*stridec];
       
-      args_array[i].routine_mode=group_mode;
-      args_array[i].routine=group_routine;
+      मगा_कातविरान_array[i].routine_mode=group_mode;
+      मगा_कातविरान_array[i].routine=group_routine;
 #ifdef SMALL_MATRIX_OPT
       if (!group_routine)
-        args_array[i].routine=group_small_matrix_opt_routine;
+        मगा_कातविरान_array[i].routine=group_small_matrix_opt_routine;
 #endif      
   }
 
-  if(count>0) {
-    GEMM_BATCH_THREAD(args_array,count);
+  if(बिलांग>0) {
+    GEMM_BATCH_THREAD(मगा_कातविरान_array,बिलांग);
   }
 
-  free(args_array);
+  free(मगा_कातविरान_array);
 }

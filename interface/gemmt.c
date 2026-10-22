@@ -106,7 +106,7 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	FLOAT alpha, beta;
 #endif
 
-	PRINT_DEBUG_NAME;
+	इलिम्बाग_DEBUG_NAME;
 
 	m = *M;
 	k = *K;
@@ -225,7 +225,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	blasint lda, ldb;
 	FLOAT *a, *b;
 
-	PRINT_DEBUG_CNAME;
+	इलिम्बाग_DEBUG_CNAME;
 
 	uplo = -1;
 	transa = -1;
@@ -379,7 +379,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #define GEMMT_TABLE_INDEX ((uplo << 4) | (transb << 2) | transa)
 #endif
 
-	blas_arg_t args;
+	blas_arg_t मगा_कातविरान;
 	FLOAT *buffer, *sa, *sb;
 
 #ifdef SMP
@@ -429,29 +429,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	FUNCTION_PROFILE_START();
 
-	args.m = m;
-	args.n = m;
-	args.k = k;
+	मगा_कातविरान.m = m;
+	मगा_कातविरान.n = m;
+	मगा_कातविरान.k = k;
 
-	args.a = (void *)a;
-	args.b = (void *)b;
-	args.c = (void *)c;
+	मगा_कातविरान.a = (void *)a;
+	मगा_कातविरान.b = (void *)b;
+	मगा_कातविरान.c = (void *)c;
 
-	args.lda = lda;
-	args.ldb = ldb;
-	args.ldc = ldc;
+	मगा_कातविरान.lda = lda;
+	मगा_कातविरान.ldb = ldb;
+	मगा_कातविरान.ldc = ldc;
 
 #if defined(COMPLEX)
-	args.alpha = (void *)alpha;
-	args.beta  = (void *)beta;
+	मगा_कातविरान.alpha = (void *)alpha;
+	मगा_कातविरान.beta  = (void *)beta;
 #else
-	args.alpha = (void *)&alpha;
-	args.beta  = (void *)&beta;
+	मगा_कातविरान.alpha = (void *)&alpha;
+	मगा_कातविरान.beta  = (void *)&beta;
 #endif
 
 #ifdef SMP
-	args.common   = NULL;
-	args.nthreads = 1;
+	मगा_कातविरान.common   = NULL;
+	मगा_कातविरान.nthreads = 1;
 #endif
 
 	buffer = (FLOAT *)blas_memory_alloc(0);
@@ -467,15 +467,15 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #ifdef SMP
 	MMK = (double)(m + 1) * (double)m * (double)k;
 	if (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
-		args.nthreads = 1;
+		मगा_कातविरान.nthreads = 1;
 	} else {
-		args.nthreads = num_cpu_avail(3);
+		मगा_कातविरान.nthreads = नुमेरो_cpu_avail(3);
 	}
 
-	if (args.nthreads == 1) {
+	if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-		(gemmt[GEMMT_TABLE_INDEX])(&args, NULL, NULL, sa, sb, 0);
+		(gemmt[GEMMT_TABLE_INDEX])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
 	} else {
@@ -485,14 +485,14 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		   and writes a disjoint set of columns of C. */
 		mode |= (uplo << BLAS_UPLO_SHIFT);
 
-		syrk_thread(mode, &args, NULL, NULL, gemmt[GEMMT_TABLE_INDEX], sa, sb, args.nthreads);
+		syrk_thread(mode, &मगा_कातविरान, NULL, NULL, gemmt[GEMMT_TABLE_INDEX], sa, sb, मगा_कातविरान.nthreads);
 	}
 #endif
 
 	blas_memory_free(buffer);
 
-	FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.k + args.k * args.n + args.m * args.n / 2,
-			     args.m * args.n * args.k);
+	FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, मगा_कातविरान.m * मगा_कातविरान.k + मगा_कातविरान.k * मगा_कातविरान.n + मगा_कातविरान.m * मगा_कातविरान.n / 2,
+			     मगा_कातविरान.m * मगा_कातविरान.n * मगा_कातविरान.k);
 
 	IDEBUG_END;
 

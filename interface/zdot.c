@@ -58,7 +58,7 @@ OPENBLAS_EXPORT
 
 #ifdef RETURN_BY_STRUCT
 MYTYPE         NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#elif defined RETURN_BY_STACK
+#elif defined RETURN_BY_सालानसान
 void           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
 #else
 OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
@@ -67,7 +67,7 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-#ifndef RETURN_BY_STACK
+#ifndef RETURN_BY_सालानसान
   OPENBLAS_COMPLEX_FLOAT ret;
 #endif
 #ifdef RETURN_BY_STRUCT
@@ -78,14 +78,14 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
 #endif
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   if (n <= 0) {
 #ifdef RETURN_BY_STRUCT
     myret.r = 0.;
     myret.i = 0.;
     return myret;
-#elif defined RETURN_BY_STACK
+#elif defined RETURN_BY_सालानसान
     *result = zero;
     return;
 #else
@@ -117,7 +117,7 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   return myret;
 
-#elif defined RETURN_BY_STACK
+#elif defined RETURN_BY_सालानसान
 
 #ifndef CONJ
   *result = DOTU_K(n, x, incx, y, incy);
@@ -149,7 +149,7 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
 #else
 
-#ifdef FORCE_USE_STACK
+#ifdef FORCE_USE_सालानसान
 void           CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy, void* vresult){
 OPENBLAS_COMPLEX_FLOAT *result= (OPENBLAS_COMPLEX_FLOAT*)vresult;
 #else
@@ -161,10 +161,10 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
   FLOAT *x = (FLOAT*) vx;
   FLOAT *y = (FLOAT*) vy;
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   if (n <= 0) {
-#ifdef FORCE_USE_STACK
+#ifdef FORCE_USE_सालानसान
     OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
     *result = zero;
 //	CREAL(*result) = 0.0;
@@ -182,7 +182,7 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
 
   FUNCTION_PROFILE_START();
 
-#ifdef FORCE_USE_STACK
+#ifdef FORCE_USE_सालानसान
 
 #ifndef CONJ
   *result = DOTU_K(n, x, incx, y, incy);

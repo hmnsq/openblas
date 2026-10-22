@@ -58,7 +58,7 @@ void CNAME(blasint n, void *VX, blasint incx, void *VY, blasint incy, FLOAT c, F
     FLOAT *y = (FLOAT*) VY;
 #endif /* CBLAS */
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   if (n <= 0) return;
 

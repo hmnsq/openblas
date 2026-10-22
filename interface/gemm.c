@@ -228,7 +228,7 @@ static inline int get_gemm_optimal_nthreads_neoversev2(double MNK, int ncpu) {
 #endif
 
 static inline int get_gemm_optimal_nthreads(double MNK) {
-  int ncpu = num_cpu_avail(3);
+  int ncpu = नुमेरो_cpu_avail(3);
 #if defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
   return get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
 #elif defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
@@ -267,7 +267,7 @@ void NAME(char *TRANSA, char *TRANSB,
 	  FLOAT *beta,
 	  FLOAT *c, blasint *ldC){
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   int transa, transb, nrowa, nrowb;
   blasint info;
@@ -303,22 +303,22 @@ void NAME(char *TRANSA, char *TRANSB,
   int nodes;
 #endif
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.m = *M;
-  args.n = *N;
-  args.k = *K;
+  मगा_कातविरान.m = *M;
+  मगा_कातविरान.n = *N;
+  मगा_कातविरान.k = *K;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
-  args.c = (void *)c;
+  मगा_कातविरान.a = (void *)a;
+  मगा_कातविरान.b = (void *)b;
+  मगा_कातविरान.c = (void *)c;
 
-  args.lda = *ldA;
-  args.ldb = *ldB;
-  args.ldc = *ldC;
+  मगा_कातविरान.lda = *ldA;
+  मगा_कातविरान.ldb = *ldB;
+  मगा_कातविरान.ldc = *ldC;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  मगा_कातविरान.alpha = (void *)alpha;
+  मगा_कातविरान.beta  = (void *)beta;
   
   transA = *TRANSA;
   transB = *TRANSB;
@@ -348,19 +348,19 @@ void NAME(char *TRANSA, char *TRANSB,
   if (transB == 'R') transb = 2;
   if (transB == 'C') transb = 3;
 #endif
-  nrowa = args.m;
-  if (transa & 1) nrowa = args.k;
-  nrowb = args.k;
-  if (transb & 1) nrowb = args.n;
+  nrowa = मगा_कातविरान.m;
+  if (transa & 1) nrowa = मगा_कातविरान.k;
+  nrowb = मगा_कातविरान.k;
+  if (transb & 1) nrowb = मगा_कातविरान.n;
 
   info = 0;
 
-  if (args.ldc < args.m) info = 13;
-  if (args.ldb < nrowb)  info = 10;
-  if (args.lda < nrowa)  info =  8;
-  if (args.k < 0)        info =  5;
-  if (args.n < 0)        info =  4;
-  if (args.m < 0)        info =  3;
+  if (मगा_कातविरान.ldc < मगा_कातविरान.m) info = 13;
+  if (मगा_कातविरान.ldb < nrowb)  info = 10;
+  if (मगा_कातविरान.lda < nrowa)  info =  8;
+  if (मगा_कातविरान.k < 0)        info =  5;
+  if (मगा_कातविरान.n < 0)        info =  4;
+  if (मगा_कातविरान.m < 0)        info =  3;
   if (transb < 0)        info =  2;
   if (transa < 0)        info =  1;
 
@@ -392,7 +392,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
   FLOAT *c = (FLOAT*) vc;
 #endif
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
   int transa, transb;
   blasint nrowa, nrowb, info;
 
@@ -426,14 +426,14 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
   int nodes;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
 #ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
+  मगा_कातविरान.alpha = (void *)&alpha;
+  मगा_कातविरान.beta  = (void *)&beta;
 #else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  मगा_कातविरान.alpha = (void *)alpha;
+  मगा_कातविरान.beta  = (void *)beta;
 #endif
 
   transa = -1;
@@ -441,17 +441,17 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
   info   =  0;
 
   if (order == CblasColMajor) {
-    args.m = m;
-    args.n = n;
-    args.k = k;
+    मगा_कातविरान.m = m;
+    मगा_कातविरान.n = n;
+    मगा_कातविरान.k = k;
 
-    args.a = (void *)a;
-    args.b = (void *)b;
-    args.c = (void *)c;
+    मगा_कातविरान.a = (void *)a;
+    मगा_कातविरान.b = (void *)b;
+    मगा_कातविरान.c = (void *)c;
 
-    args.lda = lda;
-    args.ldb = ldb;
-    args.ldc = ldc;
+    मगा_कातविरान.lda = lda;
+    मगा_कातविरान.ldb = ldb;
+    मगा_कातविरान.ldc = ldc;
 
     if (TransA == CblasNoTrans)     transa = 0;
     if (TransA == CblasTrans)       transa = 1;
@@ -472,35 +472,35 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
     if (TransB == CblasConjTrans)   transb = 3;
 #endif
 
-    nrowa = args.m;
-    if (transa & 1) nrowa = args.k;
-    nrowb = args.k;
-    if (transb & 1) nrowb = args.n;
+    nrowa = मगा_कातविरान.m;
+    if (transa & 1) nrowa = मगा_कातविरान.k;
+    nrowb = मगा_कातविरान.k;
+    if (transb & 1) nrowb = मगा_कातविरान.n;
 
     info = -1;
 
-    if (args.ldc < args.m) info = 13;
-    if (args.ldb < nrowb)  info = 10;
-    if (args.lda < nrowa)  info =  8;
-    if (args.k < 0)        info =  5;
-    if (args.n < 0)        info =  4;
-    if (args.m < 0)        info =  3;
+    if (मगा_कातविरान.ldc < मगा_कातविरान.m) info = 13;
+    if (मगा_कातविरान.ldb < nrowb)  info = 10;
+    if (मगा_कातविरान.lda < nrowa)  info =  8;
+    if (मगा_कातविरान.k < 0)        info =  5;
+    if (मगा_कातविरान.n < 0)        info =  4;
+    if (मगा_कातविरान.m < 0)        info =  3;
     if (transb < 0)        info =  2;
     if (transa < 0)        info =  1;
   }
 
   if (order == CblasRowMajor) {
-    args.m = n;
-    args.n = m;
-    args.k = k;
+    मगा_कातविरान.m = n;
+    मगा_कातविरान.n = m;
+    मगा_कातविरान.k = k;
 
-    args.a = (void *)b;
-    args.b = (void *)a;
-    args.c = (void *)c;
+    मगा_कातविरान.a = (void *)b;
+    मगा_कातविरान.b = (void *)a;
+    मगा_कातविरान.c = (void *)c;
 
-    args.lda = ldb;
-    args.ldb = lda;
-    args.ldc = ldc;
+    मगा_कातविरान.lda = ldb;
+    मगा_कातविरान.ldb = lda;
+    मगा_कातविरान.ldc = ldc;
 
     if (TransB == CblasNoTrans)     transa = 0;
     if (TransB == CblasTrans)       transa = 1;
@@ -521,19 +521,19 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
     if (TransA == CblasConjTrans)   transb = 3;
 #endif
 
-    nrowa = args.m;
-    if (transa & 1) nrowa = args.k;
-    nrowb = args.k;
-    if (transb & 1) nrowb = args.n;
+    nrowa = मगा_कातविरान.m;
+    if (transa & 1) nrowa = मगा_कातविरान.k;
+    nrowb = मगा_कातविरान.k;
+    if (transb & 1) nrowb = मगा_कातविरान.n;
 
     info = -1;
 
-    if (args.ldc < args.m) info = 13;
-    if (args.ldb < nrowb)  info = 10;
-    if (args.lda < nrowa)  info =  8;
-    if (args.k < 0)        info =  5;
-    if (args.n < 0)        info =  4;
-    if (args.m < 0)        info =  3;
+    if (मगा_कातविरान.ldc < मगा_कातविरान.m) info = 13;
+    if (मगा_कातविरान.ldb < nrowb)  info = 10;
+    if (मगा_कातविरान.lda < nrowa)  info =  8;
+    if (मगा_कातविरान.k < 0)        info =  5;
+    if (मगा_कातविरान.n < 0)        info =  4;
+    if (मगा_कातविरान.m < 0)        info =  3;
     if (transb < 0)        info =  2;
     if (transa < 0)        info =  1;
 
@@ -545,7 +545,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
   }
 
 
-  if ((args.m == 0) || (args.n == 0)) return;
+  if ((मगा_कातविरान.m == 0) || (मगा_कातविरान.n == 0)) return;
 #if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
 #if defined(ARCH_x86) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
 #if defined(DYNAMIC_ARCH)
@@ -604,12 +604,12 @@ char* TA,*TB;
 	TA= "T";
       if (transb == 3) 
 	TB= "T";
-FLOAT* al=(FLOAT*)args.alpha;
-FLOAT* be=(FLOAT*)args.beta;
+FLOAT* al=(FLOAT*)मगा_कातविरान.alpha;
+FLOAT* be=(FLOAT*)मगा_कातविरान.beta;
 #ifndef DOUBLE
-        SME_SGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al, args.a, args.lda, args.b, args.ldb, be, args.c, args.ldc);
+        SME_SGEMM_KERNEL(TA,TB, मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, al, मगा_कातविरान.a, मगा_कातविरान.lda, मगा_कातविरान.b, मगा_कातविरान.ldb, be, मगा_कातविरान.c, मगा_कातविरान.ldc);
 #else
-        SME_DGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al, args.a, args.lda, args.b, args.ldb, be, args.c, args.ldc);
+        SME_DGEMM_KERNEL(TA,TB, मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, al, मगा_कातविरान.a, मगा_कातविरान.lda, मगा_कातविरान.b, मगा_कातविरान.ldb, be, मगा_कातविरान.c, मगा_कातविरान.ldc);
 #endif
 #else
       if (transa == 2) 
@@ -620,16 +620,16 @@ FLOAT* be=(FLOAT*)args.beta;
 	TA= "C";
       if (transb == 3) 
 	TB= "C";
-FLOAT* al=(FLOAT*)args.alpha;
-FLOAT* be=(FLOAT*)args.beta;
+FLOAT* al=(FLOAT*)मगा_कातविरान.alpha;
+FLOAT* be=(FLOAT*)मगा_कातविरान.beta;
 #ifndef DOUBLE
 float _Complex c_al={al[0],al[1]};
 float _Complex c_be={be[0],be[1]};
-        SME_CGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al[0],al[1], args.a, args.lda, args.b, args.ldb, be[0],be[1], args.c, args.ldc);
+        SME_CGEMM_KERNEL(TA,TB, मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, al[0],al[1], मगा_कातविरान.a, मगा_कातविरान.lda, मगा_कातविरान.b, मगा_कातविरान.ldb, be[0],be[1], मगा_कातविरान.c, मगा_कातविरान.ldc);
 #else
 double _Complex c_al={al[0],al[1]};
 double _Complex c_be={be[0],be[1]};
-        SME_ZGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al[0],al[1], args.a, args.lda, args.b, args.ldb, be[0],be[1], args.c, args.ldc);
+        SME_ZGEMM_KERNEL(TA,TB, मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, al[0],al[1], मगा_कातविरान.a, मगा_कातविरान.lda, मगा_कातविरान.b, मगा_कातविरान.ldb, be[0],be[1], मगा_कातविरान.c, मगा_कातविरान.ldc);
 #endif
 #endif
 	return;
@@ -652,11 +652,11 @@ double _Complex c_be={be[0],be[1]};
 #endif
 #endif  // defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
 
-  if ((args.m == 0) || (args.n == 0)) return;
+  if ((मगा_कातविरान.m == 0) || (मगा_कातविरान.n == 0)) return;
 
 #if 0
   fprintf(stderr, "m = %4d  n = %d  k = %d  lda = %4d  ldb = %4d  ldc = %4d\n",
-	 args.m, args.n, args.k, args.lda, args.ldb, args.ldc);
+	 मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, मगा_कातविरान.lda, मगा_कातविरान.ldb, मगा_कातविरान.ldc);
 #endif
 
 #if (!defined(BFLOAT16) || (!defined(BGEMM) && defined(SBGEMM_GEMV_FORWARD)) || (defined(BGEMM) && defined(BGEMM_GEMV_FORWARD)))
@@ -688,38 +688,38 @@ double _Complex c_be={be[0],be[1]};
   // Even indices run on the GEMV_N kernels, odd indices on the GEMV_T kernels.
   static const char gemv_trans[] = "NTRCOUSD";
   // Check if we can convert GEMM -> GEMV
-  if (args.k != 0) {
-    if (args.n == 1) {
+  if (मगा_कातविरान.k != 0) {
+    if (मगा_कातविरान.n == 1) {
       blasint inc_x = 1;
       blasint inc_y = 1;
       // These were passed in as blasint, but the struct translates them to blaslong
-      blasint m = args.m;
-      blasint n = args.k;
-      blasint lda = args.lda;
+      blasint m = मगा_कातविरान.m;
+      blasint n = मगा_कातविरान.k;
+      blasint lda = मगा_कातविरान.lda;
       // C = alpha * op(A) * op(B) + beta * C with op(B) a k x 1 vector: GEMV on A,
       // where a conjugated op(B) selects the x-conjugating modes.
       int trans_idx = transa | ((transb & 2) << 1);
       char NT = gemv_trans[trans_idx];
       if (transa & 1) {
-        m = args.k;
-        n = args.m;
+        m = मगा_कातविरान.k;
+        n = मगा_कातविरान.m;
       }
       if (transb & 1) {
-        inc_x = args.ldb;
+        inc_x = मगा_कातविरान.ldb;
       }
       bool is_efficient_gemv = have_tuned_gemv || (!(trans_idx & 1) || inc_x == 1);
       if (is_efficient_gemv) {
-        GEMV(&NT, &m, &n, args.alpha, args.a, &lda, args.b, &inc_x, args.beta, args.c, &inc_y);
+        GEMV(&NT, &m, &n, मगा_कातविरान.alpha, मगा_कातविरान.a, &lda, मगा_कातविरान.b, &inc_x, मगा_कातविरान.beta, मगा_कातविरान.c, &inc_y);
         return;
       }
     }
-    if (args.m == 1) {
-      blasint inc_x = args.lda;
-      blasint inc_y = args.ldc;
+    if (मगा_कातविरान.m == 1) {
+      blasint inc_x = मगा_कातविरान.lda;
+      blasint inc_y = मगा_कातविरान.ldc;
       // These were passed in as blasint, but the struct translates them to blaslong
-      blasint m = args.k;
-      blasint n = args.n;
-      blasint ldb = args.ldb;
+      blasint m = मगा_कातविरान.k;
+      blasint n = मगा_कातविरान.n;
+      blasint ldb = मगा_कातविरान.ldb;
       // C^T = op(B)^T * op(A)^T with op(A) a 1 x k vector: GEMV on B, where the
       // transposition swaps N<->T and R<->C, and a conjugated op(A) selects the
       // x-conjugating modes.
@@ -729,12 +729,12 @@ double _Complex c_be={be[0],be[1]};
         inc_x = 1;
       }
       if (transb & 1) {
-        m = args.n;
-        n = args.k;
+        m = मगा_कातविरान.n;
+        n = मगा_कातविरान.k;
       }
       bool is_efficient_gemv = have_tuned_gemv || ((!(trans_idx & 1) && inc_y == 1) || ((trans_idx & 1) && inc_x == 1));
       if (is_efficient_gemv) {
-        GEMV(&NT, &m, &n, args.alpha, args.b, &ldb, args.a, &inc_x, args.beta, args.c, &inc_y);
+        GEMV(&NT, &m, &n, मगा_कातविरान.alpha, मगा_कातविरान.b, &ldb, मगा_कातविरान.a, &inc_x, मगा_कातविरान.beta, मगा_कातविरान.c, &inc_y);
         return;
       }
     }
@@ -746,23 +746,23 @@ double _Complex c_be={be[0],be[1]};
   FUNCTION_PROFILE_START();
 
 #if USE_SMALL_MATRIX_OPT
-if (*(FLOAT*)args.alpha != 0.0) {
+if (*(FLOAT*)मगा_कातविरान.alpha != 0.0) {
 #if !defined(COMPLEX)
-  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, *(FLOAT *)(args.alpha), *(FLOAT *)(args.beta))){
+  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, *(FLOAT *)(मगा_कातविरान.alpha), *(FLOAT *)(मगा_कातविरान.beta))){
 
-	  if(*(FLOAT *)(args.beta) == 0.0){
-		(GEMM_SMALL_KERNEL_B0((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, *(FLOAT *)(args.alpha), args.b, args.ldb, args.c, args.ldc);
+	  if(*(FLOAT *)(मगा_कातविरान.beta) == 0.0){
+		(GEMM_SMALL_KERNEL_B0((transb << 2) | transa))(मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, मगा_कातविरान.a, मगा_कातविरान.lda, *(FLOAT *)(मगा_कातविरान.alpha), मगा_कातविरान.b, मगा_कातविरान.ldb, मगा_कातविरान.c, मगा_कातविरान.ldc);
 	  }else{
-		(GEMM_SMALL_KERNEL((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, *(FLOAT *)(args.alpha), args.b, args.ldb, *(FLOAT *)(args.beta), args.c, args.ldc);
+		(GEMM_SMALL_KERNEL((transb << 2) | transa))(मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, मगा_कातविरान.a, मगा_कातविरान.lda, *(FLOAT *)(मगा_कातविरान.alpha), मगा_कातविरान.b, मगा_कातविरान.ldb, *(FLOAT *)(मगा_कातविरान.beta), मगा_कातविरान.c, मगा_कातविरान.ldc);
 	  }
 	  return;
   }
 #else
-  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, alpha[0], alpha[1], beta[0], beta[1])){
+  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, alpha[0], alpha[1], beta[0], beta[1])){
 	  if(beta[0] == 0.0 && beta[1] == 0.0){
-		(ZGEMM_SMALL_KERNEL_B0((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, alpha[0], alpha[1], args.b, args.ldb, args.c, args.ldc);
+		(ZGEMM_SMALL_KERNEL_B0((transb << 2) | transa))(मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, मगा_कातविरान.a, मगा_कातविरान.lda, alpha[0], alpha[1], मगा_कातविरान.b, मगा_कातविरान.ldb, मगा_कातविरान.c, मगा_कातविरान.ldc);
 	  }else{
-		(ZGEMM_SMALL_KERNEL((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, alpha[0], alpha[1], args.b, args.ldb, beta[0], beta[1], args.c, args.ldc);
+		(ZGEMM_SMALL_KERNEL((transb << 2) | transa))(मगा_कातविरान.m, मगा_कातविरान.n, मगा_कातविरान.k, मगा_कातविरान.a, मगा_कातविरान.lda, alpha[0], alpha[1], मगा_कातविरान.b, मगा_कातविरान.ldb, beta[0], beta[1], मगा_कातविरान.c, मगा_कातविरान.ldc);
 	  }
 	  return;
   }
@@ -786,15 +786,15 @@ if (*(FLOAT*)args.alpha != 0.0) {
   mode |= (transb << BLAS_TRANSB_SHIFT);
 #endif
 
-  MNK = (double) args.m * (double) args.n * (double) args.k;
-  args.nthreads = get_gemm_optimal_nthreads(MNK);
+  MNK = (double) मगा_कातविरान.m * (double) मगा_कातविरान.n * (double) मगा_कातविरान.k;
+  मगा_कातविरान.nthreads = get_gemm_optimal_nthreads(MNK);
 
-  args.common = NULL;
+  मगा_कातविरान.common = NULL;
 
- if (args.nthreads == 1) {
+ if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-    (gemm[(transb << 2) | transa])(&args, NULL, NULL, sa, sb, 0);
+    (gemm[(transb << 2) | transa])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
 
@@ -803,22 +803,22 @@ if (*(FLOAT*)args.alpha != 0.0) {
 #ifndef USE_SIMPLE_THREADED_LEVEL3
 
 #ifndef NO_AFFINITY
-      nodes = get_num_nodes();
+      nodes = get_नुमेरो_nodes();
 
-      if ((nodes > 1) && get_node_equal()) {
+      if ((nodes > 1) && get_बुहोल_equal()) {
 
-	args.nthreads /= nodes;
+	मगा_कातविरान.nthreads /= nodes;
 
-	gemm_thread_mn(mode, &args, NULL, NULL, gemm[16 | (transb << 2) | transa], sa, sb, nodes);
+	gemm_thread_mn(mode, &मगा_कातविरान, NULL, NULL, gemm[16 | (transb << 2) | transa], sa, sb, nodes);
 
       } else {
 #endif
 
-	(gemm[16 | (transb << 2) | transa])(&args, NULL, NULL, sa, sb, 0);
+	(gemm[16 | (transb << 2) | transa])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #else
 
-	GEMM_THREAD(mode, &args, NULL, NULL, gemm[(transb << 2) | transa], sa, sb, args.nthreads);
+	GEMM_THREAD(mode, &मगा_कातविरान, NULL, NULL, gemm[(transb << 2) | transa], sa, sb, मगा_कातविरान.nthreads);
 
 #endif
 
@@ -836,7 +836,7 @@ if (*(FLOAT*)args.alpha != 0.0) {
 
  blas_memory_free(buffer);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.k + args.k * args.n + args.m * args.n, 2 * args.m * args.n * args.k);
+  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, मगा_कातविरान.m * मगा_कातविरान.k + मगा_कातविरान.k * मगा_कातविरान.n + मगा_कातविरान.m * मगा_कातविरान.n, 2 * मगा_कातविरान.m * मगा_कातविरान.n * मगा_कातविरान.k);
 
   IDEBUG_END;
 

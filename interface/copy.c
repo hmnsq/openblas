@@ -51,7 +51,7 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
 #else
 
@@ -63,7 +63,7 @@ FLOAT *y = (FLOAT*) vy;
 void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
 #endif
 

@@ -68,7 +68,7 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
     char trans_arg = *TRANS;
     char diag_arg = *DIAG;
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   blasint info;
   int uplo, trans, diag;
@@ -78,14 +78,14 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
+  मगा_कातविरान.m    = *N;
+  मगा_कातविरान.n    = *NRHS;
+  मगा_कातविरान.a    = (void *)a;
+  मगा_कातविरान.lda  = *ldA;
+  मगा_कातविरान.b    = (void *)b;
+  मगा_कातविरान.ldb  = *ldB;
 
   info = 0;
 
@@ -106,10 +106,10 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
   if (diag_arg == 'U') diag = 0;
   if (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
+  if (मगा_कातविरान.ldb  < MAX(1, मगा_कातविरान.m)) info = 9;
+  if (मगा_कातविरान.lda  < MAX(1, मगा_कातविरान.m)) info = 7;
+  if (मगा_कातविरान.n    < 0) info = 5;
+  if (मगा_कातविरान.m    < 0) info = 4;
   if (trans     < 0) info = 2;
   if (uplo      < 0) info = 1;
   if (diag      < 0) info = 3;
@@ -120,16 +120,16 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
     return;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  मगा_कातविरान.alpha = NULL;
+  मगा_कातविरान.beta  = NULL;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  if (मगा_कातविरान.m == 0) return;
 
   if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
-      *Info = IAMIN_K(args.m, args.a, args.lda + 1);
+    if (AMIN_K(मगा_कातविरान.m, मगा_कातविरान.a, मगा_कातविरान.lda + 1) == ZERO) {
+      *Info = IAMIN_K(मगा_कातविरान.m, मगा_कातविरान.a, मगा_कातविरान.lda + 1);
       return;
     }
   }
@@ -147,21 +147,21 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
+  मगा_कातविरान.common = NULL;
+  if (मगा_कातविरान.m < 64) {
+    मगा_कातविरान.nthreads = 1;
   } else {
-    args.nthreads = num_cpu_avail(4);
+    मगा_कातविरान.nthreads = नुमेरो_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
   } else {
-    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
   }
 #endif
 
@@ -169,7 +169,7 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, मगा_कातविरान.m * मगा_कातविरान.n, 2 * मगा_कातविरान.m * मगा_कातविरान.m * मगा_कातविरान.n);
 
   IDEBUG_END;
 

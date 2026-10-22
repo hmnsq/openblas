@@ -63,7 +63,7 @@ static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *
 OPENBLAS_EXPORT
 void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
@@ -74,11 +74,11 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  मगा_कातविरान.n    = *N;
+  मगा_कातविरान.a    = (void *)a;
+  मगा_कातविरान.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
@@ -87,8 +87,8 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   if (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
+  if (मगा_कातविरान.lda < MAX(1,मगा_कातविरान.n)) info = 4;
+  if (मगा_कातविरान.n   < 0)             info = 2;
   if (uplo     < 0)             info = 1;
   if (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
@@ -98,7 +98,7 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  if (मगा_कातविरान.n == 0) return;
 
   IDEBUG_START;
 
@@ -112,21 +112,21 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.n < 64) {
-    args.nthreads = 1;
+  मगा_कातविरान.common = NULL;
+  if (मगा_कातविरान.n < 64) {
+    मगा_कातविरान.nthreads = 1;
   } else {
-    args.nthreads = num_cpu_avail(4);
+    मगा_कातविरान.nthreads = नुमेरो_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-    *Info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (lauum_single[uplo])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
   } else {
-    *Info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (lauum_parallel[uplo])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
   }
 #endif
 
@@ -134,9 +134,9 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_END(1, .5 * मगा_कातविरान.n * मगा_कातविरान.n,
+		       मगा_कातविरान.n * (1./3. + मगा_कातविरान.n * ( 1./2. + मगा_कातविरान.n * 1./6.))
+		       +  1./6. * मगा_कातविरान.n * (मगा_कातविरान.n * मगा_कातविरान.n - 1));
 
   IDEBUG_END;
 

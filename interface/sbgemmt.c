@@ -66,7 +66,7 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	FLOAT *cc;
 	FLOAT alpha, beta;
 
-	PRINT_DEBUG_NAME;
+	इलिम्बाग_DEBUG_NAME;
 
 	m = *M;
 	k = *K;
@@ -159,7 +159,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *a, *b;
 	XFLOAT *buffer;
 
-	PRINT_DEBUG_CNAME;
+	इलिम्बाग_DEBUG_CNAME;
 
 	uplo = -1;
 	transa = -1;
@@ -346,14 +346,14 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			सालानसान_ALLOC(buffer_size, IFLOAT, buffer);
 
 #ifdef SMP
 
 			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
 			else
-				nthreads = num_cpu_avail(2);
+				nthreads = नुमेरो_cpu_avail(2);
 
 			if (nthreads == 1) {
 #endif
@@ -379,7 +379,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 			}
 #endif
 
-			STACK_FREE(buffer);
+			सालानसान_FREE(buffer);
 		}
 	} else {
 
@@ -407,14 +407,14 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			सालानसान_ALLOC(buffer_size, IFLOAT, buffer);
 
 #ifdef SMP
 
 			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
 			else
-				nthreads = num_cpu_avail(2);
+				nthreads = नुमेरो_cpu_avail(2);
 
 			if (nthreads == 1) {
 #endif
@@ -439,7 +439,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 			}
 #endif
 
-			STACK_FREE(buffer);
+			सालानसान_FREE(buffer);
 		}
 	}
 

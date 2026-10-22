@@ -103,7 +103,7 @@ void NAME(char *UPLO, char *TRANS,
   char uplo_arg  = *UPLO;
   char trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   FLOAT *buffer;
   FLOAT *sa, *sb;
@@ -136,19 +136,19 @@ void NAME(char *UPLO, char *TRANS,
   int trans;
   int nrowa;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.n = *N;
-  args.k = *K;
+  मगा_कातविरान.n = *N;
+  मगा_कातविरान.k = *K;
 
-  args.a = (void *)a;
-  args.c = (void *)c;
+  मगा_कातविरान.a = (void *)a;
+  मगा_कातविरान.c = (void *)c;
 
-  args.lda = *ldA;
-  args.ldc = *ldC;
+  मगा_कातविरान.lda = *ldA;
+  मगा_कातविरान.ldc = *ldC;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  मगा_कातविरान.alpha = (void *)alpha;
+  मगा_कातविरान.beta  = (void *)beta;
 
   TOUPPER(uplo_arg);
   TOUPPER(trans_arg);
@@ -175,15 +175,15 @@ void NAME(char *UPLO, char *TRANS,
 
 #endif
 
-  nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  nrowa = मगा_कातविरान.n;
+  if (trans & 1) nrowa = मगा_कातविरान.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 10;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
+  if (मगा_कातविरान.ldc < MAX(1,मगा_कातविरान.n)) info = 10;
+  if (मगा_कातविरान.lda < MAX(1,nrowa))  info =  7;
+  if (मगा_कातविरान.k < 0)               info =  4;
+  if (मगा_कातविरान.n < 0)               info =  3;
   if (trans < 0)                info =  2;
   if (uplo  < 0)                info =  1;
 
@@ -226,7 +226,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
   FLOAT* c = (FLOAT*) vc;
 #endif
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
   int uplo, trans;
   blasint info, nrowa;
 
@@ -257,23 +257,23 @@ double NNK;
 #endif
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
-  args.n = n;
-  args.k = k;
+  मगा_कातविरान.n = n;
+  मगा_कातविरान.k = k;
 
-  args.a = (void *)a;
-  args.c = (void *)c;
+  मगा_कातविरान.a = (void *)a;
+  मगा_कातविरान.c = (void *)c;
 
-  args.lda = lda;
-  args.ldc = ldc;
+  मगा_कातविरान.lda = lda;
+  मगा_कातविरान.ldc = ldc;
 
 #if !defined(COMPLEX) || defined(HEMM)
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
+  मगा_कातविरान.alpha = (void *)&alpha;
+  मगा_कातविरान.beta  = (void *)&beta;
 #else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  मगा_कातविरान.alpha = (void *)alpha;
+  मगा_कातविरान.beta  = (void *)beta;
 #endif
 
   trans = -1;
@@ -297,13 +297,13 @@ double NNK;
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = मगा_कातविरान.n;
+    if (trans & 1) nrowa = मगा_कातविरान.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
+    if (मगा_कातविरान.ldc < MAX(1,मगा_कातविरान.n)) info = 10;
+    if (मगा_कातविरान.lda < MAX(1,nrowa))  info =  7;
+    if (मगा_कातविरान.k < 0)               info =  4;
+    if (मगा_कातविरान.n < 0)               info =  3;
     if (trans < 0)                info =  2;
     if (uplo  < 0)                info =  1;
   }
@@ -325,13 +325,13 @@ double NNK;
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = मगा_कातविरान.n;
+    if (trans & 1) nrowa = मगा_कातविरान.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
+    if (मगा_कातविरान.ldc < MAX(1,मगा_कातविरान.n)) info = 10;
+    if (मगा_कातविरान.lda < MAX(1,nrowa))  info =  7;
+    if (मगा_कातविरान.k < 0)               info =  4;
+    if (मगा_कातविरान.n < 0)               info =  3;
     if (trans < 0)                info =  2;
     if (uplo  < 0)                info =  1;
   }
@@ -341,7 +341,7 @@ double NNK;
     return;
   }
 
-  if (args.n == 0) return;
+  if (मगा_कातविरान.n == 0) return;
 
 #ifdef DYNAMIC_ARCH
 extern char* gotoblas_corename(void);
@@ -395,30 +395,30 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   mode |= (uplo  << BLAS_UPLO_SHIFT);
 #endif
 
-  args.common = NULL;
+  मगा_कातविरान.common = NULL;
 
-  NNK = (double)(args.n+1)*(double)args.n*(double)args.k;
+  NNK = (double)(मगा_कातविरान.n+1)*(double)मगा_कातविरान.n*(double)मगा_कातविरान.k;
   if (NNK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
-  args.nthreads = 1;
+  मगा_कातविरान.nthreads = 1;
   } else {
-  args.nthreads = num_cpu_avail(3);
+  मगा_कातविरान.nthreads = नुमेरो_cpu_avail(3);
   }
 
-  if (args.nthreads == 1) {
+  if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-    (syrk[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syrk[(uplo << 1) | trans ])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
   } else {
 
 #ifndef USE_SIMPLE_THREADED_LEVEL3
 
-    (syrk[4 | (uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syrk[4 | (uplo << 1) | trans ])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #else
 
-    syrk_thread(mode, &args, NULL, NULL, syrk[(uplo << 1) | trans ], sa, sb, args.nthreads);
+    syrk_thread(mode, &मगा_कातविरान, NULL, NULL, syrk[(uplo << 1) | trans ], sa, sb, मगा_कातविरान.nthreads);
 
 #endif
 
@@ -427,7 +427,7 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
  blas_memory_free(buffer);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.n * args.k + args.n * args.n / 2, args.n * args.n * args.k);
+  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, मगा_कातविरान.n * मगा_कातविरान.k + मगा_कातविरान.n * मगा_कातविरान.n / 2, मगा_कातविरान.n * मगा_कातविरान.n * मगा_कातविरान.k);
 
   IDEBUG_END;
 

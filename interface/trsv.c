@@ -85,7 +85,7 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   int trans;
   FLOAT *buffer;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   TOUPPER(trans_arg);
@@ -130,7 +130,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   blasint info;
   FLOAT *buffer;
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   unit  = -1;
   uplo  = -1;

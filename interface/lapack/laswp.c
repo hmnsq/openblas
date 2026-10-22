@@ -67,7 +67,7 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   FLOAT dummyalpha[2] = {ZERO, ZERO};
 #endif
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   if (incx == 0 || n <= 0) return;
 
@@ -81,7 +81,7 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   if (n < 64) {
     nthreads = 1;
   } else {
-    nthreads = num_cpu_avail(1);
+    nthreads = नुमेरो_cpu_avail(1);
   }
 
   if (nthreads == 1) {

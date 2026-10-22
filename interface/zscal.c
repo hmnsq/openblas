@@ -78,9 +78,9 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
 #endif
 
 #ifndef CBLAS
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 #else
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 #endif
 
   if (incx <= 0 || n <= 0) return;
@@ -95,7 +95,7 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
   if ( n <= 1048576 )
 	nthreads = 1;
   else
-	nthreads = num_cpu_avail(1);
+	nthreads = नुमेरो_cpu_avail(1);
 
   if (nthreads == 1) {
 #endif

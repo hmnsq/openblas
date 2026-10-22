@@ -52,7 +52,7 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
   BLASLONG incx = *INCX;
   FLOATRET ret;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   if (n <= 0) return 0.;
 
@@ -126,7 +126,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   FLOAT ret;
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   if (n <= 0) return 0.;
 

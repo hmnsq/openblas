@@ -162,7 +162,7 @@ void NAME(char *SIDE, char *UPLO,
   char side_arg  = *SIDE;
   char uplo_arg  = *UPLO;
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   FLOAT *buffer;
   FLOAT *sa, *sb;
@@ -177,10 +177,10 @@ void NAME(char *SIDE, char *UPLO,
   int side;
   int uplo;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  मगा_कातविरान.alpha = (void *)alpha;
+  मगा_कातविरान.beta  = (void *)beta;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -194,39 +194,39 @@ void NAME(char *SIDE, char *UPLO,
   if (uplo_arg  == 'U') uplo  = 0;
   if (uplo_arg  == 'L') uplo  = 1;
 
-  args.m = *M;
-  args.n = *N;
+  मगा_कातविरान.m = *M;
+  मगा_कातविरान.n = *N;
 
-  args.c = (void *)c;
-  args.ldc = *ldC;
+  मगा_कातविरान.c = (void *)c;
+  मगा_कातविरान.ldc = *ldC;
 
   info = 0;
 
-  if (args.ldc < MAX(1, args.m)) info = 12;
+  if (मगा_कातविरान.ldc < MAX(1, मगा_कातविरान.m)) info = 12;
 
   if (!side) {
-    args.a = (void *)a;
-    args.b = (void *)b;
+    मगा_कातविरान.a = (void *)a;
+    मगा_कातविरान.b = (void *)b;
 
-    args.lda = *ldA;
-    args.ldb = *ldB;
+    मगा_कातविरान.lda = *ldA;
+    मगा_कातविरान.ldb = *ldB;
 
-    if (args.ldb < MAX(1, args.m)) info =  9;
-    if (args.lda < MAX(1, args.m)) info =  7;
+    if (मगा_कातविरान.ldb < MAX(1, मगा_कातविरान.m)) info =  9;
+    if (मगा_कातविरान.lda < MAX(1, मगा_कातविरान.m)) info =  7;
 
   } else {
-    args.a = (void *)b;
-    args.b = (void *)a;
+    मगा_कातविरान.a = (void *)b;
+    मगा_कातविरान.b = (void *)a;
 
-    args.lda = *ldB;
-    args.ldb = *ldA;
+    मगा_कातविरान.lda = *ldB;
+    मगा_कातविरान.ldb = *ldA;
 
-  if (args.lda < MAX(1, args.m)) info =  9;
-  if (args.ldb < MAX(1, args.n)) info =  7;
+  if (मगा_कातविरान.lda < MAX(1, मगा_कातविरान.m)) info =  9;
+  if (मगा_कातविरान.ldb < MAX(1, मगा_कातविरान.n)) info =  7;
   }
 
-  if (args.n   < 0)              info =  4;
-  if (args.m   < 0)              info =  3;
+  if (मगा_कातविरान.n   < 0)              info =  4;
+  if (मगा_कातविरान.m   < 0)              info =  3;
   if (uplo     < 0)              info =  2;
   if (side     < 0)              info =  1;
 
@@ -258,7 +258,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
   FLOAT *c = (FLOAT*) vc;	   
 #endif
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
   int side, uplo;
   blasint info;
 
@@ -272,101 +272,101 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
   double MN;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
 #ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
+  मगा_कातविरान.alpha = (void *)&alpha;
+  मगा_कातविरान.beta  = (void *)&beta;
 #else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  मगा_कातविरान.alpha = (void *)alpha;
+  मगा_कातविरान.beta  = (void *)beta;
 #endif
 
-  args.c = (void *)c;
-  args.ldc = ldc;
+  मगा_कातविरान.c = (void *)c;
+  मगा_कातविरान.ldc = ldc;
 
   side  = -1;
   uplo  = -1;
   info  =  0;
 
   if (order == CblasColMajor) {
-    if (Side == CblasLeft)  side = 0;
-    if (Side == CblasRight) side = 1;
+    if (Side == Cblas_कालिवा)  side = 0;
+    if (Side == Cblas_कानान) side = 1;
 
     if (Uplo == CblasUpper) uplo  = 0;
     if (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    args.m = m;
-    args.n = n;
+    मगा_कातविरान.m = m;
+    मगा_कातविरान.n = n;
 
-    if (args.ldc < MAX(1, args.m)) info = 12;
+    if (मगा_कातविरान.ldc < MAX(1, मगा_कातविरान.m)) info = 12;
 
     if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
+      मगा_कातविरान.a = (void *)a;
+      मगा_कातविरान.b = (void *)b;
 
-      args.lda = lda;
-      args.ldb = ldb;
+      मगा_कातविरान.lda = lda;
+      मगा_कातविरान.ldb = ldb;
 
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
+      if (मगा_कातविरान.ldb < MAX(1, मगा_कातविरान.m)) info =  9;
+      if (मगा_कातविरान.lda < MAX(1, मगा_कातविरान.m)) info =  7;
 
     } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
+      मगा_कातविरान.a = (void *)b;
+      मगा_कातविरान.b = (void *)a;
 
-      args.lda = ldb;
-      args.ldb = lda;
+      मगा_कातविरान.lda = ldb;
+      मगा_कातविरान.ldb = lda;
 
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
+      if (मगा_कातविरान.lda < MAX(1, मगा_कातविरान.m)) info =  9;
+      if (मगा_कातविरान.ldb < MAX(1, मगा_कातविरान.n)) info =  7;
     }
 
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
+    if (मगा_कातविरान.n   < 0)              info =  4;
+    if (मगा_कातविरान.m   < 0)              info =  3;
     if (uplo     < 0)              info =  2;
     if (side     < 0)              info =  1;
   }
 
   if (order == CblasRowMajor) {
-    if (Side == CblasLeft)  side = 1;
-    if (Side == CblasRight) side = 0;
+    if (Side == Cblas_कालिवा)  side = 1;
+    if (Side == Cblas_कानान) side = 0;
 
     if (Uplo == CblasUpper) uplo  = 1;
     if (Uplo == CblasLower) uplo  = 0;
 
     info = -1;
 
-    args.m = n;
-    args.n = m;
+    मगा_कातविरान.m = n;
+    मगा_कातविरान.n = m;
 
-    if (args.ldc < MAX(1, args.m)) info = 12;
+    if (मगा_कातविरान.ldc < MAX(1, मगा_कातविरान.m)) info = 12;
 
     if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
+      मगा_कातविरान.a = (void *)a;
+      मगा_कातविरान.b = (void *)b;
 
-      args.lda = lda;
-      args.ldb = ldb;
+      मगा_कातविरान.lda = lda;
+      मगा_कातविरान.ldb = ldb;
 
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
+      if (मगा_कातविरान.ldb < MAX(1, मगा_कातविरान.m)) info =  9;
+      if (मगा_कातविरान.lda < MAX(1, मगा_कातविरान.m)) info =  7;
 
     } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
+      मगा_कातविरान.a = (void *)b;
+      मगा_कातविरान.b = (void *)a;
 
-      args.lda = ldb;
-      args.ldb = lda;
+      मगा_कातविरान.lda = ldb;
+      मगा_कातविरान.ldb = lda;
 
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
+      if (मगा_कातविरान.lda < MAX(1, मगा_कातविरान.m)) info =  9;
+      if (मगा_कातविरान.ldb < MAX(1, मगा_कातविरान.n)) info =  7;
     }
 
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
+    if (मगा_कातविरान.n   < 0)              info =  4;
+    if (मगा_कातविरान.m   < 0)              info =  3;
     if (uplo     < 0)              info =  2;
     if (side     < 0)              info =  1;
   }
@@ -376,7 +376,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
     return;
   }
 
-   if (args.m == 0 || args.n == 0) return;
+   if (मगा_कातविरान.m == 0 || मगा_कातविरान.n == 0) return;
 #if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
 #if defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
 #if defined(DYNAMIC_ARCH)
@@ -388,10 +388,10 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 #endif
    if (order == CblasRowMajor && m == lda && n == ldb && n == ldc)
    {
-     if (Side == CblasLeft && Uplo == CblasUpper) {
+     if (Side == Cblas_कालिवा && Uplo == CblasUpper) {
        SSYMM_DIRECT_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
      }
-     else if (Side == CblasLeft && Uplo == CblasLower) {
+     else if (Side == Cblas_कालिवा && Uplo == CblasLower) {
        SSYMM_DIRECT_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
      }
    }
@@ -415,29 +415,29 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 
 #ifdef SMP
-  args.common = NULL;
-  MN = 2.* (double) args.m * (double)args.m * (double) args.n;
+  मगा_कातविरान.common = NULL;
+  MN = 2.* (double) मगा_कातविरान.m * (double)मगा_कातविरान.m * (double) मगा_कातविरान.n;
   if (MN <= (SMP_THRESHOLD_MIN * (double) GEMM_MULTITHREAD_THRESHOLD) ) {
-	  args.nthreads = 1;
+	  मगा_कातविरान.nthreads = 1;
   } else {
-	 args.nthreads = num_cpu_avail(3);
+	 मगा_कातविरान.nthreads = नुमेरो_cpu_avail(3);
   }
-  if (args.nthreads == 1) {
+  if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-    (symm[(side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+    (symm[(side << 1) | uplo ])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
   } else {
 
 #ifndef NO_AFFINITY
-    nodes = get_num_nodes();
+    nodes = get_नुमेरो_nodes();
 
     if (nodes > 1) {
 
-      args.nthreads /= nodes;
+      मगा_कातविरान.nthreads /= nodes;
 
-      gemm_thread_mn(MODE, &args, NULL, NULL,
+      gemm_thread_mn(MODE, &मगा_कातविरान, NULL, NULL,
 		     symm[4 | (side << 1) | uplo ], sa, sb, nodes);
 
     } else {
@@ -445,11 +445,11 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
 #ifndef USE_SIMPLE_THREADED_LEVEL3
 
-      (symm[4 | (side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+      (symm[4 | (side << 1) | uplo ])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #else
 
-      GEMM_THREAD(MODE, &args, NULL, NULL, symm[(side << 1) | uplo ], sa, sb, args.nthreads);
+      GEMM_THREAD(MODE, &मगा_कातविरान, NULL, NULL, symm[(side << 1) | uplo ], sa, sb, मगा_कातविरान.nthreads);
 
 #endif
 
@@ -463,8 +463,8 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
  blas_memory_free(buffer);
 
   FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE,
-		       (!side)? args.m * (args.m / 2 + args.n) : args.n * (args.m + args.n / 2),
-		       (!side)? 2 * args.m * args.m * args.n : 2 * args.m * args.n * args.n);
+		       (!side)? मगा_कातविरान.m * (मगा_कातविरान.m / 2 + मगा_कातविरान.n) : मगा_कातविरान.n * (मगा_कातविरान.m + मगा_कातविरान.n / 2),
+		       (!side)? 2 * मगा_कातविरान.m * मगा_कातविरान.m * मगा_कातविरान.n : 2 * मगा_कातविरान.m * मगा_कातविरान.n * मगा_कातविरान.n);
 
   IDEBUG_END;
 

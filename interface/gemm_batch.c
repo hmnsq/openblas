@@ -35,7 +35,7 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+void openblas_warning(int verbose, const char * मेनसाहे);
 
 #ifndef COMPLEX
 #ifdef XDOUBLE
@@ -124,7 +124,7 @@ void NAME(char *transa_array, char *transb_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
 	   FLOAT ** c_array, blasint * ldc_array, blasint * gcount, blasint * group_size) {
-       blasint group_count = *gcount;
+       blasint group_बिलांग = *gcount;
 #else
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CBLAS_TRANSPOSE * transb_array,
@@ -134,13 +134,13 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
 	   IFLOAT ** a_array, blasint * lda_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
-	   FLOAT ** c_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
+	   FLOAT ** c_array, blasint * ldc_array, blasint group_बिलांग, blasint * group_size) {
 #else
 	   void * valpha_array,
 	   void ** va_array, blasint * lda_array,
 	   void ** vb_array, blasint * ldb_array,
 	   void * vbeta_array,
-	   void ** vc_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
+	   void ** vc_array, blasint * ldc_array, blasint group_बिलांग, blasint * group_size) {
 
   FLOAT * alpha_array=(FLOAT *)valpha_array;
   FLOAT * beta_array=(FLOAT *)vbeta_array;
@@ -152,12 +152,12 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
   BLASLONG group_m, group_n, group_k;
   BLASLONG group_lda, group_ldb, group_ldc;
 
-  blas_arg_t * args_array=NULL;
+  blas_arg_t * मगा_कातविरान_array=NULL;
 
   int mode=0, group_mode=0;
-  blasint total_num=0;
+  blasint total_नुमेरो=0;
 
-  blasint i=0, j=0, matrix_idx=0, count=0;
+  blasint i=0, j=0, matrix_idx=0, बिलांग=0;
 
   int group_transa, group_transb;
   BLASLONG group_nrowa, group_nrowb;
@@ -173,15 +173,15 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
   double MNK;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
     
-  for(i=0; i<group_count; i++){
-    total_num+=group_size[i];
+  for(i=0; i<group_बिलांग; i++){
+    total_नुमेरो+=group_size[i];
   }
 
-  args_array=(blas_arg_t *)malloc(total_num * sizeof(blas_arg_t));
+  मगा_कातविरान_array=(blas_arg_t *)malloc(total_नुमेरो * sizeof(blas_arg_t));
   
-  if(args_array == NULL){
+  if(मगा_कातविरान_array == NULL){
     openblas_warning(0, "memory alloc failed!\n");
     return;
   }
@@ -206,7 +206,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
 #endif
 #endif
   
-  for(i=0; i<group_count; matrix_idx+=group_size[i], i++){
+  for(i=0; i<group_बिलांग; matrix_idx+=group_size[i], i++){
     group_alpha = (void *)&alpha_array[i * COMPSIZE];
     group_beta = (void *)&beta_array[i * COMPSIZE];
 
@@ -335,7 +335,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
 
     if (info >= 0) {
       BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-      free(args_array);
+      free(मगा_कातविरान_array);
       return;
     }
 
@@ -387,41 +387,41 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
 
     
     for(j=0; j<group_size[i]; j++){
-      args_array[count].m=group_m;
-      args_array[count].n=group_n;
-      args_array[count].k=group_k;
-      args_array[count].lda=group_lda;
-      args_array[count].ldb=group_ldb;
-      args_array[count].ldc=group_ldc;
-      args_array[count].alpha=group_alpha;
-      args_array[count].beta=group_beta;
+      मगा_कातविरान_array[बिलांग].m=group_m;
+      मगा_कातविरान_array[बिलांग].n=group_n;
+      मगा_कातविरान_array[बिलांग].k=group_k;
+      मगा_कातविरान_array[बिलांग].lda=group_lda;
+      मगा_कातविरान_array[बिलांग].ldb=group_ldb;
+      मगा_कातविरान_array[बिलांग].ldc=group_ldc;
+      मगा_कातविरान_array[बिलांग].alpha=group_alpha;
+      मगा_कातविरान_array[बिलांग].beta=group_beta;
 
 #if defined(CBLAS)
       if (order == CblasRowMajor) {
-	args_array[count].a=(b_array[matrix_idx+j]);
-	args_array[count].b=(a_array[matrix_idx+j]);
+	मगा_कातविरान_array[बिलांग].a=(b_array[matrix_idx+j]);
+	मगा_कातविरान_array[बिलांग].b=(a_array[matrix_idx+j]);
       } else
 #endif
       {
-	args_array[count].a=(a_array[matrix_idx+j]);
-	args_array[count].b=(b_array[matrix_idx+j]);
+	मगा_कातविरान_array[बिलांग].a=(a_array[matrix_idx+j]);
+	मगा_कातविरान_array[बिलांग].b=(b_array[matrix_idx+j]);
       }
       
-      args_array[count].c=(c_array[matrix_idx+j]);
+      मगा_कातविरान_array[बिलांग].c=(c_array[matrix_idx+j]);
       
-      args_array[count].routine_mode=group_mode;
-      args_array[count].routine=group_routine;
+      मगा_कातविरान_array[बिलांग].routine_mode=group_mode;
+      मगा_कातविरान_array[बिलांग].routine=group_routine;
 #ifdef SMALL_MATRIX_OPT
       if (!group_routine)
-        args_array[count].routine=group_small_matrix_opt_routine;
+        मगा_कातविरान_array[बिलांग].routine=group_small_matrix_opt_routine;
 #endif      
-      count++;
+      बिलांग++;
     }
   }
 
-  if(count>0){
-    GEMM_BATCH_THREAD(args_array,count);
+  if(बिलांग>0){
+    GEMM_BATCH_THREAD(मगा_कातविरान_array,बिलांग);
   }
 
-  free(args_array);
+  free(मगा_कातविरान_array);
 }

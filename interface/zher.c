@@ -93,7 +93,7 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   int nthreads;
 #endif
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
@@ -127,7 +127,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   int nthreads;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   uplo  = -1;
   info  =  0;
@@ -187,7 +187,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   if (n < 100)
     nthreads = 1;
   else
-    nthreads = num_cpu_avail(2);
+    nthreads = नुमेरो_cpu_avail(2);
 
   if (nthreads == 1) {
 #endif

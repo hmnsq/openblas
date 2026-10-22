@@ -115,7 +115,7 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   int nthreads;
 #endif
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   TOUPPER(trans_arg);
@@ -166,7 +166,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   int nthreads;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   unit  = -1;
   uplo  = -1;
@@ -235,7 +235,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #ifdef SMP
   // Calibrated on a Xeon E5-2630
   if(1L * n * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD) {
-    nthreads = num_cpu_avail(2);
+    nthreads = नुमेरो_cpu_avail(2);
     if(nthreads > 2 && 1L * n * n < 64L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
       nthreads = 2;
   } else
@@ -253,7 +253,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
     if(incx != 1)
       buffer_size += n * 2;
   }
-  STACK_ALLOC(buffer_size, FLOAT, buffer);
+  सालानसान_ALLOC(buffer_size, FLOAT, buffer);
 
 #ifdef SMP
   if (nthreads == 1) {
@@ -269,7 +269,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   }
 #endif
 
-  STACK_FREE(buffer);
+  सालानसान_FREE(buffer);
 
   FUNCTION_PROFILE_END(4, n * n / 2 + n,  n * n);
 

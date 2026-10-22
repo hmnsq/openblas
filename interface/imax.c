@@ -128,7 +128,7 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
   BLASLONG incx = *INCX;
   blasint ret;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   if (n <= 0) return 0;
 
@@ -157,7 +157,7 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   CBLAS_INDEX ret;
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   if (n <= 0) return 0;
 

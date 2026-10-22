@@ -126,7 +126,7 @@ void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
   char trans_arg = *TRANS;
   char diag_arg  = *DIAG;
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   FLOAT *buffer;
   FLOAT *sa, *sb;
@@ -158,18 +158,18 @@ void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
   int trans;
   int nrowa;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.m = *M;
-  args.n = *N;
+  मगा_कातविरान.m = *M;
+  मगा_कातविरान.n = *N;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
+  मगा_कातविरान.a = (void *)a;
+  मगा_कातविरान.b = (void *)b;
 
-  args.lda = *ldA;
-  args.ldb = *ldB;
+  मगा_कातविरान.lda = *ldA;
+  मगा_कातविरान.ldb = *ldB;
 
-  args.beta = (void *)alpha;
+  मगा_कातविरान.beta = (void *)alpha;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -195,15 +195,15 @@ void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
   if (uplo_arg  == 'U') uplo  = 0;
   if (uplo_arg  == 'L') uplo  = 1;
 
-  nrowa = args.m;
-  if (side & 1) nrowa = args.n;
+  nrowa = मगा_कातविरान.m;
+  if (side & 1) nrowa = मगा_कातविरान.n;
 
   info = 0;
 
-  if (args.ldb < MAX(1,args.m)) info = 11;
-  if (args.lda < MAX(1,nrowa))  info =  9;
-  if (args.n < 0)               info =  6;
-  if (args.m < 0)               info =  5;
+  if (मगा_कातविरान.ldb < MAX(1,मगा_कातविरान.m)) info = 11;
+  if (मगा_कातविरान.lda < MAX(1,nrowa))  info =  9;
+  if (मगा_कातविरान.n < 0)               info =  6;
+  if (मगा_कातविरान.m < 0)               info =  5;
   if (unit < 0)                 info =  4;
   if (trans < 0)                info =  3;
   if (uplo  < 0)                info =  2;
@@ -233,7 +233,7 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *b = (FLOAT*) vb;
 #endif
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
   int side, uplo, trans, unit;
   blasint info, nrowa;
 
@@ -260,18 +260,18 @@ void CNAME(enum CBLAS_ORDER order,
 #endif
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
+  मगा_कातविरान.a = (void *)a;
+  मगा_कातविरान.b = (void *)b;
 
-  args.lda = lda;
-  args.ldb = ldb;
+  मगा_कातविरान.lda = lda;
+  मगा_कातविरान.ldb = ldb;
 
 #ifndef COMPLEX
-  args.beta = (void *)&alpha;
+  मगा_कातविरान.beta = (void *)&alpha;
 #else
-  args.beta = (void *)alpha;
+  मगा_कातविरान.beta = (void *)alpha;
 #endif
 
   side   = -1;
@@ -281,11 +281,11 @@ void CNAME(enum CBLAS_ORDER order,
   info   =  0;
 
   if (order == CblasColMajor) {
-    args.m = m;
-    args.n = n;
+    मगा_कातविरान.m = m;
+    मगा_कातविरान.n = n;
 
-    if (Side == CblasLeft)         side  = 0;
-    if (Side == CblasRight)        side  = 1;
+    if (Side == Cblas_कालिवा)         side  = 0;
+    if (Side == Cblas_कानान)        side  = 1;
 
     if (Uplo == CblasUpper)        uplo  = 0;
     if (Uplo == CblasLower)        uplo  = 1;
@@ -305,13 +305,13 @@ void CNAME(enum CBLAS_ORDER order,
 
     info = -1;
 
-    nrowa = args.m;
-    if (side & 1) nrowa = args.n;
+    nrowa = मगा_कातविरान.m;
+    if (side & 1) nrowa = मगा_कातविरान.n;
 
-    if (args.ldb < MAX(1,args.m)) info = 11;
-    if (args.lda < MAX(1,nrowa))  info =  9;
-    if (args.n < 0)               info =  6;
-    if (args.m < 0)               info =  5;
+    if (मगा_कातविरान.ldb < MAX(1,मगा_कातविरान.m)) info = 11;
+    if (मगा_कातविरान.lda < MAX(1,nrowa))  info =  9;
+    if (मगा_कातविरान.n < 0)               info =  6;
+    if (मगा_कातविरान.m < 0)               info =  5;
     if (unit < 0)                 info =  4;
     if (trans < 0)                info =  3;
     if (uplo  < 0)                info =  2;
@@ -319,11 +319,11 @@ void CNAME(enum CBLAS_ORDER order,
   }
 
   if (order == CblasRowMajor) {
-    args.m = n;
-    args.n = m;
+    मगा_कातविरान.m = n;
+    मगा_कातविरान.n = m;
 
-    if (Side == CblasLeft)         side  = 1;
-    if (Side == CblasRight)        side  = 0;
+    if (Side == Cblas_कालिवा)         side  = 1;
+    if (Side == Cblas_कानान)        side  = 0;
 
     if (Uplo == CblasUpper)        uplo  = 1;
     if (Uplo == CblasLower)        uplo  = 0;
@@ -343,13 +343,13 @@ void CNAME(enum CBLAS_ORDER order,
 
     info = -1;
 
-    nrowa = args.m;
-    if (side & 1) nrowa = args.n;
+    nrowa = मगा_कातविरान.m;
+    if (side & 1) nrowa = मगा_कातविरान.n;
 
-    if (args.ldb < MAX(1,args.m)) info = 11;
-    if (args.lda < MAX(1,nrowa))  info =  9;
-    if (args.n < 0)               info =  6;
-    if (args.m < 0)               info =  5;
+    if (मगा_कातविरान.ldb < MAX(1,मगा_कातविरान.m)) info = 11;
+    if (मगा_कातविरान.lda < MAX(1,nrowa))  info =  9;
+    if (मगा_कातविरान.n < 0)               info =  6;
+    if (मगा_कातविरान.m < 0)               info =  5;
     if (unit < 0)                 info =  4;
     if (trans < 0)                info =  3;
     if (uplo  < 0)                info =  2;
@@ -361,7 +361,7 @@ void CNAME(enum CBLAS_ORDER order,
     return;
   }
 
-  if (args.m == 0 || args.n == 0) return;
+  if (मगा_कातविरान.m == 0 || मगा_कातविरान.n == 0) return;
 
 #if defined(TRMM)
 #if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
@@ -373,7 +373,7 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 #endif
 )
 #endif
-  if (order == CblasRowMajor && Diag == CblasNonUnit && Side == CblasLeft && m == lda && n == ldb) {
+  if (order == CblasRowMajor && Diag == CblasNonUnit && Side == Cblas_कालिवा && m == lda && n == ldb) {
     if (Trans == CblasNoTrans || Trans == CblasConjNoTrans) {
       (Uplo == CblasUpper ? STRMM_DIRECT_LNUN : STRMM_DIRECT_LNLN)(m, n, alpha, a, lda, b, ldb);
       return;
@@ -391,7 +391,7 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 //end of the ifndef CBLAS ... else ... section	
 #endif
 
-  if ((args.m == 0) || (args.n == 0)) return;
+  if ((मगा_कातविरान.m == 0) || (मगा_कातविरान.n == 0)) return;
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
@@ -417,23 +417,23 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 	if ( args.n < 2 * GEMM_MULTITHREAD_THRESHOLD )
 		args.nthreads = 1;
 */
-  if ( args.m * args.n < SMP_FACTOR * GEMM_MULTITHREAD_THRESHOLD)
-	args.nthreads = 1;
+  if ( मगा_कातविरान.m * मगा_कातविरान.n < SMP_FACTOR * GEMM_MULTITHREAD_THRESHOLD)
+	मगा_कातविरान.nthreads = 1;
   else
-	args.nthreads = num_cpu_avail(3);
+	मगा_कातविरान.nthreads = नुमेरो_cpu_avail(3);
 		
 
-  if (args.nthreads == 1) {
+  if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-    (trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit])(&args, NULL, NULL, sa, sb, 0);
+    (trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
   } else {
     if (!side) {
-      gemm_thread_n(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
+      gemm_thread_n(mode, &मगा_कातविरान, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, मगा_कातविरान.nthreads);
     } else {
-      gemm_thread_m(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
+      gemm_thread_m(mode, &मगा_कातविरान, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, मगा_कातविरान.nthreads);
     }
   }
 #endif
@@ -441,8 +441,8 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   blas_memory_free(buffer);
 
   FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE,
-		       (!side) ? args.m * (args.m + args.n) : args.n * (args.m + args.n),
-		       (!side) ? args.m * args.m * args.n : args.m * args.n * args.n);
+		       (!side) ? मगा_कातविरान.m * (मगा_कातविरान.m + मगा_कातविरान.n) : मगा_कातविरान.n * (मगा_कातविरान.m + मगा_कातविरान.n),
+		       (!side) ? मगा_कातविरान.m * मगा_कातविरान.m * मगा_कातविरान.n : मगा_कातविरान.m * मगा_कातविरान.n * मगा_कातविरान.n);
 
   IDEBUG_END;
 

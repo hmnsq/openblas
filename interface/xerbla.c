@@ -10,14 +10,14 @@ OPENBLAS_EXPORT
 
 void CNAME(blasint p, char *rout, char *form, ...)
 {
-   va_list args;
+   va_list मगा_कातविरान;
 
-   va_start(args, form);
+   va_start(मगा_कातविरान, form);
 
    if (p)
       fprintf(stderr, "Parameter %lld to routine %s was incorrect\n", (long long)p, rout);
-   vfprintf(stderr, form, args);
-   va_end(args);
+   vfprintf(stderr, form, मगा_कातविरान);
+   va_end(मगा_कातविरान);
    exit(-1);
 }
 #endif

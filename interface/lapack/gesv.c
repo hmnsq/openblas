@@ -64,7 +64,7 @@ OPENBLAS_EXPORT
 void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
          FLOAT *b, blasint *ldB, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   blasint info;
   FLOAT *buffer;
@@ -73,21 +73,21 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  मगा_कातविरान.m    = *N;
+  मगा_कातविरान.n    = *NRHS;
+  मगा_कातविरान.a    = (void *)a;
+  मगा_कातविरान.lda  = *ldA;
+  मगा_कातविरान.b    = (void *)b;
+  मगा_कातविरान.ldb  = *ldB;
+  मगा_कातविरान.c    = (void *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  if (मगा_कातविरान.ldb < MAX(1,मगा_कातविरान.m)) info = 7;
+  if (मगा_कातविरान.lda < MAX(1,मगा_कातविरान.m)) info = 4;
+  if (मगा_कातविरान.n   < 0)             info = 2;
+  if (मगा_कातविरान.m   < 0)             info = 1;
 
   if (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
@@ -95,12 +95,12 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
     return;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  मगा_कातविरान.alpha = NULL;
+  मगा_कातविरान.beta  = NULL;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  if (मगा_कातविरान.m == 0) return;
 
   IDEBUG_START;
 
@@ -114,50 +114,50 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  मगा_कातविरान.common = NULL;
 
 #if defined(_WIN64) && defined(_M_ARM64)
   #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
+    if (मगा_कातविरान.m * मगा_कातविरान.m <= 300) 
   #else
-    if (args.m * args.m <= 500) 
+    if (मगा_कातविरान.m * मगा_कातविरान.m <= 500) 
   #endif
-      args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
-    args.nthreads = 4;
+      मगा_कातविरान.nthreads = 1;
+  else if (मगा_कातविरान.m * मगा_कातविरान.m <= 1000)
+    मगा_कातविरान.nthreads = 4;
   else
-    args.nthreads = num_cpu_avail(4);
+    मगा_कातविरान.nthreads = नुमेरो_cpu_avail(4);
 #else
   #ifndef DOUBLE
-    if (args.m * args.m < 40000)
+    if (मगा_कातविरान.m * मगा_कातविरान.m < 40000)
   #else
-    if (args.m * args.m < 10000)
+    if (मगा_कातविरान.m * मगा_कातविरान.m < 10000)
   #endif
-      args.nthreads = 1;
+      मगा_कातविरान.nthreads = 1;
     else
-      args.nthreads = num_cpu_avail(4);
+      मगा_कातविरान.nthreads = नुमेरो_cpu_avail(4);
 #endif
 
-  if (args.nthreads == 1) {
+  if (मगा_कातविरान.nthreads == 1) {
 #endif
 
-    args.n    = *N;
-    info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    मगा_कातविरान.n    = *N;
+    info = GETRF_SINGLE(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
     if (info == 0 && *NRHS >0){
-      args.n    = *NRHS;
-      GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
+      मगा_कातविरान.n    = *NRHS;
+      GETRS_N_SINGLE(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
     }
 
 #ifdef SMP
   } else {
 
-    args.n    = *N;
-    info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    मगा_कातविरान.n    = *N;
+    info = GETRF_PARALLEL(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
     if (info == 0 && *NRHS > 0){
-      args.n    = *NRHS;
-      GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+      मगा_कातविरान.n    = *NRHS;
+      GETRS_N_PARALLEL(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
     }
   }
 #endif

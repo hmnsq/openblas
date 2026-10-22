@@ -88,7 +88,7 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   blasint info;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   info = 0;
 
@@ -118,7 +118,7 @@ void CNAME(enum CBLAS_ORDER order,
   int nthreads;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   info  =  0;
 
@@ -177,14 +177,14 @@ void CNAME(enum CBLAS_ORDER order,
   if (incy < 0) y -= (n - 1) * incy;
   if (incx < 0) x -= (m - 1) * incx;
 
-  STACK_ALLOC(m, FLOAT, buffer);
+  सालानसान_ALLOC(m, FLOAT, buffer);
 
 #ifdef SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
   if(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
+    nthreads = नुमेरो_cpu_avail(2);
   else if(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
-	  nthreads = MIN(3,num_cpu_avail(2));
+	  nthreads = MIN(3,नुमेरो_cpu_avail(2));
   else
     nthreads = 1;
 
@@ -201,7 +201,7 @@ void CNAME(enum CBLAS_ORDER order,
   }
 #endif
 
-  STACK_FREE(buffer);
+  सालानसान_FREE(buffer);
   FUNCTION_PROFILE_END(1, m * n + m + n, 2 * m * n);
 
   IDEBUG_END;

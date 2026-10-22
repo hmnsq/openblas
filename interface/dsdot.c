@@ -52,7 +52,7 @@ double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
   BLASLONG incy = *INCY;
   double ret = 0.0;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   if (n <= 0) return 0;
 
@@ -79,7 +79,7 @@ double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
 
   double ret = 0.0;
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   if (n <= 0) return 0;
 

@@ -72,9 +72,9 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 #endif
 
 #ifndef CBLAS
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 #else
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 #endif
 
   if (n <= 0) return;
@@ -92,7 +92,7 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
   if (incx == 0 || incy == 0 || n < 2097152 * GEMM_MULTITHREAD_THRESHOLD / sizeof(FLOAT))
     nthreads = 1;
   else
-    nthreads = num_cpu_avail(1);
+    nthreads = नुमेरो_cpu_avail(1);
 
   if (nthreads == 1) {
 #endif

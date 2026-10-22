@@ -63,7 +63,7 @@ static blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *
 OPENBLAS_EXPORT
 void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t मगा_कातविरान;
 
   blasint uplo_arg = *UPLO;
   blasint diag_arg = *DIAG;
@@ -75,11 +75,11 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  मगा_कातविरान.n    = *N;
+  मगा_कातविरान.a    = (void *)a;
+  मगा_कातविरान.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
@@ -92,8 +92,8 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   if (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
+  if (मगा_कातविरान.lda  < MAX(1,मगा_कातविरान.n)) info = 5;
+  if (मगा_कातविरान.n    < 0)             info = 3;
   if (diag < 0)                  info = 2;
   if (uplo < 0)                  info = 1;
   if (info) {
@@ -104,7 +104,7 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  if (मगा_कातविरान.n <= 0) return;
 
   IDEBUG_START;
 
@@ -117,7 +117,7 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = (trti2[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  info = (trti2[(uplo << 1) | diag])(&मगा_कातविरान, NULL, NULL, sa, sb, 0);
 
   *Info = info;
 
@@ -125,9 +125,9 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		          2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_END(1, .5 * मगा_कातविरान.n * मगा_कातविरान.n,
+		          2. * मगा_कातविरान.n * (1./3. + मगा_कातविरान.n * ( 1./2. + मगा_कातविरान.n * 1./6.))
+		       +  6. * मगा_कातविरान.n * (1./3. + मगा_कातविरान.n * (-1./2. + मगा_कातविरान.n * 1./6.)));
 
   IDEBUG_END;
 

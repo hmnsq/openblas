@@ -100,7 +100,7 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   FLOAT beta_r  = *(BETA + 0);
   FLOAT beta_i  = *(BETA + 1);
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   TOUPPER(trans);
 
@@ -167,7 +167,7 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT beta_r  = *(BETA + 0);
   FLOAT beta_i  = *(BETA + 1);
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   trans = -1;
   info  =  0;
@@ -244,11 +244,11 @@ void CNAME(enum CBLAS_ORDER order,
 #endif
   // for alignment
   buffer_size = (buffer_size + 3) & ~3;
-  STACK_ALLOC(buffer_size, FLOAT, buffer);
+  सालानसान_ALLOC(buffer_size, FLOAT, buffer);
 
-#if defined(ARCH_X86_64) && defined(MAX_STACK_ALLOC) && MAX_STACK_ALLOC > 0
+#if defined(ARCH_X86_64) && defined(MAX_सालानसान_ALLOC) && MAX_सालानसान_ALLOC > 0
   // cgemv_t.S return NaN if there are NaN or Inf in the buffer (see bug #746)
-  if(trans && stack_alloc_size)
+  if(trans && सालानसान_alloc_size)
     memset(buffer, 0, MIN(BUFFER_SIZE, sizeof(FLOAT) * buffer_size));
 #endif
 
@@ -256,14 +256,14 @@ void CNAME(enum CBLAS_ORDER order,
 
 #if defined(_WIN64) && defined(_M_ARM64)
   if (m*n > 25000000L) 
-    nthreads = num_cpu_avail(4);
+    nthreads = नुमेरो_cpu_avail(4);
   else
     nthreads = 1;
 #else
   if (1L * m * n < 1024L * GEMM_MULTITHREAD_THRESHOLD)
     nthreads = 1;
   else
-    nthreads = num_cpu_avail(2);
+    nthreads = नुमेरो_cpu_avail(2);
 #endif  
 
   if (nthreads == 1) {
@@ -278,7 +278,7 @@ void CNAME(enum CBLAS_ORDER order,
 #endif
 
 
-  STACK_FREE(buffer);
+  सालानसान_FREE(buffer);
 
   FUNCTION_PROFILE_END(4, m * n + m + n,  2 * m * n);
 

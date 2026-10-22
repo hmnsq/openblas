@@ -112,7 +112,7 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint lenx, leny;
   blasint i;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   TOUPPER(trans);
 
@@ -176,7 +176,7 @@ void CNAME(enum CBLAS_ORDER order,
   int nthreads;
 #endif
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   trans = -1;
   info  =  0;
@@ -261,7 +261,7 @@ void CNAME(enum CBLAS_ORDER order,
   if (m * n  < 125000 || ku + kl < 15) 
     nthreads = 1;
   else
-    nthreads = num_cpu_avail(2);
+    nthreads = नुमेरो_cpu_avail(2);
 
   if (nthreads == 1) {
 #endif

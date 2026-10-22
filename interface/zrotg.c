@@ -38,7 +38,7 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   FLOAT ada =  da_r * da_r + da_i * da_i; 
   FLOAT adb =  db_r * db_r + db_i * db_i; 
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   IDEBUG_START;
 

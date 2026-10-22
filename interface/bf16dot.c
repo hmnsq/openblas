@@ -11,7 +11,7 @@ float NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
    BLASLONG incx = *INCX;
    BLASLONG incy = *INCY;
    float ret;
-   PRINT_DEBUG_NAME;
+   इलिम्बाग_DEBUG_NAME;
 
    if (n <= 0) return 0.;
 
@@ -33,7 +33,7 @@ float NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
 float CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
 
   float ret;
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   if (n <= 0) return 0.;
 

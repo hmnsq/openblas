@@ -13,12 +13,12 @@ void NAME(blasint *N, FLOAT *dx, blasint *INCX, FLOAT *dy, blasint *INCY, FLOAT 
     blasint incx = *INCX;
     blasint incy = *INCY;
 
-    PRINT_DEBUG_NAME
+    इलिम्बाग_DEBUG_NAME
 #else
 
 void CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *dparam){
 
-    PRINT_DEBUG_CNAME;
+    इलिम्बाग_DEBUG_CNAME;
 
 #endif
 

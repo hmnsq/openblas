@@ -90,7 +90,7 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
     blasint lenx, leny;
     blasint i;
 
-    PRINT_DEBUG_NAME;
+    इलिम्बाग_DEBUG_NAME;
 
     TOUPPER(trans);
 
@@ -132,7 +132,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
         GEMV_N, GEMV_T,
     };
 
-    PRINT_DEBUG_CNAME;
+    इलिम्बाग_DEBUG_CNAME;
 
     trans = -1;
     info  =  0;
@@ -205,7 +205,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
     if ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
       nthreads = 1;
     else
-      nthreads = num_cpu_avail(2);
+      nthreads = नुमेरो_cpu_avail(2);
 
     if (nthreads == 1) {
 #endif

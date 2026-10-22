@@ -91,7 +91,7 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   int nthreads;
 #endif
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
@@ -130,7 +130,7 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   }
 
 #ifdef SMP
-  nthreads = num_cpu_avail(2);
+  nthreads = नुमेरो_cpu_avail(2);
 
   if (n < 50) nthreads = 1;
   if (nthreads > 2 && n < 500) nthreads = 2;

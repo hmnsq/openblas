@@ -19,7 +19,7 @@ void NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *I
    BLASLONG inc_in = *INC_IN;
    BLASLONG inc_out = *INC_OUT;
 
-   PRINT_DEBUG_NAME;
+   इलिम्बाग_DEBUG_NAME;
 
    if (n <= 0) return;
 
@@ -41,7 +41,7 @@ void NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *I
 }
 #else
 void CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   if (n <= 0) return;
 

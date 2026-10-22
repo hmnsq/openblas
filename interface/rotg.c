@@ -40,9 +40,9 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
 
 #ifndef CBLAS
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 #else
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 #endif
 
   if (adb == ZERO) {
@@ -99,9 +99,9 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 	sigma = copysign(1.,db);
 
 #ifndef CBLAS
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 #else
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 #endif
 
 

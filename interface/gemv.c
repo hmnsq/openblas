@@ -105,10 +105,10 @@ static inline int get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, int ncpu) {
 #endif
 
 static inline int get_gemv_optimal_nthreads(BLASLONG MN) {
-  int ncpu = num_cpu_avail(3);
+  int ncpu = नुमेरो_cpu_avail(3);
 #if defined(_WIN64) && defined(_M_ARM64)
   if (MN > 100000000L)
-    return num_cpu_avail(4);
+    return नुमेरो_cpu_avail(4);
   return 1;
 #endif
 #if defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(BFLOAT16)
@@ -127,7 +127,7 @@ static inline int get_gemv_optimal_nthreads(BLASLONG MN) {
   if ( MN < 115200L * GEMM_MULTITHREAD_THRESHOLD )
     return 1;
   else
-    return num_cpu_avail(2);
+    return नुमेरो_cpu_avail(2);
 }
 #endif
 
@@ -162,7 +162,7 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint lenx, leny;
   blasint i;
 
-  PRINT_DEBUG_NAME;
+  इलिम्बाग_DEBUG_NAME;
 
   TOUPPER(trans);
 
@@ -212,7 +212,7 @@ void CNAME(enum CBLAS_ORDER order,
     GEMV_N, GEMV_T,
   };
 
-  PRINT_DEBUG_CNAME;
+  इलिम्बाग_DEBUG_CNAME;
 
   trans = -1;
   info  =  0;
@@ -285,7 +285,7 @@ void CNAME(enum CBLAS_ORDER order,
 #endif
   // for alignment
   buffer_size = (buffer_size + 3) & ~3;
-  STACK_ALLOC(buffer_size, FLOAT, buffer);
+  सालानसान_ALLOC(buffer_size, FLOAT, buffer);
 
 #ifdef SMP
   nthreads = get_gemv_optimal_nthreads(1L * m * n);
@@ -303,7 +303,7 @@ void CNAME(enum CBLAS_ORDER order,
   }
 #endif
 
-  STACK_FREE(buffer);
+  सालानसान_FREE(buffer);
   FUNCTION_PROFILE_END(1, m * n + m + n,  2 * m * n);
 
   IDEBUG_END;
