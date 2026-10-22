@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 #undef MAX_K
@@ -52,65 +52,65 @@
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define MAX_K	IQAMAX_K
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define MAX_K	IDAMAX_K
-#else
+#નહીંતર
 #define MAX_K	ISAMAX_K
 #endif
-#else
+#નહીંતર
 #ifdef XDOUBLE
 #define MAX_K	IXAMAX_K
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define MAX_K	IZAMAX_K
-#else
+#નહીંતર
 #define MAX_K	ICAMAX_K
 #endif
 #endif
 
-#else
+#નહીંતર
 
 /* ABS & MIN */
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define MAX_K	IQAMIN_K
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define MAX_K	IDAMIN_K
-#else
+#નહીંતર
 #define MAX_K	ISAMIN_K
 #endif
-#else
+#નહીંતર
 #ifdef XDOUBLE
 #define MAX_K	IXAMIN_K
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define MAX_K	IZAMIN_K
-#else
+#નહીંતર
 #define MAX_K	ICAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#નહીંતર
 
 #ifndef USE_MIN
 
 /* MAX */
 #ifdef XDOUBLE
 #define MAX_K	IQMAX_K
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define MAX_K	IDMAX_K
-#else
+#નહીંતર
 #define MAX_K	ISMAX_K
 #endif
 
-#else
+#નહીંતર
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	IQMIN_K
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define MAX_K	IDMIN_K
-#else
+#નહીંતર
 #define MAX_K	ISMIN_K
 #endif
 
@@ -130,7 +130,7 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  જો (n <= 0) પાછા 0;
 
   IDEBUG_START;
 
@@ -138,20 +138,20 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  જો(ret > n) ret=n;
 
   FUNCTION_PROFILE_END(COMPSIZE, n, 0);
 
   IDEBUG_END;
 
-  return ret;
+  પાછા ret;
 }
 
-#else
+#નહીંતર
 #ifdef COMPLEX
-CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
+CBLAS_INDEX CNAME(blasint n, શૂન્ય *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#નહીંતર
 CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -159,7 +159,7 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  જો (n <= 0) પાછા 0;
 
   IDEBUG_START;
 
@@ -167,15 +167,15 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  જો (ret > n) ret=n;
 
-  if (ret) ret --;
+  જો (ret) ret --;
 
   FUNCTION_PROFILE_END(COMPSIZE, n, 0);
 
   IDEBUG_END;
 
-  return ret;
+  પાછા ret;
 }
 
 #endif

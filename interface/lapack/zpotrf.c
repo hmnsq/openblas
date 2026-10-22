@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XPOTRF"
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "ZPOTRF"
-#else
+#નહીંતર
 #define ERROR_NAME "CPOTRF"
 #endif
 
-static blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+સ્થિર blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   POTRF_U_SINGLE, POTRF_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+સ્થિર blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   POTRF_U_PARALLEL, POTRF_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+શૂન્ય NAME(અક્ષર *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -70,35 +70,35 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  બાહ્ય
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (શૂન્ય *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  જો (uplo_arg == 'U') uplo = 0;
+  જો (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  જો (args.lda < MAX(1,args.n)) info = 4;
+  જો (args.n   < 0)             info = 2;
+  જો (uplo     < 0)             info = 1;
+  જો (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    પાછા;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  જો (args.n == 0) પાછા;
 
   IDEBUG_START;
 
@@ -112,25 +112,25 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  args.common = ખાલી;
 #ifndef DOUBLE
-  if (args.n < 64)
-#else
-  if (args.n < 64)
+  જો (args.n < 64)
+#નહીંતર
+  જો (args.n < 64)
 #endif
     args.nthreads = 1;
-  else
-  args.nthreads = num_cpu_avail(4);
+  નહીંતર
+  args.nthreads = અંક_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  જો (args.nthreads == 1) {
 #endif
 
-    *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_single[uplo])(&args, ખાલી, ખાલી, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } નહીંતર {
 
-    *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_parallel[uplo])(&args, ખાલી, ખાલી, sa, sb, 0);
 
   }
 #endif
@@ -145,5 +145,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 }

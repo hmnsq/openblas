@@ -1,28 +1,28 @@
-#include <math.h>
-#include <float.h>
-#include "common.h"
+#અન્તર્ભાવ <math.h>
+#અન્તર્ભાવ <float.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
-void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+શૂન્ય NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
-void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
+#નહીંતર
+શૂન્ય CNAME(શૂન્ય *VDA, શૂન્ય *VDB, FLOAT *C, શૂન્ય *VS) {
     FLOAT *DA = (FLOAT*) VDA;
     FLOAT *DB = (FLOAT*) VDB;
     FLOAT *S  = (FLOAT*) VS;
 #endif /* CBLAS */
 
 #ifdef DOUBLE
-  long double safmin = DBL_MIN;
-  long double rtmin = sqrt(DBL_MIN/DBL_EPSILON);
-#else
-  long double safmin = FLT_MIN;
-  long double rtmin = sqrt(FLT_MIN/FLT_EPSILON);
+  long દ્વિગુણ safmin = DBL_MIN;
+  long દ્વિગુણ rtmin = sqrt(DBL_MIN/DBL_EPSILON);
+#નહીંતર
+  long દ્વિગુણ safmin = FLT_MIN;
+  long દ્વિગુણ rtmin = sqrt(FLT_MIN/FLT_EPSILON);
 #endif
 
 
@@ -33,7 +33,7 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   //long double r;
   FLOAT S1[2];
   FLOAT R[2];
-  long double d;
+  long દ્વિગુણ d;
 
   FLOAT ada =  da_r * da_r + da_i * da_i; 
   FLOAT adb =  db_r * db_r + db_i * db_i; 
@@ -43,49 +43,49 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
-  long double safmax = 1./safmin;
+  long દ્વિગુણ safmax = 1./safmin;
   safmax *= 2.;
-  do {
-	if (db_r == ZERO && db_i == ZERO) {
+  કરો {
+	જો (db_r == ZERO && db_i == ZERO) {
 		*C        = ONE;
 		*(S  + 0) = ZERO;
 		*(S  + 1) = ZERO;
-		break;
+		તોડો;
 	}
 
-#if defined DOUBLE
-	long double rtmax = safmax /DBL_EPSILON;
-#else
-	long double rtmax = safmax /FLT_EPSILON;
+#જો defined DOUBLE
+	long દ્વિગુણ rtmax = safmax /DBL_EPSILON;
+#નહીંતર
+	long દ્વિગુણ rtmax = safmax /FLT_EPSILON;
 #endif
 
 	*(S1 + 0) = *(DB + 0);
 	*(S1 + 1) = *(DB + 1) *-1;
 
-	if (da_r == ZERO && da_i == ZERO) {
+	જો (da_r == ZERO && da_i == ZERO) {
 		*C = ZERO;
-		if (db_r == ZERO) {
+		જો (db_r == ZERO) {
 			(*DA) = fabsl(db_i);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
-			break;
-		} else if ( db_i == ZERO) {
+			તોડો;
+		} નહીંતર જો ( db_i == ZERO) {
 			*DA = fabsl(db_r);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
-			break;
-		} else {
-			long double g1 = MAX( fabsl(db_r), fabsl(db_i));
+			તોડો;
+		} નહીંતર {
+			long દ્વિગુણ g1 = MAX( fabsl(db_r), fabsl(db_i));
 			rtmax =sqrt(safmax/2.);
-			if (g1 > rtmin && g1 < rtmax) { // unscaled
+			જો (g1 > rtmin && g1 < rtmax) { // unscaled
 				d = sqrt(adb);
 				*S = *S1 /d;
 				*(S+1) = *(S1+1) /d;
 				*DA = d ;
 				*(DA+1) = ZERO;
-				break;
-			} else { // scaled algorithm
-				long double u = MIN ( safmax, MAX ( safmin, g1));
+				તોડો;
+			} નહીંતર { // scaled algorithm
+				long દ્વિગુણ u = MIN ( safmax, MAX ( safmin, g1));
 				FLOAT gs_r = db_r/u;
 				FLOAT gs_i = db_i/u;
 				d = sqrt ( gs_r*gs_r + gs_i*gs_i);
@@ -93,36 +93,36 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 				*(S + 1) = (gs_i * -1) / d;
 				*DA = d * u;
 				*(DA+1) = ZERO;
-				break;
+				તોડો;
 			}
 		}
 
-	} else {
+	} નહીંતર {
 
 		FLOAT f1 = MAX ( fabsl(da_r), fabsl(da_i));
 		FLOAT g1 = MAX ( fabsl(db_r), fabsl(db_i));
 		rtmax = sqrt(safmax / 4.);
-		if ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
-			long double h = ada + adb;
-			double adahsq = sqrt(ada * h);
-			if (ada >= h *safmin) {
+		જો ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
+			long દ્વિગુણ h = ada + adb;
+			દ્વિગુણ adahsq = sqrt(ada * h);
+			જો (ada >= h *safmin) {
 				*C = sqrt(ada/h);
 				*R = *DA / *C;
 				*(R+1) = *(DA+1) / *C;
 				rtmax *= 2.;
-				if ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
+				જો ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
 					*S = *S1 * (*DA / adahsq) - *(S1+1)* (*(DA+1)/adahsq);
 					*(S+1) = *S1 * (*(DA+1) / adahsq) + *(S1+1) * (*DA/adahsq);
-				} else {
+				} નહીંતર {
 					*S = *S1 * (*R/h) - *(S1+1) * (*(R+1)/h);
 					*(S+1) = *S1 * (*(R+1)/h) + *(S1+1) * (*(R)/h);
 				}
-			} else {
+			} નહીંતર {
 				*C = ada / adahsq;
-				if (*C >= safmin) {
+				જો (*C >= safmin) {
 					*R = *DA / *C;
 					*(R+1) = *(DA+1) / *C;
-				} else {
+				} નહીંતર {
 					*R = *DA * (h / adahsq);
 					*(R+1) = *(DA+1) * (h / adahsq);
 				}
@@ -131,48 +131,48 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			}
 			*DA=*R;
 			*(DA+1)=*(R+1);
-			break;
-		} else {	// scaled
+			તોડો;
+		} નહીંતર {	// scaled
 			FLOAT fs_r, fs_i, gs_r, gs_i;
-			long double v,w,f2,g2,h;
-			long double u = MIN ( safmax, MAX ( safmin, MAX(f1,g1)));
+			long દ્વિગુણ v,w,f2,g2,h;
+			long દ્વિગુણ u = MIN ( safmax, MAX ( safmin, MAX(f1,g1)));
 			gs_r = db_r/u;
 			gs_i = db_i/u;
 			g2 = gs_r*gs_r + gs_i*gs_i;
-			if (f1 /u < rtmin) {
+			જો (f1 /u < rtmin) {
 				v = MIN (safmax, MAX (safmin, f1));
 				w = v / u;
 				fs_r = *DA/ v;
 				fs_i = *(DA+1) / v;
 				f2 = fs_r*fs_r + fs_i*fs_i;
 				h = f2 * w * w + g2;		
-			} else { // use same scaling for both
+			} નહીંતર { // use same scaling for both
 				w = 1.;
 				fs_r = *DA/ u;
 				fs_i = *(DA+1) / u;
 				f2 =  fs_r*fs_r + fs_i*fs_i;
 				h = f2 + g2;
 			}
-			if ( f2 >= h * safmin) {
+			જો ( f2 >= h * safmin) {
 				*C = sqrt ( f2 / h );
 				*DA = fs_r / *C;
 				*(DA+1) = fs_i / *C;
 				rtmax *= 2;
-				if ( f2 > rtmin && h < rtmax) {
+				જો ( f2 > rtmin && h < rtmax) {
 					FLOAT f2h=sqrt(f2*h);
 					*S = gs_r * (fs_r /f2h) + gs_i * (fs_i / f2h);
 					*(S+1) = gs_r * (fs_i /f2h) - gs_i * -1. * (fs_r / f2h);
-				} else {
+				} નહીંતર {
 					*S = gs_r * (*DA/h) - gs_i * (*(DA+1) / h);
 					*(S+1) = gs_r * (*(DA+1) /h) + gs_i * -1. * (*DA / h);
 				}
-			} else { // intermediates might overflow
+			} નહીંતર { // intermediates might overflow
 				d = sqrt ( f2 * h);
 				*C = f2 /d;
-				if (*C >= safmin) {
+				જો (*C >= safmin) {
 					*DA = fs_r / *C;
 					*(DA+1) = fs_i / *C;
-				} else {
+				} નહીંતર {
 					*DA = fs_r * (h / d);
 					*(DA+1) = fs_i / (h / d);
 				}
@@ -182,10 +182,10 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			*C *= w;
 			*DA *= u;
 			*(DA+1) *= u;
-			break;
+			તોડો;
 		}
 	}
-    } while (0);
+    } જ્યારે (0);
 
 	FUNCTION_PROFILE_END(4, 4, 4);
 	IDEBUG_END;

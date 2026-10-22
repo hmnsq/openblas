@@ -37,48 +37,48 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+શૂન્ય NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#નહીંતર
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+શૂન્ય CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  પૂર્ણાંક mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#નહીંતર
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  જો (incx <= 0 || n <= 0) પાછા;
 
 #ifdef BGEMM
-  float alpha_float;
+  દશાંશ alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#નહીંતર
   FLOAT alpha_float = alpha;
 #endif
 
-  if (alpha_float == ONE) return;
+  જો (alpha_float == ONE) પાછા;
 
   IDEBUG_START;
 
@@ -86,33 +86,33 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 
 #ifdef SMP
-  if (n <= 1048576 )
+  જો (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  નહીંતર
+	nthreads = અંક_cpu_avail(1);
 
 
-  if (nthreads == 1) {
+  જો (nthreads == 1) {
 #endif
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, ખાલી, 0, ખાલી, 1);
 
 #ifdef SMP
-  } else {
+  } નહીંતર {
 
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#નહીંતર
     mode  =  BLAS_SINGLE | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0,
 #ifndef CBLAS
 		       ALPHA,
-#else
+#નહીંતર
 		       &alpha,
 #endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+		       x, incx, ખાલી, 0, ખાલી, 1,  (પૂર્ણાંક (*)(શૂન્ય))SCAL_K, nthreads);
 
   }
 #endif
@@ -121,6 +121,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 
 }

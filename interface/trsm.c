@@ -36,46 +36,46 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ <ctype.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 #ifndef TRMM
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define ERROR_NAME "QTRSM "
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "DTRSM "
-#else
+#નહીંતર
 #define ERROR_NAME "STRSM "
 #endif
-#else
+#નહીંતર
 #ifdef XDOUBLE
 #define ERROR_NAME "XTRSM "
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "ZTRSM "
-#else
+#નહીંતર
 #define ERROR_NAME "CTRSM "
 #endif
 #endif
-#else
+#નહીંતર
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define ERROR_NAME "QTRMM "
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "DTRMM "
-#else
+#નહીંતર
 #define ERROR_NAME "STRMM "
 #endif
-#else
+#નહીંતર
 #ifdef XDOUBLE
 #define ERROR_NAME "XTRMM "
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "ZTRMM "
-#else
+#નહીંતર
 #define ERROR_NAME "CTRMM "
 #endif
 #endif
@@ -83,15 +83,15 @@
 
 #ifndef COMPLEX
 #define SMP_FACTOR 256
-#else
+#નહીંતર
 #define SMP_FACTOR 128
 #endif
 
 #ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);                                
+બાહ્ય અક્ષર* gotoblas_corename(શૂન્ય);                                
 #endif                                                               
 
-static int (*trsm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+સ્થિર પૂર્ણાંક (*trsm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef TRMM
   TRSM_LNUU, TRSM_LNUN, TRSM_LNLU, TRSM_LNLN,
   TRSM_LTUU, TRSM_LTUN, TRSM_LTLU, TRSM_LTLN,
@@ -101,7 +101,7 @@ static int (*trsm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLA
   TRSM_RTUU, TRSM_RTUN, TRSM_RTLU, TRSM_RTLN,
   TRSM_RRUU, TRSM_RRUN, TRSM_RRLU, TRSM_RRLN,
   TRSM_RCUU, TRSM_RCUN, TRSM_RCLU, TRSM_RCLN,
-#else
+#નહીંતર
   TRMM_LNUU, TRMM_LNUN, TRMM_LNLU, TRMM_LNLN,
   TRMM_LTUU, TRMM_LTUN, TRMM_LTLU, TRMM_LTLN,
   TRMM_LRUU, TRMM_LRUN, TRMM_LRLU, TRMM_LRLN,
@@ -117,14 +117,14 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
+શૂન્ય NAME(અક્ષર *SIDE, અક્ષર *UPLO, અક્ષર *TRANS, અક્ષર *DIAG,
 	   blasint *M, blasint *N, FLOAT *alpha,
 	   FLOAT *a, blasint *ldA, FLOAT *b, blasint *ldB){
 
-  char side_arg  = *SIDE;
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  અક્ષર side_arg  = *SIDE;
+  અક્ષર uplo_arg  = *UPLO;
+  અક્ષર trans_arg = *TRANS;
+  અક્ષર diag_arg  = *DIAG;
 
   blas_arg_t args;
 
@@ -134,42 +134,42 @@ void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  પૂર્ણાંક mode  =  BLAS_XDOUBLE | BLAS_REAL;
+#અથવાજો defined(DOUBLE)
+  પૂર્ણાંક mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#નહીંતર
+  પૂર્ણાંક mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#નહીંતર
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  પૂર્ણાંક mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#અથવાજો defined(DOUBLE)
+  પૂર્ણાંક mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#નહીંતર
+  પૂર્ણાંક mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 
   blasint info;
-  int side;
-  int uplo;
-  int unit;
-  int trans;
-  int nrowa;
+  પૂર્ણાંક side;
+  પૂર્ણાંક uplo;
+  પૂર્ણાંક unit;
+  પૂર્ણાંક trans;
+  પૂર્ણાંક nrowa;
 
   PRINT_DEBUG_NAME;
 
   args.m = *M;
   args.n = *N;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
+  args.a = (શૂન્ય *)a;
+  args.b = (શૂન્ય *)b;
 
   args.lda = *ldA;
   args.ldb = *ldB;
 
-  args.beta = (void *)alpha;
+  args.beta = (શૂન્ય *)alpha;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -181,60 +181,60 @@ void NAME(char *SIDE, char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (side_arg  == 'L') side  = 0;
-  if (side_arg  == 'R') side  = 1;
+  જો (side_arg  == 'L') side  = 0;
+  જો (side_arg  == 'R') side  = 1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  જો (trans_arg == 'N') trans = 0;
+  જો (trans_arg == 'T') trans = 1;
+  જો (trans_arg == 'R') trans = 2;
+  જો (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  જો (diag_arg  == 'U') unit  = 0;
+  જો (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  જો (uplo_arg  == 'U') uplo  = 0;
+  જો (uplo_arg  == 'L') uplo  = 1;
 
   nrowa = args.m;
-  if (side & 1) nrowa = args.n;
+  જો (side & 1) nrowa = args.n;
 
   info = 0;
 
-  if (args.ldb < MAX(1,args.m)) info = 11;
-  if (args.lda < MAX(1,nrowa))  info =  9;
-  if (args.n < 0)               info =  6;
-  if (args.m < 0)               info =  5;
-  if (unit < 0)                 info =  4;
-  if (trans < 0)                info =  3;
-  if (uplo  < 0)                info =  2;
-  if (side  < 0)                info =  1;
+  જો (args.ldb < MAX(1,args.m)) info = 11;
+  જો (args.lda < MAX(1,nrowa))  info =  9;
+  જો (args.n < 0)               info =  6;
+  જો (args.m < 0)               info =  5;
+  જો (unit < 0)                 info =  4;
+  જો (trans < 0)                info =  3;
+  જો (uplo  < 0)                info =  2;
+  જો (side  < 0)                info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME)-1);
-    return;
+  જો (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME)-1);
+    પાછા;
   }
 
-#else
+#નહીંતર
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_SIDE Side,  enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE Trans, enum CBLAS_DIAG Diag,
+શૂન્ય CNAME(ગણના CBLAS_ORDER order,
+	   ગણના CBLAS_SIDE Side,  ગણના CBLAS_UPLO Uplo,
+	   ગણના CBLAS_TRANSPOSE Trans, ગણના CBLAS_DIAG Diag,
 	   blasint m, blasint n,
 #ifndef COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb) {
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb) {
+#નહીંતર
+	   શૂન્ય *valpha,
+	   શૂન્ય *va, blasint lda,
+	   શૂન્ય *vb, blasint ldb) {
   FLOAT *alpha = (FLOAT*) valpha;
   FLOAT *a = (FLOAT*) va;
   FLOAT *b = (FLOAT*) vb;
 #endif
 
   blas_arg_t args;
-  int side, uplo, trans, unit;
+  પૂર્ણાંક side, uplo, trans, unit;
   blasint info, nrowa;
 
   XFLOAT *buffer;
@@ -243,35 +243,35 @@ void CNAME(enum CBLAS_ORDER order,
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  પૂર્ણાંક mode  =  BLAS_XDOUBLE | BLAS_REAL;
+#અથવાજો defined(DOUBLE)
+  પૂર્ણાંક mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#નહીંતર
+  પૂર્ણાંક mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#નહીંતર
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  પૂર્ણાંક mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#અથવાજો defined(DOUBLE)
+  પૂર્ણાંક mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#નહીંતર
+  પૂર્ણાંક mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 
   PRINT_DEBUG_CNAME;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
+  args.a = (શૂન્ય *)a;
+  args.b = (શૂન્ય *)b;
 
   args.lda = lda;
   args.ldb = ldb;
 
 #ifndef COMPLEX
-  args.beta = (void *)&alpha;
-#else
-  args.beta = (void *)alpha;
+  args.beta = (શૂન્ય *)&alpha;
+#નહીંતર
+  args.beta = (શૂન્ય *)alpha;
 #endif
 
   side   = -1;
@@ -280,106 +280,106 @@ void CNAME(enum CBLAS_ORDER order,
   unit   = -1;
   info   =  0;
 
-  if (order == CblasColMajor) {
+  જો (order == CblasColMajor) {
     args.m = m;
     args.n = n;
 
-    if (Side == CblasLeft)         side  = 0;
-    if (Side == CblasRight)        side  = 1;
+    જો (Side == Cblas_ડાબું)         side  = 0;
+    જો (Side == Cblas_જમણું)        side  = 1;
 
-    if (Uplo == CblasUpper)        uplo  = 0;
-    if (Uplo == CblasLower)        uplo  = 1;
+    જો (Uplo == CblasUpper)        uplo  = 0;
+    જો (Uplo == CblasLower)        uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
-    if (Trans == CblasTrans)       trans = 1;
+    જો (Trans == CblasNoTrans)     trans = 0;
+    જો (Trans == CblasTrans)       trans = 1;
 #ifndef COMPLEX
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#else
-    if (Trans == CblasConjNoTrans) trans = 2;
-    if (Trans == CblasConjTrans)   trans = 3;
+    જો (Trans == CblasConjNoTrans) trans = 0;
+    જો (Trans == CblasConjTrans)   trans = 1;
+#નહીંતર
+    જો (Trans == CblasConjNoTrans) trans = 2;
+    જો (Trans == CblasConjTrans)   trans = 3;
 #endif
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    જો (Diag == CblasUnit)          unit  = 0;
+    જો (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
     nrowa = args.m;
-    if (side & 1) nrowa = args.n;
+    જો (side & 1) nrowa = args.n;
 
-    if (args.ldb < MAX(1,args.m)) info = 11;
-    if (args.lda < MAX(1,nrowa))  info =  9;
-    if (args.n < 0)               info =  6;
-    if (args.m < 0)               info =  5;
-    if (unit < 0)                 info =  4;
-    if (trans < 0)                info =  3;
-    if (uplo  < 0)                info =  2;
-    if (side  < 0)                info =  1;
+    જો (args.ldb < MAX(1,args.m)) info = 11;
+    જો (args.lda < MAX(1,nrowa))  info =  9;
+    જો (args.n < 0)               info =  6;
+    જો (args.m < 0)               info =  5;
+    જો (unit < 0)                 info =  4;
+    જો (trans < 0)                info =  3;
+    જો (uplo  < 0)                info =  2;
+    જો (side  < 0)                info =  1;
   }
 
-  if (order == CblasRowMajor) {
+  જો (order == CblasRowMajor) {
     args.m = n;
     args.n = m;
 
-    if (Side == CblasLeft)         side  = 1;
-    if (Side == CblasRight)        side  = 0;
+    જો (Side == Cblas_ડાબું)         side  = 1;
+    જો (Side == Cblas_જમણું)        side  = 0;
 
-    if (Uplo == CblasUpper)        uplo  = 1;
-    if (Uplo == CblasLower)        uplo  = 0;
+    જો (Uplo == CblasUpper)        uplo  = 1;
+    જો (Uplo == CblasLower)        uplo  = 0;
 
-    if (Trans == CblasNoTrans)     trans = 0;
-    if (Trans == CblasTrans)       trans = 1;
+    જો (Trans == CblasNoTrans)     trans = 0;
+    જો (Trans == CblasTrans)       trans = 1;
 #ifndef COMPLEX
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#else
-    if (Trans == CblasConjNoTrans) trans = 2;
-    if (Trans == CblasConjTrans)   trans = 3;
+    જો (Trans == CblasConjNoTrans) trans = 0;
+    જો (Trans == CblasConjTrans)   trans = 1;
+#નહીંતર
+    જો (Trans == CblasConjNoTrans) trans = 2;
+    જો (Trans == CblasConjTrans)   trans = 3;
 #endif
 
-    if (Diag == CblasUnit)         unit  = 0;
-    if (Diag == CblasNonUnit)      unit  = 1;
+    જો (Diag == CblasUnit)         unit  = 0;
+    જો (Diag == CblasNonUnit)      unit  = 1;
 
     info = -1;
 
     nrowa = args.m;
-    if (side & 1) nrowa = args.n;
+    જો (side & 1) nrowa = args.n;
 
-    if (args.ldb < MAX(1,args.m)) info = 11;
-    if (args.lda < MAX(1,nrowa))  info =  9;
-    if (args.n < 0)               info =  6;
-    if (args.m < 0)               info =  5;
-    if (unit < 0)                 info =  4;
-    if (trans < 0)                info =  3;
-    if (uplo  < 0)                info =  2;
-    if (side  < 0)                info =  1;
+    જો (args.ldb < MAX(1,args.m)) info = 11;
+    જો (args.lda < MAX(1,nrowa))  info =  9;
+    જો (args.n < 0)               info =  6;
+    જો (args.m < 0)               info =  5;
+    જો (unit < 0)                 info =  4;
+    જો (trans < 0)                info =  3;
+    જો (uplo  < 0)                info =  2;
+    જો (side  < 0)                info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  જો (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME));
+    પાછા;
   }
 
-  if (args.m == 0 || args.n == 0) return;
+  જો (args.m == 0 || args.n == 0) પાછા;
 
-#if defined(TRMM)
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_STRMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#જો defined(TRMM)
+#જો !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#જો defined(ARCH_ARM64) && (defined(USE_STRMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#જો defined(DYNAMIC_ARCH)
+જો (strcmp(gotoblas_corename(), "armv9sme") == 0
+#જો defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
 #endif
 )
 #endif
-  if (order == CblasRowMajor && Diag == CblasNonUnit && Side == CblasLeft && m == lda && n == ldb) {
-    if (Trans == CblasNoTrans || Trans == CblasConjNoTrans) {
+  જો (order == CblasRowMajor && Diag == CblasNonUnit && Side == Cblas_ડાબું && m == lda && n == ldb) {
+    જો (Trans == CblasNoTrans || Trans == CblasConjNoTrans) {
       (Uplo == CblasUpper ? STRMM_DIRECT_LNUN : STRMM_DIRECT_LNLN)(m, n, alpha, a, lda, b, ldb);
-      return;
-    } else if (Trans == CblasTrans || Trans == CblasConjTrans) {
+      પાછા;
+    } નહીંતર જો (Trans == CblasTrans || Trans == CblasConjTrans) {
       (Uplo == CblasUpper ? STRMM_DIRECT_LTUN : STRMM_DIRECT_LTLN)(m, n, alpha, a, lda, b, ldb);
-      return;
+      પાછા;
     }
   }
 #endif
@@ -391,16 +391,16 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 //end of the ifndef CBLAS ... else ... section	
 #endif
 
-  if ((args.m == 0) || (args.n == 0)) return;
+  જો ((args.m == 0) || (args.n == 0)) પાછા;
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
   buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  જો (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME));
+    પાછા;
   }
 
   sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
@@ -417,23 +417,23 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 	if ( args.n < 2 * GEMM_MULTITHREAD_THRESHOLD )
 		args.nthreads = 1;
 */
-  if ( args.m * args.n < SMP_FACTOR * GEMM_MULTITHREAD_THRESHOLD)
+  જો ( args.m * args.n < SMP_FACTOR * GEMM_MULTITHREAD_THRESHOLD)
 	args.nthreads = 1;
-  else
-	args.nthreads = num_cpu_avail(3);
+  નહીંતર
+	args.nthreads = અંક_cpu_avail(3);
 		
 
-  if (args.nthreads == 1) {
+  જો (args.nthreads == 1) {
 #endif
 
-    (trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit])(&args, NULL, NULL, sa, sb, 0);
+    (trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit])(&args, ખાલી, ખાલી, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    if (!side) {
-      gemm_thread_n(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
-    } else {
-      gemm_thread_m(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
+  } નહીંતર {
+    જો (!side) {
+      gemm_thread_n(mode, &args, ખાલી, ખાલી, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
+    } નહીંતર {
+      gemm_thread_m(mode, &args, ખાલી, ખાલી, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
     }
   }
 #endif
@@ -446,6 +446,6 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 }
 

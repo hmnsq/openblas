@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  જો (n <= 0) પાછા 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  જો (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    પાછા fabs(x[0]);
+#નહીંતર
+    પાછા fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  જો (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  પાછા (sqrt((દ્વિગુણ)n)*fabs(x[0]));
+#નહીંતર
+  પાછા (sqrt((દશાંશ)n)*fabsf(x[0]));
 #endif
-#else
+#નહીંતર
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  દ્વિગુણ fr=fabs(x[0]);
+  દ્વિગુણ fi=fabs(x[1]);
+  દ્વિગુણ fmin=MIN(fr,fi);
+  દ્વિગુણ fmax=MAX(fr,fi);
+  જો (fmax==0.) પાછા(fmax);
+  જો (fmax==fmin) પાછા(sqrt((દ્વિગુણ)n)*sqrt(2.)*fmax);
+  પાછા (sqrt((દ્વિગુણ)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#નહીંતર
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  દશાંશ fr=fabs(x[0]);
+  દશાંશ fi=fabs(x[1]);
+  દશાંશ fmin=MIN(fr,fi);
+  દશાંશ fmax=MAX(fr,fi);
+  જો (fmax==0.) પાછા(fmax);
+  જો (fmax==fmin) પાછા(sqrt((દશાંશ)n)*sqrt(2.)*fmax);
+  પાછા (sqrt((દશાંશ)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  જો (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#નહીંતર
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  પાછા ret;
 }
 
-#else
+#નહીંતર
 
 #ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+FLOAT CNAME(blasint n, શૂન્ય *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#નહીંતર
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  જો (n <= 0) પાછા 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  જો (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    પાછા fabs(x[0]);
+#નહીંતર
+    પાછા fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  જો (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  પાછા (sqrt((દ્વિગુણ)n)*fabs(x[0]));
+#નહીંતર
+  પાછા (sqrt((દશાંશ)n)*fabsf(x[0]));
 #endif
-#else
+#નહીંતર
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  દ્વિગુણ fr=fabs(x[0]);
+  દ્વિગુણ fi=fabs(x[1]);
+  દ્વિગુણ fmin=MIN(fr,fi);
+  દ્વિગુણ fmax=MAX(fr,fi);
+  જો (fmax==0.) પાછા(fmax);
+  જો (fmax==fmin) પાછા(sqrt((દ્વિગુણ)n)*sqrt(2.)*fmax);
+  પાછા (sqrt((દ્વિગુણ)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#નહીંતર
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  દશાંશ fr=fabs(x[0]);
+  દશાંશ fi=fabs(x[1]);
+  દશાંશ fmin=MIN(fr,fi);
+  દશાંશ fmax=MAX(fr,fi);
+  જો (fmax==0.) પાછા(fmax);
+  જો (fmax==fmin) પાછા(sqrt((દશાંશ)n)*sqrt(2.)*fmax);
+  પાછા (sqrt((દશાંશ)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  જો (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#નહીંતર
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  પાછા ret;
 }
 
 #endif

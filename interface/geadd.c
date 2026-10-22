@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#જો defined(DOUBLE)
 #define ERROR_NAME "DGEADD "
-#else
+#નહીંતર
 #define ERROR_NAME "SGEADD "
 #endif
 
@@ -52,8 +52,8 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
-                        FLOAT *BETA,  FLOAT *c, blasint *LDC, char *TRANS_A,char *TRANS_C)
+શૂન્ય NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
+                        FLOAT *BETA,  FLOAT *c, blasint *LDC, અક્ષર *TRANS_A,અક્ષર *TRANS_C)
 {
 
   blasint m = *M;
@@ -64,42 +64,42 @@ void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
   FLOAT beta  = *BETA;
 
   blasint info;
-char transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
-char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
+અક્ષર transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
+અક્ષર transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
 
 
   PRINT_DEBUG_NAME;
 
   info = 0;
- if(transa){
-  if (lda < MAX(1, n))info = 5;
+ જો(transa){
+  જો (lda < MAX(1, n))info = 5;
 
 
-  }	else{
+  }	નહીંતર{
 
-   if (lda < MAX(1, m))	info = 5;
+   જો (lda < MAX(1, m))	info = 5;
   }
  
 
-  if(transc){
-        if (ldc < MAX(1, n))	info = 8;
+  જો(transc){
+        જો (ldc < MAX(1, n))	info = 8;
 
 
-   }else{
+   }નહીંતર{
        
-      if (ldc < MAX(1, m))	info = 8;
+      જો (ldc < MAX(1, m))	info = 8;
           }
 
-  if (n < 0)		info = 2;
-  if (m < 0)		info = 1;
+  જો (n < 0)		info = 2;
+  જો (m < 0)		info = 1;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  જો (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME));
+    પાછા;
   }
 
-#else
-void CNAME( enum CBLAS_ORDER order,enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transc,blasint m,  blasint n,  FLOAT alpha, FLOAT *a,  blasint lda, FLOAT beta, 
+#નહીંતર
+શૂન્ય CNAME( ગણના CBLAS_ORDER order,ગણના CBLAS_TRANSPOSE transa, ગણના CBLAS_TRANSPOSE transc,blasint m,  blasint n,  FLOAT alpha, FLOAT *a,  blasint lda, FLOAT beta, 
 		  FLOAT *c,  blasint ldc)
 {
 /* 
@@ -116,55 +116,55 @@ void CNAME(enum CBLAS_ORDER order,
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  જો (order == CblasColMajor) {
 
     info = -1;
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+જો ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      જો (ldc < MAX(1, m))  info = 8;
+    } નહીંતર {
+      જો (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    જો ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      જો (lda < MAX(1, m))  info = 5;
+    } નહીંતર {
+      જો (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 2;
-    if (m < 0)		  info = 1;
+    જો (n < 0)		  info = 2;
+    જો (m < 0)		  info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
+  જો (order == CblasRowMajor) {
     info = -1;
 
     t = n;
     n = m;
     m = t;
 
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+જો ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      જો (ldc < MAX(1, m))  info = 8;
+    } નહીંતર {
+      જો (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    જો ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      જો (lda < MAX(1, m))  info = 5;
+    } નહીંતર {
+      જો (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 1;
-    if (m < 0)		  info = 2;
+    જો (n < 0)		  info = 1;
+    જો (m < 0)		  info = 2;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  જો (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME));
+    પાછા;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  જો ((m==0) || (n==0)) પાછા;
 
 
   IDEBUG_START;
@@ -176,7 +176,7 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
 #ifdef CBLAS
           (transa == CblasTrans) || (transa == CblasConjTrans),
           (transc == CblasTrans) || (transc == CblasConjTrans)
-#else
+#નહીંતર
           transa, transc
 #endif
           ); 
@@ -186,6 +186,6 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 
 }

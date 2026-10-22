@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ <ctype.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XHPR2 "
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "ZHPR2 "
-#else
+#નહીંતર
 #define ERROR_NAME "CHPR2 "
 #endif
 
-static int (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+સ્થિર પૂર્ણાંક (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr2_U, xhpr2_L, xhpr2_V, xhpr2_M,
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
   zhpr2_U, zhpr2_L, zhpr2_V, zhpr2_M,
-#else
+#નહીંતર
   chpr2_U, chpr2_L, chpr2_V, chpr2_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+સ્થિર પૂર્ણાંક (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, પૂર્ણાંક) = {
 #ifdef XDOUBLE
   xhpr2_thread_U, xhpr2_thread_L, xhpr2_thread_V, xhpr2_thread_M,
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
   zhpr2_thread_U, zhpr2_thread_L, zhpr2_thread_V, zhpr2_thread_M,
-#else
+#નહીંતર
   chpr2_thread_U, chpr2_thread_L, chpr2_thread_V, chpr2_thread_M,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+શૂન્ય NAME(અક્ષર *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  અક્ષર uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  પૂર્ણાંક uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  પૂર્ણાંક nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,30 +99,30 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  જો (uplo_arg  == 'U') uplo  = 0;
+  જો (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  જો (incy == 0)          info =  7;
+  જો (incx == 0)          info =  5;
+  જો (n < 0)              info =  2;
+  જો (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  જો (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME));
+    પાછા;
   }
 
-#else
+#નહીંતર
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+શૂન્ય CNAME(ગણના CBLAS_ORDER order,
+	   ગણના CBLAS_UPLO Uplo,
 	   blasint n,
-	   void *VALPHA,
-	   void  *vx, blasint incx,
-	   void  *vy, blasint incy,
-	   void  *va) {
+	   શૂન્ય *VALPHA,
+	   શૂન્ય  *vx, blasint incx,
+	   શૂન્ય  *vy, blasint incy,
+	   શૂન્ય  *va) {
 
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* x = (FLOAT*) vx;
@@ -132,10 +132,10 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   FLOAT *buffer;
-  int uplo;
+  પૂર્ણાંક uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  પૂર્ણાંક nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -143,69 +143,69 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  જો (order == CblasColMajor) {
+    જો (Uplo == CblasUpper)         uplo  = 0;
+    જો (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    જો (incy == 0)          info =  7;
+    જો (incx == 0)          info =  5;
+    જો (n < 0)              info =  2;
+    જો (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  જો (order == CblasRowMajor) {
+    જો (Uplo == CblasUpper)         uplo  = 3;
+    જો (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (incy == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    જો (incx == 0)          info =  7;
+    જો (incy == 0)          info =  5;
+    જો (n < 0)              info =  2;
+    જો (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  જો (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME));
+    પાછા;
   }
 
 #endif
 
-  if (n == 0) return;
+  જો (n == 0) પાછા;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  જો ((alpha_r == ZERO) && (alpha_i == ZERO)) પાછા;
 
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  જો (incx < 0 ) x -= (n - 1) * incx * 2;
+  જો (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  જો (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME));
+    પાછા;
   }
 
 #ifdef SMP
-  if (n < 100)
+  જો (n < 100)
 	nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  નહીંતર
+    nthreads = અંક_cpu_avail(2);
 
-  if (nthreads == 1) {
+  જો (nthreads == 1) {
 #endif
 
     (hpr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
 
 #ifdef SMP
-  } else {
+  } નહીંતર {
 
     (hpr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
 
@@ -218,5 +218,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 }

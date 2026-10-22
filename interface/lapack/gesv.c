@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define ERROR_NAME "QGESV"
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "DGESV"
-#else
+#નહીંતર
 #define ERROR_NAME "SGESV"
 #endif
-#else
+#નહીંતર
 #ifdef XDOUBLE
 #define ERROR_NAME "XGESV"
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "ZGESV"
-#else
+#નહીંતર
 #define ERROR_NAME "CGESV"
 #endif
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
+શૂન્ય NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
          FLOAT *b, blasint *ldB, blasint *Info){
 
   blas_arg_t args;
@@ -69,7 +69,7 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  બાહ્ય
 #endif
   FLOAT *sa, *sb;
 
@@ -77,30 +77,30 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (શૂન્ય *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (શૂન્ય *)b;
   args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  args.c    = (શૂન્ય *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  જો (args.ldb < MAX(1,args.m)) info = 7;
+  જો (args.lda < MAX(1,args.m)) info = 4;
+  જો (args.n   < 0)             info = 2;
+  જો (args.m   < 0)             info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  જો (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    પાછા;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = ખાલી;
+  args.beta  = ખાલી;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  જો (args.m == 0) પાછા;
 
   IDEBUG_START;
 
@@ -114,50 +114,50 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  args.common = ખાલી;
 
-#if defined(_WIN64) && defined(_M_ARM64)
+#જો defined(_WIN64) && defined(_M_ARM64)
   #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
+    જો (args.m * args.m <= 300) 
+  #નહીંતર
+    જો (args.m * args.m <= 500) 
   #endif
       args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
+  નહીંતર જો (args.m * args.m <= 1000)
     args.nthreads = 4;
-  else
-    args.nthreads = num_cpu_avail(4);
-#else
+  નહીંતર
+    args.nthreads = અંક_cpu_avail(4);
+#નહીંતર
   #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
+    જો (args.m * args.m < 40000)
+  #નહીંતર
+    જો (args.m * args.m < 10000)
   #endif
       args.nthreads = 1;
-    else
-      args.nthreads = num_cpu_avail(4);
+    નહીંતર
+      args.nthreads = અંક_cpu_avail(4);
 #endif
 
-  if (args.nthreads == 1) {
+  જો (args.nthreads == 1) {
 #endif
 
     args.n    = *N;
-    info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    info = GETRF_SINGLE(&args, ખાલી, ખાલી, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
+    જો (info == 0 && *NRHS >0){
       args.n    = *NRHS;
-      GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
+      GETRS_N_SINGLE(&args, ખાલી, ખાલી, sa, sb, 0);
     }
 
 #ifdef SMP
-  } else {
+  } નહીંતર {
 
     args.n    = *N;
-    info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    info = GETRF_PARALLEL(&args, ખાલી, ખાલી, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
+    જો (info == 0 && *NRHS > 0){
       args.n    = *NRHS;
-      GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+      GETRS_N_PARALLEL(&args, ખાલી, ખાલી, sa, sb, 0);
     }
   }
 #endif
@@ -172,5 +172,5 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 }

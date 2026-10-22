@@ -36,41 +36,41 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+સ્થિર પૂર્ણાંક (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
 #ifdef XDOUBLE
   xlaswp_plus, xlaswp_minus,
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
   zlaswp_plus, zlaswp_minus,
-#else
+#નહીંતર
   claswp_plus, claswp_minus,
 #endif
 };
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
+શૂન્ય NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  પૂર્ણાંક flag;
 
 #ifdef SMP
-  int mode;
+  પૂર્ણાંક mode;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-  int nthreads;
+  પૂર્ણાંક nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  જો (incx == 0 || n <= 0) પાછા;
 
   IDEBUG_START;
 
@@ -79,29 +79,29 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   flag = (incx < 0);
 
 #ifdef SMP
-  if (n < 64) {
+  જો (n < 64) {
     nthreads = 1;
-  } else {
-    nthreads = num_cpu_avail(2);
+  } નહીંતર {
+    nthreads = અંક_cpu_avail(2);
   }
 
-  if (nthreads == 1) {
+  જો (nthreads == 1) {
 #endif
 
-  (laswp[flag])(n, k1, k2, ZERO, ZERO, a, lda, NULL, 0, ipiv, incx);
+  (laswp[flag])(n, k1, k2, ZERO, ZERO, a, lda, ખાલી, 0, ipiv, incx);
 
 #ifdef SMP
-  } else {
+  } નહીંતર {
 
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#નહીંતર
   mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 
-  blas_level1_thread(mode, n, k1, k2, dummyalpha, a, lda, NULL, 0, ipiv, incx, (int(*)(void))laswp[flag], nthreads);
+  blas_level1_thread(mode, n, k1, k2, dummyalpha, a, lda, ખાલી, 0, ipiv, incx, (પૂર્ણાંક(*)(શૂન્ય))laswp[flag], nthreads);
   }
 #endif
 
@@ -109,5 +109,5 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 }

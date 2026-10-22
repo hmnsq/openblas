@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#અન્તર્ભાવ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XTRTRI"
-#elif defined(DOUBLE)
+#અથવાજો defined(DOUBLE)
 #define ERROR_NAME "ZTRTRI"
-#else
+#નહીંતર
 #define ERROR_NAME "CTRTRI"
 #endif
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+સ્થિર blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_SINGLE, TRTRI_UN_SINGLE, TRTRI_LU_SINGLE, TRTRI_LN_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+સ્થિર blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_PARALLEL, TRTRI_UN_PARALLEL, TRTRI_LU_PARALLEL, TRTRI_LN_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+શૂન્ય NAME(અક્ષર *UPLO, અક્ષર *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -71,45 +71,45 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  બાહ્ય
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (શૂન્ય *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  જો (uplo_arg == 'U') uplo = 0;
+  જો (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  જો (diag_arg == 'U') diag = 0;
+  જો (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  જો (args.lda  < MAX(1,args.n)) info = 5;
+  જો (args.n    < 0)             info = 3;
+  જો (diag < 0)                  info = 2;
+  જો (uplo < 0)                  info = 1;
+  જો (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, કદ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    પાછા;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  જો (args.n == 0) પાછા;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
+  જો (diag) {
+    જો (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+      પાછા;
     }
   }
 
@@ -125,22 +125,22 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.n < 64) {
+  args.common = ખાલી;
+  જો (args.n < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } નહીંતર {
+    args.nthreads = અંક_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  જો (args.nthreads == 1) {
 #endif
 
-    *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_single[(uplo << 1) | diag])(&args, ખાલી, ખાલી, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } નહીંતર {
 
-    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, ખાલી, ખાલી, sa, sb, 0);
 
   }
 #endif
@@ -155,5 +155,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  પાછા;
 }
