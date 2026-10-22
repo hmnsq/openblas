@@ -46,7 +46,7 @@
 #define ERROR_NAME "QGETRS"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGETRS"
-#else
+#иначе
 #define ERROR_NAME "SGETRS"
 #endif
 
@@ -69,7 +69,7 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blas_arg_t args;
 
   blasint info;
-  int trans;
+  целое trans;
   FLOAT *buffer;
 #ifdef PPC440
   extern
@@ -91,20 +91,20 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  если (trans_arg == 'N') trans = 0;
+  если (trans_arg == 'T') trans = 1;
+  если (trans_arg == 'R') trans = 0;
+  если (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  если (args.ldb  < MAX(1, args.m)) info = 8;
+  если (args.lda  < MAX(1, args.m)) info = 5;
+  если (args.n    < 0) info = 3;
+  если (args.m    < 0) info = 2;
+  если (trans     < 0) info = 1;
 
-  if (info != 0) {
+  если (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+    вернуть;
   }
 
   args.alpha = NULL;
@@ -112,7 +112,7 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  если (args.m == 0 || args.n == 0) вернуть;
 
   IDEBUG_START;
 
@@ -127,19 +127,19 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
 #ifdef SMP
   args.common = NULL;
-  if (args.m < 64) {
+  если (args.m < 64) {
     args.nthreads = 1;
-  } else {
+  } иначе {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  если (args.nthreads == 1) {
 #endif
 
     (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } иначе {
     (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
   }
 #endif
@@ -152,6 +152,6 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   IDEBUG_END;
 
-  return;
+  вернуть;
 
 }

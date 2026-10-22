@@ -55,14 +55,14 @@ FLOATRET NAME(blasint *N, FLOAT *a, FLOAT *x, blasint *INCX, FLOAT *y, blasint *
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return(*a) ;
+  если (n <= 0) вернуть(*a) ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  если (incx < 0) x -= (n - 1) * incx;
+  если (incy < 0) y -= (n - 1) * incy;
 
   ret = (FLOATRET)(SDSDOT_K(n, x, incx, y, incy) + *a);
 
@@ -70,11 +70,11 @@ FLOATRET NAME(blasint *N, FLOAT *a, FLOAT *x, blasint *INCX, FLOAT *y, blasint *
 
   IDEBUG_END;
 
-  return ret;
+  вернуть ret;
 
 }
 
-#else
+#иначе
 
 FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
@@ -82,14 +82,14 @@ FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint in
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return (alpha);
+  если (n <= 0) вернуть (alpha);
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  если (incx < 0) x -= (n - 1) * incx;
+  если (incy < 0) y -= (n - 1) * incy;
 
   ret = SDSDOT_K(n, x, incx, y, incy) + alpha;
 
@@ -97,7 +97,7 @@ FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint in
 
   IDEBUG_END;
 
-  return ret;
+  вернуть ret;
 }
 
 #endif

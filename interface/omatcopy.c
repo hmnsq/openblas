@@ -36,9 +36,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#если defined(DOUBLE)
 #define ERROR_NAME "DOMATCOPY"
-#else
+#иначе
 #define ERROR_NAME "SOMATCOPY"
 #endif
 
@@ -54,7 +54,7 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 {
 
 	char Order, Trans;
-	int order=-1,trans=-1;
+	целое order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -63,25 +63,25 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
+	если ( Order == 'C' ) order = BlasColMajor;
+	если ( Order == 'R' ) order = BlasRowMajor;
+	если ( Trans == 'N' ) trans = BlasNoTrans;
+	если ( Trans == 'R' ) trans = BlasNoTrans;
+	если ( Trans == 'T' ) trans = BlasTrans;
+	если ( Trans == 'C' ) trans = BlasTrans;
+#иначе 
 void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
 	FLOAT   *alpha; 
-	int order=-1,trans=-1;
+	целое order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	если ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	если ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
+	если ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
+	если ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -90,55 +90,55 @@ void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, 
 	alpha = &calpha; 
 
 #endif
-	if ( order == BlasColMajor)
+	если ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	если ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	если ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	если ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
+        	если ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
+        	если ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	если ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	если ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	если ( *cols < 0 ) info = 4;
+	если ( *rows < 0 ) info = 3;
+	если ( trans < 0 ) info = 2;
+	если ( order < 0 ) info = 1;
 
-	if (info >= 0) {
+	если (info >= 0) {
     		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+    		вернуть;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	если ((*rows == 0) || (*cols == 0)) вернуть;
 
-	if ( order == BlasColMajor )
+	если ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		если ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		иначе
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
-	else
+	иначе
 	{
-		if ( trans == BlasNoTrans )
+		если ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		иначе
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
 
-	return;
+	вернуть;
 
 }
 

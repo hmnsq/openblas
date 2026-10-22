@@ -47,11 +47,11 @@
 #define ERROR_NAME "XTRSV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTRSV "
-#else
+#иначе
 #define ERROR_NAME "CTRSV "
 #endif
 
-static int (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static целое (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xtrsv_NUU, xtrsv_NUN, xtrsv_NLU, xtrsv_NLN,
   xtrsv_TUU, xtrsv_TUN, xtrsv_TLU, xtrsv_TLN,
@@ -62,7 +62,7 @@ static int (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
   ztrsv_TUU, ztrsv_TUN, ztrsv_TLU, ztrsv_TLN,
   ztrsv_RUU, ztrsv_RUN, ztrsv_RLU, ztrsv_RLN,
   ztrsv_CUU, ztrsv_CUN, ztrsv_CLU, ztrsv_CLN,
-#else
+#иначе
   ctrsv_NUU, ctrsv_NUN, ctrsv_NLU, ctrsv_NLN,
   ctrsv_TUU, ctrsv_TUN, ctrsv_TLU, ctrsv_TLN,
   ctrsv_RUU, ctrsv_RUN, ctrsv_RLU, ctrsv_RLN,
@@ -86,9 +86,9 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  целое uplo;
+  целое unit;
+  целое trans;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -101,34 +101,34 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  если (trans_arg == 'N') trans = 0;
+  если (trans_arg == 'T') trans = 1;
+  если (trans_arg == 'R') trans = 2;
+  если (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  если (diag_arg  == 'U') unit  = 0;
+  если (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  если (uplo_arg  == 'U') uplo  = 0;
+  если (uplo_arg  == 'L') uplo  = 1;
 
 
   info = 0;
 
-  if (incx == 0)          info =  8;
-  if (lda  < MAX(1, n))   info =  6;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  если (incx == 0)          info =  8;
+  если (lda  < MAX(1, n))   info =  6;
+  если (n < 0)              info =  4;
+  если (unit  < 0)          info =  3;
+  если (trans < 0)          info =  2;
+  если (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  если (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
 
-#else
+#иначе
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
@@ -137,7 +137,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit;
+  целое trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 
@@ -148,70 +148,70 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  если (order == CblasColMajor) {
+    если (Uplo == CblasUpper)         uplo  = 0;
+    если (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    если (TransA == CblasNoTrans)     trans = 0;
+    если (TransA == CblasTrans)       trans = 1;
+    если (TransA == CblasConjNoTrans) trans = 2;
+    если (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    если (Diag == CblasUnit)          unit  = 0;
+    если (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    если (incx == 0)          info =  8;
+    если (lda  < MAX(1, n))   info =  6;
+    если (n < 0)              info =  4;
+    если (unit  < 0)          info =  3;
+    если (trans < 0)          info =  2;
+    если (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  если (order == CblasRowMajor) {
+    если (Uplo == CblasUpper)         uplo  = 1;
+    если (Uplo == CblasLower)         uplo  = 0;
+
+    если (TransA == CblasNoTrans)     trans = 1;
+    если (TransA == CblasTrans)       trans = 0;
+    если (TransA == CblasConjNoTrans) trans = 3;
+    если (TransA == CblasConjTrans)   trans = 2;
+
+    если (Diag == CblasUnit)          unit  = 0;
+    если (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    если (incx == 0)          info =  8;
+    если (lda  < MAX(1, n))   info =  6;
+    если (n < 0)              info =  4;
+    если (unit  < 0)          info =  3;
+    если (trans < 0)          info =  2;
+    если (uplo  < 0)          info =  1;
+  }
+
+  если (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
 #endif
 
-  if (n == 0) return;
+  если (n == 0) вернуть;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  если (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  если (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
   (trsv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer);
@@ -222,5 +222,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  вернуть;
 }

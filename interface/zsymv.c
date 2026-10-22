@@ -47,7 +47,7 @@
 #define ERROR_NAME "XSYMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSYMV "
-#else
+#иначе
 #define ERROR_NAME "CSYMV "
 #endif
 
@@ -66,21 +66,21 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   FLOAT beta_i	= BETA[1];
   blasint incy	= *INCY;
 
-  int (*symv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  целое (*symv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     SYMV_U, SYMV_L,
   };
 
 #ifdef SMP
-  int (*symv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+  целое (*symv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, целое) = {
     SYMV_THREAD_U, SYMV_THREAD_L,
   };
 #endif
 
   blasint info;
-  int uplo;
+  целое uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  целое nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -88,55 +88,55 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  если (uplo_arg  == 'U') uplo  = 0;
+  если (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info = 10;
-  if (incx == 0)          info =  7;
-  if (lda  < MAX(1, n))   info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  если (incy == 0)          info = 10;
+  если (incx == 0)          info =  7;
+  если (lda  < MAX(1, n))   info =  5;
+  если (n < 0)              info =  2;
+  если (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  если (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
-  if (n == 0) return;
+  если (n == 0) вернуть;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, abs(incy), NULL, 0, NULL, 0);
+  если ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, abs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  если ((alpha_r == ZERO) && (alpha_i == ZERO)) вернуть;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
+  если (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
+  если (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  если (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  если (n < 50) nthreads = 1;
+  если (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  если (nthreads == 1) {
 #endif
 
   (symv[uplo])(n, n, alpha_r, alpha_i, a, lda, b, incx, c, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } иначе {
 
     (symv_thread[uplo])(n, ALPHA, a, lda, b, incx, c, incy, buffer, nthreads);
 
@@ -149,5 +149,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
 
   IDEBUG_END;
 
-  return;
+  вернуть;
 }

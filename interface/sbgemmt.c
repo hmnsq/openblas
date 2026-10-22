@@ -56,7 +56,7 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	целое transa, transb, uplo;
 	blasint info;
 
 	char transA, transB, Uplo;
@@ -89,59 +89,59 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	если (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	если (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	если (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	если (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	если (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	если (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	если (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	если (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	если (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	если (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	если (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	если (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	если (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	если (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	если (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	если (k < 0)
 		info = 5;
-	if (m < 0)
+	если (m < 0)
 		info = 4;
-	if (transb < 0)
+	если (transb < 0)
 		info = 3;
-	if (transa < 0)
+	если (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	если (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
+	если (info != 0) {
 		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		вернуть;
 	}
-#else
+#иначе
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	целое transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,28 +166,28 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	если (order == CblasColMajor) {
+		если (Uplo == CblasUpper) uplo = 0;
+		если (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		если (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		если (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		если (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		если (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		если (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		если (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		если (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		если (TransB == CblasConjTrans)
 			transb = 1;
 
 		a = (void *)A;
@@ -200,29 +200,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		если (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		если (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		если (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		если (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		если (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		если (k < 0)
 			info = 5;
-		if (m < 0)
+		если (m < 0)
 			info = 4;
-		if (transb < 0)
+		если (transb < 0)
 			info = 3;
-		if (transa < 0)
+		если (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		если (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	если (order == CblasRowMajor) {
 
 		a = (void *)B;
 		b = (void *)A;
@@ -230,27 +230,27 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		если (Uplo == CblasUpper) uplo = 0;
+		если (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		если (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		если (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		если (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		если (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		если (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		если (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		если (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		если (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,82 +259,82 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		если (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		если (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		если (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		если (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		если (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		если (k < 0)
 			info = 5;
-		if (m < 0)
+		если (m < 0)
 			info = 4;
-		if (transb < 0)
+		если (transb < 0)
 			info = 2;
-		if (transa < 0)
+		если (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		если (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
+	если (info >= 0) {
 		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		вернуть;
 	}
 
 #endif
-	int buffer_size;
+	целое buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	целое nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	static целое (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, целое) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	целое (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	если (m == 0)
+		вернуть;
 
 	IDEBUG_START;
 
 	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
-		for (i = 0; i < m; i++) {
+	если (uplo == 1) {
+		для (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			если (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			если (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
+#если 0
+			если (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			если (alpha == ZERO)
 				continue;
 #endif
 
@@ -350,29 +350,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			если (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			иначе
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			если (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				если (!(transa & 1))
+				(gemv[(целое)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				иначе
+				(gemv[(целое)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} иначе {
+				если (!(transa & 1))
+				(gemv_thread[(целое)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				иначе
+				(gemv_thread[(целое)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
@@ -381,22 +381,22 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 			STACK_FREE(buffer);
 		}
-	} else {
+	} иначе {
 
-		for (i = 0; i < m; i++) {
+		для (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			если (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
+#если 0
+			если (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			если (alpha == ZERO)
 				continue;
 #endif
 			IDEBUG_START;
@@ -411,29 +411,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			если (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			иначе
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			если (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				если (!(transa & 1))
+				(gemv[(целое)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				иначе
+				(gemv[(целое)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} иначе {
+				если (!(transa & 1))
+				(gemv_thread[(целое)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				иначе
+				(gemv_thread[(целое)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
@@ -445,5 +445,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	вернуть;
 }

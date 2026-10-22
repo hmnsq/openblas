@@ -46,7 +46,7 @@
 #define ERROR_NAME "QLAUU2"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZLAUU2"
-#else
+#иначе
 #define ERROR_NAME "CLAUU2"
 #endif
 
@@ -56,7 +56,7 @@ static blasint (*lauu2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *
   xlauu2_U, xlauu2_L,
 #elif defined(DOUBLE)
   zlauu2_U, zlauu2_L,
-#else
+#иначе
   clauu2_U, clauu2_L,
 #endif
   };
@@ -84,22 +84,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  если (uplo_arg == 'U') uplo = 0;
+  если (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
+  если (args.lda < MAX(1,args.n)) info = 4;
+  если (args.n   < 0)             info = 2;
+  если (uplo     < 0)             info = 1;
+  если (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    вернуть;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  если (args.n <= 0) вернуть;
 
   IDEBUG_START;
 
@@ -126,5 +126,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  вернуть;
 }

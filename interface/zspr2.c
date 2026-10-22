@@ -47,27 +47,27 @@
 #define ERROR_NAME "XSPR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSPR2 "
-#else
+#иначе
 #define ERROR_NAME "CSPR2 "
 #endif
 
-static int (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static целое (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xspr2_U, xspr2_L,
 #elif defined(DOUBLE)
   zspr2_U, zspr2_L,
-#else
+#иначе
   cspr2_U, cspr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static целое (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, целое) = {
 #ifdef XDOUBLE
   xspr2_thread_U, xspr2_thread_L,
 #elif defined(DOUBLE)
   zspr2_thread_U, zspr2_thread_L,
-#else
+#иначе
   cspr2_thread_U, cspr2_thread_L,
 #endif
 };
@@ -85,10 +85,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  целое uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  целое nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -96,52 +96,52 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  если (uplo_arg  == 'U') uplo  = 0;
+  если (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  если (incy == 0)          info =  7;
+  если (incx == 0)          info =  5;
+  если (n < 0)              info =  2;
+  если (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  если (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
-  if (n == 0) return;
+  если (n == 0) вернуть;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  если ((alpha_r == ZERO) && (alpha_i == ZERO)) вернуть;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
+  если (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  если (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  если (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  если (n < 50) nthreads = 1;
+  если (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  если (nthreads == 1) {
 #endif
 
     (spr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
 
 #ifdef SMP
-  } else {
+  } иначе {
 
     (spr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
 
@@ -154,5 +154,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  вернуть;
 }

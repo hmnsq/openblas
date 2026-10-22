@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHPR  "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHPR  "
-#else
+#иначе
 #define ERROR_NAME "CHPR  "
 #endif
 
-static int (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static целое (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr_U, xhpr_L, xhpr_V, xhpr_M,
 #elif defined(DOUBLE)
   zhpr_U, zhpr_L, zhpr_V, zhpr_M,
-#else
+#иначе
   chpr_U, chpr_L, chpr_V, chpr_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static целое (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, целое) = {
 #ifdef XDOUBLE
   xhpr_thread_U, xhpr_thread_L, xhpr_thread_V, xhpr_thread_M,
 #elif defined(DOUBLE)
   zhpr_thread_U, zhpr_thread_L, zhpr_thread_V, zhpr_thread_M,
-#else
+#иначе
   chpr_thread_U, chpr_thread_L, chpr_thread_V, chpr_thread_M,
 #endif
 };
@@ -86,10 +86,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  целое uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  целое nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,21 +97,21 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  если (uplo_arg  == 'U') uplo  = 0;
+  если (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  если (incx == 0)          info =  5;
+  если (n < 0)              info =  2;
+  если (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  если (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
-#else
+#иначе
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_UPLO Uplo,
@@ -124,10 +124,10 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT* a = (FLOAT*) va;
 
   FLOAT *buffer;
-  int uplo;
+  целое uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  целое nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -135,66 +135,66 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  если (order == CblasColMajor) {
+    если (Uplo == CblasUpper)         uplo  = 0;
+    если (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    если (incx == 0)          info =  5;
+    если (n < 0)              info =  2;
+    если (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  если (order == CblasRowMajor) {
+    если (Uplo == CblasUpper)         uplo  = 3;
+    если (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    если (incx == 0)          info =  5;
+    если (n < 0)              info =  2;
+    если (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  если (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
 #endif
 
-  if (n == 0) return;
+  если (n == 0) вернуть;
 
-  if (alpha == ZERO) return;
+  если (alpha == ZERO) вернуть;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  если (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  если (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    вернуть;
   }
 
 #ifdef SMP
-  if (n < 100)
+  если (n < 100)
     nthreads = 1;
-  else
+  иначе
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  если (nthreads == 1) {
 #endif
 
   (hpr[uplo])(n, alpha, x, incx, a, buffer);
 
 #ifdef SMP
 
-  } else {
+  } иначе {
 
     (hpr_thread[uplo])(n, alpha, x, incx, a, buffer, nthreads);
 
@@ -207,5 +207,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  вернуть;
 }
