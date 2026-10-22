@@ -36,95 +36,95 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XPOTF2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZPOTF2"
-#else
-#define ERROR_NAME "CPOTF2"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XPOTF2"
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZPOTF2"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CPOTF2"
+#ਜੇ_ਅੰਤ
 
-static blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ਸਥਿਰ blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 
-#ifdef XDOUBLE
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
   xpotf2_U, xpotf2_L,
-#elif defined(DOUBLE)
+#ਜਾਂਜੇ defined(DOUBLE)
   zpotf2_U, zpotf2_L,
-#else
+#ਨਹੀਂਤਾਂ
   cpotf2_U, cpotf2_L,
-#endif
+#ਜੇ_ਅੰਤ
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+ਖਾਲੀ NAME(ਅੱਖਰ *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t ਦਲੀਲਾਂ;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *ਬਫਰ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ PPC440
+  ਬਾਹਰੀ
+#ਜੇ_ਅੰਤ
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  ਦਲੀਲਾਂ.n    = *N;
+  ਦਲੀਲਾਂ.a    = (ਖਾਲੀ *)a;
+  ਦਲੀਲਾਂ.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ਜੇ (uplo_arg == 'U') uplo = 0;
+  ਜੇ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ਜੇ (ਦਲੀਲਾਂ.lda < MAX(1,ਦਲੀਲਾਂ.n)) info = 4;
+  ਜੇ (ਦਲੀਲਾਂ.n   < 0)             info = 2;
+  ਜੇ (uplo     < 0)             info = 1;
+  ਜੇ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ਵਾਪਸ;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  ਜੇ (ਦਲੀਲਾਂ.n <= 0) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ PPC440
+  ਬਫਰ = (FLOAT *)blas_ਸਮ੍ਰਿਤੀ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)ਬਫਰ + GEMM_ਵਿੱਥ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ਮਾਪ + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ਵਿੱਥ_B);
+#ਜੇ_ਅੰਤ
 
-  info = (potf2[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (potf2[uplo])(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ PPC440
+  blas_ਸਮ੍ਰਿਤੀ_free(ਬਫਰ);
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * 1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_ਸਿਰਾ(1, .5 * ਦਲੀਲਾਂ.n * ਦਲੀਲਾਂ.n,
+		       2. * ਦਲੀਲਾਂ.n * (1./3. + ਦਲੀਲਾਂ.n * ( 1./2. + ਦਲੀਲਾਂ.n * 1./6.))
+		       +  6. * 1./6. * ਦਲੀਲਾਂ.n * (ਦਲੀਲਾਂ.n * ਦਲੀਲਾਂ.n - 1));
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 }

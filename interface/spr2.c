@@ -36,196 +36,196 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <ctype.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QSPR2 "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSPR2 "
-#else
-#define ERROR_NAME "SSPR2 "
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "QSPR2 "
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DSPR2 "
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SSPR2 "
+#ਜੇ_ਅੰਤ
 
-static int (*spr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
-#ifdef XDOUBLE
+ਸਥਿਰ ਪੂਰਨ (*spr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
   qspr2_U, qspr2_L,
-#elif defined(DOUBLE)
+#ਜਾਂਜੇ defined(DOUBLE)
   dspr2_U, dspr2_L,
-#else
+#ਨਹੀਂਤਾਂ
   sspr2_U, sspr2_L,
-#endif
+#ਜੇ_ਅੰਤ
 };
 
-#ifdef SMP
-static int (*spr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
-#ifdef XDOUBLE
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+ਸਥਿਰ ਪੂਰਨ (*spr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, ਪੂਰਨ) = {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
   qspr2_thread_U, qspr2_thread_L,
-#elif defined(DOUBLE)
+#ਜਾਂਜੇ defined(DOUBLE)
   dspr2_thread_U, dspr2_thread_L,
-#else
+#ਨਹੀਂਤਾਂ
   sspr2_thread_U, sspr2_thread_L,
-#endif
+#ਜੇ_ਅੰਤ
 };
-#endif
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+ਖਾਲੀ NAME(ਅੱਖਰ *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  ਅੱਖਰ uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint incx	= *INCX;
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  ਪੂਰਨ uplo;
+  FLOAT *ਬਫਰ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ਜੇ (uplo_arg  == 'U') uplo  = 0;
+  ਜੇ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ਜੇ (incy == 0)          info =  7;
+  ਜੇ (incx == 0)          info =  5;
+  ਜੇ (n < 0)              info =  2;
+  ਜੇ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ਜੇ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    ਵਾਪਸ;
   }
 
-#else
+#ਨਹੀਂਤਾਂ
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+ਖਾਲੀ CNAME(ਗਿਣਤੀ CBLAS_ਕ੍ਰਮ ਕ੍ਰਮ,
+	   ਗਿਣਤੀ CBLAS_UPLO Uplo,
 	   blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
 	   FLOAT  *y, blasint incy,
 	   FLOAT  *a) {
 
-  FLOAT *buffer;
-  int uplo;
+  FLOAT *ਬਫਰ;
+  ਪੂਰਨ uplo;
   blasint info;
-#ifdef SMP
-  int nthreads;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_CNAME;
 
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ਜੇ (ਕ੍ਰਮ == Cblas_ਖਾਨਾ_Major) {
+    ਜੇ (Uplo == Cblas_ਉੱਤਲਾ)         uplo  = 0;
+    ਜੇ (Uplo == Cblas_ਹੇਠਲਾ)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ਜੇ (incy == 0)          info =  7;
+    ਜੇ (incx == 0)          info =  5;
+    ਜੇ (n < 0)              info =  2;
+    ਜੇ (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  ਜੇ (ਕ੍ਰਮ == Cblas_ਪੰਕਤੀ_Major) {
+    ਜੇ (Uplo == Cblas_ਉੱਤਲਾ)         uplo  = 1;
+    ਜੇ (Uplo == Cblas_ਹੇਠਲਾ)         uplo  = 0;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ਜੇ (incy == 0)          info =  7;
+    ਜੇ (incx == 0)          info =  5;
+    ਜੇ (n < 0)              info =  2;
+    ਜੇ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ਜੇ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    ਵਾਪਸ;
   }
 
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (n == 0) return;
+  ਜੇ (n == 0) ਵਾਪਸ;
 
-  if (alpha == ZERO) return;
+  ਜੇ (alpha == ZERO) ਵਾਪਸ;
 
-  if (incx == 1 && incy == 1 && n < 50) {
+  ਜੇ (incx == 1 && incy == 1 && n < 50) {
     blasint i;
-    if (!uplo) {
-      for (i = 0; i < n; i++){
-        AXPYU_K(i + 1, 0, 0, alpha * x[i], y,     1, a, 1, NULL, 0);
-        AXPYU_K(i + 1, 0, 0, alpha * y[i], x,     1, a, 1, NULL, 0);
+    ਜੇ (!uplo) {
+      ਲਈ (i = 0; i < n; i++){
+        AXPYU_K(i + 1, 0, 0, alpha * x[i], y,     1, a, 1, ਨਿਰਾ, 0);
+        AXPYU_K(i + 1, 0, 0, alpha * y[i], x,     1, a, 1, ਨਿਰਾ, 0);
         a += i + 1;
       }
-    } else {
-      for (i = 0; i < n; i++){
-	AXPYU_K(n - i, 0, 0, alpha * x[i], y + i, 1, a, 1, NULL, 0);
-        AXPYU_K(n - i, 0, 0, alpha * y[i], x + i, 1, a, 1, NULL, 0);
+    } ਨਹੀਂਤਾਂ {
+      ਲਈ (i = 0; i < n; i++){
+	AXPYU_K(n - i, 0, 0, alpha * x[i], y + i, 1, a, 1, ਨਿਰਾ, 0);
+        AXPYU_K(n - i, 0, 0, alpha * y[i], x + i, 1, a, 1, ਨਿਰਾ, 0);
         a += n - i;
       }
     }
-    return;
+    ਵਾਪਸ;
   }
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  ਜੇ (incx < 0 ) x -= (n - 1) * incx;
+  ਜੇ (incy < 0 ) y -= (n - 1) * incy;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ਬਫਰ = (FLOAT *)blas_ਸਮ੍ਰਿਤੀ_alloc(1);
+  ਜੇ (!ਬਫਰ) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    ਵਾਪਸ;
   }
 
-#ifdef SMP
-  nthreads = num_cpu_avail(2);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  nthreads = ਅੰਕ_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ਜੇ (n < 50) nthreads = 1;
+  ਜੇ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-  (spr2[uplo])(n, alpha, x, incx, y, incy, a, buffer);
+  (spr2[uplo])(n, alpha, x, incx, y, incy, a, ਬਫਰ);
 
-#ifdef SMP
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
 
-    (spr2_thread[uplo])(n, alpha, x, incx, y, incy, a, buffer, nthreads);
+    (spr2_thread[uplo])(n, alpha, x, incx, y, incy, a, ਬਫਰ, nthreads);
 
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  blas_memory_free(buffer);
+  blas_ਸਮ੍ਰਿਤੀ_free(ਬਫਰ);
 
-  FUNCTION_PROFILE_END(1, n * n / 2 + 2 * n, 2 * n * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(1, n * n / 2 + 2 * n, 2 * n * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 }

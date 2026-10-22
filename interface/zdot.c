@@ -36,180 +36,180 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef RETURN_BY_STRUCT
-#ifdef XDOUBLE
-#define MYTYPE myxcomplex_t
-#elif defined DOUBLE
-#define MYTYPE myzcomplex_t
-#else
-#define MYTYPE myccomplex_t
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RETURN_BY_STRUCT
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MYTYPE myxcomplex_t
+#ਜਾਂਜੇ defined DOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MYTYPE myzcomplex_t
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MYTYPE myccomplex_t
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-#ifdef RETURN_BY_STRUCT
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RETURN_BY_STRUCT
 MYTYPE         NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#elif defined RETURN_BY_STACK
-void           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#else
+#ਜਾਂਜੇ defined RETURN_BY_ਢੇਰ
+ਖਾਲੀ           NAME(OPENBLAS_COMPLEX_FLOAT *ਨਤੀਜਾ, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
+#ਨਹੀਂਤਾਂ
 OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#endif
+#ਜੇ_ਅੰਤ
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-#ifndef RETURN_BY_STACK
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ RETURN_BY_ਢੇਰ
   OPENBLAS_COMPLEX_FLOAT ret;
-#endif
-#ifdef RETURN_BY_STRUCT
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RETURN_BY_STRUCT
   MYTYPE  myret;
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef RETURN_BY_STRUCT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ RETURN_BY_STRUCT
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) {
-#ifdef RETURN_BY_STRUCT
+  ਜੇ (n <= 0) {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RETURN_BY_STRUCT
     myret.r = 0.;
     myret.i = 0.;
-    return myret;
-#elif defined RETURN_BY_STACK
-    *result = zero;
-    return;
-#else
-    return zero;
-#endif
+    ਵਾਪਸ myret;
+#ਜਾਂਜੇ defined RETURN_BY_ਢੇਰ
+    *ਨਤੀਜਾ = zero;
+    ਵਾਪਸ;
+#ਨਹੀਂਤਾਂ
+    ਵਾਪਸ zero;
+#ਜੇ_ਅੰਤ
   }
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ਜੇ (incx < 0) x -= (n - 1) * incx * 2;
+  ਜੇ (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef RETURN_BY_STRUCT
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RETURN_BY_STRUCT
 
-#ifndef CONJ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#ਨਹੀਂਤਾਂ
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#ਜੇ_ਅੰਤ
 
   myret.r = CREAL ret;
   myret.i = CIMAG ret;
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return myret;
+  ਵਾਪਸ myret;
 
-#elif defined RETURN_BY_STACK
+#ਜਾਂਜੇ defined RETURN_BY_ਢੇਰ
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+  *ਨਤੀਜਾ = DOTU_K(n, x, incx, y, incy);
+#ਨਹੀਂਤਾਂ
+  *ਨਤੀਜਾ = DOTC_K(n, x, incx, y, incy);
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-#else
+#ਨਹੀਂਤਾਂ
 
-#ifndef CONJ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#ਨਹੀਂਤਾਂ
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 
-#endif
+#ਜੇ_ਅੰਤ
 
 }
 
-#else
+#ਨਹੀਂਤਾਂ
 
-#ifdef FORCE_USE_STACK
-void           CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy, void* vresult){
-OPENBLAS_COMPLEX_FLOAT *result= (OPENBLAS_COMPLEX_FLOAT*)vresult;
-#else
-OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FORCE_USE_ਢੇਰ
+ਖਾਲੀ           CNAME(blasint n, ਖਾਲੀ *vx, blasint incx, ਖਾਲੀ *vy, blasint incy, ਖਾਲੀ* vresult){
+OPENBLAS_COMPLEX_FLOAT *ਨਤੀਜਾ= (OPENBLAS_COMPLEX_FLOAT*)vresult;
+#ਨਹੀਂਤਾਂ
+OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, ਖਾਲੀ *vx, blasint incx, ਖਾਲੀ *vy, blasint incy){
 
   OPENBLAS_COMPLEX_FLOAT ret;
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#ਜੇ_ਅੰਤ
   FLOAT *x = (FLOAT*) vx;
   FLOAT *y = (FLOAT*) vy;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) {
-#ifdef FORCE_USE_STACK
+  ਜੇ (n <= 0) {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FORCE_USE_ਢੇਰ
     OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-    *result = zero;
+    *ਨਤੀਜਾ = zero;
 //	CREAL(*result) = 0.0;
 //	CIMAG(*result) = 0.0;
-    return;
-#else
-    return zero;
-#endif
+    ਵਾਪਸ;
+#ਨਹੀਂਤਾਂ
+    ਵਾਪਸ zero;
+#ਜੇ_ਅੰਤ
   }
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ਜੇ (incx < 0) x -= (n - 1) * incx * 2;
+  ਜੇ (incy < 0) y -= (n - 1) * incy * 2;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-#ifdef FORCE_USE_STACK
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FORCE_USE_ਢੇਰ
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+  *ਨਤੀਜਾ = DOTU_K(n, x, incx, y, incy);
+#ਨਹੀਂਤਾਂ
+  *ਨਤੀਜਾ = DOTC_K(n, x, incx, y, incy);
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-#else
+#ਨਹੀਂਤਾਂ
 
-#ifndef CONJ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#ਨਹੀਂਤਾਂ
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 
-#endif
+#ਜੇ_ਅੰਤ
 
 }
 
-#endif
+#ਜੇ_ਅੰਤ

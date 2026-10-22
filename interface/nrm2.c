@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -54,140 +54,140 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ਜੇ (n <= 0) ਵਾਪਸ 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+  ਜੇ (n == 1)
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
+    ਵਾਪਸ fabs(x[0]);
+#ਨਹੀਂਤਾਂ
+    ਵਾਪਸ fabsf(x[0]);
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  ਜੇ (incx == 0)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦੁੱਗਣਾ)n)*fabs(x[0]));
+#ਨਹੀਂਤਾਂ
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦਸ਼ਮਲਵ)n)*fabsf(x[0]));
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ਦੁੱਗਣਾ fr=fabs(x[0]);
+  ਦੁੱਗਣਾ fi=fabs(x[1]);
+  ਦੁੱਗਣਾ fmin=MIN(fr,fi);
+  ਦੁੱਗਣਾ fmax=MAX(fr,fi);
+  ਜੇ (fmax==0.) ਵਾਪਸ(fmax);
+  ਜੇ (fmax==fmin) ਵਾਪਸ(ਵਰਗਮੂਲ((ਦੁੱਗਣਾ)n)*ਵਰਗਮੂਲ(2.)*fmax);
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦੁੱਗਣਾ)n) * fmax * ਵਰਗਮੂਲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ਨਹੀਂਤਾਂ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ਦਸ਼ਮਲਵ fr=fabs(x[0]);
+  ਦਸ਼ਮਲਵ fi=fabs(x[1]);
+  ਦਸ਼ਮਲਵ fmin=MIN(fr,fi);
+  ਦਸ਼ਮਲਵ fmax=MAX(fr,fi);
+  ਜੇ (fmax==0.) ਵਾਪਸ(fmax);
+  ਜੇ (fmax==fmin) ਵਾਪਸ(ਵਰਗਮੂਲ((ਦਸ਼ਮਲਵ)n)*ਵਰਗਮੂਲ(2.)*fmax);
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦਸ਼ਮਲਵ)n) * fmax * ਵਰਗਮੂਲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  ਜੇ (incx < 0) 
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ਨਹੀਂਤਾਂ
     x -= (n - 1) * incx;
-#endif
-  IDEBUG_START;
+#ਜੇ_ਅੰਤ
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
   ret = (FLOATRET)NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 }
 
-#else
+#ਨਹੀਂਤਾਂ
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX
+FLOAT CNAME(blasint n, ਖਾਲੀ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ਨਹੀਂਤਾਂ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#ਜੇ_ਅੰਤ
 
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ਜੇ (n <= 0) ਵਾਪਸ 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+  ਜੇ (n == 1)
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
+    ਵਾਪਸ fabs(x[0]);
+#ਨਹੀਂਤਾਂ
+    ਵਾਪਸ fabsf(x[0]);
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  ਜੇ (incx == 0)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦੁੱਗਣਾ)n)*fabs(x[0]));
+#ਨਹੀਂਤਾਂ
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦਸ਼ਮਲਵ)n)*fabsf(x[0]));
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ਦੁੱਗਣਾ fr=fabs(x[0]);
+  ਦੁੱਗਣਾ fi=fabs(x[1]);
+  ਦੁੱਗਣਾ fmin=MIN(fr,fi);
+  ਦੁੱਗਣਾ fmax=MAX(fr,fi);
+  ਜੇ (fmax==0.) ਵਾਪਸ(fmax);
+  ਜੇ (fmax==fmin) ਵਾਪਸ(ਵਰਗਮੂਲ((ਦੁੱਗਣਾ)n)*ਵਰਗਮੂਲ(2.)*fmax);
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦੁੱਗਣਾ)n) * fmax * ਵਰਗਮੂਲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ਨਹੀਂਤਾਂ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ਦਸ਼ਮਲਵ fr=fabs(x[0]);
+  ਦਸ਼ਮਲਵ fi=fabs(x[1]);
+  ਦਸ਼ਮਲਵ fmin=MIN(fr,fi);
+  ਦਸ਼ਮਲਵ fmax=MAX(fr,fi);
+  ਜੇ (fmax==0.) ਵਾਪਸ(fmax);
+  ਜੇ (fmax==fmin) ਵਾਪਸ(ਵਰਗਮੂਲ((ਦਸ਼ਮਲਵ)n)*ਵਰਗਮੂਲ(2.)*fmax);
+  ਵਾਪਸ (ਵਰਗਮੂਲ((ਦਸ਼ਮਲਵ)n) * fmax * ਵਰਗਮੂਲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  ਜੇ (incx < 0) 
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ਨਹੀਂਤਾਂ
     x -= (n - 1) * incx;
-#endif
+#ਜੇ_ਅੰਤ
   
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
   ret = NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 }
 
-#endif
+#ਜੇ_ਅੰਤ

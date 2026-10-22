@@ -37,90 +37,90 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+ਖਾਲੀ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#ਨਹੀਂਤਾਂ
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+ਖਾਲੀ CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ ਬਹੁਲਕ, nthreads;
+#ਜੇ_ਅੰਤ
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ਨਹੀਂਤਾਂ
   PRINT_DEBUG_CNAME;
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (incx <= 0 || n <= 0) return;
+  ਜੇ (incx <= 0 || n <= 0) ਵਾਪਸ;
 
-#ifdef BGEMM
-  float alpha_float;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ BGEMM
+  ਦਸ਼ਮਲਵ alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#ਨਹੀਂਤਾਂ
   FLOAT alpha_float = alpha;
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (alpha_float == ONE) return;
+  ਜੇ (alpha_float == ONE) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
 
-#ifdef SMP
-  if (n <= 1048576 )
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਜੇ (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  ਨਹੀਂਤਾਂ
+	nthreads = ਅੰਕ_cpu_avail(1);
 
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, ਨਿਰਾ, 0, ਨਿਰਾ, 1);
 
-#ifdef SMP
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
 
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE | BLAS_REAL;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
+    ਬਹੁਲਕ  =  BLAS_DOUBLE | BLAS_REAL;
+#ਨਹੀਂਤਾਂ
+    ਬਹੁਲਕ  =  BLAS_SINGLE | BLAS_REAL;
+#ਜੇ_ਅੰਤ
 
-    blas_level1_thread(mode, n, 0, 0,
-#ifndef CBLAS
+    blas_level1_thread(ਬਹੁਲਕ, n, 0, 0,
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 		       ALPHA,
-#else
+#ਨਹੀਂਤਾਂ
 		       &alpha,
-#endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+#ਜੇ_ਅੰਤ
+		       x, incx, ਨਿਰਾ, 0, ਨਿਰਾ, 1,  (ਪੂਰਨ (*)(ਖਾਲੀ))SCAL_K, nthreads);
 
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_ਸਿਰਾ(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

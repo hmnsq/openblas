@@ -36,41 +36,41 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-#ifdef __64BIT__
-#define SMPTEST 1
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __64BIT__
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SMPTEST 1
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGER  "
-#elif defined DOUBLE
-#define ERROR_NAME "DGER  "
-#else
-#define ERROR_NAME "SGER  "
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "QGER  "
+#ਜਾਂਜੇ defined DOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DGER  "
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SGER  "
+#ਜੇ_ਅੰਤ
 
-#define GER		GERU_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER		GERU_K
 
-#if   defined XDOUBLE
-#define GER_THREAD	qger_thread
-#elif defined DOUBLE
-#define GER_THREAD	dger_thread
-#else
-#define GER_THREAD	sger_thread
-#endif
+#ਜੇ   defined XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	qger_thread
+#ਜਾਂਜੇ defined DOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	dger_thread
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	sger_thread
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+ਖਾਲੀ NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -81,10 +81,10 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    incx  = *INCX;
   blasint    incy  = *INCY;
   blasint    lda   = *LDA;
-  FLOAT *buffer;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+  FLOAT *ਬਫਰ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
   blasint info;
 
@@ -92,47 +92,47 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  ਜੇ (lda < MAX(1,m)) info = 9;
+  ਜੇ (incy == 0)      info = 7;
+  ਜੇ (incx == 0)      info = 5;
+  ਜੇ (n < 0)          info = 2;
+  ਜੇ (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ਜੇ (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    ਵਾਪਸ;
   }
 
-#else
+#ਨਹੀਂਤਾਂ
 
-void CNAME(enum CBLAS_ORDER order,
+ਖਾਲੀ CNAME(ਗਿਣਤੀ CBLAS_ਕ੍ਰਮ ਕ੍ਰਮ,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
 	   FLOAT  *y, blasint incy,
 	   FLOAT  *a, blasint lda) {
 
-  FLOAT *buffer;
+  FLOAT *ਬਫਰ;
   blasint info, t;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ਜੇ (ਕ੍ਰਮ == Cblas_ਖਾਨਾ_Major) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ਜੇ (lda < MAX(1,m)) info = 9;
+    ਜੇ (incy == 0)      info = 7;
+    ਜੇ (incx == 0)      info = 5;
+    ਜੇ (n < 0)          info = 2;
+    ਜੇ (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  ਜੇ (ਕ੍ਰਮ == Cblas_ਪੰਕਤੀ_Major) {
     info = -1;
 
     t = n;
@@ -143,68 +143,68 @@ void CNAME(enum CBLAS_ORDER order,
     incx = incy;
     incy = t;
 
-    buffer = x;
+    ਬਫਰ = x;
     x = y;
-    y = buffer;
+    y = ਬਫਰ;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ਜੇ (lda < MAX(1,m)) info = 9;
+    ਜੇ (incy == 0)      info = 7;
+    ਜੇ (incx == 0)      info = 5;
+    ਜੇ (n < 0)          info = 2;
+    ਜੇ (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ਜੇ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    ਵਾਪਸ;
   }
 
-#endif
+#ਜੇ_ਅੰਤ
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
-  if (alpha == 0.) return;
+  ਜੇ (m == 0 || n == 0) ਵਾਪਸ;
+  ਜੇ (alpha == 0.) ਵਾਪਸ;
 
-  if (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, NULL);
-    return;
+  ਜੇ (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_ਹੱਦ) {
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, ਨਿਰਾ);
+    ਵਾਪਸ;
   }  
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incy < 0) y -= (n - 1) * incy;
-  if (incx < 0) x -= (m - 1) * incx;
+  ਜੇ (incy < 0) y -= (n - 1) * incy;
+  ਜੇ (incx < 0) x -= (m - 1) * incx;
 
-  STACK_ALLOC(m, FLOAT, buffer);
+  ਢੇਰ_ALLOC(m, FLOAT, ਬਫਰ);
 
-#ifdef SMPTEST
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else if(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
-	  nthreads = MIN(3,num_cpu_avail(2));
-  else
+  ਜੇ(1L * m * n > 20480L * GEMM_MULTITHREAD_ਹੱਦ)
+    nthreads = ਅੰਕ_cpu_avail(2);
+  ਨਹੀਂਤਾਂ ਜੇ(1L * m * n > 2048L * GEMM_MULTITHREAD_ਹੱਦ)
+	  nthreads = MIN(3,ਅੰਕ_cpu_avail(2));
+  ਨਹੀਂਤਾਂ
     nthreads = 1;
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, buffer);
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, ਬਫਰ);
 
-#ifdef SMPTEST
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
+  } ਨਹੀਂਤਾਂ {
 
-    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
+    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, ਬਫਰ, nthreads);
 
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  STACK_FREE(buffer);
-  FUNCTION_PROFILE_END(1, m * n + m + n, 2 * m * n);
+  ਢੇਰ_FREE(ਬਫਰ);
+  FUNCTION_PROFILE_ਸਿਰਾ(1, m * n + m + n, 2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 }

@@ -29,116 +29,116 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2014/06/09 Saar
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DOMATCOPY"
-#else
-#define ERROR_NAME "SOMATCOPY"
-#endif
+#ਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DOMATCOPY"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SOMATCOPY"
+#ਜੇ_ਅੰਤ
 
-#define BlasRowMajor 0
-#define BlasColMajor 1
-#define BlasNoTrans  0
-#define BlasTrans    1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ Blas_ਪੰਕਤੀ_Major 0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ Blas_ਖਾਨਾ_Major 1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ BlasNoTrans  0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ BlasTrans    1
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS 
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS 
+ਖਾਲੀ NAME( ਅੱਖਰ* ਕ੍ਰਮ_2, ਅੱਖਰ* TRANS, blasint *ਪੰਕਤੀਆਂ, blasint *ਖਾਨੇ_ਗਿਣਤੀ, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	ਅੱਖਰ ਕ੍ਰਮ_3, Trans;
+	ਪੂਰਨ ਕ੍ਰਮ=-1,trans=-1;
 	blasint info = -1;
 
-	Order = *ORDER;
+	ਕ੍ਰਮ_3 = *ਕ੍ਰਮ_2;
 	Trans = *TRANS;
 
-	TOUPPER(Order);
+	TOUPPER(ਕ੍ਰਮ_3);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
+	ਜੇ ( ਕ੍ਰਮ_3 == 'C' ) ਕ੍ਰਮ = Blas_ਖਾਨਾ_Major;
+	ਜੇ ( ਕ੍ਰਮ_3 == 'R' ) ਕ੍ਰਮ = Blas_ਪੰਕਤੀ_Major;
+	ਜੇ ( Trans == 'N' ) trans = BlasNoTrans;
+	ਜੇ ( Trans == 'R' ) trans = BlasNoTrans;
+	ਜੇ ( Trans == 'T' ) trans = BlasTrans;
+	ਜੇ ( Trans == 'C' ) trans = BlasTrans;
+#ਨਹੀਂਤਾਂ 
+ਖਾਲੀ CNAME(ਗਿਣਤੀ CBLAS_ਕ੍ਰਮ CORDER, ਗਿਣਤੀ CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
 {
-	blasint *rows, *cols, *lda, *ldb; 
+	blasint *ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *lda, *ldb; 
 	FLOAT   *alpha; 
-	int order=-1,trans=-1;
+	ਪੂਰਨ ਕ੍ਰਮ=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	ਜੇ ( CORDER == Cblas_ਖਾਨਾ_Major ) ਕ੍ਰਮ = Blas_ਖਾਨਾ_Major; 
+	ਜੇ ( CORDER == Cblas_ਪੰਕਤੀ_Major ) ਕ੍ਰਮ = Blas_ਪੰਕਤੀ_Major; 
 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
+	ਜੇ ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
+	ਜੇ ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
 
-	rows = &crows; 
-	cols = &ccols; 
+	ਪੰਕਤੀਆਂ = &crows; 
+	ਖਾਨੇ_ਗਿਣਤੀ = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
 	alpha = &calpha; 
 
-#endif
-	if ( order == BlasColMajor)
+#ਜੇ_ਅੰਤ
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਖਾਨਾ_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ਜੇ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*ਪੰਕਤੀਆਂ) ) info = 9;
+        	ਜੇ ( trans == BlasTrans    &&  *ldb < MAX(1,*ਖਾਨੇ_ਗਿਣਤੀ) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਪੰਕਤੀ_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ਜੇ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*ਖਾਨੇ_ਗਿਣਤੀ) ) info = 9;
+        	ਜੇ ( trans == BlasTrans    &&  *ldb < MAX(1,*ਪੰਕਤੀਆਂ) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਖਾਨਾ_Major &&  *lda < MAX(1,*ਪੰਕਤੀਆਂ) ) info = 7;
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਪੰਕਤੀ_Major &&  *lda < MAX(1,*ਖਾਨੇ_ਗਿਣਤੀ) ) info = 7;
+	ਜੇ ( *ਖਾਨੇ_ਗਿਣਤੀ < 0 ) info = 4;
+	ਜੇ ( *ਪੰਕਤੀਆਂ < 0 ) info = 3;
+	ਜੇ ( trans < 0 ) info = 2;
+	ਜੇ ( ਕ੍ਰਮ < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ਜੇ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    		ਵਾਪਸ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ਜੇ ((*ਪੰਕਤੀਆਂ == 0) || (*ਖਾਨੇ_ਗਿਣਤੀ == 0)) ਵਾਪਸ;
 
-	if ( order == BlasColMajor )
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਖਾਨਾ_Major )
 	{
-		if ( trans == BlasNoTrans )
+		ਜੇ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *ldb );
+			OMATCOPY_K_CN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		ਨਹੀਂਤਾਂ
 		{
-			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *ldb );
+			OMATCOPY_K_CT(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ldb );
 		}
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
-		if ( trans == BlasNoTrans )
+		ਜੇ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *ldb );
+			OMATCOPY_K_RN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		ਨਹੀਂਤਾਂ
 		{
-			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *ldb );
+			OMATCOPY_K_RT(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ldb );
 		}
 	}
 
-	return;
+	ਵਾਪਸ;
 
 }
 

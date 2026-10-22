@@ -36,143 +36,143 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRTRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRTRS"
-#else
-#define ERROR_NAME "CTRTRS"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XTRTRS"
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZTRTRS"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CTRTRS"
+#ਜੇ_ਅੰਤ
 
-static blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ਸਥਿਰ blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_SINGLE, TRTRS_UNN_SINGLE, TRTRS_UTU_SINGLE, TRTRS_UTN_SINGLE, TRTRS_URU_SINGLE, TRTRS_URN_SINGLE, TRTRS_UCU_SINGLE, TRTRS_UCN_SINGLE, TRTRS_LNU_SINGLE, TRTRS_LNN_SINGLE, TRTRS_LTU_SINGLE, TRTRS_LTN_SINGLE, TRTRS_LRU_SINGLE, TRTRS_LRN_SINGLE, TRTRS_LCU_SINGLE, TRTRS_LCN_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+ਸਥਿਰ blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_PARALLEL, TRTRS_UNN_PARALLEL, TRTRS_UTU_PARALLEL, TRTRS_UTN_PARALLEL, TRTRS_URU_PARALLEL, TRTRS_URN_PARALLEL, TRTRS_UCU_PARALLEL, TRTRS_UCN_PARALLEL, TRTRS_LNU_PARALLEL, TRTRS_LNN_PARALLEL, TRTRS_LTU_PARALLEL, TRTRS_LTN_PARALLEL, TRTRS_LRU_PARALLEL, TRTRS_LRN_PARALLEL, TRTRS_LCU_PARALLEL, TRTRS_LCN_PARALLEL,
 };
-#endif
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+ਖਾਲੀ NAME(ਅੱਖਰ *UPLO, ਅੱਖਰ* TRANS, ਅੱਖਰ* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   FLOAT *b, blasint *ldB, blasint *Info){
 
-    char uplo_arg = *UPLO;
-    char trans_arg = *TRANS;
-    char diag_arg = *DIAG;
+    ਅੱਖਰ uplo_arg = *UPLO;
+    ਅੱਖਰ trans_arg = *TRANS;
+    ਅੱਖਰ diag_arg = *DIAG;
 
-  blas_arg_t args;
+  blas_arg_t ਦਲੀਲਾਂ;
 
   blasint info;
-  int uplo, trans, diag;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  ਪੂਰਨ uplo, trans, diag;
+  FLOAT *ਬਫਰ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ PPC440
+  ਬਾਹਰੀ
+#ਜੇ_ਅੰਤ
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
+  ਦਲੀਲਾਂ.m    = *N;
+  ਦਲੀਲਾਂ.n    = *NRHS;
+  ਦਲੀਲਾਂ.a    = (ਖਾਲੀ *)a;
+  ਦਲੀਲਾਂ.lda  = *ldA;
+  ਦਲੀਲਾਂ.b    = (ਖਾਲੀ *)b;
+  ਦਲੀਲਾਂ.ldb  = *ldB;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  ਜੇ (trans_arg == 'N') trans = 0;
+  ਜੇ (trans_arg == 'T') trans = 1;
+  ਜੇ (trans_arg == 'R') trans = 2;
+  ਜੇ (trans_arg == 'C') trans = 3;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ਜੇ (uplo_arg == 'U') uplo = 0;
+  ਜੇ (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ਜੇ (diag_arg == 'U') diag = 0;
+  ਜੇ (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  ਜੇ (ਦਲੀਲਾਂ.ldb  < MAX(1, ਦਲੀਲਾਂ.m)) info = 9;
+  ਜੇ (ਦਲੀਲਾਂ.lda  < MAX(1, ਦਲੀਲਾਂ.m)) info = 7;
+  ਜੇ (ਦਲੀਲਾਂ.n    < 0) info = 5;
+  ਜੇ (ਦਲੀਲਾਂ.m    < 0) info = 4;
+  ਜੇ (trans     < 0) info = 2;
+  ਜੇ (uplo      < 0) info = 1;
+  ਜੇ (diag      < 0) info = 3;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ਜੇ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ਵਾਪਸ;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  ਦਲੀਲਾਂ.alpha = ਨਿਰਾ;
+  ਦਲੀਲਾਂ.beta  = ਨਿਰਾ;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  ਜੇ (ਦਲੀਲਾਂ.m == 0) ਵਾਪਸ;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
-      *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+  ਜੇ (diag) {
+    ਜੇ (AMIN_K(ਦਲੀਲਾਂ.m, ਦਲੀਲਾਂ.a, ਦਲੀਲਾਂ.lda + 1) == ZERO) {
+      *Info = IAMIN_K(ਦਲੀਲਾਂ.m, ਦਲੀਲਾਂ.a, ਦਲੀਲਾਂ.lda + 1);
+      ਵਾਪਸ;
     }
   }
 
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ PPC440
+  ਬਫਰ = (FLOAT *)blas_ਸਮ੍ਰਿਤੀ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)ਬਫਰ + GEMM_ਵਿੱਥ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ਮਾਪ + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ਵਿੱਥ_B);
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਦਲੀਲਾਂ.common = ਨਿਰਾ;
+  ਜੇ (ਦਲੀਲਾਂ.m < 64) {
+    ਦਲੀਲਾਂ.nthreads = 1;
+  } ਨਹੀਂਤਾਂ {
+    ਦਲੀਲਾਂ.nthreads = ਅੰਕ_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  ਜੇ (ਦਲੀਲਾਂ.nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-      (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+      (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
+    (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ PPC440
+  blas_ਸਮ੍ਰਿਤੀ_free(ਬਫਰ);
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE * COMPSIZE, ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.n, 2 * ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

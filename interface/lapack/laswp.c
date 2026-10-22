@@ -36,80 +36,80 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
-#ifdef XDOUBLE
+ਸਥਿਰ ਪੂਰਨ (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
   qlaswp_plus, qlaswp_minus,
-#elif defined(DOUBLE)
+#ਜਾਂਜੇ defined(DOUBLE)
   dlaswp_plus, dlaswp_minus,
-#else
+#ਨਹੀਂਤਾਂ
   slaswp_plus, slaswp_minus,
-#endif
+#ਜੇ_ਅੰਤ
 };
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
+ਖਾਲੀ NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  ਪੂਰਨ flag;
 
-#ifdef SMP
-  int mode, nthreads;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ ਬਹੁਲਕ, nthreads;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-#endif
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  ਜੇ (incx == 0 || n <= 0) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
   flag = (incx < 0);
 
-#ifdef SMP
-  if (n < 64) {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਜੇ (n < 64) {
     nthreads = 1;
-  } else {
-    nthreads = num_cpu_avail(1);
+  } ਨਹੀਂਤਾਂ {
+    nthreads = ਅੰਕ_cpu_avail(1);
   }
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-  (laswp[flag])(n, k1, k2, ZERO, a, lda, NULL, 0, ipiv, incx);
+  (laswp[flag])(n, k1, k2, ZERO, a, lda, ਨਿਰਾ, 0, ipiv, incx);
 
-#ifdef SMP
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
 
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+  ਬਹੁਲਕ  =  BLAS_XDOUBLE | BLAS_REAL;
+#ਜਾਂਜੇ defined(DOUBLE)
+  ਬਹੁਲਕ  =  BLAS_DOUBLE  | BLAS_REAL;
+#ਨਹੀਂਤਾਂ
+  ਬਹੁਲਕ  =  BLAS_SINGLE  | BLAS_REAL;
+#ਜੇ_ਅੰਤ
 
-  blas_level1_thread(mode, n, k1, k2, dummyalpha,
-		     a, lda, NULL, 0, ipiv, incx,
-		     (int(*)(void))laswp[flag], nthreads);
+  blas_level1_thread(ਬਹੁਲਕ, n, k1, k2, dummyalpha,
+		     a, lda, ਨਿਰਾ, 0, ipiv, incx,
+		     (ਪੂਰਨ(*)(ਖਾਲੀ))laswp[flag], nthreads);
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(COMPSIZE, n * (k2 - k1), 0);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, n * (k2 - k1), 0);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

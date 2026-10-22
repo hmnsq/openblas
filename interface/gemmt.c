@@ -32,63 +32,63 @@
 /*                                                                   */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
 
-#ifndef COMPLEX
-#define SMP_THRESHOLD_MIN 65536.0
-#ifdef RNAME
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMMTR"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMMTR"
-#elif defined(BFLOAT16)
-#define ERROR_NAME "SBGEMMTR"
-#else
-#define ERROR_NAME "SGEMMTR"
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMMT "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMMT "
-#elif defined(BFLOAT16)
-#define ERROR_NAME "SBGEMMT "
-#else
-#define ERROR_NAME "SGEMMT "
-#endif
-#endif
-#else
-#define SMP_THRESHOLD_MIN 8192.0
-#ifdef RNAME
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMMTR"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMMTR"
-#else
-#define ERROR_NAME "CGEMMTR"
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMMT "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMMT "
-#else
-#define ERROR_NAME "CGEMMT "
-#endif
-#endif
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SMP_ਹੱਦ_MIN 65536.0
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RNAME
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "QGEMMTR"
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DGEMMTR"
+#ਜਾਂਜੇ defined(BFLOAT16)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SBGEMMTR"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SGEMMTR"
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "QGEMMT "
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DGEMMT "
+#ਜਾਂਜੇ defined(BFLOAT16)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SBGEMMT "
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SGEMMT "
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SMP_ਹੱਦ_MIN 8192.0
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RNAME
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XGEMMTR"
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZGEMMTR"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CGEMMTR"
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XGEMMT "
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZGEMMT "
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CGEMMT "
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ GEMM_MULTITHREAD_ਹੱਦ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMM_MULTITHREAD_ਹੱਦ 4
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+ਖਾਲੀ NAME(ਅੱਖਰ *UPLO, ਅੱਖਰ *TRANSA, ਅੱਖਰ *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -97,27 +97,27 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	ਪੂਰਨ transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	ਅੱਖਰ transA, transB, Uplo;
 	blasint nrowa, nrowb;
-#if !defined(COMPLEX)
+#ਜੇ !defined(COMPLEX)
 	FLOAT alpha, beta;
-#endif
+#ਜੇ_ਅੰਤ
 
 	PRINT_DEBUG_NAME;
 
 	m = *M;
 	k = *K;
 
-#if defined(COMPLEX)
+#ਜੇ defined(COMPLEX)
 	FLOAT *alpha = Alpha;
 	FLOAT *beta = Beta;
-#else
+#ਨਹੀਂਤਾਂ
 	alpha = *Alpha;
 	beta = *Beta;
-#endif
+#ਜੇ_ਅੰਤ
 
 	lda = *ldA;
 	ldb = *ldB;
@@ -134,93 +134,93 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	ਜੇ (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	ਜੇ (transA == 'T')
 		transa = 1;
-#ifndef COMPLEX
-	if (transA == 'R')
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+	ਜੇ (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	ਜੇ (transA == 'C')
 		transa = 1;
-#else
-	if (transA == 'R')
+#ਨਹੀਂਤਾਂ
+	ਜੇ (transA == 'R')
 		transa = 2;
-	if (transA == 'C')
+	ਜੇ (transA == 'C')
 		transa = 3;
-#endif
+#ਜੇ_ਅੰਤ
 
-	if (transB == 'N')
+	ਜੇ (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	ਜੇ (transB == 'T')
 		transb = 1;
-#ifndef COMPLEX
-	if (transB == 'R')
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+	ਜੇ (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	ਜੇ (transB == 'C')
 		transb = 1;
-#else
-	if (transB == 'R')
+#ਨਹੀਂਤਾਂ
+	ਜੇ (transB == 'R')
 		transb = 2;
-	if (transB == 'C')
+	ਜੇ (transB == 'C')
 		transb = 3;
-#endif
+#ਜੇ_ਅੰਤ
 
-	if (Uplo == 'U')
+	ਜੇ (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	ਜੇ (Uplo == 'L')
 		uplo = 1;
 	
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	ਜੇ (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	ਜੇ (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	ਜੇ (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	ਜੇ (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	ਜੇ (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	ਜੇ (k < 0)
 		info = 5;
-	if (m < 0)
+	ਜੇ (m < 0)
 		info = 4;
-	if (transb < 0)
+	ਜੇ (transb < 0)
 		info = 3;
-	if (transa < 0)
+	ਜੇ (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	ਜੇ (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ਜੇ (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+		ਵਾਪਸ;
 	}
-#else
+#ਨਹੀਂਤਾਂ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+ਖਾਲੀ CNAME(ਗਿਣਤੀ CBLAS_ਕ੍ਰਮ ਕ੍ਰਮ, ਗਿਣਤੀ CBLAS_UPLO Uplo,
+	   ਗਿਣਤੀ CBLAS_TRANSPOSE TransA, ਗਿਣਤੀ CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
-#ifndef COMPLEX
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
 	   IFLOAT * B, blasint LDB, FLOAT beta, FLOAT * c, blasint ldc)
 {
-#else
-	   void *valpha,
-	   void *va, blasint LDA,
-	   void *vb, blasint LDB, void *vbeta, void *vc, blasint ldc)
+#ਨਹੀਂਤਾਂ
+	   ਖਾਲੀ *valpha,
+	   ਖਾਲੀ *va, blasint LDA,
+	   ਖਾਲੀ *vb, blasint LDB, ਖਾਲੀ *vbeta, ਖਾਲੀ *vc, blasint ldc)
 {
 	FLOAT *alpha = (FLOAT *) valpha;
 	FLOAT *beta = (FLOAT *) vbeta;
 	FLOAT *A = (FLOAT *) va;
 	FLOAT *B = (FLOAT *) vb;
 	FLOAT *c = (FLOAT *) vc;
-#endif
-	int transa, transb, uplo;
+#ਜੇ_ਅੰਤ
+	ਪੂਰਨ transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	FLOAT *a, *b;
@@ -232,43 +232,43 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	ਜੇ (ਕ੍ਰਮ == Cblas_ਖਾਨਾ_Major) {
+		ਜੇ (Uplo == Cblas_ਉੱਤਲਾ) uplo = 0;
+		ਜੇ (Uplo == Cblas_ਹੇਠਲਾ) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		ਜੇ (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		ਜੇ (TransA == CblasTrans)
 			transa = 1;
-#ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+		ਜੇ (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		ਜੇ (TransA == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#ਨਹੀਂਤਾਂ
+		ਜੇ (TransA == CblasConjNoTrans)
 			transa = 2;
-		if (TransA == CblasConjTrans)
+		ਜੇ (TransA == CblasConjTrans)
 			transa = 3;
-#endif
-		if (TransB == CblasNoTrans)
+#ਜੇ_ਅੰਤ
+		ਜੇ (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		ਜੇ (TransB == CblasTrans)
 			transb = 1;
-#ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+		ਜੇ (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		ਜੇ (TransB == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#ਨਹੀਂਤਾਂ
+		ਜੇ (TransB == CblasConjNoTrans)
 			transb = 2;
-		if (TransB == CblasConjTrans)
+		ਜੇ (TransB == CblasConjTrans)
 			transb = 3;
-#endif
+#ਜੇ_ਅੰਤ
 
-		a = (void *)A;
-		b = (void *)B;
+		a = (ਖਾਲੀ *)A;
+		b = (ਖਾਲੀ *)B;
 		lda = LDA;
 		ldb = LDB;
 
@@ -277,140 +277,140 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa, nrowb;
 
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		ਜੇ (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1) nrowb = m;
+		ਜੇ (transb & 1) nrowb = m;
 
-		if (ldc < MAX(1, m))
+		ਜੇ (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		ਜੇ (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		ਜੇ (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		ਜੇ (k < 0)
 			info = 5;
-		if (m < 0)
+		ਜੇ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ਜੇ (transb < 0)
 			info = 3;
-		if (transa < 0)
+		ਜੇ (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		ਜੇ (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	ਜੇ (ਕ੍ਰਮ == Cblas_ਪੰਕਤੀ_Major) {
 
-		a = (void *)B;
-		b = (void *)A;
+		a = (ਖਾਲੀ *)B;
+		b = (ਖਾਲੀ *)A;
 
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 1;
-		if (Uplo == CblasLower) uplo = 0;
+		ਜੇ (Uplo == Cblas_ਉੱਤਲਾ) uplo = 1;
+		ਜੇ (Uplo == Cblas_ਹੇਠਲਾ) uplo = 0;
 
-		if (TransB == CblasNoTrans)
+		ਜੇ (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		ਜੇ (TransB == CblasTrans)
 			transa = 1;
-#ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+		ਜੇ (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		ਜੇ (TransB == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#ਨਹੀਂਤਾਂ
+		ਜੇ (TransB == CblasConjNoTrans)
 			transa = 2;
-		if (TransB == CblasConjTrans)
+		ਜੇ (TransB == CblasConjTrans)
 			transa = 3;
-#endif
-		if (TransA == CblasNoTrans)
+#ਜੇ_ਅੰਤ
+		ਜੇ (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		ਜੇ (TransA == CblasTrans)
 			transb = 1;
-#ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+		ਜੇ (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		ਜੇ (TransA == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#ਨਹੀਂਤਾਂ
+		ਜੇ (TransA == CblasConjNoTrans)
 			transb = 2;
-		if (TransA == CblasConjTrans)
+		ਜੇ (TransA == CblasConjTrans)
 			transb = 3;
-#endif
+#ਜੇ_ਅੰਤ
 
 		info = -1;
 
 		blasint ncola, ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		ਜੇ (transa & 1) ncola = k;
 		ncolb = k;
-		if (transb & 1) ncolb = m;
+		ਜੇ (transb & 1) ncolb = m;
 
-		if (ldc < MAX(1,m))
+		ਜੇ (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		ਜੇ (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		ਜੇ (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		ਜੇ (k < 0)
 			info = 5;
-		if (m < 0)
+		ਜੇ (m < 0)
 			info = 4;
-		if (transb < 0)
+		ਜੇ (transb < 0)
 			info = 2;
-		if (transa < 0)
+		ਜੇ (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		ਜੇ (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ਜੇ (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+		ਵਾਪਸ;
 	}
-#endif
-#ifndef COMPLEX
-#define GEMMT_TABLE_INDEX ((uplo << 2) | (transb << 1) | transa)
-#else
-#define GEMMT_TABLE_INDEX ((uplo << 4) | (transb << 2) | transa)
-#endif
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMMT_ਸਾਰਣੀ_ਸੂਚਕਾਂਕ ((uplo << 2) | (transb << 1) | transa)
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMMT_ਸਾਰਣੀ_ਸੂਚਕਾਂਕ ((uplo << 4) | (transb << 2) | transa)
+#ਜੇ_ਅੰਤ
 
-	blas_arg_t args;
-	FLOAT *buffer, *sa, *sb;
+	blas_arg_t ਦਲੀਲਾਂ;
+	FLOAT *ਬਫਰ, *sa, *sb;
 
-#ifdef SMP
-	double MMK;
-#ifndef COMPLEX
-#ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_REAL;
-#else
-	int mode = BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-	int mode = BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+	ਦੁੱਗਣਾ MMK;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+	ਪੂਰਨ ਬਹੁਲਕ = BLAS_XDOUBLE | BLAS_REAL;
+#ਜਾਂਜੇ defined(DOUBLE)
+	ਪੂਰਨ ਬਹੁਲਕ = BLAS_DOUBLE  | BLAS_REAL;
+#ਨਹੀਂਤਾਂ
+	ਪੂਰਨ ਬਹੁਲਕ = BLAS_SINGLE  | BLAS_REAL;
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+	ਪੂਰਨ ਬਹੁਲਕ = BLAS_XDOUBLE | BLAS_COMPLEX;
+#ਜਾਂਜੇ defined(DOUBLE)
+	ਪੂਰਨ ਬਹੁਲਕ = BLAS_DOUBLE  | BLAS_COMPLEX;
+#ਨਹੀਂਤਾਂ
+	ਪੂਰਨ ਬਹੁਲਕ = BLAS_SINGLE  | BLAS_COMPLEX;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 	/* [uplo][op(B)][op(A)], as in interface/gemm.c */
-	static int (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef COMPLEX
+	ਸਥਿਰ ਪੂਰਨ (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
 		GEMMT_UNN, GEMMT_UTN,
 		GEMMT_UNT, GEMMT_UTT,
 		GEMMT_LNN, GEMMT_LTN,
 		GEMMT_LNT, GEMMT_LTT,
-#else
+#ਨਹੀਂਤਾਂ
 		GEMMT_UNN, GEMMT_UTN, GEMMT_URN, GEMMT_UCN,
 		GEMMT_UNT, GEMMT_UTT, GEMMT_URT, GEMMT_UCT,
 		GEMMT_UNR, GEMMT_UTR, GEMMT_URR, GEMMT_UCR,
@@ -419,82 +419,82 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		GEMMT_LNT, GEMMT_LTT, GEMMT_LRT, GEMMT_LCT,
 		GEMMT_LNR, GEMMT_LTR, GEMMT_LRR, GEMMT_LCR,
 		GEMMT_LNC, GEMMT_LTC, GEMMT_LRC, GEMMT_LCC,
-#endif
+#ਜੇ_ਅੰਤ
 	};
 
-	if (m == 0)
-		return;
+	ਜੇ (m == 0)
+		ਵਾਪਸ;
 
-	IDEBUG_START;
+	IDEBUG_ਸ਼ੁਰੂ;
 
-	FUNCTION_PROFILE_START();
+	FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-	args.m = m;
-	args.n = m;
-	args.k = k;
+	ਦਲੀਲਾਂ.m = m;
+	ਦਲੀਲਾਂ.n = m;
+	ਦਲੀਲਾਂ.k = k;
 
-	args.a = (void *)a;
-	args.b = (void *)b;
-	args.c = (void *)c;
+	ਦਲੀਲਾਂ.a = (ਖਾਲੀ *)a;
+	ਦਲੀਲਾਂ.b = (ਖਾਲੀ *)b;
+	ਦਲੀਲਾਂ.c = (ਖਾਲੀ *)c;
 
-	args.lda = lda;
-	args.ldb = ldb;
-	args.ldc = ldc;
+	ਦਲੀਲਾਂ.lda = lda;
+	ਦਲੀਲਾਂ.ldb = ldb;
+	ਦਲੀਲਾਂ.ldc = ldc;
 
-#if defined(COMPLEX)
-	args.alpha = (void *)alpha;
-	args.beta  = (void *)beta;
-#else
-	args.alpha = (void *)&alpha;
-	args.beta  = (void *)&beta;
-#endif
+#ਜੇ defined(COMPLEX)
+	ਦਲੀਲਾਂ.alpha = (ਖਾਲੀ *)alpha;
+	ਦਲੀਲਾਂ.beta  = (ਖਾਲੀ *)beta;
+#ਨਹੀਂਤਾਂ
+	ਦਲੀਲਾਂ.alpha = (ਖਾਲੀ *)&alpha;
+	ਦਲੀਲਾਂ.beta  = (ਖਾਲੀ *)&beta;
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-	args.common   = NULL;
-	args.nthreads = 1;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+	ਦਲੀਲਾਂ.common   = ਨਿਰਾ;
+	ਦਲੀਲਾਂ.nthreads = 1;
+#ਜੇ_ਅੰਤ
 
-	buffer = (FLOAT *)blas_memory_alloc(0);
-	if (!buffer) {
+	ਬਫਰ = (FLOAT *)blas_ਸਮ੍ਰਿਤੀ_alloc(0);
+	ਜੇ (!ਬਫਰ) {
 		info = -999;
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		BLASFUNC(xerbla) (ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+		ਵਾਪਸ;
 	}
 
-	sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-	sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+	sa = (FLOAT *)((BLASLONG)ਬਫਰ + GEMM_ਵਿੱਥ_A);
+	sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ਮਾਪ + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ਵਿੱਥ_B);
 
-#ifdef SMP
-	MMK = (double)(m + 1) * (double)m * (double)k;
-	if (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
-		args.nthreads = 1;
-	} else {
-		args.nthreads = num_cpu_avail(3);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+	MMK = (ਦੁੱਗਣਾ)(m + 1) * (ਦੁੱਗਣਾ)m * (ਦੁੱਗਣਾ)k;
+	ਜੇ (MMK <= (SMP_ਹੱਦ_MIN * GEMM_MULTITHREAD_ਹੱਦ)) {
+		ਦਲੀਲਾਂ.nthreads = 1;
+	} ਨਹੀਂਤਾਂ {
+		ਦਲੀਲਾਂ.nthreads = ਅੰਕ_cpu_avail(3);
 	}
 
-	if (args.nthreads == 1) {
-#endif
+	ਜੇ (ਦਲੀਲਾਂ.nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-		(gemmt[GEMMT_TABLE_INDEX])(&args, NULL, NULL, sa, sb, 0);
+		(gemmt[GEMMT_ਸਾਰਣੀ_ਸੂਚਕਾਂਕ])(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
 
-#ifdef SMP
-	} else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+	} ਨਹੀਂਤਾਂ {
 
 		/* Split the triangle into column ranges of equal area; every
 		   thread then runs the single-threaded driver on its own range
 		   and writes a disjoint set of columns of C. */
-		mode |= (uplo << BLAS_UPLO_SHIFT);
+		ਬਹੁਲਕ |= (uplo << BLAS_UPLO_ਖਿਸਕਾਓ);
 
-		syrk_thread(mode, &args, NULL, NULL, gemmt[GEMMT_TABLE_INDEX], sa, sb, args.nthreads);
+		syrk_thread(ਬਹੁਲਕ, &ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, gemmt[GEMMT_ਸਾਰਣੀ_ਸੂਚਕਾਂਕ], sa, sb, ਦਲੀਲਾਂ.nthreads);
 	}
-#endif
+#ਜੇ_ਅੰਤ
 
-	blas_memory_free(buffer);
+	blas_ਸਮ੍ਰਿਤੀ_free(ਬਫਰ);
 
-	FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.k + args.k * args.n + args.m * args.n / 2,
-			     args.m * args.n * args.k);
+	FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE * COMPSIZE, ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.k + ਦਲੀਲਾਂ.k * ਦਲੀਲਾਂ.n + ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.n / 2,
+			     ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.n * ਦਲੀਲਾਂ.k);
 
-	IDEBUG_END;
+	IDEBUG_ਸਿਰਾ;
 
-	return;
+	ਵਾਪਸ;
 }

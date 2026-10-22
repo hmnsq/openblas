@@ -36,96 +36,96 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
-#if  defined(Z13)
-#define MULTI_THREAD_MINIMAL  200000
-#else
-#define MULTI_THREAD_MINIMAL  10000
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
+#ਜੇ  defined(Z13)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MULTI_THREAD_ਨਿਊਨਤਮ  200000
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MULTI_THREAD_ਨਿਊਨਤਮ  10000
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+ਖਾਲੀ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
   FLOAT alpha = *ALPHA;
 
-#else
+#ਨਹੀਂਤਾਂ
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+ਖਾਲੀ CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ ਬਹੁਲਕ, nthreads;
+#ਜੇ_ਅੰਤ
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ਨਹੀਂਤਾਂ
   PRINT_DEBUG_CNAME;
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (n <= 0) return;
+  ਜੇ (n <= 0) ਵਾਪਸ;
 
-  if (alpha == ZERO) return;
+  ਜੇ (alpha == ZERO) ਵਾਪਸ;
 
-  if (incx == 0 && incy == 0) {
+  ਜੇ (incx == 0 && incy == 0) {
     *y += n * alpha *(*x);
-    return;
+    ਵਾਪਸ;
   }
     
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ਜੇ (incx < 0) x -= (n - 1) * incx;
+  ਜੇ (incy < 0) y -= (n - 1) * incy;
 
-#ifdef SMP
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  ਜੇ (incx == 0 || incy == 0 || n <= MULTI_THREAD_ਨਿਊਨਤਮ)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  ਨਹੀਂਤਾਂ
+	  nthreads = ਅੰਕ_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, NULL, 0);
+  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, ਨਿਰਾ, 0);
 
-#ifdef SMP
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+    ਬਹੁਲਕ  =  BLAS_XDOUBLE | BLAS_REAL;
+#ਜਾਂਜੇ defined(DOUBLE)
+    ਬਹੁਲਕ  =  BLAS_DOUBLE  | BLAS_REAL;
+#ਨਹੀਂਤਾਂ
+    ਬਹੁਲਕ  =  BLAS_SINGLE  | BLAS_REAL;
+#ਜੇ_ਅੰਤ
 
-    blas_level1_thread(mode, n, 0, 0, &alpha,
-		       x, incx, y, incy, NULL, 0,  (int (*)(void))AXPYU_K, nthreads);
+    blas_level1_thread(ਬਹੁਲਕ, n, 0, 0, &alpha,
+		       x, incx, y, incy, ਨਿਰਾ, 0,  (ਪੂਰਨ (*)(ਖਾਲੀ))AXPYU_K, nthreads);
 
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(1, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

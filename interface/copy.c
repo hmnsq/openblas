@@ -36,16 +36,16 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+ਖਾਲੀ NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
@@ -53,35 +53,35 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   PRINT_DEBUG_NAME;
 
-#else
+#ਨਹੀਂਤਾਂ
 
-#ifdef COMPLEX
-void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX
+ਖਾਲੀ CNAME(blasint n, ਖਾਲੀ *vx, blasint incx, ਖਾਲੀ *vy, blasint incy){
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
-#endif
+#ਨਹੀਂਤਾਂ
+ਖਾਲੀ CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_CNAME;
 
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (n <= 0) return;
+  ਜੇ (n <= 0) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0) y -= (n - 1) * incy * COMPSIZE;
+  ਜੇ (incx < 0) x -= (n - 1) * incx * COMPSIZE;
+  ਜੇ (incy < 0) y -= (n - 1) * incy * COMPSIZE;
 
   COPY_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(COMPSIZE, COMPSIZE * n, 0);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, COMPSIZE * n, 0);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

@@ -36,113 +36,113 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
-#if  defined(Z13)
-#define MULTI_THREAD_MINIMAL  200000
-#else
-#define MULTI_THREAD_MINIMAL  10000
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
+#ਜੇ  defined(Z13)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MULTI_THREAD_ਨਿਊਨਤਮ  200000
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MULTI_THREAD_ਨਿਊਨਤਮ  10000
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+ਖਾਲੀ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   blasint n    = *N;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
-#ifdef COMPLEX
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy){
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX
+ਖਾਲੀ CNAME(blasint n, ਖਾਲੀ *VALPHA, ਖਾਲੀ *vx, blasint incx, ਖਾਲੀ *vy, blasint incy){
 FLOAT *ALPHA = (FLOAT*) VALPHA;
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
-#endif
-#endif
+#ਨਹੀਂਤਾਂ
+ਖਾਲੀ CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
   FLOAT alpha_r = *(ALPHA + 0);
   FLOAT alpha_i = *(ALPHA + 1);
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ ਬਹੁਲਕ, nthreads;
+#ਜੇ_ਅੰਤ
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ਨਹੀਂਤਾਂ
   PRINT_DEBUG_CNAME;
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (n <= 0) return;
+  ਜੇ (n <= 0) ਵਾਪਸ;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ਜੇ ((alpha_r == ZERO) && (alpha_i == ZERO)) ਵਾਪਸ;
 
-  if (incx == 0 && incy == 0) {
+  ਜੇ (incx == 0 && incy == 0) {
   *y += n * (alpha_r * (*x) - alpha_i* (*(x+1)) );
   *(y+1) += n * (alpha_i * (*x) + alpha_r * (*(x +1)) );
-  return;
+  ਵਾਪਸ;
   }
   
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ਜੇ (incx < 0) x -= (n - 1) * incx * 2;
+  ਜੇ (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef SMP
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  ਜੇ (incx == 0 || incy == 0 || n <= MULTI_THREAD_ਨਿਊਨਤਮ)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  ਨਹੀਂਤਾਂ
+	  nthreads = ਅੰਕ_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-#ifndef CONJ
-    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#else
-    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, ਨਿਰਾ, 0);
+#ਨਹੀਂਤਾਂ
+    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, ਨਿਰਾ, 0);
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+    ਬਹੁਲਕ  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#ਜਾਂਜੇ defined(DOUBLE)
+    ਬਹੁਲਕ  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ਨਹੀਂਤਾਂ
+    ਬਹੁਲਕ  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#ਜੇ_ਅੰਤ
 
-    blas_level1_thread(mode, n, 0, 0, ALPHA, x, incx, y, incy, NULL, 0,
-#ifndef CONJ
-                       (int (*)(void))AXPYU_K,
-#else
-                       (int (*)(void))AXPYC_K,
-#endif
+    blas_level1_thread(ਬਹੁਲਕ, n, 0, 0, ALPHA, x, incx, y, incy, ਨਿਰਾ, 0,
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+                       (ਪੂਰਨ (*)(ਖਾਲੀ))AXPYU_K,
+#ਨਹੀਂਤਾਂ
+                       (ਪੂਰਨ (*)(ਖਾਲੀ))AXPYC_K,
+#ਜੇ_ਅੰਤ
 		       nthreads);
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

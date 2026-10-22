@@ -36,68 +36,68 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
+ਦੁੱਗਣਾ NAME(blasint *N, ਦਸ਼ਮਲਵ *x, blasint *INCX, ਦਸ਼ਮਲਵ *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-  double ret = 0.0;
+  ਦੁੱਗਣਾ ret = 0.0;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ਜੇ (n <= 0) ਵਾਪਸ 0;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ਜੇ (incx < 0) x -= (n - 1) * incx;
+  ਜੇ (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_ਸਿਰਾ(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 
 }
 
-#else
+#ਨਹੀਂਤਾਂ
 
-double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
+ਦੁੱਗਣਾ CNAME(blasint n, ਦਸ਼ਮਲਵ *x, blasint incx, ਦਸ਼ਮਲਵ *y, blasint incy){
 
-  double ret = 0.0;
+  ਦੁੱਗਣਾ ret = 0.0;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ਜੇ (n <= 0) ਵਾਪਸ 0;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ਜੇ (incx < 0) x -= (n - 1) * incx;
+  ਜੇ (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_ਸਿਰਾ(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 
 }
 
-#endif
+#ਜੇ_ਅੰਤ

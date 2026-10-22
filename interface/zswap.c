@@ -36,92 +36,92 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#if defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
+#ਜੇ defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
 // Multithreaded swap gives performance benefits in ThunderX2T99
-#else
+#ਨਹੀਂਤਾਂ
 // Disable multi-threading as it does not show any performance
 // benefits. Keep the multi-threading code for the record.
-#undef SMP
-#endif
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ SMP
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+ਖਾਲੀ NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   blasint n    = *N;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
+#ਨਹੀਂਤਾਂ
 
-void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+ਖਾਲੀ CNAME(blasint n, ਖਾਲੀ *vx, blasint incx, ਖਾਲੀ *vy, blasint incy){
 FLOAT *x = (FLOAT*)vx;
 FLOAT *y = (FLOAT*)vy;
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-  int mode;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ ਬਹੁਲਕ;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-  int nthreads;
-#endif
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ਨਹੀਂਤਾਂ
   PRINT_DEBUG_CNAME;
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (n <= 0) return;
+  ਜੇ (n <= 0) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ਜੇ (incx < 0) x -= (n - 1) * incx * 2;
+  ਜੇ (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef SMP
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
-  if (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / sizeof(FLOAT))
+  ਜੇ (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_ਹੱਦ / ਆਕਾਰ(FLOAT))
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  ਨਹੀਂਤਾਂ
+	  nthreads = ਅੰਕ_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-  SWAP_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, NULL, 0);
+  ਅਦਲਾ_ਬਦਲੀ_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, ਨਿਰਾ, 0);
 
-#ifdef SMP
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+    ਬਹੁਲਕ  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#ਜਾਂਜੇ defined(DOUBLE)
+    ਬਹੁਲਕ  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ਨਹੀਂਤਾਂ
+    ਬਹੁਲਕ  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#ਜੇ_ਅੰਤ
 
-    blas_level1_thread(mode, n, 0, 0, dummyalpha,
-		       x, incx, y, incy, NULL, 0, (void *)SWAP_K, nthreads);
+    blas_level1_thread(ਬਹੁਲਕ, n, 0, 0, dummyalpha,
+		       x, incx, y, incy, ਨਿਰਾ, 0, (ਖਾਲੀ *)ਅਦਲਾ_ਬਦਲੀ_K, nthreads);
 
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(2, 2 * n, 0);
+  FUNCTION_PROFILE_ਸਿਰਾ(2, 2 * n, 0);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

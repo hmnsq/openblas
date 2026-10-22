@@ -30,173 +30,173 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2015-09-07 grisuthedragon 
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DIMATCOPY"
-#else
-#define ERROR_NAME "SIMATCOPY"
-#endif
+#ਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DIMATCOPY"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SIMATCOPY"
+#ਜੇ_ਅੰਤ
 
-#define BlasRowMajor 0
-#define BlasColMajor 1
-#define BlasNoTrans  0
-#define BlasTrans    1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ Blas_ਪੰਕਤੀ_Major 0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ Blas_ਖਾਨਾ_Major 1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ BlasNoTrans  0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ BlasTrans    1
 
-#undef malloc
-#undef free
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ ਸਮ੍ਰਿਤੀ_ਦਿਓ
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ ਮੁਕਤ
 
 /* Enables the New IMATCOPY code with inplace operation if lda == ldb   */
-#define NEW_IMATCOPY
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ NEW_IMATCOPY
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
+ਖਾਲੀ NAME( ਅੱਖਰ* ਕ੍ਰਮ_2, ਅੱਖਰ* TRANS, blasint *ਪੰਕਤੀਆਂ, blasint *ਖਾਨੇ_ਗਿਣਤੀ, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	ਅੱਖਰ ਕ੍ਰਮ_3, Trans;
+	ਪੂਰਨ ਕ੍ਰਮ=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
 
-	Order = *ORDER;
+	ਕ੍ਰਮ_3 = *ਕ੍ਰਮ_2;
 	Trans = *TRANS;
 
-	TOUPPER(Order);
+	TOUPPER(ਕ੍ਰਮ_3);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
+	ਜੇ ( ਕ੍ਰਮ_3 == 'C' ) ਕ੍ਰਮ = Blas_ਖਾਨਾ_Major;
+	ਜੇ ( ਕ੍ਰਮ_3 == 'R' ) ਕ੍ਰਮ = Blas_ਪੰਕਤੀ_Major;
+	ਜੇ ( Trans == 'N' ) trans = BlasNoTrans;
+	ਜੇ ( Trans == 'R' ) trans = BlasNoTrans;
+	ਜੇ ( Trans == 'T' ) trans = BlasTrans;
+	ਜੇ ( Trans == 'C' ) trans = BlasTrans;
+#ਨਹੀਂਤਾਂ 
+ਖਾਲੀ CNAME( ਗਿਣਤੀ CBLAS_ਕ੍ਰਮ CORDER, ਗਿਣਤੀ CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	ਪੂਰਨ ਕ੍ਰਮ=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
-	blasint *lda, *ldb, *rows, *cols; 
+	blasint *lda, *ldb, *ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	ਜੇ ( CORDER == Cblas_ਖਾਨਾ_Major) ਕ੍ਰਮ = Blas_ਖਾਨਾ_Major; 
+	ਜੇ ( CORDER == Cblas_ਪੰਕਤੀ_Major) ਕ੍ਰਮ = Blas_ਪੰਕਤੀ_Major; 
+	ਜੇ ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	ਜੇ ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
-	rows = &crows; 
-	cols = &ccols; 
+	ਪੰਕਤੀਆਂ = &crows; 
+	ਖਾਨੇ_ਗਿਣਤੀ = &ccols; 
 	alpha = &calpha; 
 	lda = &clda; 
 	ldb = &cldb; 	
-#endif 
+#ਜੇ_ਅੰਤ 
 
-	if ( order == BlasColMajor)
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਖਾਨਾ_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	ਜੇ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*ਪੰਕਤੀਆਂ) ) info = 8;
+        	ਜੇ ( trans == BlasTrans    &&  *ldb < MAX(1,*ਖਾਨੇ_ਗਿਣਤੀ) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਪੰਕਤੀ_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	ਜੇ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*ਖਾਨੇ_ਗਿਣਤੀ) ) info = 8;
+        	ਜੇ ( trans == BlasTrans    &&  *ldb < MAX(1,*ਪੰਕਤੀਆਂ) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਖਾਨਾ_Major &&  *lda < MAX(1,*ਪੰਕਤੀਆਂ) ) info = 7;
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਪੰਕਤੀ_Major &&  *lda < MAX(1,*ਖਾਨੇ_ਗਿਣਤੀ) ) info = 7;
+	ਜੇ ( *ਖਾਨੇ_ਗਿਣਤੀ < 0 ) info = 4;
+	ਜੇ ( *ਪੰਕਤੀਆਂ < 0 ) info = 3;
+	ਜੇ ( trans < 0 ) info = 2;
+	ਜੇ ( ਕ੍ਰਮ < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ਜੇ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    		ਵਾਪਸ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ਜੇ ((*ਪੰਕਤੀਆਂ == 0) || (*ਖਾਨੇ_ਗਿਣਤੀ == 0)) ਵਾਪਸ;
 
-#ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ NEW_IMATCOPY
+    ਜੇ ( *lda == *ldb ) {
+        ਜੇ ( ਕ੍ਰਮ == Blas_ਖਾਨਾ_Major )
         {
-            if ( trans == BlasNoTrans )
+            ਜੇ ( trans == BlasNoTrans )
             {
-                IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_CN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda );
+                ਵਾਪਸ;
             }
-            else if ( *rows == *cols )
+            ਨਹੀਂਤਾਂ ਜੇ ( *ਪੰਕਤੀਆਂ == *ਖਾਨੇ_ਗਿਣਤੀ )
             {
-                IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_CT(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda );
+                ਵਾਪਸ;
             }
         }
-        else
+        ਨਹੀਂਤਾਂ
         {
-            if ( trans == BlasNoTrans )
+            ਜੇ ( trans == BlasNoTrans )
             {
-                IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_RN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda );
+                ਵਾਪਸ;
             }
-            else if ( *rows == *cols )
+            ਨਹੀਂਤਾਂ ਜੇ ( *ਪੰਕਤੀਆਂ == *ਖਾਨੇ_ਗਿਣਤੀ )
             {
-                IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_RT(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda );
+                ਵਾਪਸ;
             }
         }
     }
-#endif
+#ਜੇ_ਅੰਤ
 
-	if ( *rows >  *cols )
-            msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
-            msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
+	ਜੇ ( *ਪੰਕਤੀਆਂ >  *ਖਾਨੇ_ਗਿਣਤੀ )
+            msize = (size_t)(*ਪੰਕਤੀਆਂ) * (*ldb)  * ਆਕਾਰ(FLOAT);
+    ਨਹੀਂਤਾਂ
+            msize = (size_t)(*ਖਾਨੇ_ਗਿਣਤੀ) * (*ldb)  * ਆਕਾਰ(FLOAT);
 
-	b = malloc(msize);
-	if ( b == NULL )
+	b = ਸਮ੍ਰਿਤੀ_ਦਿਓ(msize);
+	ਜੇ ( b == ਨਿਰਾ )
 	{
-		printf("Memory alloc failed in imatcopy\n");
-		exit(1);
+		ਲਿਖੋ("Memory alloc failed in imatcopy\n");
+		ਬਾਹਰ_ਨਿਕਲੋ(1);
 	}
 
-	if ( order == BlasColMajor )
+	ਜੇ ( ਕ੍ਰਮ == Blas_ਖਾਨਾ_Major )
 	{
-		if ( trans == BlasNoTrans )
+		ਜੇ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
-			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
+			OMATCOPY_K_CN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ਪੰਕਤੀਆਂ );
+			OMATCOPY_K_CN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, (FLOAT) 1.0 , b, *ਪੰਕਤੀਆਂ, a, *ldb );
 		}
-		else
+		ਨਹੀਂਤਾਂ
 		{
-			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
-			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
+			OMATCOPY_K_CT(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ਖਾਨੇ_ਗਿਣਤੀ );
+			OMATCOPY_K_CN(*ਖਾਨੇ_ਗਿਣਤੀ, *ਪੰਕਤੀਆਂ, (FLOAT) 1.0, b, *ਖਾਨੇ_ਗਿਣਤੀ, a, *ldb );
 		}
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
-		if ( trans == BlasNoTrans )
+		ਜੇ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
-			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
+			OMATCOPY_K_RN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ਖਾਨੇ_ਗਿਣਤੀ );
+			OMATCOPY_K_RN(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, (FLOAT) 1.0, b, *ਖਾਨੇ_ਗਿਣਤੀ, a, *ldb );
 		}
-		else
+		ਨਹੀਂਤਾਂ
 		{
-			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
-			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
+			OMATCOPY_K_RT(*ਪੰਕਤੀਆਂ, *ਖਾਨੇ_ਗਿਣਤੀ, *alpha, a, *lda, b, *ਪੰਕਤੀਆਂ );
+			OMATCOPY_K_RN(*ਖਾਨੇ_ਗਿਣਤੀ, *ਪੰਕਤੀਆਂ, (FLOAT) 1.0, b, *ਪੰਕਤੀਆਂ, a, *ldb );
 		}
 	}
 
-	free(b);
-	return;
+	ਮੁਕਤ(b);
+	ਵਾਪਸ;
 
 }
 

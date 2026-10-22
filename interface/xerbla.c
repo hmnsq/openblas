@@ -1,24 +1,24 @@
-#ifdef CBLAS
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
-#include "common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <string.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdarg.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
 
 OPENBLAS_EXPORT
 
-void CNAME(blasint p, char *rout, char *form, ...)
+ਖਾਲੀ CNAME(blasint p, ਅੱਖਰ *rout, ਅੱਖਰ *form, ...)
 {
-   va_list args;
+   va_list ਦਲੀਲਾਂ;
 
-   va_start(args, form);
+   va_start(ਦਲੀਲਾਂ, form);
 
-   if (p)
-      fprintf(stderr, "Parameter %lld to routine %s was incorrect\n", (long long)p, rout);
-   vfprintf(stderr, form, args);
-   va_end(args);
-   exit(-1);
+   ਜੇ (p)
+      fprintf(stderr, "Parameter %lld to routine %s was incorrect\n", (ਲੰਮਾ ਲੰਮਾ)p, rout);
+   vfprintf(stderr, form, ਦਲੀਲਾਂ);
+   va_end(ਦਲੀਲਾਂ);
+   ਬਾਹਰ_ਨਿਕਲੋ(-1);
 }
-#endif
+#ਜੇ_ਅੰਤ
 

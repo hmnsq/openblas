@@ -36,89 +36,89 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+ਖਾਲੀ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
 
-#ifndef SSCAL
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ SSCAL
   FLOAT *alpha=ALPHA;
-#else
+#ਨਹੀਂਤਾਂ
   FLOAT alpha[2] = {ALPHA[0], ZERO};
-#endif
+#ਜੇ_ਅੰਤ
 
-#else
+#ਨਹੀਂਤਾਂ
 
-#ifndef SSCAL
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx){
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ SSCAL
+ਖਾਲੀ CNAME(blasint n, ਖਾਲੀ *VALPHA, ਖਾਲੀ *vx, blasint incx){
 
   FLOAT *x = (FLOAT*) vx;
   FLOAT *alpha=(FLOAT*)VALPHA;
-#else
-void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
+#ਨਹੀਂਤਾਂ
+ਖਾਲੀ CNAME(blasint n, FLOAT alpha_r, ਖਾਲੀ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
 
   FLOAT alpha[2] = {alpha_r, ZERO};
-#endif
-#endif
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-  int mode;
-  int nthreads;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਪੂਰਨ ਬਹੁਲਕ;
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ਨਹੀਂਤਾਂ
   PRINT_DEBUG_CNAME;
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (incx <= 0 || n <= 0) return;
+  ਜੇ (incx <= 0 || n <= 0) ਵਾਪਸ;
 
-  if ((alpha[0] == ONE) && (alpha[1] == ZERO)) return;
+  ਜੇ ((alpha[0] == ONE) && (alpha[1] == ZERO)) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-#ifdef SMP
-  if ( n <= 1048576 )
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਜੇ ( n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  ਨਹੀਂਤਾਂ
+	nthreads = ਅੰਕ_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, ਨਿਰਾ, 0, ਨਿਰਾ, 1);
 
-#ifdef SMP
-  } else {
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE | BLAS_COMPLEX;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ DOUBLE
+    ਬਹੁਲਕ  =  BLAS_DOUBLE | BLAS_COMPLEX;
+#ਨਹੀਂਤਾਂ
+    ਬਹੁਲਕ  =  BLAS_SINGLE | BLAS_COMPLEX;
+#ਜੇ_ਅੰਤ
 
-    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (int (*)(void))SCAL_K, nthreads);
+    blas_level1_thread(ਬਹੁਲਕ, n, 0, 0,  alpha, x, incx, ਨਿਰਾ, 0, ਨਿਰਾ, 1, (ਪੂਰਨ (*)(ਖਾਲੀ))SCAL_K, nthreads);
 
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  FUNCTION_PROFILE_END(4, n, n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, n, n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }

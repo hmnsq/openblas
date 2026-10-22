@@ -36,141 +36,141 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QGESV"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGESV"
-#else
-#define ERROR_NAME "SGESV"
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGESV"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGESV"
-#else
-#define ERROR_NAME "CGESV"
-#endif
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "QGESV"
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DGESV"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SGESV"
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XGESV"
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZGESV"
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CGESV"
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
+ਖਾਲੀ NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
          FLOAT *b, blasint *ldB, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t ਦਲੀਲਾਂ;
 
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *ਬਫਰ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ PPC440
+  ਬਾਹਰੀ
+#ਜੇ_ਅੰਤ
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  ਦਲੀਲਾਂ.m    = *N;
+  ਦਲੀਲਾਂ.n    = *NRHS;
+  ਦਲੀਲਾਂ.a    = (ਖਾਲੀ *)a;
+  ਦਲੀਲਾਂ.lda  = *ldA;
+  ਦਲੀਲਾਂ.b    = (ਖਾਲੀ *)b;
+  ਦਲੀਲਾਂ.ldb  = *ldB;
+  ਦਲੀਲਾਂ.c    = (ਖਾਲੀ *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  ਜੇ (ਦਲੀਲਾਂ.ldb < MAX(1,ਦਲੀਲਾਂ.m)) info = 7;
+  ਜੇ (ਦਲੀਲਾਂ.lda < MAX(1,ਦਲੀਲਾਂ.m)) info = 4;
+  ਜੇ (ਦਲੀਲਾਂ.n   < 0)             info = 2;
+  ਜੇ (ਦਲੀਲਾਂ.m   < 0)             info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ਜੇ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ਵਾਪਸ;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  ਦਲੀਲਾਂ.alpha = ਨਿਰਾ;
+  ਦਲੀਲਾਂ.beta  = ਨਿਰਾ;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  ਜੇ (ਦਲੀਲਾਂ.m == 0) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ PPC440
+  ਬਫਰ = (FLOAT *)blas_ਸਮ੍ਰਿਤੀ_alloc(1);
   
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)ਬਫਰ + GEMM_ਵਿੱਥ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ਮਾਪ + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ਵਿੱਥ_B);
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-  args.common = NULL;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  ਦਲੀਲਾਂ.common = ਨਿਰਾ;
 
-#if defined(_WIN64) && defined(_M_ARM64)
-  #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
-  #endif
-      args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
-    args.nthreads = 4;
-  else
-    args.nthreads = num_cpu_avail(4);
-#else
-  #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
-  #endif
-      args.nthreads = 1;
-    else
-      args.nthreads = num_cpu_avail(4);
-#endif
+#ਜੇ defined(_WIN64) && defined(_M_ARM64)
+  #ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX
+    ਜੇ (ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.m <= 300) 
+  #ਨਹੀਂਤਾਂ
+    ਜੇ (ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.m <= 500) 
+  #ਜੇ_ਅੰਤ
+      ਦਲੀਲਾਂ.nthreads = 1;
+  ਨਹੀਂਤਾਂ ਜੇ (ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.m <= 1000)
+    ਦਲੀਲਾਂ.nthreads = 4;
+  ਨਹੀਂਤਾਂ
+    ਦਲੀਲਾਂ.nthreads = ਅੰਕ_cpu_avail(4);
+#ਨਹੀਂਤਾਂ
+  #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ DOUBLE
+    ਜੇ (ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.m < 40000)
+  #ਨਹੀਂਤਾਂ
+    ਜੇ (ਦਲੀਲਾਂ.m * ਦਲੀਲਾਂ.m < 10000)
+  #ਜੇ_ਅੰਤ
+      ਦਲੀਲਾਂ.nthreads = 1;
+    ਨਹੀਂਤਾਂ
+      ਦਲੀਲਾਂ.nthreads = ਅੰਕ_cpu_avail(4);
+#ਜੇ_ਅੰਤ
 
-  if (args.nthreads == 1) {
-#endif
+  ਜੇ (ਦਲੀਲਾਂ.nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-    args.n    = *N;
-    info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    ਦਲੀਲਾਂ.n    = *N;
+    info = GETRF_SINGLE(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
-      args.n    = *NRHS;
-      GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    ਜੇ (info == 0 && *NRHS >0){
+      ਦਲੀਲਾਂ.n    = *NRHS;
+      GETRS_N_SINGLE(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
     }
 
-#ifdef SMP
-  } else {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+  } ਨਹੀਂਤਾਂ {
 
-    args.n    = *N;
-    info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    ਦਲੀਲਾਂ.n    = *N;
+    info = GETRF_PARALLEL(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
-      args.n    = *NRHS;
-      GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    ਜੇ (info == 0 && *NRHS > 0){
+      ਦਲੀਲਾਂ.n    = *NRHS;
+      GETRS_N_PARALLEL(&ਦਲੀਲਾਂ, ਨਿਰਾ, ਨਿਰਾ, sa, sb, 0);
     }
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ PPC440
+  blas_ਸਮ੍ਰਿਤੀ_free(ਬਫਰ);
+#ਜੇ_ਅੰਤ
 
   *Info = info;
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, *N * *N, 2. / 3. * *N * *N * *N + *N * *N);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE * COMPSIZE, *N * *N, 2. / 3. * *N * *N * *N + *N * *N);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 }

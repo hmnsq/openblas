@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -54,46 +54,46 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ਜੇ (n <= 0) ਵਾਪਸ 0;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  ret = (FLOATRET)SUM_K(n, x, incx);
+  ret = (FLOATRET)ਜੋੜ_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, n);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, n, n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 }
 
-#else
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX
+FLOAT CNAME(blasint n, ਖਾਲੀ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ਨਹੀਂਤਾਂ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#ਜੇ_ਅੰਤ
 
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ਜੇ (n <= 0) ਵਾਪਸ 0;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  ret = SUM_K(n, x, incx);
+  ret = ਜੋੜ_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, n);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, n, n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 }
 
-#endif
+#ਜੇ_ਅੰਤ

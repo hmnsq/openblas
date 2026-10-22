@@ -31,397 +31,397 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 **********************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+ਖਾਲੀ openblas_warning(ਪੂਰਨ verbose, ਅਚਲ ਅੱਖਰ * ਸੁਨੇਹਾ);
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMM_BATCH "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMM_BATCH "
-#define GEMM_BATCH_THREAD dgemm_batch_thread
-#else
-#define ERROR_NAME "SGEMM_BATCH "
-#define GEMM_BATCH_THREAD sgemm_batch_thread
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMM_BATCH "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMM_BATCH "
-#define GEMM_BATCH_THREAD zgemm_batch_thread
-#else
-#define ERROR_NAME "CGEMM_BATCH "
-#define GEMM_BATCH_THREAD cgemm_batch_thread
-#endif
-#endif
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "QGEMM_BATCH "
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "DGEMM_BATCH "
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMM_BATCH_THREAD dgemm_batch_thread
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "SGEMM_BATCH "
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMM_BATCH_THREAD sgemm_batch_thread
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XGEMM_BATCH "
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZGEMM_BATCH "
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMM_BATCH_THREAD zgemm_batch_thread
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CGEMM_BATCH "
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMM_BATCH_THREAD cgemm_batch_thread
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+ਸਥਿਰ ਪੂਰਨ (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
-#define USE_SMALL_MATRIX_OPT 1
-#else
-#define USE_SMALL_MATRIX_OPT 0
-#endif
+#ਜੇ defined(SMALL_ਮੈਟ੍ਰਿਕਸ_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ USE_SMALL_ਮੈਟ੍ਰਿਕਸ_OPT 1
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ USE_SMALL_ਮੈਟ੍ਰਿਕਸ_OPT 0
+#ਜੇ_ਅੰਤ
 
-#if USE_SMALL_MATRIX_OPT
-#ifndef DYNAMIC_ARCH
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
-#endif
+#ਜੇ USE_SMALL_ਮੈਟ੍ਰਿਕਸ_OPT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ DYNAMIC_ARCH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SMALL_KERNEL_ADDR(ਸਾਰਣੀ, idx) ((ਖਾਲੀ *)(ਸਾਰਣੀ[idx]))
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SMALL_KERNEL_ADDR(ਸਾਰਣੀ, idx) ((ਖਾਲੀ *)(*(uintptr_t *)((ਅੱਖਰ *)gotoblas + (size_t)(ਸਾਰਣੀ[idx]))))
+#ਜੇ_ਅੰਤ
 
 
-#ifndef COMPLEX
-static size_t gemm_small_kernel[] = {
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+ਸਥਿਰ size_t gemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, 0, 0,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, 0, 0,
 };
 
 
-static size_t gemm_small_kernel_b0[] = {
+ਸਥਿਰ size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, 0, 0,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMM_SMALL_KERNEL_B0(idx) (ਪੂਰਨ (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GEMM_SMALL_KERNEL(idx) (ਪੂਰਨ (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#ਨਹੀਂਤਾਂ
 
-static size_t zgemm_small_kernel[] = {
+ਸਥਿਰ size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, GEMM_SMALL_KERNEL_RT, GEMM_SMALL_KERNEL_CT,
 	GEMM_SMALL_KERNEL_NR, GEMM_SMALL_KERNEL_TR, GEMM_SMALL_KERNEL_RR, GEMM_SMALL_KERNEL_CR,
 	GEMM_SMALL_KERNEL_NC, GEMM_SMALL_KERNEL_TC, GEMM_SMALL_KERNEL_RC, GEMM_SMALL_KERNEL_CC,
 };
 
-static size_t zgemm_small_kernel_b0[] = {
+ਸਥਿਰ size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, GEMM_SMALL_KERNEL_B0_RN, GEMM_SMALL_KERNEL_B0_CN,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, GEMM_SMALL_KERNEL_B0_RT, GEMM_SMALL_KERNEL_B0_CT,
 	GEMM_SMALL_KERNEL_B0_NR, GEMM_SMALL_KERNEL_B0_TR, GEMM_SMALL_KERNEL_B0_RR, GEMM_SMALL_KERNEL_B0_CR,
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
-#endif
-#endif
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ZGEMM_SMALL_KERNEL(idx) (ਪੂਰਨ (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ZGEMM_SMALL_KERNEL_B0(idx) (ਪੂਰਨ (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME(char *transa_array, char *transb_array,
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
+ਖਾਲੀ NAME(ਅੱਖਰ *transa_array, ਅੱਖਰ *transb_array,
 	   blasint * m_array, blasint * n_array, blasint * k_array,
 	   FLOAT * alpha_array,
 	   IFLOAT ** a_array, blasint * lda_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
-	   FLOAT ** c_array, blasint * ldc_array, blasint * gcount, blasint * group_size) {
-       blasint group_count = *gcount;
-#else
+	   FLOAT ** c_array, blasint * ldc_array, blasint * gcount, blasint * ਸਮੂਹ_ਮਾਪ) {
+       blasint ਸਮੂਹ_ਗਿਣਤੀ = *gcount;
+#ਨਹੀਂਤਾਂ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CBLAS_TRANSPOSE * transb_array,
+ਖਾਲੀ CNAME(ਗਿਣਤੀ CBLAS_ਕ੍ਰਮ ਕ੍ਰਮ, ਗਿਣਤੀ CBLAS_TRANSPOSE *  transa_array, ਗਿਣਤੀ CBLAS_TRANSPOSE * transb_array,
 	   blasint * m_array, blasint * n_array, blasint * k_array,
-#ifndef COMPLEX
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
 	   FLOAT * alpha_array,
 	   IFLOAT ** a_array, blasint * lda_array,
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
-	   FLOAT ** c_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
-#else
-	   void * valpha_array,
-	   void ** va_array, blasint * lda_array,
-	   void ** vb_array, blasint * ldb_array,
-	   void * vbeta_array,
-	   void ** vc_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
+	   FLOAT ** c_array, blasint * ldc_array, blasint ਸਮੂਹ_ਗਿਣਤੀ, blasint * ਸਮੂਹ_ਮਾਪ) {
+#ਨਹੀਂਤਾਂ
+	   ਖਾਲੀ * valpha_array,
+	   ਖਾਲੀ ** va_array, blasint * lda_array,
+	   ਖਾਲੀ ** vb_array, blasint * ldb_array,
+	   ਖਾਲੀ * vbeta_array,
+	   ਖਾਲੀ ** vc_array, blasint * ldc_array, blasint ਸਮੂਹ_ਗਿਣਤੀ, blasint * ਸਮੂਹ_ਮਾਪ) {
 
   FLOAT * alpha_array=(FLOAT *)valpha_array;
   FLOAT * beta_array=(FLOAT *)vbeta_array;
   FLOAT ** a_array=(FLOAT**)va_array;
   FLOAT ** b_array=(FLOAT**)vb_array;
   FLOAT ** c_array=(FLOAT**)vc_array;
-#endif
-#endif
-  BLASLONG group_m, group_n, group_k;
-  BLASLONG group_lda, group_ldb, group_ldc;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+  BLASLONG ਸਮੂਹ_m, ਸਮੂਹ_n, ਸਮੂਹ_k;
+  BLASLONG ਸਮੂਹ_lda, ਸਮੂਹ_ldb, ਸਮੂਹ_ldc;
 
-  blas_arg_t * args_array=NULL;
+  blas_arg_t * ਦਲੀਲਾਂ_array=ਨਿਰਾ;
 
-  int mode=0, group_mode=0;
-  blasint total_num=0;
+  ਪੂਰਨ ਬਹੁਲਕ=0, ਸਮੂਹ_ਬਹੁਲਕ=0;
+  blasint ਕੁੱਲ_ਅੰਕ=0;
 
-  blasint i=0, j=0, matrix_idx=0, count=0;
+  blasint i=0, j=0, ਮੈਟ੍ਰਿਕਸ_idx=0, ਗਿਣਤੀ_2=0;
 
-  int group_transa, group_transb;
-  BLASLONG group_nrowa, group_nrowb;
+  ਪੂਰਨ ਸਮੂਹ_transa, ਸਮੂਹ_transb;
+  BLASLONG ਸਮੂਹ_nrowa, ਸਮੂਹ_nrowb;
   blasint info;
 
-  void * group_alpha, * group_beta;
-  void * group_routine=NULL;
-#ifdef SMALL_MATRIX_OPT
-  void * group_small_matrix_opt_routine=NULL;
-#endif
+  ਖਾਲੀ * ਸਮੂਹ_alpha, * ਸਮੂਹ_beta;
+  ਖਾਲੀ * ਸਮੂਹ_routine=ਨਿਰਾ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMALL_ਮੈਟ੍ਰਿਕਸ_OPT
+  ਖਾਲੀ * ਸਮੂਹ_small_ਮੈਟ੍ਰਿਕਸ_opt_routine=ਨਿਰਾ;
+#ਜੇ_ਅੰਤ
   
-#if defined (SMP) || defined(SMALL_MATRIX_OPT)
-  double MNK;
-#endif
+#ਜੇ defined (SMP) || defined(SMALL_ਮੈਟ੍ਰਿਕਸ_OPT)
+  ਦੁੱਗਣਾ MNK;
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_CNAME;
     
-  for(i=0; i<group_count; i++){
-    total_num+=group_size[i];
+  ਲਈ(i=0; i<ਸਮੂਹ_ਗਿਣਤੀ; i++){
+    ਕੁੱਲ_ਅੰਕ+=ਸਮੂਹ_ਮਾਪ[i];
   }
 
-  args_array=(blas_arg_t *)malloc(total_num * sizeof(blas_arg_t));
+  ਦਲੀਲਾਂ_array=(blas_arg_t *)ਸਮ੍ਰਿਤੀ_ਦਿਓ(ਕੁੱਲ_ਅੰਕ * ਆਕਾਰ(blas_arg_t));
   
-  if(args_array == NULL){
+  ਜੇ(ਦਲੀਲਾਂ_array == ਨਿਰਾ){
     openblas_warning(0, "memory alloc failed!\n");
-    return;
+    ਵਾਪਸ;
   }
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+  ਬਹੁਲਕ  =  BLAS_XDOUBLE | BLAS_REAL;
+#ਜਾਂਜੇ defined(DOUBLE)
+  ਬਹੁਲਕ  =  BLAS_DOUBLE  | BLAS_REAL;
+#ਨਹੀਂਤਾਂ
+  ਬਹੁਲਕ  =  BLAS_SINGLE  | BLAS_REAL;
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+  ਬਹੁਲਕ  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#ਜਾਂਜੇ defined(DOUBLE)
+  ਬਹੁਲਕ  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ਨਹੀਂਤਾਂ
+  ਬਹੁਲਕ  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
   
-  for(i=0; i<group_count; matrix_idx+=group_size[i], i++){
-    group_alpha = (void *)&alpha_array[i * COMPSIZE];
-    group_beta = (void *)&beta_array[i * COMPSIZE];
+  ਲਈ(i=0; i<ਸਮੂਹ_ਗਿਣਤੀ; ਮੈਟ੍ਰਿਕਸ_idx+=ਸਮੂਹ_ਮਾਪ[i], i++){
+    ਸਮੂਹ_alpha = (ਖਾਲੀ *)&alpha_array[i * COMPSIZE];
+    ਸਮੂਹ_beta = (ਖਾਲੀ *)&beta_array[i * COMPSIZE];
 
-    group_m = group_n = group_k = 0;
-    group_lda = group_ldb = group_ldc = 0;
-    group_transa = -1;
-    group_transb = -1;
+    ਸਮੂਹ_m = ਸਮੂਹ_n = ਸਮੂਹ_k = 0;
+    ਸਮੂਹ_lda = ਸਮੂਹ_ldb = ਸਮੂਹ_ldc = 0;
+    ਸਮੂਹ_transa = -1;
+    ਸਮੂਹ_transb = -1;
     info   = 0;
    
-#if defined(CBLAS) 
-    if (order == CblasColMajor) {
-      group_m = m_array[i];
-      group_n = n_array[i];
-      group_k = k_array[i];
+#ਜੇ defined(CBLAS) 
+    ਜੇ (ਕ੍ਰਮ == Cblas_ਖਾਨਾ_Major) {
+      ਸਮੂਹ_m = m_array[i];
+      ਸਮੂਹ_n = n_array[i];
+      ਸਮੂਹ_k = k_array[i];
 
-      group_lda = lda_array[i];
-      group_ldb = ldb_array[i];
-      group_ldc = ldc_array[i];
+      ਸਮੂਹ_lda = lda_array[i];
+      ਸਮੂਹ_ldb = ldb_array[i];
+      ਸਮੂਹ_ldc = ldc_array[i];
       
-      if (transa_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transa_array[i] == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transb_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transb_array[i] == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 3;
-#endif
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ਜੇ (transa_array[i] == CblasNoTrans)     ਸਮੂਹ_transa = 0;
+      ਜੇ (transa_array[i] == CblasTrans)       ਸਮੂਹ_transa = 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+      ਜੇ (transa_array[i] == CblasConjNoTrans) ਸਮੂਹ_transa = 0;
+      ਜੇ (transa_array[i] == CblasConjTrans)   ਸਮੂਹ_transa = 1;
+#ਨਹੀਂਤਾਂ
+      ਜੇ (transa_array[i] == CblasConjNoTrans) ਸਮੂਹ_transa = 2;
+      ਜੇ (transa_array[i] == CblasConjTrans)   ਸਮੂਹ_transa = 3;
+#ਜੇ_ਅੰਤ
+      ਜੇ (transb_array[i] == CblasNoTrans)     ਸਮੂਹ_transb = 0;
+      ਜੇ (transb_array[i] == CblasTrans)       ਸਮੂਹ_transb = 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+      ਜੇ (transb_array[i] == CblasConjNoTrans) ਸਮੂਹ_transb = 0;
+      ਜੇ (transb_array[i] == CblasConjTrans)   ਸਮੂਹ_transb = 1;
+#ਨਹੀਂਤਾਂ
+      ਜੇ (transb_array[i] == CblasConjNoTrans) ਸਮੂਹ_transb = 2;
+      ਜੇ (transb_array[i] == CblasConjTrans)   ਸਮੂਹ_transb = 3;
+#ਜੇ_ਅੰਤ
+      ਸਮੂਹ_nrowa = ਸਮੂਹ_m;
+      ਜੇ (ਸਮੂਹ_transa & 1) ਸਮੂਹ_nrowa = ਸਮੂਹ_k;
+      ਸਮੂਹ_nrowb = ਸਮੂਹ_k;
+      ਜੇ (ਸਮੂਹ_transb & 1) ਸਮੂਹ_nrowb = ਸਮੂਹ_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;
+      ਜੇ (ਸਮੂਹ_ldc < ਸਮੂਹ_m) info = 13;
+      ਜੇ (ਸਮੂਹ_ldb < ਸਮੂਹ_nrowb)  info = 10;
+      ਜੇ (ਸਮੂਹ_lda < ਸਮੂਹ_nrowa)  info =  8;
+      ਜੇ (ਸਮੂਹ_k < 0)        info =  5;
+      ਜੇ (ਸਮੂਹ_n < 0)        info =  4;
+      ਜੇ (ਸਮੂਹ_m < 0)        info =  3;
+      ਜੇ (ਸਮੂਹ_transb < 0)        info =  2;
+      ਜੇ (ਸਮੂਹ_transa < 0)        info =  1;
 
-    }else if (order == CblasRowMajor) {
+    }ਨਹੀਂਤਾਂ ਜੇ (ਕ੍ਰਮ == Cblas_ਪੰਕਤੀ_Major) {
       
-      group_m = n_array[i];
-      group_n = m_array[i];
-      group_k = k_array[i];
+      ਸਮੂਹ_m = n_array[i];
+      ਸਮੂਹ_n = m_array[i];
+      ਸਮੂਹ_k = k_array[i];
 
-      group_lda = ldb_array[i];
-      group_ldb = lda_array[i];
-      group_ldc = ldc_array[i];
+      ਸਮੂਹ_lda = ldb_array[i];
+      ਸਮੂਹ_ldb = lda_array[i];
+      ਸਮੂਹ_ldc = ldc_array[i];
 
-      if (transb_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transb_array[i] == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transa_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transa_array[i] == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 3;
-#endif
+      ਜੇ (transb_array[i] == CblasNoTrans)     ਸਮੂਹ_transa = 0;
+      ਜੇ (transb_array[i] == CblasTrans)       ਸਮੂਹ_transa = 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+      ਜੇ (transb_array[i] == CblasConjNoTrans) ਸਮੂਹ_transa = 0;
+      ਜੇ (transb_array[i] == CblasConjTrans)   ਸਮੂਹ_transa = 1;
+#ਨਹੀਂਤਾਂ
+      ਜੇ (transb_array[i] == CblasConjNoTrans) ਸਮੂਹ_transa = 2;
+      ਜੇ (transb_array[i] == CblasConjTrans)   ਸਮੂਹ_transa = 3;
+#ਜੇ_ਅੰਤ
+      ਜੇ (transa_array[i] == CblasNoTrans)     ਸਮੂਹ_transb = 0;
+      ਜੇ (transa_array[i] == CblasTrans)       ਸਮੂਹ_transb = 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+      ਜੇ (transa_array[i] == CblasConjNoTrans) ਸਮੂਹ_transb = 0;
+      ਜੇ (transa_array[i] == CblasConjTrans)   ਸਮੂਹ_transb = 1;
+#ਨਹੀਂਤਾਂ
+      ਜੇ (transa_array[i] == CblasConjNoTrans) ਸਮੂਹ_transb = 2;
+      ਜੇ (transa_array[i] == CblasConjTrans)   ਸਮੂਹ_transb = 3;
+#ਜੇ_ਅੰਤ
 
-#else
-      group_m = m_array[i];
-      group_n = n_array[i];
-      group_k = k_array[i];
+#ਨਹੀਂਤਾਂ
+      ਸਮੂਹ_m = m_array[i];
+      ਸਮੂਹ_n = n_array[i];
+      ਸਮੂਹ_k = k_array[i];
 
-      group_lda = lda_array[i];
-      group_ldb = ldb_array[i];
-      group_ldc = ldc_array[i];
+      ਸਮੂਹ_lda = lda_array[i];
+      ਸਮੂਹ_ldb = ldb_array[i];
+      ਸਮੂਹ_ldc = ldc_array[i];
       
-      if (transa_array[i] == 'N')   group_transa = 0;
-      if (transa_array[i] == 'T')   group_transa = 1;
-#ifndef COMPLEX
-      if (transa_array[i] == 'C')   group_transa = 1;
-#else
-      if (transa_array[i] == 'C')   group_transa = 3;
-#endif
-      if (transb_array[i] == 'N')   group_transb = 0;
-      if (transb_array[i] == 'T')   group_transb = 1;
-#ifndef COMPLEX
-      if (transb_array[i] == 'C')   group_transb = 1;
-#else
-      if (transb_array[i] == 'C')   group_transb = 3;
-#endif
-#endif
+      ਜੇ (transa_array[i] == 'N')   ਸਮੂਹ_transa = 0;
+      ਜੇ (transa_array[i] == 'T')   ਸਮੂਹ_transa = 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+      ਜੇ (transa_array[i] == 'C')   ਸਮੂਹ_transa = 1;
+#ਨਹੀਂਤਾਂ
+      ਜੇ (transa_array[i] == 'C')   ਸਮੂਹ_transa = 3;
+#ਜੇ_ਅੰਤ
+      ਜੇ (transb_array[i] == 'N')   ਸਮੂਹ_transb = 0;
+      ਜੇ (transb_array[i] == 'T')   ਸਮੂਹ_transb = 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+      ਜੇ (transb_array[i] == 'C')   ਸਮੂਹ_transb = 1;
+#ਨਹੀਂਤਾਂ
+      ਜੇ (transb_array[i] == 'C')   ਸਮੂਹ_transb = 3;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ਸਮੂਹ_nrowa = ਸਮੂਹ_m;
+      ਜੇ (ਸਮੂਹ_transa & 1) ਸਮੂਹ_nrowa = ਸਮੂਹ_k;
+      ਸਮੂਹ_nrowb = ਸਮੂਹ_k;
+      ਜੇ (ਸਮੂਹ_transb & 1) ਸਮੂਹ_nrowb = ਸਮੂਹ_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;      
-#if defined(CBLAS)
+      ਜੇ (ਸਮੂਹ_ldc < ਸਮੂਹ_m) info = 13;
+      ਜੇ (ਸਮੂਹ_ldb < ਸਮੂਹ_nrowb)  info = 10;
+      ਜੇ (ਸਮੂਹ_lda < ਸਮੂਹ_nrowa)  info =  8;
+      ਜੇ (ਸਮੂਹ_k < 0)        info =  5;
+      ਜੇ (ਸਮੂਹ_n < 0)        info =  4;
+      ਜੇ (ਸਮੂਹ_m < 0)        info =  3;
+      ਜੇ (ਸਮੂਹ_transb < 0)        info =  2;
+      ਜੇ (ਸਮੂਹ_transa < 0)        info =  1;      
+#ਜੇ defined(CBLAS)
     }
-#endif
+#ਜੇ_ਅੰਤ
 
-    if (info >= 0) {
-      BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-      free(args_array);
-      return;
+    ਜੇ (info >= 0) {
+      BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+      ਮੁਕਤ(ਦਲੀਲਾਂ_array);
+      ਵਾਪਸ;
     }
 
-    if (group_m == 0 || group_n == 0) continue;
+    ਜੇ (ਸਮੂਹ_m == 0 || ਸਮੂਹ_n == 0) ਜਾਰੀ;
 
-    group_mode=mode;
+    ਸਮੂਹ_ਬਹੁਲਕ=ਬਹੁਲਕ;
 
-#if defined(SMP) || defined(SMALL_MATRIX_OPT)
-    MNK = (double) group_m * (double) group_n * (double) group_k;
-#endif
+#ਜੇ defined(SMP) || defined(SMALL_ਮੈਟ੍ਰਿਕਸ_OPT)
+    MNK = (ਦੁੱਗਣਾ) ਸਮੂਹ_m * (ਦੁੱਗਣਾ) ਸਮੂਹ_n * (ਦੁੱਗਣਾ) ਸਮੂਹ_k;
+#ਜੇ_ਅੰਤ
 
-#ifdef SMALL_MATRIX_OPT
-#if !defined(COMPLEX)
-    if (*(FLOAT *)(group_alpha) != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
-                                 *(FLOAT *)(group_alpha), *(FLOAT *)(group_beta))){
-#else
-    if (((FLOAT *)(group_alpha))[0] != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
-                                 ((FLOAT *)(group_alpha))[0], ((FLOAT *)(group_alpha))[1],
-                                 ((FLOAT *)(group_beta))[0], ((FLOAT *)(group_beta))[1])){
-#endif
-      group_routine=NULL;
-#if !defined(COMPLEX)
-      if(*(FLOAT *)(group_beta) == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((group_transb<<2)|group_transa));
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMALL_ਮੈਟ੍ਰਿਕਸ_OPT
+#ਜੇ !defined(COMPLEX)
+    ਜੇ (*(FLOAT *)(ਸਮੂਹ_alpha) != ZERO &&
+        GEMM_SMALL_ਮੈਟ੍ਰਿਕਸ_PERMIT(ਸਮੂਹ_transa, ਸਮੂਹ_transb, ਸਮੂਹ_m, ਸਮੂਹ_n, ਸਮੂਹ_k,
+                                 *(FLOAT *)(ਸਮੂਹ_alpha), *(FLOAT *)(ਸਮੂਹ_beta))){
+#ਨਹੀਂਤਾਂ
+    ਜੇ (((FLOAT *)(ਸਮੂਹ_alpha))[0] != ZERO &&
+        GEMM_SMALL_ਮੈਟ੍ਰਿਕਸ_PERMIT(ਸਮੂਹ_transa, ਸਮੂਹ_transb, ਸਮੂਹ_m, ਸਮੂਹ_n, ਸਮੂਹ_k,
+                                 ((FLOAT *)(ਸਮੂਹ_alpha))[0], ((FLOAT *)(ਸਮੂਹ_alpha))[1],
+                                 ((FLOAT *)(ਸਮੂਹ_beta))[0], ((FLOAT *)(ਸਮੂਹ_beta))[1])){
+#ਜੇ_ਅੰਤ
+      ਸਮੂਹ_routine=ਨਿਰਾ;
+#ਜੇ !defined(COMPLEX)
+      ਜੇ(*(FLOAT *)(ਸਮੂਹ_beta) == 0.0){
+	ਸਮੂਹ_ਬਹੁਲਕ=ਬਹੁਲਕ | BLAS_SMALL_B0_OPT;
+	ਸਮੂਹ_small_ਮੈਟ੍ਰਿਕਸ_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((ਸਮੂਹ_transb<<2)|ਸਮੂਹ_transa));
+      }ਨਹੀਂਤਾਂ{
+	ਸਮੂਹ_ਬਹੁਲਕ=ਬਹੁਲਕ | BLAS_SMALL_OPT;
+	ਸਮੂਹ_small_ਮੈਟ੍ਰਿਕਸ_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((ਸਮੂਹ_transb<<2)|ਸਮੂਹ_transa));
       }
-#else
-      if(((FLOAT *)(group_beta))[0] == 0.0 && ((FLOAT *)(group_beta))[1] == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((group_transb<<2)|group_transa));
+#ਨਹੀਂਤਾਂ
+      ਜੇ(((FLOAT *)(ਸਮੂਹ_beta))[0] == 0.0 && ((FLOAT *)(ਸਮੂਹ_beta))[1] == 0.0){
+	ਸਮੂਹ_ਬਹੁਲਕ=ਬਹੁਲਕ | BLAS_SMALL_B0_OPT;
+	ਸਮੂਹ_small_ਮੈਟ੍ਰਿਕਸ_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((ਸਮੂਹ_transb<<2)|ਸਮੂਹ_transa));
+      }ਨਹੀਂਤਾਂ{
+	ਸਮੂਹ_ਬਹੁਲਕ=ਬਹੁਲਕ | BLAS_SMALL_OPT;
+	ਸਮੂਹ_small_ਮੈਟ੍ਰਿਕਸ_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((ਸਮੂਹ_transb<<2)|ਸਮੂਹ_transa));
       }
 
-#endif
+#ਜੇ_ਅੰਤ
       
-    }else{
-#endif
-      group_routine=(void*)(gemm[(group_transb<<2)|group_transa]);
-#ifdef SMALL_MATRIX_OPT
+    }ਨਹੀਂਤਾਂ{
+#ਜੇ_ਅੰਤ
+      ਸਮੂਹ_routine=(ਖਾਲੀ*)(gemm[(ਸਮੂਹ_transb<<2)|ਸਮੂਹ_transa]);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMALL_ਮੈਟ੍ਰਿਕਸ_OPT
     }
-#endif    
+#ਜੇ_ਅੰਤ    
 
     
-    for(j=0; j<group_size[i]; j++){
-      args_array[count].m=group_m;
-      args_array[count].n=group_n;
-      args_array[count].k=group_k;
-      args_array[count].lda=group_lda;
-      args_array[count].ldb=group_ldb;
-      args_array[count].ldc=group_ldc;
-      args_array[count].alpha=group_alpha;
-      args_array[count].beta=group_beta;
+    ਲਈ(j=0; j<ਸਮੂਹ_ਮਾਪ[i]; j++){
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].m=ਸਮੂਹ_m;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].n=ਸਮੂਹ_n;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].k=ਸਮੂਹ_k;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].lda=ਸਮੂਹ_lda;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].ldb=ਸਮੂਹ_ldb;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].ldc=ਸਮੂਹ_ldc;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].alpha=ਸਮੂਹ_alpha;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].beta=ਸਮੂਹ_beta;
 
-#if defined(CBLAS)
-      if (order == CblasRowMajor) {
-	args_array[count].a=(b_array[matrix_idx+j]);
-	args_array[count].b=(a_array[matrix_idx+j]);
-      } else
-#endif
+#ਜੇ defined(CBLAS)
+      ਜੇ (ਕ੍ਰਮ == Cblas_ਪੰਕਤੀ_Major) {
+	ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].a=(b_array[ਮੈਟ੍ਰਿਕਸ_idx+j]);
+	ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].b=(a_array[ਮੈਟ੍ਰਿਕਸ_idx+j]);
+      } ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
       {
-	args_array[count].a=(a_array[matrix_idx+j]);
-	args_array[count].b=(b_array[matrix_idx+j]);
+	ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].a=(a_array[ਮੈਟ੍ਰਿਕਸ_idx+j]);
+	ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].b=(b_array[ਮੈਟ੍ਰਿਕਸ_idx+j]);
       }
       
-      args_array[count].c=(c_array[matrix_idx+j]);
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].c=(c_array[ਮੈਟ੍ਰਿਕਸ_idx+j]);
       
-      args_array[count].routine_mode=group_mode;
-      args_array[count].routine=group_routine;
-#ifdef SMALL_MATRIX_OPT
-      if (!group_routine)
-        args_array[count].routine=group_small_matrix_opt_routine;
-#endif      
-      count++;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].routine_ਬਹੁਲਕ=ਸਮੂਹ_ਬਹੁਲਕ;
+      ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].routine=ਸਮੂਹ_routine;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMALL_ਮੈਟ੍ਰਿਕਸ_OPT
+      ਜੇ (!ਸਮੂਹ_routine)
+        ਦਲੀਲਾਂ_array[ਗਿਣਤੀ_2].routine=ਸਮੂਹ_small_ਮੈਟ੍ਰਿਕਸ_opt_routine;
+#ਜੇ_ਅੰਤ      
+      ਗਿਣਤੀ_2++;
     }
   }
 
-  if(count>0){
-    GEMM_BATCH_THREAD(args_array,count);
+  ਜੇ(ਗਿਣਤੀ_2>0){
+    GEMM_BATCH_THREAD(ਦਲੀਲਾਂ_array,ਗਿਣਤੀ_2);
   }
 
-  free(args_array);
+  ਮੁਕਤ(ਦਲੀਲਾਂ_array);
 }

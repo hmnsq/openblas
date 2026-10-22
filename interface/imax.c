@@ -36,91 +36,91 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#undef MAX_K
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ MAX_K
 
-#ifdef USE_ABS
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ USE_ABS
 
-#ifndef USE_MIN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMAX_K
-#else
-#define MAX_K	ISAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMAX_K
-#else
-#define MAX_K	ICAMAX_K
-#endif
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IQAMAX_K
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IDAMAX_K
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	ISAMAX_K
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IXAMAX_K
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IZAMAX_K
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	ICAMAX_K
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#else
+#ਨਹੀਂਤਾਂ
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMIN_K
-#else
-#define MAX_K	ISAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMIN_K
-#else
-#define MAX_K	ICAMIN_K
-#endif
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ COMPLEX
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IQAMIN_K
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IDAMIN_K
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	ISAMIN_K
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IXAMIN_K
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IZAMIN_K
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	ICAMIN_K
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#else
+#ਨਹੀਂਤਾਂ
 
-#ifndef USE_MIN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	IQMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMAX_K
-#else
-#define MAX_K	ISMAX_K
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IQMAX_K
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IDMAX_K
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	ISMAX_K
+#ਜੇ_ਅੰਤ
 
-#else
+#ਨਹੀਂਤਾਂ
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	IQMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMIN_K
-#else
-#define MAX_K	ISMIN_K
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IQMIN_K
+#ਜਾਂਜੇ defined(DOUBLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	IDMIN_K
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_K	ISMIN_K
+#ਜੇ_ਅੰਤ
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
 blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -130,52 +130,52 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ਜੇ (n <= 0) ਵਾਪਸ 0;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  ਜੇ(ret > n) ret=n;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 }
 
-#else
-#ifdef COMPLEX
-CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COMPLEX
+CBLAS_ਸੂਚਕਾਂਕ CNAME(blasint n, ਖਾਲੀ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
-CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#ਨਹੀਂਤਾਂ
+CBLAS_ਸੂਚਕਾਂਕ CNAME(blasint n, FLOAT *x, blasint incx){
+#ਜੇ_ਅੰਤ
 
-  CBLAS_INDEX ret;
+  CBLAS_ਸੂਚਕਾਂਕ ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ਜੇ (n <= 0) ਵਾਪਸ 0;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  ਜੇ (ret > n) ret=n;
 
-  if (ret) ret --;
+  ਜੇ (ret) ret --;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_ਸਿਰਾ(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return ret;
+  ਵਾਪਸ ret;
 }
 
-#endif
+#ਜੇ_ਅੰਤ

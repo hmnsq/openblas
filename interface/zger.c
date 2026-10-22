@@ -36,76 +36,76 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "common.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ FUNCTION_PROFILE
+#ਅਨ੍ਤਰ੍ਭਾਵ "functable.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef SMP
-#ifdef __64BIT__
-#define SMPTEST 1
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMP
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __64BIT__
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SMPTEST 1
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 
-#ifdef XDOUBLE
-#ifndef CONJ
-#define ERROR_NAME "XGERU  "
-#else
-#define ERROR_NAME "XGERC  "
-#endif
-#elif defined DOUBLE
-#ifndef CONJ
-#define ERROR_NAME "ZGERU  "
-#else
-#define ERROR_NAME "ZGERC  "
-#endif
-#else
-#ifndef CONJ
-#define ERROR_NAME "CGERU  "
-#else
-#define ERROR_NAME "CGERC "
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ XDOUBLE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XGERU  "
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "XGERC  "
+#ਜੇ_ਅੰਤ
+#ਜਾਂਜੇ defined DOUBLE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZGERU  "
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "ZGERC  "
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CGERU  "
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ERROR_NAME "CGERC "
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#if   defined XDOUBLE
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	xger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	xger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	xger_thread_V
-#endif
-#elif defined DOUBLE
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	zger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	zger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	zger_thread_V
-#endif
-#else
-#ifndef CONJ
-#define GER		GERU_K
-#define GER_THREAD	cger_thread_U
-#else
-#define GER		GERC_K
-#define GER_THREAD	cger_thread_C
-#define GERV		GERV_K
-#define GERV_THREAD	cger_thread_V
-#endif
-#endif
+#ਜੇ   defined XDOUBLE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER		GERU_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	xger_thread_U
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER		GERC_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	xger_thread_C
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GERV		GERV_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GERV_THREAD	xger_thread_V
+#ਜੇ_ਅੰਤ
+#ਜਾਂਜੇ defined DOUBLE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER		GERU_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	zger_thread_U
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER		GERC_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	zger_thread_C
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GERV		GERV_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GERV_THREAD	zger_thread_V
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONJ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER		GERU_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	cger_thread_U
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER		GERC_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GER_THREAD	cger_thread_C
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GERV		GERV_K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GERV_THREAD	cger_thread_V
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+ਖਾਲੀ NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -117,10 +117,10 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    incx  = *INCX;
   blasint    incy  = *INCY;
   blasint    lda   = *LDA;
-  FLOAT *buffer;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+  FLOAT *ਬਫਰ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
   blasint info;
 
@@ -128,25 +128,25 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  ਜੇ (lda < MAX(1,m)) info = 9;
+  ਜੇ (incy == 0)      info = 7;
+  ਜੇ (incx == 0)      info = 5;
+  ਜੇ (n < 0)          info = 2;
+  ਜੇ (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ਜੇ (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    ਵਾਪਸ;
   }
 
-#else
+#ਨਹੀਂਤਾਂ
 
-void CNAME(enum CBLAS_ORDER order,
+ਖਾਲੀ CNAME(ਗਿਣਤੀ CBLAS_ਕ੍ਰਮ ਕ੍ਰਮ,
 	   blasint m, blasint n,
-	   void *VAlpha,
-	   void  *vx, blasint incx,
-	   void  *vy, blasint incy,
-	   void  *va, blasint lda) {
+	   ਖਾਲੀ *VAlpha,
+	   ਖਾਲੀ  *vx, blasint incx,
+	   ਖਾਲੀ  *vy, blasint incy,
+	   ਖਾਲੀ  *va, blasint lda) {
 
   FLOAT* Alpha = (FLOAT*) VAlpha;
   FLOAT* a = (FLOAT*) va;
@@ -156,27 +156,27 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT  alpha_r = Alpha[0];
   FLOAT  alpha_i = Alpha[1];
 
-  FLOAT *buffer;
+  FLOAT *ਬਫਰ;
   blasint info, t;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
+  ਪੂਰਨ nthreads;
+#ਜੇ_ਅੰਤ
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ਜੇ (ਕ੍ਰਮ == Cblas_ਖਾਨਾ_Major) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ਜੇ (lda < MAX(1,m)) info = 9;
+    ਜੇ (incy == 0)      info = 7;
+    ਜੇ (incx == 0)      info = 5;
+    ਜੇ (n < 0)          info = 2;
+    ਜੇ (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  ਜੇ (ਕ੍ਰਮ == Cblas_ਪੰਕਤੀ_Major) {
     info = -1;
 
     t = n;
@@ -187,81 +187,81 @@ void CNAME(enum CBLAS_ORDER order,
     incx = incy;
     incy = t;
 
-    buffer = x;
+    ਬਫਰ = x;
     x = y;
-    y = buffer;
+    y = ਬਫਰ;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ਜੇ (lda < MAX(1,m)) info = 9;
+    ਜੇ (incy == 0)      info = 7;
+    ਜੇ (incx == 0)      info = 5;
+    ਜੇ (n < 0)          info = 2;
+    ਜੇ (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ਜੇ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ਆਕਾਰ(ERROR_NAME));
+    ਵਾਪਸ;
   }
 
-#endif
+#ਜੇ_ਅੰਤ
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
+  ਜੇ (m == 0 || n == 0) ਵਾਪਸ;
 
-  if ((alpha_r == 0.) && (alpha_i == 0.)) return;
+  ਜੇ ((alpha_r == 0.) && (alpha_i == 0.)) ਵਾਪਸ;
 
-  IDEBUG_START;
+  IDEBUG_ਸ਼ੁਰੂ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ਸ਼ੁਰੂ();
 
-  if (incy < 0) y -= (n - 1) * incy * 2;
-  if (incx < 0) x -= (m - 1) * incx * 2;
+  ਜੇ (incy < 0) y -= (n - 1) * incy * 2;
+  ਜੇ (incx < 0) x -= (m - 1) * incx * 2;
 
-  STACK_ALLOC(2 * m, FLOAT, buffer);
+  ਢੇਰ_ALLOC(2 * m, FLOAT, ਬਫਰ);
 
-#ifdef SMPTEST
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else
+  ਜੇ(1L * m * n > 36L * ਆਕਾਰ(FLOAT) * ਆਕਾਰ(FLOAT) * GEMM_MULTITHREAD_ਹੱਦ)
+    nthreads = ਅੰਕ_cpu_avail(2);
+  ਨਹੀਂਤਾਂ
     nthreads = 1;
 
-  if (nthreads == 1) {
-#endif
+  ਜੇ (nthreads == 1) {
+#ਜੇ_ਅੰਤ
 
-#if !defined(CBLAS) || !defined(CONJ)
-  GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-#else
-  if (order == CblasColMajor) {
-    GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-  } else {
-    GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
+#ਜੇ !defined(CBLAS) || !defined(CONJ)
+  GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, ਬਫਰ);
+#ਨਹੀਂਤਾਂ
+  ਜੇ (ਕ੍ਰਮ == Cblas_ਖਾਨਾ_Major) {
+    GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, ਬਫਰ);
+  } ਨਹੀਂਤਾਂ {
+    GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, ਬਫਰ);
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef SMPTEST
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SMPTEST
 
-  } else {
+  } ਨਹੀਂਤਾਂ {
 
-#if !defined(CBLAS) || !defined(CONJ)
-      GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-#else
-      if (order == CblasColMajor) {
-	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-      } else {
-	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
+#ਜੇ !defined(CBLAS) || !defined(CONJ)
+      GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, ਬਫਰ, nthreads);
+#ਨਹੀਂਤਾਂ
+      ਜੇ (ਕ੍ਰਮ == Cblas_ਖਾਨਾ_Major) {
+	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, ਬਫਰ, nthreads);
+      } ਨਹੀਂਤਾਂ {
+	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, ਬਫਰ, nthreads);
       }
-#endif
+#ਜੇ_ਅੰਤ
 
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  STACK_FREE(buffer);
+  ਢੇਰ_FREE(ਬਫਰ);
 
-  FUNCTION_PROFILE_END(4, m * n + m + n, 2 * m * n);
+  FUNCTION_PROFILE_ਸਿਰਾ(4, m * n + m + n, 2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_ਸਿਰਾ;
 
-  return;
+  ਵਾਪਸ;
 
 }
