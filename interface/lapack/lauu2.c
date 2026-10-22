@@ -46,7 +46,7 @@
 #define ERROR_NAME "QLAUU2"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DLAUU2"
-#else
+#မဟုတ်ပါက
 #define ERROR_NAME "SLAUU2"
 #endif
 
@@ -55,13 +55,13 @@ static blasint (*lauu2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *
   qlauu2_U, qlauu2_L,
 #elif defined(DOUBLE)
   dlauu2_U, dlauu2_L,
-#else
+#မဟုတ်ပါက
   slauu2_U, slauu2_L,
 #endif
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+void NAME(var_na *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -83,22 +83,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  အကယ်၍ (uplo_arg == 'U') uplo = 0;
+  အကယ်၍ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  အကယ်၍ (args.lda < MAX(1,args.n)) info = 4;
+  အကယ်၍ (args.n   < 0)             info = 2;
+  အကယ်၍ (uplo     < 0)             info = 1;
+  အကယ်၍ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ပြန်ပေး;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  အကယ်၍ (args.n <= 0) ပြန်ပေး;
 
   IDEBUG_START;
 
@@ -125,5 +125,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  ပြန်ပေး;
 }

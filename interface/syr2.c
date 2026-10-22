@@ -47,27 +47,27 @@
 #define ERROR_NAME "QSYR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYR2 "
-#else
+#မဟုတ်ပါက
 #define ERROR_NAME "SSYR2 "
 #endif
 
-static int (*syr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static ကိန်းပြည့် (*syr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   qsyr2_U, qsyr2_L,
 #elif defined(DOUBLE)
   dsyr2_U, dsyr2_L,
-#else
+#မဟုတ်ပါက
   ssyr2_U, ssyr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ကိန်းပြည့် (*syr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ကိန်းပြည့်) = {
 #ifdef XDOUBLE
   qsyr2_thread_U, qsyr2_thread_L,
 #elif defined(DOUBLE)
   dsyr2_thread_U, dsyr2_thread_L,
-#else
+#မဟုတ်ပါက
   ssyr2_thread_U, ssyr2_thread_L,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint lda	= *LDA;
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ကိန်းပြည့် uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ကိန်းပြည့် nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,31 +99,31 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  အကယ်၍ (uplo_arg  == 'U') uplo  = 0;
+  အကယ်၍ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  အကယ်၍ (lda  < MAX(1, n))   info =  9;
+  အကယ်၍ (incy == 0)          info =  7;
+  အကယ်၍ (incx == 0)          info =  5;
+  အကယ်၍ (n < 0)              info =  2;
+  အကယ်၍ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  အကယ်၍ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ပြန်ပေး;
   }
 
-#else
+#မဟုတ်ပါက
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT *a, blasint lda) {
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo, blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT *a, blasint lda) {
 
   FLOAT *buffer;
-  int uplo;
+  ကိန်းပြည့် uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  ကိန်းပြည့် nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -131,91 +131,91 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  အကယ်၍ (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    အကယ်၍ (Uplo == CblasUpper) uplo  = 0;
+    အကယ်၍ (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    အကယ်၍ (lda  < MAX(1, n))   info =  9;
+    အကယ်၍ (incy == 0)          info =  7;
+    အကယ်၍ (incx == 0)          info =  5;
+    အကယ်၍ (n < 0)              info =  2;
+    အကယ်၍ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  အကယ်၍ (order == CblasRowMajor) {
+
+    အကယ်၍ (Uplo == CblasUpper) uplo  = 1;
+    အကယ်၍ (Uplo == CblasLower) uplo  = 0;
+
+    info = -1;
+
+    အကယ်၍ (lda  < MAX(1, n))   info =  9;
+    အကယ်၍ (incy == 0)          info =  7;
+    အကယ်၍ (incx == 0)          info =  5;
+    အကယ်၍ (n < 0)              info =  2;
+    အကယ်၍ (uplo  < 0)          info =  1;
+  }
+
+  အကယ်၍ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ပြန်ပေး;
   }
 
 #endif
 
-  if (n == 0) return;
+  အကယ်၍ (n == 0) ပြန်ပေး;
 
-  if (alpha == ZERO) return;
+  အကယ်၍ (alpha == ZERO) ပြန်ပေး;
 
   IDEBUG_START;
 
-  if (incx == 1 && incy == 1 && n < 100) {
+  အကယ်၍ (incx == 1 && incy == 1 && n < 100) {
     blasint i;
-    if (!uplo) {
-      for (i = 0; i < n; i++){
+    အကယ်၍ (!uplo) {
+      အတွက် (i = 0; i < n; i++){
         AXPYU_K(i + 1, 0, 0, alpha * x[i], y,     1, a, 1, NULL, 0);
         AXPYU_K(i + 1, 0, 0, alpha * y[i], x,     1, a, 1, NULL, 0);
         a += lda;
       }
-    } else {
-      for (i = 0; i < n; i++){
+    } မဟုတ်ပါက {
+      အတွက် (i = 0; i < n; i++){
         AXPYU_K(n - i, 0, 0, alpha * x[i], y + i, 1, a, 1, NULL, 0);
         AXPYU_K(n - i, 0, 0, alpha * y[i], x + i, 1, a, 1, NULL, 0);
         a += 1 + lda;
       }
     }
-    return;
+    ပြန်ပေး;
   }
 
 	  
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  အကယ်၍ (incx < 0 ) x -= (n - 1) * incx;
+  အကယ်၍ (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  အကယ်၍ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ပြန်ပေး;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  အကယ်၍ (n < 50) nthreads = 1;
+  အကယ်၍ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  အကယ်၍ (nthreads == 1) {
 #endif
 
     (syr2[uplo])(n, alpha, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } မဟုတ်ပါက {
 
     (syr2_thread[uplo])(n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -228,5 +228,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
 
   IDEBUG_END;
 
-  return;
+  ပြန်ပေး;
 }

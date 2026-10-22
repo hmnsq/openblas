@@ -46,7 +46,7 @@
 #define ERROR_NAME "XPOTRI"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZPOTRI"
-#else
+#မဟုတ်ပါက
 #define ERROR_NAME "CPOTRI"
 #endif
 
@@ -69,7 +69,7 @@ static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+void NAME(var_na *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -91,23 +91,23 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  အကယ်၍ (uplo_arg == 'U') uplo = 0;
+  အကယ်၍ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 4;
-  if (args.n    < 0)             info = 2;
-  if (uplo < 0)                  info = 1;
+  အကယ်၍ (args.lda  < MAX(1,args.n)) info = 4;
+  အကယ်၍ (args.n    < 0)             info = 2;
+  အကယ်၍ (uplo < 0)                  info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  အကယ်၍ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ပြန်ပေး;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  အကယ်၍ (args.n == 0) ပြန်ပေး;
 
   IDEBUG_START;
 
@@ -123,31 +123,31 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #ifdef SMP
   args.nthreads = num_cpu_avail(4);
 #ifndef DOUBLE
-  if (args.n < 200)
-#else
-  if (args.n < 150)
+  အကယ်၍ (args.n < 200)
+#မဟုတ်ပါက
+  အကယ်၍ (args.n < 150)
 #endif
 	  args.nthreads=1;
-  else
+  မဟုတ်ပါက
 #endif
   args.nthreads = num_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  အကယ်၍ (args.nthreads == 1) {
 #endif
 
   info = (trtri_single[uplo])(&args, NULL, NULL, sa, sb, 0);
 
-  if (!info) {
+  အကယ်၍ (!info) {
     info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
   }
 
   *Info = info;
 
 #ifdef SMP
-  } else {
+  } မဟုတ်ပါက {
     info = (trtri_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
 
-    if (!info) {
+    အကယ်၍ (!info) {
       info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
     }
 
@@ -166,5 +166,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  ပြန်ပေး;
 }

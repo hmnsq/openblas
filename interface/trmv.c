@@ -47,32 +47,32 @@
 #define ERROR_NAME "QTRMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DTRMV "
-#else
+#မဟုတ်ပါက
 #define ERROR_NAME "STRMV "
 #endif
 
-static int (*trmv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static ကိန်းပြည့် (*trmv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   qtrmv_NUU, qtrmv_NUN, qtrmv_NLU, qtrmv_NLN,
   qtrmv_TUU, qtrmv_TUN, qtrmv_TLU, qtrmv_TLN,
 #elif defined(DOUBLE)
   dtrmv_NUU, dtrmv_NUN, dtrmv_NLU, dtrmv_NLN,
   dtrmv_TUU, dtrmv_TUN, dtrmv_TLU, dtrmv_TLN,
-#else
+#မဟုတ်ပါက
   strmv_NUU, strmv_NUN, strmv_NLU, strmv_NLN,
   strmv_TUU, strmv_TUN, strmv_TLU, strmv_TLN,
 #endif
 };
 
 #ifdef SMP
-static int (*trmv_thread[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ကိန်းပြည့် (*trmv_thread[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ကိန်းပြည့်) = {
 #ifdef XDOUBLE
   qtrmv_thread_NUU, qtrmv_thread_NUN, qtrmv_thread_NLU, qtrmv_thread_NLN,
   qtrmv_thread_TUU, qtrmv_thread_TUN, qtrmv_thread_TLU, qtrmv_thread_TLN,
 #elif defined(DOUBLE)
   dtrmv_thread_NUU, dtrmv_thread_NUN, dtrmv_thread_NLU, dtrmv_thread_NLN,
   dtrmv_thread_TUU, dtrmv_thread_TUN, dtrmv_thread_TLU, dtrmv_thread_TLN,
-#else
+#မဟုတ်ပါက
   strmv_thread_NUU, strmv_thread_NUN, strmv_thread_NLU, strmv_thread_NLN,
   strmv_thread_TUU, strmv_thread_TUN, strmv_thread_TLU, strmv_thread_TLN,
 #endif
@@ -83,24 +83,24 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+void NAME(var_na *UPLO, var_na *TRANS, var_na *DIAG,
 	   blasint *N, FLOAT *a, blasint *LDA, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  var_na uplo_arg  = *UPLO;
+  var_na trans_arg = *TRANS;
+  var_na diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  ကိန်းပြည့် uplo;
+  ကိန်းပြည့် unit;
+  ကိန်းပြည့် trans;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ကိန်းပြည့် nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -113,42 +113,42 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  အကယ်၍ (trans_arg == 'N') trans = 0;
+  အကယ်၍ (trans_arg == 'T') trans = 1;
+  အကယ်၍ (trans_arg == 'R') trans = 0;
+  အကယ်၍ (trans_arg == 'C') trans = 1;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  အကယ်၍ (diag_arg  == 'U') unit  = 0;
+  အကယ်၍ (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  အကယ်၍ (uplo_arg  == 'U') uplo  = 0;
+  အကယ်၍ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  8;
-  if (lda  < MAX(1, n))   info =  6;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  အကယ်၍ (incx == 0)          info =  8;
+  အကယ်၍ (lda  < MAX(1, n))   info =  6;
+  အကယ်၍ (n < 0)              info =  4;
+  အကယ်၍ (unit  < 0)          info =  3;
+  အကယ်၍ (trans < 0)          info =  2;
+  အကယ်၍ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  အကယ်၍ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ပြန်ပေး;
   }
 
-#else
+#မဟုတ်ပါက
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_DIAG Diag,
 	   blasint n, FLOAT  *a, blasint lda, FLOAT  *x, blasint incx) {
 
-  int trans, uplo, unit;
+  ကိန်းပြည့် trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ကိန်းပြည့် nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -158,85 +158,85 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  အကယ်၍ (order == CblasColMajor) {
+    အကယ်၍ (Uplo == CblasUpper)         uplo  = 0;
+    အကယ်၍ (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+    အကယ်၍ (TransA == CblasNoTrans)     trans = 0;
+    အကယ်၍ (TransA == CblasTrans)       trans = 1;
+    အကယ်၍ (TransA == CblasConjNoTrans) trans = 0;
+    အကယ်၍ (TransA == CblasConjTrans)   trans = 1;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    အကယ်၍ (Diag == CblasUnit)          unit  = 0;
+    အကယ်၍ (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    အကယ်၍ (incx == 0)          info =  8;
+    အကယ်၍ (lda  < MAX(1, n))   info =  6;
+    အကယ်၍ (n < 0)              info =  4;
+    အကယ်၍ (unit  < 0)          info =  3;
+    အကယ်၍ (trans < 0)          info =  2;
+    အကယ်၍ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  အကယ်၍ (order == CblasRowMajor) {
+    အကယ်၍ (Uplo == CblasUpper)         uplo  = 1;
+    အကယ်၍ (Uplo == CblasLower)         uplo  = 0;
+
+    အကယ်၍ (TransA == CblasNoTrans)     trans = 1;
+    အကယ်၍ (TransA == CblasTrans)       trans = 0;
+    အကယ်၍ (TransA == CblasConjNoTrans) trans = 1;
+    အကယ်၍ (TransA == CblasConjTrans)   trans = 0;
+
+    အကယ်၍ (Diag == CblasUnit)          unit  = 0;
+    အကယ်၍ (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    အကယ်၍ (incx == 0)          info =  8;
+    အကယ်၍ (lda  < MAX(1, n))   info =  6;
+    အကယ်၍ (n < 0)              info =  4;
+    အကယ်၍ (unit  < 0)          info =  3;
+    အကယ်၍ (trans < 0)          info =  2;
+    အကယ်၍ (uplo  < 0)          info =  1;
+  }
+
+  အကယ်၍ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ပြန်ပေး;
   }
 
 #endif
 
-  if (n == 0) return;
+  အကယ်၍ (n == 0) ပြန်ပေး;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
+  အကယ်၍ (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  အကယ်၍ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ပြန်ပေး;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
   
-  if (n < 50 ) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  အကယ်၍ (n < 50 ) nthreads = 1;
+  အကယ်၍ (nthreads > 2 && n < 500) nthreads = 2;
 	
-  if (nthreads == 1) {
+  အကယ်၍ (nthreads == 1) {
 #endif
 
     (trmv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer);
 
 #ifdef SMP
-  } else {
+  } မဟုတ်ပါက {
 
     (trmv_thread[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer, nthreads);
 
@@ -249,5 +249,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  ပြန်ပေး;
 }

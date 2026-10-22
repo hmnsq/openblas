@@ -46,7 +46,7 @@
 #define ERROR_NAME "XGETRS"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGETRS"
-#else
+#မဟုတ်ပါက
 #define ERROR_NAME "CGETRS"
 #endif
 
@@ -61,15 +61,15 @@ static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+void NAME(var_na *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 	    blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  var_na trans_arg = *TRANS;
 
   blas_arg_t args;
 
   blasint info;
-  int trans;
+  ကိန်းပြည့် trans;
   FLOAT *buffer;
 #ifdef PPC440
   extern
@@ -91,20 +91,20 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  အကယ်၍ (trans_arg == 'N') trans = 0;
+  အကယ်၍ (trans_arg == 'T') trans = 1;
+  အကယ်၍ (trans_arg == 'R') trans = 2;
+  အကယ်၍ (trans_arg == 'C') trans = 3;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  အကယ်၍ (args.ldb  < MAX(1, args.m)) info = 8;
+  အကယ်၍ (args.lda  < MAX(1, args.m)) info = 5;
+  အကယ်၍ (args.n    < 0) info = 3;
+  အကယ်၍ (args.m    < 0) info = 2;
+  အကယ်၍ (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  အကယ်၍ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
+    ပြန်ပေး;
   }
 
   args.alpha = NULL;
@@ -112,7 +112,7 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  အကယ်၍ (args.m == 0 || args.n == 0) ပြန်ပေး;
 
   IDEBUG_START;
 
@@ -126,19 +126,19 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 #endif
 
 #ifdef SMP
-  if (args.m < 64) {
+  အကယ်၍ (args.m < 64) {
     args.nthreads = 1;
-  } else {
+  } မဟုတ်ပါက {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  အကယ်၍ (args.nthreads == 1) {
 #endif
 
     (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } မဟုတ်ပါက {
 
     (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
 
@@ -153,6 +153,6 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   IDEBUG_END;
 
-  return;
+  ပြန်ပေး;
 
 }
