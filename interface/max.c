@@ -36,19 +36,19 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #undef MAX_K
 
 #ifdef USE_ABS
 
-#if defined(DOUBLE)
+#यदि defined(DOUBLE)
 #define ABS fabs
-#else
+#अन्यथा
 #define ABS fabsf
 #endif
 
@@ -58,45 +58,45 @@
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define MAX_K	QAMAX_K
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define MAX_K	DAMAX_K
-#else
+#अन्यथा
 #define MAX_K	SAMAX_K
 #endif
-#else
+#अन्यथा
 #ifdef XDOUBLE
 #define MAX_K	XAMAX_K
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define MAX_K	ZAMAX_K
-#else
+#अन्यथा
 #define MAX_K	CAMAX_K
 #endif
 #endif
 
-#else
+#अन्यथा
 
 /* ABS & MIN */
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define MAX_K	QAMIN_K
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define MAX_K	DAMIN_K
-#else
+#अन्यथा
 #define MAX_K	SAMIN_K
 #endif
-#else
+#अन्यथा
 #ifdef XDOUBLE
 #define MAX_K	XAMIN_K
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define MAX_K	ZAMIN_K
-#else
+#अन्यथा
 #define MAX_K	CAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#अन्यथा
 
 #define ABS
 
@@ -105,20 +105,20 @@
 /* MAX */
 #ifdef XDOUBLE
 #define MAX_K	QMAX_K
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define MAX_K	DMAX_K
-#else
+#अन्यथा
 #define MAX_K	SMAX_K
 #endif
 
-#else
+#अन्यथा
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	QMIN_K
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define MAX_K	DMIN_K
-#else
+#अन्यथा
 #define MAX_K	SMIN_K
 #endif
 
@@ -138,12 +138,12 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  यदि (n <= 0) प्रत्यागम 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  यदि (incx == 0) प्रत्यागम (ABS(*x));
+#अन्यथा
+  यदि (incx == 0) प्रत्यागम (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -156,15 +156,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  प्रत्यागम ret;
 }
 
-#else
+#अन्यथा
 
 #ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+FLOAT CNAME(blasint n, शून्य *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#अन्यथा
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
   
@@ -172,12 +172,12 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  यदि (n <= 0) प्रत्यागम 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  यदि (incx == 0) प्रत्यागम (ABS(*x));
+#अन्यथा
+  यदि (incx == 0) प्रत्यागम (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -190,7 +190,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  प्रत्यागम ret;
 }
 
 #endif
