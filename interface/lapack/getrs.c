@@ -36,83 +36,83 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETRS"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "DGETRS"
-#else
+#وإلا
 #define ERROR_NAME "SGETRS"
 #endif
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_SINGLE, GETRS_T_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_PARALLEL, GETRS_T_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+فراغ NAME(حرف *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  حرف trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t وسائط;
 
   blasint info;
-  int trans;
+  صحيح trans;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  اطبع_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  وسائط.m    = *N;
+  وسائط.n    = *NRHS;
+  وسائط.a    = (فراغ *)a;
+  وسائط.lda  = *ldA;
+  وسائط.b    = (فراغ *)b;
+  وسائط.ldb  = *ldB;
+  وسائط.c    = (فراغ *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  إذا (trans_arg == 'N') trans = 0;
+  إذا (trans_arg == 'T') trans = 1;
+  إذا (trans_arg == 'R') trans = 0;
+  إذا (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  إذا (وسائط.ldb  < MAX(1, وسائط.m)) info = 8;
+  إذا (وسائط.lda  < MAX(1, وسائط.m)) info = 5;
+  إذا (وسائط.n    < 0) info = 3;
+  إذا (وسائط.m    < 0) info = 2;
+  إذا (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
+    أرجع;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  وسائط.alpha = عدم;
+  وسائط.beta  = عدم;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  إذا (وسائط.m == 0 || وسائط.n == 0) أرجع;
 
   IDEBUG_START;
 
@@ -126,21 +126,21 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  وسائط.common = عدم;
+  إذا (وسائط.m < 64) {
+    وسائط.nthreads = 1;
+  } وإلا {
+    وسائط.nthreads = رقم_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  إذا (وسائط.nthreads == 1) {
 #endif
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&وسائط, عدم, عدم, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+  } وإلا {
+    (getrs_parallel[trans])(&وسائط, عدم, عدم, sa, sb, 0);
   }
 #endif
 
@@ -148,10 +148,10 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, وسائط.m * وسائط.n, 2 * وسائط.m * وسائط.m * وسائط.n);
 
   IDEBUG_END;
 
-  return;
+  أرجع;
 
 }

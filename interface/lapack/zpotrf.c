@@ -36,69 +36,69 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XPOTRF"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "ZPOTRF"
-#else
+#وإلا
 #define ERROR_NAME "CPOTRF"
 #endif
 
-static blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ساكن blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   POTRF_U_SINGLE, POTRF_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ساكن blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   POTRF_U_PARALLEL, POTRF_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t وسائط;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  اطبع_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  وسائط.n    = *N;
+  وسائط.a    = (فراغ *)a;
+  وسائط.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (وسائط.lda < MAX(1,وسائط.n)) info = 4;
+  إذا (وسائط.n   < 0)             info = 2;
+  إذا (uplo     < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  إذا (وسائط.n == 0) أرجع;
 
   IDEBUG_START;
 
@@ -112,25 +112,25 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  وسائط.common = عدم;
 #ifndef DOUBLE
-  if (args.n < 64)
-#else
-  if (args.n < 64)
+  إذا (وسائط.n < 64)
+#وإلا
+  إذا (وسائط.n < 64)
 #endif
-    args.nthreads = 1;
-  else
-  args.nthreads = num_cpu_avail(4);
+    وسائط.nthreads = 1;
+  وإلا
+  وسائط.nthreads = رقم_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  إذا (وسائط.nthreads == 1) {
 #endif
 
-    *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_single[uplo])(&وسائط, عدم, عدم, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } وإلا {
 
-    *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_parallel[uplo])(&وسائط, عدم, عدم, sa, sb, 0);
 
   }
 #endif
@@ -139,11 +139,11 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * 1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_END(1, .5 * وسائط.n * وسائط.n,
+		       2. * وسائط.n * (1./3. + وسائط.n * ( 1./2. + وسائط.n * 1./6.))
+		       +  6. * 1./6. * وسائط.n * (وسائط.n * وسائط.n - 1));
 
   IDEBUG_END;
 
-  return;
+  أرجع;
 }
