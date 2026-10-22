@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ຖ້າ (n <= 0) ສົ່ງຄືນ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ຖ້າ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    ສົ່ງຄືນ fabs(x[0]);
+#ບໍ່ດັ່ງນັ້ນ
+    ສົ່ງຄືນ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ຖ້າ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  ສົ່ງຄືນ (sqrt((dviguu_na)n)*fabs(x[0]));
+#ບໍ່ດັ່ງນັ້ນ
+  ສົ່ງຄືນ (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  dviguu_na fr=fabs(x[0]);
+  dviguu_na fi=fabs(x[1]);
+  dviguu_na fmin=MIN(fr,fi);
+  dviguu_na fmax=MAX(fr,fi);
+  ຖ້າ (fmax==0.) ສົ່ງຄືນ(fmax);
+  ຖ້າ (fmax==fmin) ສົ່ງຄືນ(sqrt((dviguu_na)n)*sqrt(2.)*fmax);
+  ສົ່ງຄືນ (sqrt((dviguu_na)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ບໍ່ດັ່ງນັ້ນ
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ຖ້າ (fmax==0.) ສົ່ງຄືນ(fmax);
+  ຖ້າ (fmax==fmin) ສົ່ງຄືນ(sqrt((float)n)*sqrt(2.)*fmax);
+  ສົ່ງຄືນ (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ຖ້າ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ບໍ່ດັ່ງນັ້ນ
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ສົ່ງຄືນ ret;
 }
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ບໍ່ດັ່ງນັ້ນ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ຖ້າ (n <= 0) ສົ່ງຄືນ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ຖ້າ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    ສົ່ງຄືນ fabs(x[0]);
+#ບໍ່ດັ່ງນັ້ນ
+    ສົ່ງຄືນ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ຖ້າ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  ສົ່ງຄືນ (sqrt((dviguu_na)n)*fabs(x[0]));
+#ບໍ່ດັ່ງນັ້ນ
+  ສົ່ງຄືນ (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  dviguu_na fr=fabs(x[0]);
+  dviguu_na fi=fabs(x[1]);
+  dviguu_na fmin=MIN(fr,fi);
+  dviguu_na fmax=MAX(fr,fi);
+  ຖ້າ (fmax==0.) ສົ່ງຄືນ(fmax);
+  ຖ້າ (fmax==fmin) ສົ່ງຄືນ(sqrt((dviguu_na)n)*sqrt(2.)*fmax);
+  ສົ່ງຄືນ (sqrt((dviguu_na)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ບໍ່ດັ່ງນັ້ນ
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ຖ້າ (fmax==0.) ສົ່ງຄືນ(fmax);
+  ຖ້າ (fmax==fmin) ສົ່ງຄືນ(sqrt((float)n)*sqrt(2.)*fmax);
+  ສົ່ງຄືນ (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ຖ້າ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ບໍ່ດັ່ງນັ້ນ
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ສົ່ງຄືນ ret;
 }
 
 #endif

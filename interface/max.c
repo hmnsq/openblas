@@ -46,9 +46,9 @@
 
 #ifdef USE_ABS
 
-#if defined(DOUBLE)
+#ຖ້າ defined(DOUBLE)
 #define ABS fabs
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define ABS fabsf
 #endif
 
@@ -60,20 +60,20 @@
 #define MAX_K	QAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMAX_K
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define MAX_K	SAMAX_K
 #endif
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #ifdef XDOUBLE
 #define MAX_K	XAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMAX_K
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define MAX_K	CAMAX_K
 #endif
 #endif
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
 /* ABS & MIN */
 #ifndef COMPLEX
@@ -81,22 +81,22 @@
 #define MAX_K	QAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMIN_K
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define MAX_K	SAMIN_K
 #endif
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #ifdef XDOUBLE
 #define MAX_K	XAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMIN_K
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define MAX_K	CAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
 #define ABS
 
@@ -107,18 +107,18 @@
 #define MAX_K	QMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DMAX_K
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define MAX_K	SMAX_K
 #endif
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	QMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DMIN_K
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define MAX_K	SMIN_K
 #endif
 
@@ -138,12 +138,12 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ຖ້າ (n <= 0) ສົ່ງຄືນ 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ຖ້າ (incx == 0) ສົ່ງຄືນ (ABS(*x));
+#ບໍ່ດັ່ງນັ້ນ
+  ຖ້າ (incx == 0) ສົ່ງຄືນ (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -156,15 +156,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ສົ່ງຄືນ ret;
 }
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ບໍ່ດັ່ງນັ້ນ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
   
@@ -172,12 +172,12 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ຖ້າ (n <= 0) ສົ່ງຄືນ 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ຖ້າ (incx == 0) ສົ່ງຄືນ (ABS(*x));
+#ບໍ່ດັ່ງນັ້ນ
+  ຖ້າ (incx == 0) ສົ່ງຄືນ (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -190,7 +190,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ສົ່ງຄືນ ret;
 }
 
 #endif

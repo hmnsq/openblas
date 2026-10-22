@@ -47,27 +47,27 @@
 #define ERROR_NAME "QSYR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYR2 "
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define ERROR_NAME "SSYR2 "
 #endif
 
-static int (*syr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static ຈຳນວນເຕັມ (*syr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   qsyr2_U, qsyr2_L,
 #elif defined(DOUBLE)
   dsyr2_U, dsyr2_L,
-#else
+#ບໍ່ດັ່ງນັ້ນ
   ssyr2_U, ssyr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ຈຳນວນເຕັມ (*syr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ຈຳນວນເຕັມ) = {
 #ifdef XDOUBLE
   qsyr2_thread_U, qsyr2_thread_L,
 #elif defined(DOUBLE)
   dsyr2_thread_U, dsyr2_thread_L,
-#else
+#ບໍ່ດັ່ງນັ້ນ
   ssyr2_thread_U, ssyr2_thread_L,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint lda	= *LDA;
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ຈຳນວນເຕັມ uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ຈຳນວນເຕັມ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,31 +99,31 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ຖ້າ (uplo_arg  == 'U') uplo  = 0;
+  ຖ້າ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ຖ້າ (lda  < MAX(1, n))   info =  9;
+  ຖ້າ (incy == 0)          info =  7;
+  ຖ້າ (incx == 0)          info =  5;
+  ຖ້າ (n < 0)              info =  2;
+  ຖ້າ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ຖ້າ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT *a, blasint lda) {
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo, blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT *a, blasint lda) {
 
   FLOAT *buffer;
-  int uplo;
+  ຈຳນວນເຕັມ uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  ຈຳນວນເຕັມ nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -131,91 +131,91 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ຖ້າ (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    ຖ້າ (Uplo == CblasUpper) uplo  = 0;
+    ຖ້າ (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ຖ້າ (lda  < MAX(1, n))   info =  9;
+    ຖ້າ (incy == 0)          info =  7;
+    ຖ້າ (incx == 0)          info =  5;
+    ຖ້າ (n < 0)              info =  2;
+    ຖ້າ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ຖ້າ (order == CblasRowMajor) {
+
+    ຖ້າ (Uplo == CblasUpper) uplo  = 1;
+    ຖ້າ (Uplo == CblasLower) uplo  = 0;
+
+    info = -1;
+
+    ຖ້າ (lda  < MAX(1, n))   info =  9;
+    ຖ້າ (incy == 0)          info =  7;
+    ຖ້າ (incx == 0)          info =  5;
+    ຖ້າ (n < 0)              info =  2;
+    ຖ້າ (uplo  < 0)          info =  1;
+  }
+
+  ຖ້າ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
 #endif
 
-  if (n == 0) return;
+  ຖ້າ (n == 0) ສົ່ງຄືນ;
 
-  if (alpha == ZERO) return;
+  ຖ້າ (alpha == ZERO) ສົ່ງຄືນ;
 
   IDEBUG_START;
 
-  if (incx == 1 && incy == 1 && n < 100) {
+  ຖ້າ (incx == 1 && incy == 1 && n < 100) {
     blasint i;
-    if (!uplo) {
-      for (i = 0; i < n; i++){
+    ຖ້າ (!uplo) {
+      ສຳລັບ (i = 0; i < n; i++){
         AXPYU_K(i + 1, 0, 0, alpha * x[i], y,     1, a, 1, NULL, 0);
         AXPYU_K(i + 1, 0, 0, alpha * y[i], x,     1, a, 1, NULL, 0);
         a += lda;
       }
-    } else {
-      for (i = 0; i < n; i++){
+    } ບໍ່ດັ່ງນັ້ນ {
+      ສຳລັບ (i = 0; i < n; i++){
         AXPYU_K(n - i, 0, 0, alpha * x[i], y + i, 1, a, 1, NULL, 0);
         AXPYU_K(n - i, 0, 0, alpha * y[i], x + i, 1, a, 1, NULL, 0);
         a += 1 + lda;
       }
     }
-    return;
+    ສົ່ງຄືນ;
   }
 
 	  
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  ຖ້າ (incx < 0 ) x -= (n - 1) * incx;
+  ຖ້າ (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ຖ້າ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ຖ້າ (n < 50) nthreads = 1;
+  ຖ້າ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ຖ້າ (nthreads == 1) {
 #endif
 
     (syr2[uplo])(n, alpha, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } ບໍ່ດັ່ງນັ້ນ {
 
     (syr2_thread[uplo])(n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -228,5 +228,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
 
   IDEBUG_END;
 
-  return;
+  ສົ່ງຄືນ;
 }

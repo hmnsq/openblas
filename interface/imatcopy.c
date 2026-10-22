@@ -37,9 +37,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ຖ້າ defined(DOUBLE)
 #define ERROR_NAME "DIMATCOPY"
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define ERROR_NAME "SIMATCOPY"
 #endif
 
@@ -57,11 +57,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
+void NAME( var_na* ORDER, var_na* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	var_na Order, Trans;
+	ຈຳນວນເຕັມ order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
@@ -72,26 +72,26 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
+	ຖ້າ ( Order == 'C' ) order = BlasColMajor;
+	ຖ້າ ( Order == 'R' ) order = BlasRowMajor;
+	ຖ້າ ( Trans == 'N' ) trans = BlasNoTrans;
+	ຖ້າ ( Trans == 'R' ) trans = BlasNoTrans;
+	ຖ້າ ( Trans == 'T' ) trans = BlasTrans;
+	ຖ້າ ( Trans == 'C' ) trans = BlasTrans;
+#ບໍ່ດັ່ງນັ້ນ 
+void CNAME( ga_nanaa CBLAS_ORDER CORDER, ga_nanaa CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	ຈຳນວນເຕັມ order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
 	blasint *lda, *ldb, *rows, *cols; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	ຖ້າ ( CORDER == CblasColMajor) order = BlasColMajor; 
+	ຖ້າ ( CORDER == CblasRowMajor) order = BlasRowMajor; 
+	ຖ້າ ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	ຖ້າ ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -100,95 +100,95 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	ldb = &cldb; 	
 #endif 
 
-	if ( order == BlasColMajor)
+	ຖ້າ ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	ຖ້າ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
+        	ຖ້າ ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	ຖ້າ ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	ຖ້າ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
+        	ຖ້າ ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ຖ້າ ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	ຖ້າ ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	ຖ້າ ( *cols < 0 ) info = 4;
+	ຖ້າ ( *rows < 0 ) info = 3;
+	ຖ້າ ( trans < 0 ) info = 2;
+	ຖ້າ ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ຖ້າ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    		ສົ່ງຄືນ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ຖ້າ ((*rows == 0) || (*cols == 0)) ສົ່ງຄືນ;
 
 #ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+    ຖ້າ ( *lda == *ldb ) {
+        ຖ້າ ( order == BlasColMajor )
         {
-            if ( trans == BlasNoTrans )
+            ຖ້າ ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                ສົ່ງຄືນ;
             }
-            else if ( *rows == *cols )
+            ບໍ່ດັ່ງນັ້ນ ຖ້າ ( *rows == *cols )
             {
                 IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                ສົ່ງຄືນ;
             }
         }
-        else
+        ບໍ່ດັ່ງນັ້ນ
         {
-            if ( trans == BlasNoTrans )
+            ຖ້າ ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                ສົ່ງຄືນ;
             }
-            else if ( *rows == *cols )
+            ບໍ່ດັ່ງນັ້ນ ຖ້າ ( *rows == *cols )
             {
                 IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                ສົ່ງຄືນ;
             }
         }
     }
 #endif
 
-	if ( *rows >  *cols )
-            msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
-            msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
+	ຖ້າ ( *rows >  *cols )
+            msize = (size_t)(*rows) * (*ldb)  * parimaa_na(FLOAT);
+    ບໍ່ດັ່ງນັ້ນ
+            msize = (size_t)(*cols) * (*ldb)  * parimaa_na(FLOAT);
 
 	b = malloc(msize);
-	if ( b == NULL )
+	ຖ້າ ( b == NULL )
 	{
 		printf("Memory alloc failed in imatcopy\n");
 		exit(1);
 	}
 
-	if ( order == BlasColMajor )
+	ຖ້າ ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		ຖ້າ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
 		}
-		else
+		ບໍ່ດັ່ງນັ້ນ
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
 	}
-	else
+	ບໍ່ດັ່ງນັ້ນ
 	{
-		if ( trans == BlasNoTrans )
+		ຖ້າ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
-		else
+		ບໍ່ດັ່ງນັ້ນ
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
@@ -196,7 +196,7 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	}
 
 	free(b);
-	return;
+	ສົ່ງຄືນ;
 
 }
 

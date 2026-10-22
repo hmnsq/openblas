@@ -47,37 +47,37 @@
 #define ERROR_NAME "QSYR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSYR2 "
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define ERROR_NAME "CSYR2 "
 #endif
 
-static int (*syr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static ຈຳນວນເຕັມ (*syr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   xsyr2_U, xsyr2_L,
 #elif defined(DOUBLE)
   zsyr2_U, zsyr2_L,
-#else
+#ບໍ່ດັ່ງນັ້ນ
   csyr2_U, csyr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ຈຳນວນເຕັມ (*syr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ຈຳນວນເຕັມ) = {
 #ifdef XDOUBLE
   xsyr2_thread_U, xsyr2_thread_L,
 #elif defined(DOUBLE)
   zsyr2_thread_U, zsyr2_thread_L,
-#else
+#ບໍ່ດັ່ງນັ້ນ
   csyr2_thread_U, csyr2_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -86,10 +86,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ຈຳນວນເຕັມ uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ຈຳນວນເຕັມ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,53 +97,53 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ຖ້າ (uplo_arg  == 'U') uplo  = 0;
+  ຖ້າ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ຖ້າ (lda  < MAX(1, n))   info =  9;
+  ຖ້າ (incy == 0)          info =  7;
+  ຖ້າ (incx == 0)          info =  5;
+  ຖ້າ (n < 0)              info =  2;
+  ຖ້າ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ຖ້າ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
-  if (n == 0) return;
+  ຖ້າ (n == 0) ສົ່ງຄືນ;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ຖ້າ ((alpha_r == ZERO) && (alpha_i == ZERO)) ສົ່ງຄືນ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
+  ຖ້າ (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  ຖ້າ (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ຖ້າ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ຖ້າ (n < 50) nthreads = 1;
+  ຖ້າ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ຖ້າ (nthreads == 1) {
 #endif
 
     (syr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } ບໍ່ດັ່ງນັ້ນ {
 
     (syr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -156,5 +156,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  ສົ່ງຄືນ;
 }

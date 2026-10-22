@@ -47,11 +47,11 @@
 #define ERROR_NAME "XTPMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTPMV "
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define ERROR_NAME "CTPMV "
 #endif
 
-static int (*tpmv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, void *) = {
+static ຈຳນວນເຕັມ (*tpmv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xtpmv_NUU, xtpmv_NUN, xtpmv_NLU, xtpmv_NLN,
   xtpmv_TUU, xtpmv_TUN, xtpmv_TLU, xtpmv_TLN,
@@ -62,7 +62,7 @@ static int (*tpmv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, void *) = {
   ztpmv_TUU, ztpmv_TUN, ztpmv_TLU, ztpmv_TLN,
   ztpmv_RUU, ztpmv_RUN, ztpmv_RLU, ztpmv_RLN,
   ztpmv_CUU, ztpmv_CUN, ztpmv_CLU, ztpmv_CLN,
-#else
+#ບໍ່ດັ່ງນັ້ນ
   ctpmv_NUU, ctpmv_NUN, ctpmv_NLU, ctpmv_NLN,
   ctpmv_TUU, ctpmv_TUN, ctpmv_TLU, ctpmv_TLN,
   ctpmv_RUU, ctpmv_RUN, ctpmv_RLU, ctpmv_RLN,
@@ -71,7 +71,7 @@ static int (*tpmv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, void *) = {
 };
 
 #ifdef SMP
-static int (*tpmv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ຈຳນວນເຕັມ (*tpmv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, ຈຳນວນເຕັມ) = {
 #ifdef XDOUBLE
   xtpmv_thread_NUU, xtpmv_thread_NUN, xtpmv_thread_NLU, xtpmv_thread_NLN,
   xtpmv_thread_TUU, xtpmv_thread_TUN, xtpmv_thread_TLU, xtpmv_thread_TLN,
@@ -82,7 +82,7 @@ static int (*tpmv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, int) 
   ztpmv_thread_TUU, ztpmv_thread_TUN, ztpmv_thread_TLU, ztpmv_thread_TLN,
   ztpmv_thread_RUU, ztpmv_thread_RUN, ztpmv_thread_RLU, ztpmv_thread_RLN,
   ztpmv_thread_CUU, ztpmv_thread_CUN, ztpmv_thread_CLU, ztpmv_thread_CLN,
-#else
+#ບໍ່ດັ່ງນັ້ນ
   ctpmv_thread_NUU, ctpmv_thread_NUN, ctpmv_thread_NLU, ctpmv_thread_NLN,
   ctpmv_thread_TUU, ctpmv_thread_TUN, ctpmv_thread_TLU, ctpmv_thread_TLN,
   ctpmv_thread_RUU, ctpmv_thread_RUN, ctpmv_thread_RLU, ctpmv_thread_RLN,
@@ -95,23 +95,23 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+void NAME(var_na *UPLO, var_na *TRANS, var_na *DIAG,
 	   blasint *N, FLOAT *a, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  var_na uplo_arg  = *UPLO;
+  var_na trans_arg = *TRANS;
+  var_na diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  ຈຳນວນເຕັມ uplo;
+  ຈຳນວນເຕັມ unit;
+  ຈຳນວນເຕັມ trans;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ຈຳນວນເຕັມ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -124,40 +124,40 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  ຖ້າ (trans_arg == 'N') trans = 0;
+  ຖ້າ (trans_arg == 'T') trans = 1;
+  ຖ້າ (trans_arg == 'R') trans = 2;
+  ຖ້າ (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  ຖ້າ (diag_arg  == 'U') unit  = 0;
+  ຖ້າ (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ຖ້າ (uplo_arg  == 'U') uplo  = 0;
+  ຖ້າ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  7;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  ຖ້າ (incx == 0)          info =  7;
+  ຖ້າ (n < 0)              info =  4;
+  ຖ້າ (unit  < 0)          info =  3;
+  ຖ້າ (trans < 0)          info =  2;
+  ຖ້າ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ຖ້າ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_DIAG Diag,
 	   blasint n, void  *va, void  *vx, blasint incx) {
 
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit;
+  ຈຳນວນເຕັມ trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 
@@ -168,87 +168,87 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 #ifdef SMP
-  int nthreads;
+  ຈຳນວນເຕັມ nthreads;
 #endif
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ຖ້າ (order == CblasColMajor) {
+    ຖ້າ (Uplo == CblasUpper)         uplo  = 0;
+    ຖ້າ (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    ຖ້າ (TransA == CblasNoTrans)     trans = 0;
+    ຖ້າ (TransA == CblasTrans)       trans = 1;
+    ຖ້າ (TransA == CblasConjNoTrans) trans = 2;
+    ຖ້າ (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    ຖ້າ (Diag == CblasUnit)          unit  = 0;
+    ຖ້າ (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    ຖ້າ (incx == 0)          info =  7;
+    ຖ້າ (n < 0)              info =  4;
+    ຖ້າ (unit  < 0)          info =  3;
+    ຖ້າ (trans < 0)          info =  2;
+    ຖ້າ (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  ຖ້າ (order == CblasRowMajor) {
+    ຖ້າ (Uplo == CblasUpper)         uplo  = 1;
+    ຖ້າ (Uplo == CblasLower)         uplo  = 0;
 
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
+    ຖ້າ (TransA == CblasNoTrans)     trans = 1;
+    ຖ້າ (TransA == CblasTrans)       trans = 0;
+    ຖ້າ (TransA == CblasConjNoTrans) trans = 3;
+    ຖ້າ (TransA == CblasConjTrans)   trans = 2;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    ຖ້າ (Diag == CblasUnit)          unit  = 0;
+    ຖ້າ (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    ຖ້າ (incx == 0)          info =  7;
+    ຖ້າ (n < 0)              info =  4;
+    ຖ້າ (unit  < 0)          info =  3;
+    ຖ້າ (trans < 0)          info =  2;
+    ຖ້າ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ຖ້າ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
 #endif
 
-  if (n == 0) return;
+  ຖ້າ (n == 0) ສົ່ງຄືນ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  ຖ້າ (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ຖ້າ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ສົ່ງຄືນ;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ຖ້າ (n < 50) nthreads = 1;
+  ຖ້າ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ຖ້າ (nthreads == 1) {
 #endif
 
   (tpmv[(trans<<2) | (uplo<<1) | unit])(n, a, x, incx, buffer);
 
 #ifdef SMP
 
-  } else {
+  } ບໍ່ດັ່ງນັ້ນ {
 
     (tpmv_thread[(trans<<2) | (uplo<<1) | unit])(n, a, x, incx, buffer, nthreads);
 
@@ -261,5 +261,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  ສົ່ງຄືນ;
 }

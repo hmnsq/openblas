@@ -33,9 +33,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include "common.h"
 
-#if defined(DOUBLE)
+#ຖ້າ defined(DOUBLE)
 #define ERROR_NAME "DLAED3"
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define ERROR_NAME "SLAED3"
 #endif
 
@@ -54,36 +54,36 @@ void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d,
 
 /*   Test the input parameters. */
   info = 0;
-  if (kval < 0) {
+  ຖ້າ (kval < 0) {
     info = 1;
-  } else if (nval < kval) {
+  } ບໍ່ດັ່ງນັ້ນ ຖ້າ (nval < kval) {
     info = 2;
-  } else if (qdim < nval || qdim < 1) {
+  } ບໍ່ດັ່ງນັ້ນ ຖ້າ (qdim < nval || qdim < 1) {
     info = 6;
   }
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ຖ້າ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ສົ່ງຄືນ;
   }
 
 /*   Quick return if possible */
 
   *Info = 0;
-  if (kval == 0) return;
+  ຖ້າ (kval == 0) ສົ່ງຄືນ;
 
 #ifdef SMP
-  int nthreads = 1;
-  if (nval >= 64) nthreads = num_cpu_avail(4);
+  ຈຳນວນເຕັມ nthreads = 1;
+  ຖ້າ (nval >= 64) nthreads = num_cpu_avail(4);
 
-  if (nthreads == 1) {
+  ຖ້າ (nthreads == 1) {
 #endif
     LAED3_SINGLE(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
 #ifdef SMP
-  } else {
+  } ບໍ່ດັ່ງນັ້ນ {
     LAED3_PARALLEL(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
   }
 #endif
 
-  return;
+  ສົ່ງຄືນ;
 }

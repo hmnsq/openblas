@@ -42,9 +42,9 @@
 #include "functable.h"
 #endif
 
-#if defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
+#ຖ້າ defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
 // Multithreaded swap gives performance benefits in ThunderX2T99
-#else
+#ບໍ່ດັ່ງນັ້ນ
 // Disable multi-threading as it does not show any performance
 // benefits. Keep the multi-threading code for the record.
 #undef SMP
@@ -60,7 +60,7 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
+#ບໍ່ດັ່ງນັ້ນ
 
 void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
 FLOAT *x = (FLOAT*)vx;
@@ -68,47 +68,47 @@ FLOAT *y = (FLOAT*)vy;
 #endif
 
 #ifdef SMP
-  int mode;
+  ຈຳນວນເຕັມ mode;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-  int nthreads;
+  ຈຳນວນເຕັມ nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ບໍ່ດັ່ງນັ້ນ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (n <= 0) return;
+  ຖ້າ (n <= 0) ສົ່ງຄືນ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ຖ້າ (incx < 0) x -= (n - 1) * incx * 2;
+  ຖ້າ (incy < 0) y -= (n - 1) * incy * 2;
 
 #ifdef SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
-  if (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / sizeof(FLOAT))
+  ຖ້າ (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / parimaa_na(FLOAT))
 	  nthreads = 1;
-  else
+  ບໍ່ດັ່ງນັ້ນ
 	  nthreads = num_cpu_avail(1);
 
-  if (nthreads == 1) {
+  ຖ້າ (nthreads == 1) {
 #endif
 
   SWAP_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, NULL, 0);
 
 #ifdef SMP
-  } else {
+  } ບໍ່ດັ່ງນັ້ນ {
 
 #ifdef XDOUBLE
     mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
     mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#ບໍ່ດັ່ງນັ້ນ
     mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 
@@ -122,6 +122,6 @@ FLOAT *y = (FLOAT*)vy;
 
   IDEBUG_END;
 
-  return;
+  ສົ່ງຄືນ;
 
 }
