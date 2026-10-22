@@ -37,48 +37,48 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+تهی NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#وگرنه
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+تهی CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  صحیح mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وگرنه
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  اگر (incx <= 0 || n <= 0) بازگشت;
 
 #ifdef BGEMM
-  float alpha_float;
+  اعشاری alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#وگرنه
   FLOAT alpha_float = alpha;
 #endif
 
-  if (alpha_float == ONE) return;
+  اگر (alpha_float == ONE) بازگشت;
 
   IDEBUG_START;
 
@@ -86,33 +86,33 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 
 #ifdef SMP
-  if (n <= 1048576 )
+  اگر (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  وگرنه
+	nthreads = رقم_cpu_avail(1);
 
 
-  if (nthreads == 1) {
+  اگر (nthreads == 1) {
 #endif
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, پوچ, 0, پوچ, 1);
 
 #ifdef SMP
-  } else {
+  } وگرنه {
 
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#وگرنه
     mode  =  BLAS_SINGLE | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0,
 #ifndef CBLAS
 		       ALPHA,
-#else
+#وگرنه
 		       &alpha,
 #endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+		       x, incx, پوچ, 0, پوچ, 1,  (صحیح (*)(تهی))SCAL_K, nthreads);
 
   }
 #endif
@@ -121,6 +121,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  بازگشت;
 
 }

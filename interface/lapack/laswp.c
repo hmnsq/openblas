@@ -36,40 +36,40 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+ایستا صحیح (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
 #ifdef XDOUBLE
   qlaswp_plus, qlaswp_minus,
-#elif defined(DOUBLE)
+#وگرنهاگر defined(DOUBLE)
   dlaswp_plus, dlaswp_minus,
-#else
+#وگرنه
   slaswp_plus, slaswp_minus,
 #endif
 };
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
+تهی NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  صحیح flag;
 
 #ifdef SMP
-  int mode, nthreads;
+  صحیح mode, nthreads;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
 #endif
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  اگر (incx == 0 || n <= 0) بازگشت;
 
   IDEBUG_START;
 
@@ -78,31 +78,31 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   flag = (incx < 0);
 
 #ifdef SMP
-  if (n < 64) {
+  اگر (n < 64) {
     nthreads = 1;
-  } else {
-    nthreads = num_cpu_avail(1);
+  } وگرنه {
+    nthreads = رقم_cpu_avail(1);
   }
 
-  if (nthreads == 1) {
+  اگر (nthreads == 1) {
 #endif
 
-  (laswp[flag])(n, k1, k2, ZERO, a, lda, NULL, 0, ipiv, incx);
+  (laswp[flag])(n, k1, k2, ZERO, a, lda, پوچ, 0, ipiv, incx);
 
 #ifdef SMP
-  } else {
+  } وگرنه {
 
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
+#وگرنهاگر defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#وگرنه
   mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
 
   blas_level1_thread(mode, n, k1, k2, dummyalpha,
-		     a, lda, NULL, 0, ipiv, incx,
-		     (int(*)(void))laswp[flag], nthreads);
+		     a, lda, پوچ, 0, ipiv, incx,
+		     (صحیح(*)(تهی))laswp[flag], nthreads);
   }
 #endif
 
@@ -110,6 +110,6 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
 
   IDEBUG_END;
 
-  return;
+  بازگشت;
 
 }

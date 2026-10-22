@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QPOTRF"
-#elif defined(DOUBLE)
+#وگرنهاگر defined(DOUBLE)
 #define ERROR_NAME "DPOTRF"
-#else
+#وگرنه
 #define ERROR_NAME "SPOTRF"
 #endif
 
-static blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ایستا blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_SINGLE, POTRF_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ایستا blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_PARALLEL, POTRF_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+تهی NAME(نویسه *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -70,35 +70,35 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  بیرونی
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (تهی *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  اگر (uplo_arg == 'U') uplo = 0;
+  اگر (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  اگر (args.lda < MAX(1,args.n)) info = 4;
+  اگر (args.n   < 0)             info = 2;
+  اگر (uplo     < 0)             info = 1;
+  اگر (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, اندازه(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    بازگشت;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  اگر (args.n == 0) بازگشت;
 
   IDEBUG_START;
 
@@ -112,28 +112,28 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.common = NULL;
+  args.common = پوچ;
 #ifndef DOUBLE
-  int nmax = 128;
-#else 
-  int nmax = 64;
+  صحیح nmax = 128;
+#وگرنه 
+  صحیح nmax = 64;
 #endif
-  if (args.n <nmax) {
+  اگر (args.n <nmax) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
-    if (args.n/args.nthreads <nmax)
+  } وگرنه {
+    args.nthreads = رقم_cpu_avail(4);
+    اگر (args.n/args.nthreads <nmax)
 	    args.nthreads = args.n/nmax;
   }
 
-  if (args.nthreads == 1) {
+  اگر (args.nthreads == 1) {
 #endif
 
-    *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_single[uplo])(&args, پوچ, پوچ, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+  } وگرنه {
+    *Info = (potrf_parallel[uplo])(&args, پوچ, پوچ, sa, sb, 0);
   }
 #endif
 
@@ -147,5 +147,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  بازگشت;
 }

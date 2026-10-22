@@ -32,9 +32,9 @@
 /*                                                                   */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل <stdlib.h>
+#شامل "common.h"
 
 #define SMP_THRESHOLD_MIN 65536.0
 #define ERROR_NAME "SBGEMMT "
@@ -47,7 +47,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+تهی NAME(نویسه *UPLO, نویسه *TRANSA, نویسه *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -56,10 +56,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	صحیح transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	نویسه transA, transB, Uplo;
 	blasint nrowa, nrowb;
 	IFLOAT *buffer;
 	IFLOAT *aa, *bb;
@@ -89,62 +89,62 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	اگر (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	اگر (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	اگر (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	اگر (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	اگر (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	اگر (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	اگر (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	اگر (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	اگر (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	اگر (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	اگر (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	اگر (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	اگر (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	اگر (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	اگر (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	اگر (k < 0)
 		info = 5;
-	if (m < 0)
+	اگر (m < 0)
 		info = 4;
-	if (transb < 0)
+	اگر (transb < 0)
 		info = 3;
-	if (transa < 0)
+	اگر (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	اگر (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	اگر (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, اندازه(ERROR_NAME));
+		بازگشت;
 	}
-#else
+#وگرنه
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+تهی CNAME(شمارش CBLAS_ORDER order, شمارش CBLAS_UPLO Uplo,
+	   شمارش CBLAS_TRANSPOSE TransA, شمارش CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	صحیح transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,32 +166,32 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	اگر (order == CblasColMajor) {
+		اگر (Uplo == CblasUpper) uplo = 0;
+		اگر (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		اگر (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		اگر (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		اگر (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		اگر (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		اگر (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		اگر (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		اگر (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		اگر (TransB == CblasConjTrans)
 			transb = 1;
 
-		a = (void *)A;
-		b = (void *)B;
+		a = (تهی *)A;
+		b = (تهی *)B;
 		lda = LDA;
 		ldb = LDB;
 
@@ -200,57 +200,57 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		اگر (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		اگر (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		اگر (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		اگر (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		اگر (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		اگر (k < 0)
 			info = 5;
-		if (m < 0)
+		اگر (m < 0)
 			info = 4;
-		if (transb < 0)
+		اگر (transb < 0)
 			info = 3;
-		if (transa < 0)
+		اگر (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		اگر (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	اگر (order == CblasRowMajor) {
 
-		a = (void *)B;
-		b = (void *)A;
+		a = (تهی *)B;
+		b = (تهی *)A;
 
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		اگر (Uplo == CblasUpper) uplo = 0;
+		اگر (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		اگر (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		اگر (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		اگر (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		اگر (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		اگر (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		اگر (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		اگر (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		اگر (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,191 +259,191 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		اگر (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		اگر (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		اگر (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		اگر (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		اگر (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		اگر (k < 0)
 			info = 5;
-		if (m < 0)
+		اگر (m < 0)
 			info = 4;
-		if (transb < 0)
+		اگر (transb < 0)
 			info = 2;
-		if (transa < 0)
+		اگر (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		اگر (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	اگر (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, اندازه(ERROR_NAME));
+		بازگشت;
 	}
 
 #endif
-	int buffer_size;
+	صحیح buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	صحیح nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	ایستا صحیح (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, صحیح) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	صحیح (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	اگر (m == 0)
+		بازگشت;
 
 	IDEBUG_START;
 
-	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
+	ثابت blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
-		for (i = 0; i < m; i++) {
+	اگر (uplo == 1) {
+		برای (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			اگر (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			اگر (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#اگر 0
+			اگر (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, پوچ, 0, پوچ, 0);
 
-			if (alpha == ZERO)
-				continue;
+			اگر (alpha == ZERO)
+				ادامه;
 #endif
 
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / اندازه(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / اندازه(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			پشته_ALLOC(buffer_size, IFLOAT, buffer);
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			اگر (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
-				nthreads = num_cpu_avail(2);
+			وگرنه
+				nthreads = رقم_cpu_avail(2);
 
-			if (nthreads == 1) {
+			اگر (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				اگر (!(transa & 1))
+				(gemv[(صحیح)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				وگرنه
+				(gemv[(صحیح)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} وگرنه {
+				اگر (!(transa & 1))
+				(gemv_thread[(صحیح)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				وگرنه
+				(gemv_thread[(صحیح)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
 			}
 #endif
 
-			STACK_FREE(buffer);
+			پشته_FREE(buffer);
 		}
-	} else {
+	} وگرنه {
 
-		for (i = 0; i < m; i++) {
+		برای (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			اگر (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
-				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
+#اگر 0
+			اگر (beta != ONE)
+				SCAL_K(l, 0, 0, beta, cc, 1, پوچ, 0, پوچ, 0);
 
-			if (alpha == ZERO)
-				continue;
+			اگر (alpha == ZERO)
+				ادامه;
 #endif
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / اندازه(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / اندازه(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
-			STACK_ALLOC(buffer_size, IFLOAT, buffer);
+			پشته_ALLOC(buffer_size, IFLOAT, buffer);
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			اگر (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
-				nthreads = num_cpu_avail(2);
+			وگرنه
+				nthreads = رقم_cpu_avail(2);
 
-			if (nthreads == 1) {
+			اگر (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				اگر (!(transa & 1))
+				(gemv[(صحیح)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				وگرنه
+				(gemv[(صحیح)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} وگرنه {
+				اگر (!(transa & 1))
+				(gemv_thread[(صحیح)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				وگرنه
+				(gemv_thread[(صحیح)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
 #endif
 
-			STACK_FREE(buffer);
+			پشته_FREE(buffer);
 		}
 	}
 
 	IDEBUG_END;
 
-	return;
+	بازگشت;
 }

@@ -36,33 +36,33 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XPOTF2"
-#elif defined(DOUBLE)
+#وگرنهاگر defined(DOUBLE)
 #define ERROR_NAME "ZPOTF2"
-#else
+#وگرنه
 #define ERROR_NAME "CPOTF2"
 #endif
 
-static blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ایستا blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 
 #ifdef XDOUBLE
   xpotf2_U, xpotf2_L,
-#elif defined(DOUBLE)
+#وگرنهاگر defined(DOUBLE)
   zpotf2_U, zpotf2_L,
-#else
+#وگرنه
   cpotf2_U, cpotf2_L,
 #endif
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+تهی NAME(نویسه *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -71,35 +71,35 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  بیرونی
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (تهی *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  اگر (uplo_arg == 'U') uplo = 0;
+  اگر (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  اگر (args.lda < MAX(1,args.n)) info = 4;
+  اگر (args.n   < 0)             info = 2;
+  اگر (uplo     < 0)             info = 1;
+  اگر (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, اندازه(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    بازگشت;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  اگر (args.n <= 0) بازگشت;
 
   IDEBUG_START;
 
@@ -112,7 +112,7 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = (potf2[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (potf2[uplo])(&args, پوچ, پوچ, sa, sb, 0);
 
   *Info = info;
 
@@ -126,5 +126,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  بازگشت;
 }

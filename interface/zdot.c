@@ -36,18 +36,18 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
 #ifdef RETURN_BY_STRUCT
 #ifdef XDOUBLE
 #define MYTYPE myxcomplex_t
-#elif defined DOUBLE
+#وگرنهاگر defined DOUBLE
 #define MYTYPE myzcomplex_t
-#else
+#وگرنه
 #define MYTYPE myccomplex_t
 #endif
 #endif
@@ -58,16 +58,16 @@ OPENBLAS_EXPORT
 
 #ifdef RETURN_BY_STRUCT
 MYTYPE         NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#elif defined RETURN_BY_STACK
-void           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#else
+#وگرنهاگر defined RETURN_BY_پشته
+تهی           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
+#وگرنه
 OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
 #endif
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-#ifndef RETURN_BY_STACK
+#ifndef RETURN_BY_پشته
   OPENBLAS_COMPLEX_FLOAT ret;
 #endif
 #ifdef RETURN_BY_STRUCT
@@ -80,16 +80,16 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) {
+  اگر (n <= 0) {
 #ifdef RETURN_BY_STRUCT
     myret.r = 0.;
     myret.i = 0.;
-    return myret;
-#elif defined RETURN_BY_STACK
+    بازگشت myret;
+#وگرنهاگر defined RETURN_BY_پشته
     *result = zero;
-    return;
-#else
-    return zero;
+    بازگشت;
+#وگرنه
+    بازگشت zero;
 #endif
   }
 
@@ -97,14 +97,14 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  اگر (incx < 0) x -= (n - 1) * incx * 2;
+  اگر (incy < 0) y -= (n - 1) * incy * 2;
 
 #ifdef RETURN_BY_STRUCT
 
 #ifndef CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#وگرنه
   ret = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -115,13 +115,13 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   IDEBUG_END;
 
-  return myret;
+  بازگشت myret;
 
-#elif defined RETURN_BY_STACK
+#وگرنهاگر defined RETURN_BY_پشته
 
 #ifndef CONJ
   *result = DOTU_K(n, x, incx, y, incy);
-#else
+#وگرنه
   *result = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -129,11 +129,11 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   IDEBUG_END;
 
-#else
+#وگرنه
 
 #ifndef CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#وگرنه
   ret = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -141,19 +141,19 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   IDEBUG_END;
 
-  return ret;
+  بازگشت ret;
 
 #endif
 
 }
 
-#else
+#وگرنه
 
-#ifdef FORCE_USE_STACK
-void           CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy, void* vresult){
+#ifdef FORCE_USE_پشته
+تهی           CNAME(blasint n, تهی *vx, blasint incx, تهی *vy, blasint incy, تهی* vresult){
 OPENBLAS_COMPLEX_FLOAT *result= (OPENBLAS_COMPLEX_FLOAT*)vresult;
-#else
-OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#وگرنه
+OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, تهی *vx, blasint incx, تهی *vy, blasint incy){
 
   OPENBLAS_COMPLEX_FLOAT ret;
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
@@ -163,30 +163,30 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) {
-#ifdef FORCE_USE_STACK
+  اگر (n <= 0) {
+#ifdef FORCE_USE_پشته
     OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
     *result = zero;
 //	CREAL(*result) = 0.0;
 //	CIMAG(*result) = 0.0;
-    return;
-#else
-    return zero;
+    بازگشت;
+#وگرنه
+    بازگشت zero;
 #endif
   }
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  اگر (incx < 0) x -= (n - 1) * incx * 2;
+  اگر (incy < 0) y -= (n - 1) * incy * 2;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-#ifdef FORCE_USE_STACK
+#ifdef FORCE_USE_پشته
 
 #ifndef CONJ
   *result = DOTU_K(n, x, incx, y, incy);
-#else
+#وگرنه
   *result = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -194,11 +194,11 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
 
   IDEBUG_END;
 
-#else
+#وگرنه
 
 #ifndef CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#وگرنه
   ret = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -206,7 +206,7 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
 
   IDEBUG_END;
 
-  return ret;
+  بازگشت ret;
 
 #endif
 

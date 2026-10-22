@@ -1,28 +1,28 @@
-#include <math.h>
-#include <float.h>
-#include "common.h"
+#شامل <math.h>
+#شامل <float.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
 
 OPENBLAS_EXPORT
 #ifndef CBLAS
-void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+تهی NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
-void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
+#وگرنه
+تهی CNAME(تهی *VDA, تهی *VDB, FLOAT *C, تهی *VS) {
     FLOAT *DA = (FLOAT*) VDA;
     FLOAT *DB = (FLOAT*) VDB;
     FLOAT *S  = (FLOAT*) VS;
 #endif /* CBLAS */
 
 #ifdef DOUBLE
-  long double safmin = DBL_MIN;
-  long double rtmin = sqrt(DBL_MIN/DBL_EPSILON);
-#else
-  long double safmin = FLT_MIN;
-  long double rtmin = sqrt(FLT_MIN/FLT_EPSILON);
+  long دوگانه safmin = DBL_MIN;
+  long دوگانه rtmin = sqrt(DBL_MIN/DBL_EPSILON);
+#وگرنه
+  long دوگانه safmin = FLT_MIN;
+  long دوگانه rtmin = sqrt(FLT_MIN/FLT_EPSILON);
 #endif
 
 
@@ -33,7 +33,7 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   //long double r;
   FLOAT S1[2];
   FLOAT R[2];
-  long double d;
+  long دوگانه d;
 
   FLOAT ada =  da_r * da_r + da_i * da_i; 
   FLOAT adb =  db_r * db_r + db_i * db_i; 
@@ -43,49 +43,49 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
-  long double safmax = 1./safmin;
+  long دوگانه safmax = 1./safmin;
   safmax *= 2.;
-  do {
-	if (db_r == ZERO && db_i == ZERO) {
+  انجامبده {
+	اگر (db_r == ZERO && db_i == ZERO) {
 		*C        = ONE;
 		*(S  + 0) = ZERO;
 		*(S  + 1) = ZERO;
-		break;
+		بشکن;
 	}
 
-#if defined DOUBLE
-	long double rtmax = safmax /DBL_EPSILON;
-#else
-	long double rtmax = safmax /FLT_EPSILON;
+#اگر defined DOUBLE
+	long دوگانه rtmax = safmax /DBL_EPSILON;
+#وگرنه
+	long دوگانه rtmax = safmax /FLT_EPSILON;
 #endif
 
 	*(S1 + 0) = *(DB + 0);
 	*(S1 + 1) = *(DB + 1) *-1;
 
-	if (da_r == ZERO && da_i == ZERO) {
+	اگر (da_r == ZERO && da_i == ZERO) {
 		*C = ZERO;
-		if (db_r == ZERO) {
+		اگر (db_r == ZERO) {
 			(*DA) = fabsl(db_i);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
-			break;
-		} else if ( db_i == ZERO) {
+			بشکن;
+		} وگرنه اگر ( db_i == ZERO) {
 			*DA = fabsl(db_r);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
-			break;
-		} else {
-			long double g1 = MAX( fabsl(db_r), fabsl(db_i));
+			بشکن;
+		} وگرنه {
+			long دوگانه g1 = MAX( fabsl(db_r), fabsl(db_i));
 			rtmax =sqrt(safmax/2.);
-			if (g1 > rtmin && g1 < rtmax) { // unscaled
+			اگر (g1 > rtmin && g1 < rtmax) { // unscaled
 				d = sqrt(adb);
 				*S = *S1 /d;
 				*(S+1) = *(S1+1) /d;
 				*DA = d ;
 				*(DA+1) = ZERO;
-				break;
-			} else { // scaled algorithm
-				long double u = MIN ( safmax, MAX ( safmin, g1));
+				بشکن;
+			} وگرنه { // scaled algorithm
+				long دوگانه u = MIN ( safmax, MAX ( safmin, g1));
 				FLOAT gs_r = db_r/u;
 				FLOAT gs_i = db_i/u;
 				d = sqrt ( gs_r*gs_r + gs_i*gs_i);
@@ -93,36 +93,36 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 				*(S + 1) = (gs_i * -1) / d;
 				*DA = d * u;
 				*(DA+1) = ZERO;
-				break;
+				بشکن;
 			}
 		}
 
-	} else {
+	} وگرنه {
 
 		FLOAT f1 = MAX ( fabsl(da_r), fabsl(da_i));
 		FLOAT g1 = MAX ( fabsl(db_r), fabsl(db_i));
 		rtmax = sqrt(safmax / 4.);
-		if ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
-			long double h = ada + adb;
-			double adahsq = sqrt(ada * h);
-			if (ada >= h *safmin) {
+		اگر ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
+			long دوگانه h = ada + adb;
+			دوگانه adahsq = sqrt(ada * h);
+			اگر (ada >= h *safmin) {
 				*C = sqrt(ada/h);
 				*R = *DA / *C;
 				*(R+1) = *(DA+1) / *C;
 				rtmax *= 2.;
-				if ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
+				اگر ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
 					*S = *S1 * (*DA / adahsq) - *(S1+1)* (*(DA+1)/adahsq);
 					*(S+1) = *S1 * (*(DA+1) / adahsq) + *(S1+1) * (*DA/adahsq);
-				} else {
+				} وگرنه {
 					*S = *S1 * (*R/h) - *(S1+1) * (*(R+1)/h);
 					*(S+1) = *S1 * (*(R+1)/h) + *(S1+1) * (*(R)/h);
 				}
-			} else {
+			} وگرنه {
 				*C = ada / adahsq;
-				if (*C >= safmin) {
+				اگر (*C >= safmin) {
 					*R = *DA / *C;
 					*(R+1) = *(DA+1) / *C;
-				} else {
+				} وگرنه {
 					*R = *DA * (h / adahsq);
 					*(R+1) = *(DA+1) * (h / adahsq);
 				}
@@ -131,48 +131,48 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			}
 			*DA=*R;
 			*(DA+1)=*(R+1);
-			break;
-		} else {	// scaled
+			بشکن;
+		} وگرنه {	// scaled
 			FLOAT fs_r, fs_i, gs_r, gs_i;
-			long double v,w,f2,g2,h;
-			long double u = MIN ( safmax, MAX ( safmin, MAX(f1,g1)));
+			long دوگانه v,w,f2,g2,h;
+			long دوگانه u = MIN ( safmax, MAX ( safmin, MAX(f1,g1)));
 			gs_r = db_r/u;
 			gs_i = db_i/u;
 			g2 = gs_r*gs_r + gs_i*gs_i;
-			if (f1 /u < rtmin) {
+			اگر (f1 /u < rtmin) {
 				v = MIN (safmax, MAX (safmin, f1));
 				w = v / u;
 				fs_r = *DA/ v;
 				fs_i = *(DA+1) / v;
 				f2 = fs_r*fs_r + fs_i*fs_i;
 				h = f2 * w * w + g2;		
-			} else { // use same scaling for both
+			} وگرنه { // use same scaling for both
 				w = 1.;
 				fs_r = *DA/ u;
 				fs_i = *(DA+1) / u;
 				f2 =  fs_r*fs_r + fs_i*fs_i;
 				h = f2 + g2;
 			}
-			if ( f2 >= h * safmin) {
+			اگر ( f2 >= h * safmin) {
 				*C = sqrt ( f2 / h );
 				*DA = fs_r / *C;
 				*(DA+1) = fs_i / *C;
 				rtmax *= 2;
-				if ( f2 > rtmin && h < rtmax) {
+				اگر ( f2 > rtmin && h < rtmax) {
 					FLOAT f2h=sqrt(f2*h);
 					*S = gs_r * (fs_r /f2h) + gs_i * (fs_i / f2h);
 					*(S+1) = gs_r * (fs_i /f2h) - gs_i * -1. * (fs_r / f2h);
-				} else {
+				} وگرنه {
 					*S = gs_r * (*DA/h) - gs_i * (*(DA+1) / h);
 					*(S+1) = gs_r * (*(DA+1) /h) + gs_i * -1. * (*DA / h);
 				}
-			} else { // intermediates might overflow
+			} وگرنه { // intermediates might overflow
 				d = sqrt ( f2 * h);
 				*C = f2 /d;
-				if (*C >= safmin) {
+				اگر (*C >= safmin) {
 					*DA = fs_r / *C;
 					*(DA+1) = fs_i / *C;
-				} else {
+				} وگرنه {
 					*DA = fs_r * (h / d);
 					*(DA+1) = fs_i / (h / d);
 				}
@@ -182,10 +182,10 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			*C *= w;
 			*DA *= u;
 			*(DA+1) *= u;
-			break;
+			بشکن;
 		}
 	}
-    } while (0);
+    } وقتی (0);
 
 	FUNCTION_PROFILE_END(4, 4, 4);
 	IDEBUG_END;

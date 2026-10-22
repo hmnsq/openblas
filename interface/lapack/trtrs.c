@@ -36,45 +36,45 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QTRTRS"
-#elif defined(DOUBLE)
+#وگرنهاگر defined(DOUBLE)
 #define ERROR_NAME "DTRTRS"
-#else
+#وگرنه
 #define ERROR_NAME "STRTRS"
 #endif
 
-static blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ایستا blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_SINGLE, TRTRS_UNN_SINGLE, TRTRS_UTU_SINGLE, TRTRS_UTN_SINGLE, TRTRS_LNU_SINGLE, TRTRS_LNN_SINGLE, TRTRS_LTU_SINGLE, TRTRS_LTN_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ایستا blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_PARALLEL, TRTRS_UNN_PARALLEL, TRTRS_UTU_PARALLEL, TRTRS_UTN_PARALLEL, TRTRS_LNU_PARALLEL, TRTRS_LNN_PARALLEL, TRTRS_LTU_PARALLEL, TRTRS_LTN_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+تهی NAME(نویسه *UPLO, نویسه* TRANS, نویسه* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   FLOAT *b, blasint *ldB, blasint *Info){
 
-    char uplo_arg = *UPLO;
-    char trans_arg = *TRANS;
-    char diag_arg = *DIAG;
+    نویسه uplo_arg = *UPLO;
+    نویسه trans_arg = *TRANS;
+    نویسه diag_arg = *DIAG;
 
   blas_arg_t args;
 
   blasint info;
-  int uplo, trans, diag;
+  صحیح uplo, trans, diag;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  بیرونی
 #endif
   FLOAT *sa, *sb;
 
@@ -82,55 +82,55 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (تهی *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (تهی *)b;
   args.ldb  = *ldB;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  اگر (trans_arg == 'N') trans = 0;
+  اگر (trans_arg == 'T') trans = 1;
+  اگر (trans_arg == 'R') trans = 0;
+  اگر (trans_arg == 'C') trans = 1;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  اگر (uplo_arg == 'U') uplo = 0;
+  اگر (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  اگر (diag_arg == 'U') diag = 0;
+  اگر (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  اگر (args.ldb  < MAX(1, args.m)) info = 9;
+  اگر (args.lda  < MAX(1, args.m)) info = 7;
+  اگر (args.n    < 0) info = 5;
+  اگر (args.m    < 0) info = 4;
+  اگر (trans     < 0) info = 2;
+  اگر (uplo      < 0) info = 1;
+  اگر (diag      < 0) info = 3;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  اگر (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, اندازه(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    بازگشت;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = پوچ;
+  args.beta  = پوچ;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  اگر (args.m == 0) بازگشت;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
+  اگر (diag) {
+    اگر (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+      بازگشت;
     }
   }
 
@@ -147,21 +147,21 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
+  args.common = پوچ;
+  اگر (args.m < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } وگرنه {
+    args.nthreads = رقم_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  اگر (args.nthreads == 1) {
 #endif
 
-      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+      (trtrs_single[(uplo << 2) | (trans << 1) | diag])(&args, پوچ, پوچ, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  } وگرنه {
+    (trtrs_parallel[(uplo << 2) | (trans << 1) | diag])(&args, پوچ, پوچ, sa, sb, 0);
   }
 #endif
 
@@ -173,6 +173,6 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   IDEBUG_END;
 
-  return;
+  بازگشت;
 
 }

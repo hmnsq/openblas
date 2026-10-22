@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#شامل <stdio.h>
+#شامل "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#شامل "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XGETRF"
-#elif defined(DOUBLE)
+#وگرنهاگر defined(DOUBLE)
 #define ERROR_NAME "ZGETRF"
-#else
+#وگرنه
 #define ERROR_NAME "CGETRF"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+تهی NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  بیرونی
 #endif
   FLOAT *sa, *sb;
 
@@ -66,22 +66,22 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (تهی *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (تهی *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  اگر (args.lda < MAX(1,args.m)) info = 4;
+  اگر (args.n   < 0)             info = 2;
+  اگر (args.m   < 0)             info = 1;
+  اگر (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, اندازه(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    بازگشت;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  اگر (args.m == 0 || args.n == 0) بازگشت;
 
   IDEBUG_START;
 
@@ -95,21 +95,21 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m*args.n <10000)
+  args.common = پوچ;
+  اگر (args.m*args.n <10000)
 	args.nthreads = 1;
-  else
-	args.nthreads = num_cpu_avail(4);
+  وگرنه
+	args.nthreads = رقم_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  اگر (args.nthreads == 1) {
 #endif
 
-    *Info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
+    *Info = GETRF_SINGLE(&args, پوچ, پوچ, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } وگرنه {
 
-    *Info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
+    *Info = GETRF_PARALLEL(&args, پوچ, پوچ, sa, sb, 0);
 
   }
 #endif
@@ -122,5 +122,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  بازگشت;
 }
