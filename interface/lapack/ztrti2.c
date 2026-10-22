@@ -36,100 +36,100 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRTI2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRTI2"
-#else
-#define ERROR_NAME "CTRTI2"
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XTRTI2"
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZTRTI2"
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CTRTI2"
+#ಆದರೆ_ಅಂತ್ಯ
 
-static blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifdef XDOUBLE
+ಸ್ಥಿರ blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
   xtrti2_UU, xtrti2_UN, xtrti2_LU, xtrti2_LN,
-#elif defined(DOUBLE)
+#ಅಥವಾಆದರೆ defined(DOUBLE)
   ztrti2_UU, ztrti2_UN, ztrti2_LU, ztrti2_LN,
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   ctrti2_UU, ctrti2_UN, ctrti2_LU, ctrti2_LN,
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *UPLO, ಅಕ್ಷರ *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t ವಾದಗಳು;
 
   blasint uplo_arg = *UPLO;
   blasint diag_arg = *DIAG;
   blasint uplo, diag;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *ಬಫರ್;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ PPC440
+  ಬಾಹ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  ವಾದಗಳು.n    = *N;
+  ವಾದಗಳು.a    = (ಶೂನ್ಯ *)a;
+  ವಾದಗಳು.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ಆದರೆ (uplo_arg == 'U') uplo = 0;
+  ಆದರೆ (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ಆದರೆ (diag_arg == 'U') diag = 0;
+  ಆದರೆ (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ಆದರೆ (ವಾದಗಳು.lda  < MAX(1,ವಾದಗಳು.n)) info = 5;
+  ಆದರೆ (ವಾದಗಳು.n    < 0)             info = 3;
+  ಆದರೆ (diag < 0)                  info = 2;
+  ಆದರೆ (uplo < 0)                  info = 1;
+  ಆದರೆ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ಹಿಂತಿರುಗಿ;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  ಆದರೆ (ವಾದಗಳು.n <= 0) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  ಬಫರ್ = (FLOAT *)blas_ಸ್ಮರಣೆ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)ಬಫರ್ + GEMM_ಸ್ಥಾನಾಂತರ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ಗಾತ್ರ_2 + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ಸ್ಥಾನಾಂತರ_B);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  info = (trti2[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  info = (trti2[(uplo << 1) | diag])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  blas_ಸ್ಮರಣೆ_free(ಬಫರ್);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		          2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_ಕೊನೆ(1, .5 * ವಾದಗಳು.n * ವಾದಗಳು.n,
+		          2. * ವಾದಗಳು.n * (1./3. + ವಾದಗಳು.n * ( 1./2. + ವಾದಗಳು.n * 1./6.))
+		       +  6. * ವಾದಗಳು.n * (1./3. + ವಾದಗಳು.n * (-1./2. + ವಾದಗಳು.n * 1./6.)));
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

@@ -36,120 +36,120 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <ctype.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XSPR  "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSPR  "
-#else
-#define ERROR_NAME "CSPR  "
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XSPR  "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZSPR  "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CSPR  "
+#ಆದರೆ_ಅಂತ್ಯ
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
-#ifdef XDOUBLE
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
   xspr_U, xspr_L,
-#elif defined(DOUBLE)
+#ಅಥವಾಆದರೆ defined(DOUBLE)
   zspr_U, zspr_L,
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   cspr_U, cspr_L,
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 };
 
-#ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
-#ifdef XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, ಪೂರ್ಣಾಂಕ) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
   xspr_thread_U, xspr_thread_L,
-#elif defined(DOUBLE)
+#ಅಥವಾಆದರೆ defined(DOUBLE)
   zspr_thread_U, zspr_thread_L,
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   cspr_thread_U, cspr_thread_L,
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 };
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  ಅಕ್ಷರ uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  ಪೂರ್ಣಾಂಕ uplo;
+  FLOAT *ಬಫರ್;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
   PRINT_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ಆದರೆ (uplo_arg  == 'U') uplo  = 0;
+  ಆದರೆ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ಆದರೆ (incx == 0)          info =  5;
+  ಆದರೆ (n < 0)              info =  2;
+  ಆದರೆ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-  if (n == 0) return;
+  ಆದರೆ (n == 0) ಹಿಂತಿರುಗಿ;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ಆದರೆ ((alpha_r == ZERO) && (alpha_i == ZERO)) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  ಆದರೆ (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ಬಫರ್ = (FLOAT *)blas_ಸ್ಮರಣೆ_alloc(1);
+  ಆದರೆ (!ಬಫರ್) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#ifdef SMP
-  nthreads = num_cpu_avail(2);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  nthreads = ಅಂಕೆ_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ಆದರೆ (n < 50) nthreads = 1;
+  ಆದರೆ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
-#endif
+  ಆದರೆ (nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-    (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, buffer);
+    (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, ಬಫರ್);
 
-#ifdef SMP
-  } else {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
 
-    (spr_thread[uplo])(n, ALPHA, x, incx, a, buffer, nthreads);
+    (spr_thread[uplo])(n, ALPHA, x, incx, a, ಬಫರ್, nthreads);
 
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  blas_memory_free(buffer);
+  blas_ಸ್ಮರಣೆ_free(ಬಫರ್);
 
-  FUNCTION_PROFILE_END(4, n * n / 2 + n, n * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, n * n / 2 + n, n * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

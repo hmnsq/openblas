@@ -36,51 +36,51 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <ctype.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYR  "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYR  "
-#else
-#define ERROR_NAME "CSYR  "
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XSYR  "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZSYR  "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CSYR  "
+#ಆದರೆ_ಅಂತ್ಯ
 
-static int (*syr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
-#ifdef XDOUBLE
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ (*syr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
   xsyr_U, xsyr_L,
-#elif defined(DOUBLE)
+#ಅಥವಾಆದರೆ defined(DOUBLE)
   zsyr_U, zsyr_L,
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   csyr_U, csyr_L,
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 };
 
-#ifdef SMP
-static int (*syr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ (*syr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ಪೂರ್ಣಾಂಕ) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
   xsyr_thread_U, xsyr_thread_L,
-#elif defined(DOUBLE)
+#ಅಥವಾಆದರೆ defined(DOUBLE)
   zsyr_thread_U, zsyr_thread_L,
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   csyr_thread_U, csyr_thread_L,
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 };
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  ಅಕ್ಷರ uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,153 +88,153 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  ಪೂರ್ಣಾಂಕ uplo;
+  FLOAT *ಬಫರ್;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
   PRINT_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ಆದರೆ (uplo_arg  == 'U') uplo  = 0;
+  ಆದರೆ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ಆದರೆ (lda  < MAX(1, n))   info =  7;
+  ಆದರೆ (incx == 0)          info =  5;
+  ಆದರೆ (n < 0)              info =  2;
+  ಆದರೆ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, int n, void* valpha, FLOAT *x, int incx, FLOAT *a, int lda) {
+ಶೂನ್ಯ CNAME(ಎಣಿಕೆ CBLAS_ಕ್ರಮ ಕ್ರಮ, ಎಣಿಕೆ CBLAS_UPLO Uplo, ಪೂರ್ಣಾಂಕ n, ಶೂನ್ಯ* valpha, FLOAT *x, ಪೂರ್ಣಾಂಕ incx, FLOAT *a, ಪೂರ್ಣಾಂಕ lda) {
 
-  FLOAT *buffer;
-  int uplo;
+  FLOAT *ಬಫರ್;
+  ಪೂರ್ಣಾಂಕ uplo;
   blasint info;
   FLOAT * ALPHA = (FLOAT*)valpha;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
-#ifdef SMP
-  int nthreads;
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
   PRINT_DEBUG_CNAME;
 
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಲಂಬಸಾಲು_Major) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    ಆದರೆ (Uplo == Cblas_ಊರ್ಧ್ವ) uplo  = 0;
+    ಆದರೆ (Uplo == Cblas_ಅಧೋ) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ಆದರೆ (lda  < MAX(1, n))   info =  7;
+    ಆದರೆ (incx == 0)          info =  5;
+    ಆದರೆ (n < 0)              info =  2;
+    ಆದರೆ (uplo  < 0)          info =  1;
+
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major) {
+
+    ಆದರೆ (Uplo == Cblas_ಊರ್ಧ್ವ) uplo  = 1;
+    ಆದರೆ (Uplo == Cblas_ಅಧೋ) uplo  = 0;
+
+    info = -1;
+
+    ಆದರೆ (lda  < MAX(1, n))   info =  7;
+    ಆದರೆ (incx == 0)          info =  5;
+    ಆದರೆ (n < 0)              info =  2;
+    ಆದರೆ (uplo  < 0)          info =  1;
   }
 
-#endif
+  ಆದರೆ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
+  }
 
-  if (n == 0) return;
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ಆದರೆ (n == 0) ಹಿಂತಿರುಗಿ;
 
-  if (incx == 1 && n < 50) {
+  ಆದರೆ ((alpha_r == ZERO) && (alpha_i == ZERO)) ಹಿಂತಿರುಗಿ;
+
+  ಆದರೆ (incx == 1 && n < 50) {
     blasint i;
-    if (!uplo) {
-      for (i = 0; i < n; i++){
-        if ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
+    ಆದರೆ (!uplo) {
+      ಗಾಗಿ (i = 0; i < n; i++){
+        ಆದರೆ ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
           AXPYU_K(i + 1, 0, 0,
               alpha_r * x[i * 2 + 0] - alpha_i * x[i * 2 + 1],
               alpha_i * x[i * 2 + 0] + alpha_r * x[i * 2 + 1],
-              x,         1, a, 1, NULL, 0);
+              x,         1, a, 1, ಖಾಲಿ, 0);
         }
         a += lda * 2;
       }
-    } else {
-      for (i = 0; i < n; i++){
-        if ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
+    } ಇಲ್ಲದಿದ್ದರೆ {
+      ಗಾಗಿ (i = 0; i < n; i++){
+        ಆದರೆ ((x[i * 2 + 0] != ZERO) || (x[i * 2 + 1] != ZERO)) {
           AXPYU_K(n - i, 0, 0,
               alpha_r * x[i * 2 + 0] - alpha_i * x[i * 2 + 1],
               alpha_i * x[i * 2 + 0] + alpha_r * x[i * 2 + 1],
-              x + i * 2, 1, a, 1, NULL, 0);
+              x + i * 2, 1, a, 1, ಖಾಲಿ, 0);
         }
         a += 2 + lda * 2;
       }
     }
-    return;
+    ಹಿಂತಿರುಗಿ;
   }
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  ಆದರೆ (incx < 0 ) x -= (n - 1) * incx * 2;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ಬಫರ್ = (FLOAT *)blas_ಸ್ಮರಣೆ_alloc(1);
+  ಆದರೆ (!ಬಫರ್) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#ifdef SMP
-  nthreads = num_cpu_avail(2);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  nthreads = ಅಂಕೆ_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ಆದರೆ (n < 50) nthreads = 1;
+  ಆದರೆ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
-#endif
+  ಆದರೆ (nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-  (syr[uplo])(n, alpha_r, alpha_i, x, incx, a, lda, buffer);
+  (syr[uplo])(n, alpha_r, alpha_i, x, incx, a, lda, ಬಫರ್);
 
-#ifdef SMP
-  } else {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
 
-    (syr_thread[uplo])(n, ALPHA, x, incx, a, lda, buffer, nthreads);
+    (syr_thread[uplo])(n, ALPHA, x, incx, a, lda, ಬಫರ್, nthreads);
 
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  blas_memory_free(buffer);
+  blas_ಸ್ಮರಣೆ_free(ಬಫರ್);
 
-  FUNCTION_PROFILE_END(4, n * n / 2 + n, n * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, n * n / 2 + n, n * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

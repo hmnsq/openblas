@@ -36,119 +36,119 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <ctype.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef COMPLEX
-#define SMP_THRESHOLD_MIN 109944.
-#ifdef XDOUBLE
-#define ERROR_NAME "QSYRK "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSYRK "
-#else
-#define ERROR_NAME "SSYRK "
-#endif
-#else
-#define SMP_THRESHOLD_MIN 14824.
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYRK "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYRK "
-#else
-#define ERROR_NAME "CSYRK "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHERK "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHERK "
-#else
-#define ERROR_NAME "CHERK "
-#endif
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿಸು SMP_ಮಿತಿ_MIN 109944.
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "QSYRK "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "DSYRK "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "SSYRK "
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು SMP_ಮಿತಿ_MIN 14824.
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ HEMM
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XSYRK "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZSYRK "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CSYRK "
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XHERK "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZHERK "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CHERK "
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ GEMM_MULTITHREAD_ಮಿತಿ
+#ವ್ಯಾಖ್ಯಾನಿಸು GEMM_MULTITHREAD_ಮಿತಿ 4
+#ಆದರೆ_ಅಂತ್ಯ
 
-static int (*syrk[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef HEMM
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ (*syrk[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ HEMM
   SYRK_UN, SYRK_UC, SYRK_LN, SYRK_LC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ಆದರೆ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYRK_THREAD_UN, SYRK_THREAD_UC, SYRK_THREAD_LN, SYRK_THREAD_LC,
-#endif
-#else
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
   HERK_UN, HERK_UC, HERK_LN, HERK_LC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ಆದರೆ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HERK_THREAD_UN, HERK_THREAD_UC, HERK_THREAD_LN, HERK_THREAD_LC,
-#endif
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-void NAME(char *UPLO, char *TRANS,
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *UPLO, ಅಕ್ಷರ *TRANS,
          blasint *N, blasint *K,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
+  ಅಕ್ಷರ uplo_arg  = *UPLO;
+  ಅಕ್ಷರ trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t ವಾದಗಳು;
 
-  FLOAT *buffer;
+  FLOAT *ಬಫರ್;
   FLOAT *sa, *sb;
 
-#ifdef SMP
-  double NNK;
-#ifdef USE_SIMPLE_THREADED_LEVEL3
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ದ್ವಿಗುಣ NNK;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ USE_SIMPLE_THREADED_LEVEL3
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_XDOUBLE | BLAS_REAL;
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_DOUBLE  | BLAS_REAL;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_SINGLE  | BLAS_REAL;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
   blasint info;
-  int uplo;
-  int trans;
-  int nrowa;
+  ಪೂರ್ಣಾಂಕ uplo;
+  ಪೂರ್ಣಾಂಕ trans;
+  ಪೂರ್ಣಾಂಕ nrowa;
 
   PRINT_DEBUG_NAME;
 
-  args.n = *N;
-  args.k = *K;
+  ವಾದಗಳು.n = *N;
+  ವಾದಗಳು.k = *K;
 
-  args.a = (void *)a;
-  args.c = (void *)c;
+  ವಾದಗಳು.a = (ಶೂನ್ಯ *)a;
+  ವಾದಗಳು.c = (ಶೂನ್ಯ *)c;
 
-  args.lda = *ldA;
-  args.ldc = *ldC;
+  ವಾದಗಳು.lda = *ldA;
+  ವಾದಗಳು.ldc = *ldC;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  ವಾದಗಳು.alpha = (ಶೂನ್ಯ *)alpha;
+  ವಾದಗಳು.beta  = (ಶೂನ್ಯ *)beta;
 
   TOUPPER(uplo_arg);
   TOUPPER(trans_arg);
@@ -156,280 +156,280 @@ void NAME(char *UPLO, char *TRANS,
   uplo  = -1;
   trans = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ಆದರೆ (uplo_arg  == 'U') uplo  = 0;
+  ಆದರೆ (uplo_arg  == 'L') uplo  = 1;
 
 
-#ifndef COMPLEX
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'C') trans = 1;
-#else
-#ifdef HEMM
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'C') trans = 1;
-#else
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+  ಆದರೆ (trans_arg == 'N') trans = 0;
+  ಆದರೆ (trans_arg == 'T') trans = 1;
+  ಆದರೆ (trans_arg == 'C') trans = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ HEMM
+  ಆದರೆ (trans_arg == 'N') trans = 0;
+  ಆದರೆ (trans_arg == 'C') trans = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಆದರೆ (trans_arg == 'N') trans = 0;
+  ಆದರೆ (trans_arg == 'T') trans = 1;
+#ಆದರೆ_ಅಂತ್ಯ
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  nrowa = ವಾದಗಳು.n;
+  ಆದರೆ (trans & 1) nrowa = ವಾದಗಳು.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 10;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
-  if (trans < 0)                info =  2;
-  if (uplo  < 0)                info =  1;
+  ಆದರೆ (ವಾದಗಳು.ldc < MAX(1,ವಾದಗಳು.n)) info = 10;
+  ಆದರೆ (ವಾದಗಳು.lda < MAX(1,nrowa))  info =  7;
+  ಆದರೆ (ವಾದಗಳು.k < 0)               info =  4;
+  ಆದರೆ (ವಾದಗಳು.n < 0)               info =  3;
+  ಆದರೆ (trans < 0)                info =  2;
+  ಆದರೆ (uplo  < 0)                info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Trans,
+ಶೂನ್ಯ CNAME(ಎಣಿಕೆ CBLAS_ಕ್ರಮ ಕ್ರಮ, ಎಣಿಕೆ CBLAS_UPLO Uplo, ಎಣಿಕೆ CBLAS_TRANSPOSE Trans,
 	   blasint n, blasint k,
-#if !defined(COMPLEX) || defined(HEMM)
+#ಆದರೆ !defined(COMPLEX) || defined(HEMM)
 	   FLOAT alpha,
-#else
-	   void *valpha,
-#endif
-#if !defined(COMPLEX)
+#ಇಲ್ಲದಿದ್ದರೆ
+	   ಶೂನ್ಯ *valpha,
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined(COMPLEX)
 	   FLOAT *a, blasint lda,
-#else
-	   void *va, blasint lda,
-#endif
-#if !defined(COMPLEX) || defined(HEMM)
+#ಇಲ್ಲದಿದ್ದರೆ
+	   ಶೂನ್ಯ *va, blasint lda,
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined(COMPLEX) || defined(HEMM)
 	   FLOAT beta,
-#else
-	   void *vbeta,
-#endif
-#if !defined(COMPLEX)
+#ಇಲ್ಲದಿದ್ದರೆ
+	   ಶೂನ್ಯ *vbeta,
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined(COMPLEX)
 	   FLOAT *c, blasint ldc) {
-#else
-	   void *vc, blasint ldc) {
-#endif
+#ಇಲ್ಲದಿದ್ದರೆ
+	   ಶೂನ್ಯ *vc, blasint ldc) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef COMPLEX
-#if !defined(HEMM)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ COMPLEX
+#ಆದರೆ !defined(HEMM)
   FLOAT* alpha = (FLOAT*) valpha;
   FLOAT* beta = (FLOAT*) vbeta;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
   FLOAT* a = (FLOAT*) va;
   FLOAT* c = (FLOAT*) vc;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  blas_arg_t args;
-  int uplo, trans;
+  blas_arg_t ವಾದಗಳು;
+  ಪೂರ್ಣಾಂಕ uplo, trans;
   blasint info, nrowa;
 
-  FLOAT *buffer;
+  FLOAT *ಬಫರ್;
   FLOAT *sa, *sb;
 
-#ifdef SMP
-double NNK;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+ದ್ವಿಗುಣ NNK;
 
-#ifdef USE_SIMPLE_THREADED_LEVEL3
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ USE_SIMPLE_THREADED_LEVEL3
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_XDOUBLE | BLAS_REAL;
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_DOUBLE  | BLAS_REAL;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_SINGLE  | BLAS_REAL;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
   PRINT_DEBUG_CNAME;
 
-  args.n = n;
-  args.k = k;
+  ವಾದಗಳು.n = n;
+  ವಾದಗಳು.k = k;
 
-  args.a = (void *)a;
-  args.c = (void *)c;
+  ವಾದಗಳು.a = (ಶೂನ್ಯ *)a;
+  ವಾದಗಳು.c = (ಶೂನ್ಯ *)c;
 
-  args.lda = lda;
-  args.ldc = ldc;
+  ವಾದಗಳು.lda = lda;
+  ವಾದಗಳು.ldc = ldc;
 
-#if !defined(COMPLEX) || defined(HEMM)
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
-#else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
-#endif
+#ಆದರೆ !defined(COMPLEX) || defined(HEMM)
+  ವಾದಗಳು.alpha = (ಶೂನ್ಯ *)&alpha;
+  ವಾದಗಳು.beta  = (ಶೂನ್ಯ *)&beta;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ವಾದಗಳು.alpha = (ಶೂನ್ಯ *)alpha;
+  ವಾದಗಳು.beta  = (ಶೂನ್ಯ *)beta;
+#ಆದರೆ_ಅಂತ್ಯ
 
   trans = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಲಂಬಸಾಲು_Major) {
+    ಆದರೆ (Uplo == Cblas_ಊರ್ಧ್ವ) uplo  = 0;
+    ಆದರೆ (Uplo == Cblas_ಅಧೋ) uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 1;
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 1;
-#else
-    if (Trans == CblasConjTrans)   trans = 1;
-#endif
-
-    info = -1;
-
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
-
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
-
-    if (Trans == CblasNoTrans)     trans = 1;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 0;
-    if (Trans == CblasConjNoTrans) trans = 1;
-    if (Trans == CblasConjTrans)   trans = 0;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 0;
-#else
-    if (Trans == CblasConjTrans)   trans = 0;
-#endif
+    ಆದರೆ (Trans == CblasNoTrans)     trans = 0;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+    ಆದರೆ (Trans == CblasTrans)       trans = 1;
+    ಆದರೆ (Trans == CblasConjNoTrans) trans = 0;
+    ಆದರೆ (Trans == CblasConjTrans)   trans = 1;
+#ಅಥವಾಆದರೆ !defined(HEMM)
+    ಆದರೆ (Trans == CblasTrans)       trans = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಆದರೆ (Trans == CblasConjTrans)   trans = 1;
+#ಆದರೆ_ಅಂತ್ಯ
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = ವಾದಗಳು.n;
+    ಆದರೆ (trans & 1) nrowa = ವಾದಗಳು.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    ಆದರೆ (ವಾದಗಳು.ldc < MAX(1,ವಾದಗಳು.n)) info = 10;
+    ಆದರೆ (ವಾದಗಳು.lda < MAX(1,nrowa))  info =  7;
+    ಆದರೆ (ವಾದಗಳು.k < 0)               info =  4;
+    ಆದರೆ (ವಾದಗಳು.n < 0)               info =  3;
+    ಆದರೆ (trans < 0)                info =  2;
+    ಆದರೆ (uplo  < 0)                info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major) {
+    ಆದರೆ (Uplo == Cblas_ಊರ್ಧ್ವ) uplo  = 1;
+    ಆದರೆ (Uplo == Cblas_ಅಧೋ) uplo  = 0;
+
+    ಆದರೆ (Trans == CblasNoTrans)     trans = 1;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+    ಆದರೆ (Trans == CblasTrans)       trans = 0;
+    ಆದರೆ (Trans == CblasConjNoTrans) trans = 1;
+    ಆದರೆ (Trans == CblasConjTrans)   trans = 0;
+#ಅಥವಾಆದರೆ !defined(HEMM)
+    ಆದರೆ (Trans == CblasTrans)       trans = 0;
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಆದರೆ (Trans == CblasConjTrans)   trans = 0;
+#ಆದರೆ_ಅಂತ್ಯ
+
+    info = -1;
+
+    nrowa = ವಾದಗಳು.n;
+    ಆದರೆ (trans & 1) nrowa = ವಾದಗಳು.k;
+
+    ಆದರೆ (ವಾದಗಳು.ldc < MAX(1,ವಾದಗಳು.n)) info = 10;
+    ಆದರೆ (ವಾದಗಳು.lda < MAX(1,nrowa))  info =  7;
+    ಆದರೆ (ವಾದಗಳು.k < 0)               info =  4;
+    ಆದರೆ (ವಾದಗಳು.n < 0)               info =  3;
+    ಆದರೆ (trans < 0)                info =  2;
+    ಆದರೆ (uplo  < 0)                info =  1;
   }
 
-  if (args.n == 0) return;
+  ಆದರೆ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
+  }
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);
-#endif
+  ಆದರೆ (ವಾದಗಳು.n == 0) ಹಿಂತಿರುಗಿ;
+
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DYNAMIC_ARCH
+ಬಾಹ್ಯ ಅಕ್ಷರ* gotoblas_corename(ಶೂನ್ಯ);
+#ಆದರೆ_ಅಂತ್ಯ
 	
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYRK_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#ಆದರೆ !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#ಆದರೆ defined(ARCH_ARM64) && (defined(USE_SSYRK_KERNEL_ನೇರ)||defined(DYNAMIC_ARCH))
+#ಆದರೆ defined(DYNAMIC_ARCH)
+ಆದರೆ (strcmp(gotoblas_corename(), "armv9sme") == 0
+#ಆದರೆ defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 )
-#endif
-  if (order == CblasRowMajor && n == ldc) {
-    if (Trans == CblasNoTrans && k == lda) {
-      (Uplo == CblasUpper ? SSYRK_DIRECT_ALPHA_BETA_UN : SSYRK_DIRECT_ALPHA_BETA_LN)(n, k, alpha, a, lda, beta, c, ldc);
-      return;
-    } else if (Trans == CblasTrans && n == lda){
-      (Uplo == CblasUpper ? SSYRK_DIRECT_ALPHA_BETA_UT : SSYRK_DIRECT_ALPHA_BETA_LT)(n, k, alpha, a, lda, beta, c, ldc);
-      return;
+#ಆದರೆ_ಅಂತ್ಯ
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major && n == ldc) {
+    ಆದರೆ (Trans == CblasNoTrans && k == lda) {
+      (Uplo == Cblas_ಊರ್ಧ್ವ ? SSYRK_ನೇರ_ALPHA_BETA_UN : SSYRK_ನೇರ_ALPHA_BETA_LN)(n, k, alpha, a, lda, beta, c, ldc);
+      ಹಿಂತಿರುಗಿ;
+    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (Trans == CblasTrans && n == lda){
+      (Uplo == Cblas_ಊರ್ಧ್ವ ? SSYRK_ನೇರ_ALPHA_BETA_UT : SSYRK_ನೇರ_ALPHA_BETA_LT)(n, k, alpha, a, lda, beta, c, ldc);
+      ಹಿಂತಿರುಗಿ;
     }
   }
-#endif
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  ಬಫರ್ = (FLOAT *)blas_ಸ್ಮರಣೆ_alloc(0);
+  ಆದರೆ (!ಬಫರ್) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)ಬಫರ್ + GEMM_ಸ್ಥಾನಾಂತರ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ಗಾತ್ರ_2 + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ಸ್ಥಾನಾಂತರ_B);
 
-#ifdef SMP
-#ifdef USE_SIMPLE_THREADED_LEVEL3
-  if (!trans){
-    mode |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
-  } else {
-    mode |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ USE_SIMPLE_THREADED_LEVEL3
+  ಆದರೆ (!trans){
+    ಬಹುಲಕ |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
+  } ಇಲ್ಲದಿದ್ದರೆ {
+    ಬಹುಲಕ |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
   }
-  mode |= (uplo  << BLAS_UPLO_SHIFT);
-#endif
+  ಬಹುಲಕ |= (uplo  << BLAS_UPLO_ಸರಿಸು);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  args.common = NULL;
+  ವಾದಗಳು.common = ಖಾಲಿ;
 
-  NNK = (double)(args.n+1)*(double)args.n*(double)args.k;
-  if (NNK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
-  args.nthreads = 1;
-  } else {
-  args.nthreads = num_cpu_avail(3);
+  NNK = (ದ್ವಿಗುಣ)(ವಾದಗಳು.n+1)*(ದ್ವಿಗುಣ)ವಾದಗಳು.n*(ದ್ವಿಗುಣ)ವಾದಗಳು.k;
+  ಆದರೆ (NNK <= (SMP_ಮಿತಿ_MIN * GEMM_MULTITHREAD_ಮಿತಿ)) {
+  ವಾದಗಳು.nthreads = 1;
+  } ಇಲ್ಲದಿದ್ದರೆ {
+  ವಾದಗಳು.nthreads = ಅಂಕೆ_cpu_avail(3);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  ಆದರೆ (ವಾದಗಳು.nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-    (syrk[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syrk[(uplo << 1) | trans ])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
 
-#ifndef USE_SIMPLE_THREADED_LEVEL3
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ USE_SIMPLE_THREADED_LEVEL3
 
-    (syrk[4 | (uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syrk[4 | (uplo << 1) | trans ])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-    syrk_thread(mode, &args, NULL, NULL, syrk[(uplo << 1) | trans ], sa, sb, args.nthreads);
+    syrk_thread(ಬಹುಲಕ, &ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, syrk[(uplo << 1) | trans ], sa, sb, ವಾದಗಳು.nthreads);
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
- blas_memory_free(buffer);
+ blas_ಸ್ಮರಣೆ_free(ಬಫರ್);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.n * args.k + args.n * args.n / 2, args.n * args.n * args.k);
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE * COMPSIZE, ವಾದಗಳು.n * ವಾದಗಳು.k + ವಾದಗಳು.n * ವಾದಗಳು.n / 2, ವಾದಗಳು.n * ವಾದಗಳು.n * ವಾದಗಳು.k);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

@@ -36,55 +36,55 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMV "
-#else
-#define ERROR_NAME "CGEMV "
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XGEMV "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZGEMV "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CGEMV "
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, ಪೂರ್ಣಾಂಕ) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
   xgemv_thread_n, xgemv_thread_t, xgemv_thread_r, xgemv_thread_c, xgemv_thread_o, xgemv_thread_u, xgemv_thread_s, xgemv_thread_d,
-#elif defined DOUBLE
+#ಅಥವಾಆದರೆ defined DOUBLE
   zgemv_thread_n, zgemv_thread_t, zgemv_thread_r, zgemv_thread_c, zgemv_thread_o, zgemv_thread_u, zgemv_thread_s, zgemv_thread_d,
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   cgemv_thread_n, cgemv_thread_t, cgemv_thread_r, cgemv_thread_c, cgemv_thread_o, cgemv_thread_u, cgemv_thread_s, cgemv_thread_d,
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 };
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *TRANS, blasint *M, blasint *N,
 	 FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	 FLOAT *x, blasint *INCX,
 	 FLOAT *BETA,  FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  ಅಕ್ಷರ trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint lda = *LDA;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-  FLOAT *buffer;
-  int buffer_size;
-#ifdef SMP
-  int nthreads;
-#endif
+  FLOAT *ಬಫರ್;
+  ಪೂರ್ಣಾಂಕ ಬಫರ್_ಗಾತ್ರ;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
+  ಪೂರ್ಣಾಂಕ (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
 		FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 		  GEMV_N, GEMV_T, GEMV_R, GEMV_C,
 		  GEMV_O, GEMV_U, GEMV_S, GEMV_D,
@@ -108,54 +108,54 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i    = -1;
 
-  if (trans == 'N')  i = 0;
-  if (trans == 'T')  i = 1;
-  if (trans == 'R')  i = 2;
-  if (trans == 'C')  i = 3;
-  if (trans == 'O')  i = 4;
-  if (trans == 'U')  i = 5;
-  if (trans == 'S')  i = 6;
-  if (trans == 'D')  i = 7;
+  ಆದರೆ (trans == 'N')  i = 0;
+  ಆದರೆ (trans == 'T')  i = 1;
+  ಆದರೆ (trans == 'R')  i = 2;
+  ಆದರೆ (trans == 'C')  i = 3;
+  ಆದರೆ (trans == 'O')  i = 4;
+  ಆದರೆ (trans == 'U')  i = 5;
+  ಆದರೆ (trans == 'S')  i = 6;
+  ಆದರೆ (trans == 'D')  i = 7;
 
-  if (incy == 0)      info = 11;
-  if (incx == 0)      info = 8;
-  if (lda < MAX(1,m)) info = 6;
-  if (n < 0) 	      info = 3;
-  if (m < 0) 	      info = 2;
-  if (i < 0)          info = 1;
+  ಆದರೆ (incy == 0)      info = 11;
+  ಆದರೆ (incx == 0)      info = 8;
+  ಆದರೆ (lda < MAX(1,m)) info = 6;
+  ಆದರೆ (n < 0) 	      info = 3;
+  ಆದರೆ (m < 0) 	      info = 2;
+  ಆದರೆ (i < 0)          info = 1;
 
   trans = i;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+ಶೂನ್ಯ CNAME(ಎಣಿಕೆ CBLAS_ಕ್ರಮ ಕ್ರಮ,
+	   ಎಣಿಕೆ CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
-	   void *VALPHA,
-	   void  *va, blasint lda,
-	   void  *vx, blasint incx,
-	   void *VBETA,
-	   void  *vy, blasint incy){
+	   ಶೂನ್ಯ *VALPHA,
+	   ಶೂನ್ಯ  *va, blasint lda,
+	   ಶೂನ್ಯ  *vx, blasint incx,
+	   ಶೂನ್ಯ *VBETA,
+	   ಶೂನ್ಯ  *vy, blasint incy){
 
   FLOAT *ALPHA = (FLOAT*) VALPHA;
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   FLOAT *BETA = (FLOAT*) VBETA;
   FLOAT *y = (FLOAT*) vy;
-  FLOAT *buffer;
+  FLOAT *ಬಫರ್;
   blasint    lenx, leny;
-  int trans, buffer_size;
+  ಪೂರ್ಣಾಂಕ trans, ಬಫರ್_ಗಾತ್ರ;
   blasint info, t;
-#ifdef SMP
-  int nthreads;
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
+  ಪೂರ್ಣಾಂಕ (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
 	    FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 	      GEMV_N, GEMV_T, GEMV_R, GEMV_C,
 	      GEMV_O, GEMV_U, GEMV_S, GEMV_D,
@@ -172,28 +172,28 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಲಂಬಸಾಲು_Major) {
+    ಆದರೆ (TransA == CblasNoTrans)     trans = 0;
+    ಆದರೆ (TransA == CblasTrans)       trans = 1;
+    ಆದರೆ (TransA == CblasConjNoTrans) trans = 2;
+    ಆದರೆ (TransA == CblasConjTrans)   trans = 3;
 
     info = -1;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    ಆದರೆ (incy == 0)	  info = 11;
+    ಆದರೆ (incx == 0)	  info = 8;
+    ಆದರೆ (lda < MAX(1, m))  info = 6;
+    ಆದರೆ (n < 0)		  info = 3;
+    ಆದರೆ (m < 0)		  info = 2;
+    ಆದರೆ (trans < 0)        info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major) {
+    ಆದರೆ (TransA == CblasNoTrans)     trans = 1;
+    ಆದರೆ (TransA == CblasTrans)       trans = 0;
+    ಆದರೆ (TransA == CblasConjNoTrans) trans = 3;
+    ಆದರೆ (TransA == CblasConjTrans)   trans = 2;
 
     info = -1;
 
@@ -201,88 +201,88 @@ void CNAME(enum CBLAS_ORDER order,
     n = m;
     m = t;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    ಆದರೆ (incy == 0)	  info = 11;
+    ಆದರೆ (incx == 0)	  info = 8;
+    ಆದರೆ (lda < MAX(1, m))  info = 6;
+    ಆದರೆ (n < 0)		  info = 3;
+    ಆದರೆ (m < 0)		  info = 2;
+    ಆದರೆ (trans < 0)        info = 1;
 
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
   /*  Quick return if possible. */
 
-  if (m == 0 || n == 0) return;
+  ಆದರೆ (m == 0 || n == 0) ಹಿಂತಿರುಗಿ;
 
   lenx = n;
   leny = m;
 
-  if (trans & 1) lenx = m;
-  if (trans & 1) leny = n;
+  ಆದರೆ (trans & 1) lenx = m;
+  ಆದರೆ (trans & 1) leny = n;
 
-  if (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  ಆದರೆ (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), ಖಾಲಿ, 0, ಖಾಲಿ, 0);
 
-  if (alpha_r == ZERO && alpha_i == ZERO) return;
+  ಆದರೆ (alpha_r == ZERO && alpha_i == ZERO) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (incx < 0) x -= (lenx - 1) * incx * 2;
-  if (incy < 0) y -= (leny - 1) * incy * 2;
+  ಆದರೆ (incx < 0) x -= (lenx - 1) * incx * 2;
+  ಆದರೆ (incy < 0) y -= (leny - 1) * incy * 2;
 
-  buffer_size = 2 * (m + n) + 128 / sizeof(FLOAT);
-#ifdef WINDOWS_ABI
-  buffer_size += 160 / sizeof(FLOAT) ;
-#endif
+  ಬಫರ್_ಗಾತ್ರ = 2 * (m + n) + 128 / ಗಾತ್ರ(FLOAT);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ WINDOWS_ABI
+  ಬಫರ್_ಗಾತ್ರ += 160 / ಗಾತ್ರ(FLOAT) ;
+#ಆದರೆ_ಅಂತ್ಯ
   // for alignment
-  buffer_size = (buffer_size + 3) & ~3;
-  STACK_ALLOC(buffer_size, FLOAT, buffer);
+  ಬಫರ್_ಗಾತ್ರ = (ಬಫರ್_ಗಾತ್ರ + 3) & ~3;
+  ರಾಶಿ_ALLOC(ಬಫರ್_ಗಾತ್ರ, FLOAT, ಬಫರ್);
 
-#if defined(ARCH_X86_64) && defined(MAX_STACK_ALLOC) && MAX_STACK_ALLOC > 0
+#ಆದರೆ defined(ARCH_X86_64) && defined(MAX_ರಾಶಿ_ALLOC) && MAX_ರಾಶಿ_ALLOC > 0
   // cgemv_t.S return NaN if there are NaN or Inf in the buffer (see bug #746)
-  if(trans && stack_alloc_size)
-    memset(buffer, 0, MIN(BUFFER_SIZE, sizeof(FLOAT) * buffer_size));
-#endif
+  ಆದರೆ(trans && ರಾಶಿ_alloc_ಗಾತ್ರ)
+    memset(ಬಫರ್, 0, MIN(ಬಫರ್_ಗಾತ್ರ_2, ಗಾತ್ರ(FLOAT) * ಬಫರ್_ಗಾತ್ರ));
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef SMP
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
 
-#if defined(_WIN64) && defined(_M_ARM64)
-  if (m*n > 25000000L) 
-    nthreads = num_cpu_avail(4);
-  else
+#ಆದರೆ defined(_WIN64) && defined(_M_ARM64)
+  ಆದರೆ (m*n > 25000000L) 
+    nthreads = ಅಂಕೆ_cpu_avail(4);
+  ಇಲ್ಲದಿದ್ದರೆ
     nthreads = 1;
-#else
-  if (1L * m * n < 1024L * GEMM_MULTITHREAD_THRESHOLD)
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಆದರೆ (1L * m * n < 1024L * GEMM_MULTITHREAD_ಮಿತಿ)
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
-#endif  
+  ಇಲ್ಲದಿದ್ದರೆ
+    nthreads = ಅಂಕೆ_cpu_avail(2);
+#ಆದರೆ_ಅಂತ್ಯ  
 
-  if (nthreads == 1) {
-#endif  
+  ಆದರೆ (nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ  
 
-    (gemv[(int)trans])(m, n, 0, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
+    (gemv[(ಪೂರ್ಣಾಂಕ)trans])(m, n, 0, alpha_r, alpha_i, a, lda, x, incx, y, incy, ಬಫರ್);
 
-#ifdef SMP
-  } else {
-    (gemv_thread[(int)trans])(m, n, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
+    (gemv_thread[(ಪೂರ್ಣಾಂಕ)trans])(m, n, ALPHA, a, lda, x, incx, y, incy, ಬಫರ್, nthreads);
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 
-  STACK_FREE(buffer);
+  ರಾಶಿ_FREE(ಬಫರ್);
 
-  FUNCTION_PROFILE_END(4, m * n + m + n,  2 * m * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, m * n + m + n,  2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

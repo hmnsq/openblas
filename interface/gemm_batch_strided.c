@@ -31,93 +31,93 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 **********************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+ಶೂನ್ಯ openblas_warning(ಪೂರ್ಣಾಂಕ verbose, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ * ಸಂದೇಶ);
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMM_BATCH_STRIDED "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD dgemm_batch_thread
-#else
-#define ERROR_NAME "SGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD sgemm_batch_thread
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMM_BATCH_STRIDED "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD zgemm_batch_thread
-#else
-#define ERROR_NAME "CGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD cgemm_batch_thread
-#endif
-#endif
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "QGEMM_BATCH_STRIDED "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "DGEMM_BATCH_STRIDED "
+#ವ್ಯಾಖ್ಯಾನಿಸು GEMM_BATCH_THREAD dgemm_batch_thread
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "SGEMM_BATCH_STRIDED "
+#ವ್ಯಾಖ್ಯಾನಿಸು GEMM_BATCH_THREAD sgemm_batch_thread
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XGEMM_BATCH_STRIDED "
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZGEMM_BATCH_STRIDED "
+#ವ್ಯಾಖ್ಯಾನಿಸು GEMM_BATCH_THREAD zgemm_batch_thread
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CGEMM_BATCH_STRIDED "
+#ವ್ಯಾಖ್ಯಾನಿಸು GEMM_BATCH_THREAD cgemm_batch_thread
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
-#define USE_SMALL_MATRIX_OPT 1
-#else
-#define USE_SMALL_MATRIX_OPT 0
-#endif
+#ಆದರೆ defined(SMALL_ಮಾತೃಕೆ_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು USE_SMALL_ಮಾತೃಕೆ_OPT 1
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು USE_SMALL_ಮಾತೃಕೆ_OPT 0
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if USE_SMALL_MATRIX_OPT
-#ifndef DYNAMIC_ARCH
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
-#endif
+#ಆದರೆ USE_SMALL_ಮಾತೃಕೆ_OPT
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ DYNAMIC_ARCH
+#ವ್ಯಾಖ್ಯಾನಿಸು SMALL_KERNEL_ADDR(ಕೋಷ್ಟಕ, idx) ((ಶೂನ್ಯ *)(ಕೋಷ್ಟಕ[idx]))
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು SMALL_KERNEL_ADDR(ಕೋಷ್ಟಕ, idx) ((ಶೂನ್ಯ *)(*(uintptr_t *)((ಅಕ್ಷರ *)gotoblas + (size_t)(ಕೋಷ್ಟಕ[idx]))))
+#ಆದರೆ_ಅಂತ್ಯ
 
 
-#ifndef COMPLEX
-static size_t gemm_small_kernel[] = {
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+ಸ್ಥಿರ size_t gemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, 0, 0,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, 0, 0,
 };
 
 
-static size_t gemm_small_kernel_b0[] = {
+ಸ್ಥಿರ size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, 0, 0,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#ವ್ಯಾಖ್ಯಾನಿಸು GEMM_SMALL_KERNEL_B0(idx) (ಪೂರ್ಣಾಂಕ (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#ವ್ಯಾಖ್ಯಾನಿಸು GEMM_SMALL_KERNEL(idx) (ಪೂರ್ಣಾಂಕ (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#ಇಲ್ಲದಿದ್ದರೆ
 
-static size_t zgemm_small_kernel[] = {
+ಸ್ಥಿರ size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, GEMM_SMALL_KERNEL_RT, GEMM_SMALL_KERNEL_CT,
 	GEMM_SMALL_KERNEL_NR, GEMM_SMALL_KERNEL_TR, GEMM_SMALL_KERNEL_RR, GEMM_SMALL_KERNEL_CR,
 	GEMM_SMALL_KERNEL_NC, GEMM_SMALL_KERNEL_TC, GEMM_SMALL_KERNEL_RC, GEMM_SMALL_KERNEL_CC,
 };
 
-static size_t zgemm_small_kernel_b0[] = {
+ಸ್ಥಿರ size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, GEMM_SMALL_KERNEL_B0_RN, GEMM_SMALL_KERNEL_B0_CN,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, GEMM_SMALL_KERNEL_B0_RT, GEMM_SMALL_KERNEL_B0_CT,
 	GEMM_SMALL_KERNEL_B0_NR, GEMM_SMALL_KERNEL_B0_TR, GEMM_SMALL_KERNEL_B0_RR, GEMM_SMALL_KERNEL_B0_CR,
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿಸು ZGEMM_SMALL_KERNEL(idx) (ಪೂರ್ಣಾಂಕ (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#ವ್ಯಾಖ್ಯಾನಿಸು ZGEMM_SMALL_KERNEL_B0(idx) (ಪೂರ್ಣಾಂಕ (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME(char *transa, char *transb,
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *transa, ಅಕ್ಷರ *transb,
 	   blasint * M, blasint * N, blasint * K,
 	   FLOAT * Alpha,
 	   IFLOAT * a, blasint * Lda,
@@ -127,9 +127,9 @@ void NAME(char *transa, char *transb,
 	   FLOAT * Beta,
 	   FLOAT * c, blasint * Ldc, blasint * stride_c, blasint * matcount) {
  	  
-           char ta = *transa;
-   	   char tb = *transb;	   
-	   blasint count = *matcount;
+           ಅಕ್ಷರ ta = *transa;
+   	   ಅಕ್ಷರ tb = *transb;	   
+	   blasint ಎಣಿಕೆ_2 = *matcount;
 	   blasint stridea= *stride_a;
 	   blasint strideb= *stride_b;
 	   blasint stridec= *stride_c;
@@ -139,307 +139,307 @@ void NAME(char *transa, char *transb,
 	   blasint lda=*Lda;
 	   blasint ldb=*Ldb;
 	   blasint ldc=*Ldc;
-#if !defined(COMPLEX)	   
+#ಆದರೆ !defined(COMPLEX)	   
 	   FLOAT alpha=*Alpha;
 	   FLOAT beta=*Beta;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 	   FLOAT *alpha=Alpha;
 	   FLOAT *beta=Beta;
-#endif
-#else
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transb,
+ಶೂನ್ಯ CNAME(ಎಣಿಕೆ CBLAS_ಕ್ರಮ ಕ್ರಮ, ಎಣಿಕೆ CBLAS_TRANSPOSE transa, ಎಣಿಕೆ CBLAS_TRANSPOSE transb,
 	   blasint m, blasint n, blasint k,
-#ifndef COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
 	   FLOAT alpha,
 	   IFLOAT * a, blasint lda, blasint stridea,
 	   IFLOAT * b, blasint ldb, blasint strideb,
 	   FLOAT beta,
-	   FLOAT * c, blasint ldc, blasint stridec, blasint count) {
-#else
-	   void * valpha,
-	   void * va, blasint lda, blasint stridea,
-	   void * vb, blasint ldb, blasint strideb,
-	   void * vbeta,
-	   void * vc, blasint ldc, blasint stridec, blasint count) {
+	   FLOAT * c, blasint ldc, blasint stridec, blasint ಎಣಿಕೆ_2) {
+#ಇಲ್ಲದಿದ್ದರೆ
+	   ಶೂನ್ಯ * valpha,
+	   ಶೂನ್ಯ * va, blasint lda, blasint stridea,
+	   ಶೂನ್ಯ * vb, blasint ldb, blasint strideb,
+	   ಶೂನ್ಯ * vbeta,
+	   ಶೂನ್ಯ * vc, blasint ldc, blasint stridec, blasint ಎಣಿಕೆ_2) {
 
   FLOAT * alpha=(FLOAT *)valpha;
   FLOAT * beta=(FLOAT *)vbeta;
   FLOAT * a=(FLOAT*)va;
   FLOAT * b=(FLOAT*)vb;
   FLOAT * c=(FLOAT*)vc;
-#endif
-#endif
-  BLASLONG group_m, group_n, group_k;
-  BLASLONG group_lda, group_ldb, group_ldc;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+  BLASLONG ಗುಂಪು_m, ಗುಂಪು_n, ಗುಂಪು_k;
+  BLASLONG ಗುಂಪು_lda, ಗುಂಪು_ldb, ಗುಂಪು_ldc;
 
-  blas_arg_t * args_array=NULL;
+  blas_arg_t * ವಾದಗಳು_array=ಖಾಲಿ;
 
-  int mode=0, group_mode=0;
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ=0, ಗುಂಪು_ಬಹುಲಕ=0;
 
   blasint i=0;
 
-  int group_transa, group_transb;
-  BLASLONG group_nrowa, group_nrowb;
+  ಪೂರ್ಣಾಂಕ ಗುಂಪು_transa, ಗುಂಪು_transb;
+  BLASLONG ಗುಂಪು_nrowa, ಗುಂಪು_nrowb;
   blasint info;
 
-  void * group_routine=NULL;
-#ifdef SMALL_MATRIX_OPT
-  void * group_small_matrix_opt_routine=NULL;
-#endif
+  ಶೂನ್ಯ * ಗುಂಪು_routine=ಖಾಲಿ;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMALL_ಮಾತೃಕೆ_OPT
+  ಶೂನ್ಯ * ಗುಂಪು_small_ಮಾತೃಕೆ_opt_routine=ಖಾಲಿ;
+#ಆದರೆ_ಅಂತ್ಯ
   
-#if defined (SMP) || defined(SMALL_MATRIX_OPT)
-  double MNK;
-#endif
+#ಆದರೆ defined (SMP) || defined(SMALL_ಮಾತೃಕೆ_OPT)
+  ದ್ವಿಗುಣ MNK;
+#ಆದರೆ_ಅಂತ್ಯ
 
   PRINT_DEBUG_CNAME;
 
-  args_array=(blas_arg_t *)malloc(count * sizeof(blas_arg_t));
+  ವಾದಗಳು_array=(blas_arg_t *)ಸ್ಮರಣೆ_ಕೊಡು(ಎಣಿಕೆ_2 * ಗಾತ್ರ(blas_arg_t));
   
-  if(args_array == NULL){
+  ಆದರೆ(ವಾದಗಳು_array == ಖಾಲಿ){
     openblas_warning(0, "memory alloc failed!\n");
-    return;
+    ಹಿಂತಿರುಗಿ;
   }
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+  ಬಹುಲಕ  =  BLAS_XDOUBLE | BLAS_REAL;
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+  ಬಹುಲಕ  =  BLAS_DOUBLE  | BLAS_REAL;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಬಹುಲಕ  =  BLAS_SINGLE  | BLAS_REAL;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+  ಬಹುಲಕ  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+  ಬಹುಲಕ  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಬಹುಲಕ  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
   
-  for(i=0; i<count; i++) {
+  ಗಾಗಿ(i=0; i<ಎಣಿಕೆ_2; i++) {
 
-    group_m = group_n = group_k = 0;
-    group_lda = group_ldb = group_ldc = 0;
-    group_transa = -1;
-    group_transb = -1;
+    ಗುಂಪು_m = ಗುಂಪು_n = ಗುಂಪು_k = 0;
+    ಗುಂಪು_lda = ಗುಂಪು_ldb = ಗುಂಪು_ldc = 0;
+    ಗುಂಪು_transa = -1;
+    ಗುಂಪು_transb = -1;
     info   = 0;
    
-#if defined(CBLAS)
-    if (order == CblasColMajor) {
-      group_m = m;
-      group_n = n;
-      group_k = k;
+#ಆದರೆ defined(CBLAS)
+    ಆದರೆ (ಕ್ರಮ == Cblas_ಲಂಬಸಾಲು_Major) {
+      ಗುಂಪು_m = m;
+      ಗುಂಪು_n = n;
+      ಗುಂಪು_k = k;
 
-      group_lda = lda;
-      group_ldb = ldb;
-      group_ldc = ldc;
+      ಗುಂಪು_lda = lda;
+      ಗುಂಪು_ldb = ldb;
+      ಗುಂಪು_ldc = ldc;
 
-      if (transa == CblasNoTrans)     group_transa = 0;
-      if (transa == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transa == CblasConjNoTrans) group_transa = 0;
-      if (transa == CblasConjTrans)   group_transa = 1;
-#else
-      if (transa == CblasConjNoTrans) group_transa = 2;
-      if (transa == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transb == CblasNoTrans)     group_transb = 0;
-      if (transb == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transb == CblasConjNoTrans) group_transb = 0;
-      if (transb == CblasConjTrans)   group_transb = 1;
-#else
-      if (transb == CblasConjNoTrans) group_transb = 2;
-      if (transb == CblasConjTrans)   group_transb = 3;
-#endif
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
-
-      info=-1;
-	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;
-
-    }else if (order == CblasRowMajor) {
-      
-      group_m = n;
-      group_n = m;
-      group_k = k;
-
-      group_lda = ldb;
-      group_ldb = lda;
-      group_ldc = ldc;
-
-      if (transb == CblasNoTrans)     group_transa = 0;
-      if (transb == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transb == CblasConjNoTrans) group_transa = 0;
-      if (transb == CblasConjTrans)   group_transa = 1;
-#else
-      if (transb == CblasConjNoTrans) group_transa = 2;
-      if (transb == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transa == CblasNoTrans)     group_transb = 0;
-      if (transa == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transa == CblasConjNoTrans) group_transb = 0;
-      if (transa == CblasConjTrans)   group_transb = 1;
-#else
-      if (transa == CblasConjNoTrans) group_transb = 2;
-      if (transa == CblasConjTrans)   group_transb = 3;
-#endif
-
-#else
-      group_m = m;
-      group_n = n;
-      group_k = k;
-
-      group_lda = lda;
-      group_ldb = ldb;
-      group_ldc = ldc;
-      
-      if (ta == 'N')   group_transa = 0;
-      if (ta == 'T')   group_transa = 1;
-#ifndef COMPLEX
-      if (ta == 'C')   group_transa = 1;
-#else
-      if (ta == 'C')   group_transa = 3;
-#endif
-      if (tb == 'N')   group_transb = 0;
-      if (tb == 'T')   group_transb = 1;
-#ifndef COMPLEX
-      if (tb == 'C')   group_transb = 1;
-#else
-      if (tb == 'C')   group_transb = 3;
-#endif
-#endif
-
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ಆದರೆ (transa == CblasNoTrans)     ಗುಂಪು_transa = 0;
+      ಆದರೆ (transa == CblasTrans)       ಗುಂಪು_transa = 1;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+      ಆದರೆ (transa == CblasConjNoTrans) ಗುಂಪು_transa = 0;
+      ಆದರೆ (transa == CblasConjTrans)   ಗುಂಪು_transa = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಆದರೆ (transa == CblasConjNoTrans) ಗುಂಪು_transa = 2;
+      ಆದರೆ (transa == CblasConjTrans)   ಗುಂಪು_transa = 3;
+#ಆದರೆ_ಅಂತ್ಯ
+      ಆದರೆ (transb == CblasNoTrans)     ಗುಂಪು_transb = 0;
+      ಆದರೆ (transb == CblasTrans)       ಗುಂಪು_transb = 1;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+      ಆದರೆ (transb == CblasConjNoTrans) ಗುಂಪು_transb = 0;
+      ಆದರೆ (transb == CblasConjTrans)   ಗುಂಪು_transb = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಆದರೆ (transb == CblasConjNoTrans) ಗುಂಪು_transb = 2;
+      ಆದರೆ (transb == CblasConjTrans)   ಗುಂಪು_transb = 3;
+#ಆದರೆ_ಅಂತ್ಯ
+      ಗುಂಪು_nrowa = ಗುಂಪು_m;
+      ಆದರೆ (ಗುಂಪು_transa & 1) ಗುಂಪು_nrowa = ಗುಂಪು_k;
+      ಗುಂಪು_nrowb = ಗುಂಪು_k;
+      ಆದರೆ (ಗುಂಪು_transb & 1) ಗುಂಪು_nrowb = ಗುಂಪು_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;      
-#if defined(CBLAS)
+      ಆದರೆ (ಗುಂಪು_ldc < ಗುಂಪು_m) info = 13;
+      ಆದರೆ (ಗುಂಪು_ldb < ಗುಂಪು_nrowb)  info = 10;
+      ಆದರೆ (ಗುಂಪು_lda < ಗುಂಪು_nrowa)  info =  8;
+      ಆದರೆ (ಗುಂಪು_k < 0)        info =  5;
+      ಆದರೆ (ಗುಂಪು_n < 0)        info =  4;
+      ಆದರೆ (ಗುಂಪು_m < 0)        info =  3;
+      ಆದರೆ (ಗುಂಪು_transb < 0)        info =  2;
+      ಆದರೆ (ಗುಂಪು_transa < 0)        info =  1;
+
+    }ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major) {
+      
+      ಗುಂಪು_m = n;
+      ಗುಂಪು_n = m;
+      ಗುಂಪು_k = k;
+
+      ಗುಂಪು_lda = ldb;
+      ಗುಂಪು_ldb = lda;
+      ಗುಂಪು_ldc = ldc;
+
+      ಆದರೆ (transb == CblasNoTrans)     ಗುಂಪು_transa = 0;
+      ಆದರೆ (transb == CblasTrans)       ಗುಂಪು_transa = 1;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+      ಆದರೆ (transb == CblasConjNoTrans) ಗುಂಪು_transa = 0;
+      ಆದರೆ (transb == CblasConjTrans)   ಗುಂಪು_transa = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಆದರೆ (transb == CblasConjNoTrans) ಗುಂಪು_transa = 2;
+      ಆದರೆ (transb == CblasConjTrans)   ಗುಂಪು_transa = 3;
+#ಆದರೆ_ಅಂತ್ಯ
+      ಆದರೆ (transa == CblasNoTrans)     ಗುಂಪು_transb = 0;
+      ಆದರೆ (transa == CblasTrans)       ಗುಂಪು_transb = 1;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+      ಆದರೆ (transa == CblasConjNoTrans) ಗುಂಪು_transb = 0;
+      ಆದರೆ (transa == CblasConjTrans)   ಗುಂಪು_transb = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಆದರೆ (transa == CblasConjNoTrans) ಗುಂಪು_transb = 2;
+      ಆದರೆ (transa == CblasConjTrans)   ಗುಂಪು_transb = 3;
+#ಆದರೆ_ಅಂತ್ಯ
+
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಗುಂಪು_m = m;
+      ಗುಂಪು_n = n;
+      ಗುಂಪು_k = k;
+
+      ಗುಂಪು_lda = lda;
+      ಗುಂಪು_ldb = ldb;
+      ಗುಂಪು_ldc = ldc;
+      
+      ಆದರೆ (ta == 'N')   ಗುಂಪು_transa = 0;
+      ಆದರೆ (ta == 'T')   ಗುಂಪು_transa = 1;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+      ಆದರೆ (ta == 'C')   ಗುಂಪು_transa = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಆದರೆ (ta == 'C')   ಗುಂಪು_transa = 3;
+#ಆದರೆ_ಅಂತ್ಯ
+      ಆದರೆ (tb == 'N')   ಗುಂಪು_transb = 0;
+      ಆದರೆ (tb == 'T')   ಗುಂಪು_transb = 1;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+      ಆದರೆ (tb == 'C')   ಗುಂಪು_transb = 1;
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಆದರೆ (tb == 'C')   ಗುಂಪು_transb = 3;
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
+
+      ಗುಂಪು_nrowa = ಗುಂಪು_m;
+      ಆದರೆ (ಗುಂಪು_transa & 1) ಗುಂಪು_nrowa = ಗುಂಪು_k;
+      ಗುಂಪು_nrowb = ಗುಂಪು_k;
+      ಆದರೆ (ಗುಂಪು_transb & 1) ಗುಂಪು_nrowb = ಗುಂಪು_n;
+
+      info=-1;
+	
+      ಆದರೆ (ಗುಂಪು_ldc < ಗುಂಪು_m) info = 13;
+      ಆದರೆ (ಗುಂಪು_ldb < ಗುಂಪು_nrowb)  info = 10;
+      ಆದರೆ (ಗುಂಪು_lda < ಗುಂಪು_nrowa)  info =  8;
+      ಆದರೆ (ಗುಂಪು_k < 0)        info =  5;
+      ಆದರೆ (ಗುಂಪು_n < 0)        info =  4;
+      ಆದರೆ (ಗುಂಪು_m < 0)        info =  3;
+      ಆದರೆ (ಗುಂಪು_transb < 0)        info =  2;
+      ಆದರೆ (ಗುಂಪು_transa < 0)        info =  1;      
+#ಆದರೆ defined(CBLAS)
     }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-    if (info >= 0) {
-      BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-      free(args_array);
-      return;
+    ಆದರೆ (info >= 0) {
+      BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+      ಬಿಡುಗಡೆ(ವಾದಗಳು_array);
+      ಹಿಂತಿರುಗಿ;
     }
 
     /* Every member shares M and N: an empty member means an empty batch. */
-    if (group_m == 0 || group_n == 0) { free(args_array); return; }
+    ಆದರೆ (ಗುಂಪು_m == 0 || ಗುಂಪು_n == 0) { ಬಿಡುಗಡೆ(ವಾದಗಳು_array); ಹಿಂತಿರುಗಿ; }
 
-    group_mode=mode;
+    ಗುಂಪು_ಬಹುಲಕ=ಬಹುಲಕ;
 
-#if defined(SMP) || defined(SMALL_MATRIX_OPT)
-    MNK = (double) group_m * (double) group_n * (double) group_k;
-#endif
+#ಆದರೆ defined(SMP) || defined(SMALL_ಮಾತೃಕೆ_OPT)
+    MNK = (ದ್ವಿಗುಣ) ಗುಂಪು_m * (ದ್ವಿಗುಣ) ಗುಂಪು_n * (ದ್ವಿಗುಣ) ಗುಂಪು_k;
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef SMALL_MATRIX_OPT
-#if !defined(COMPLEX)
-    if (*(FLOAT *)(&alpha) != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMALL_ಮಾತೃಕೆ_OPT
+#ಆದರೆ !defined(COMPLEX)
+    ಆದರೆ (*(FLOAT *)(&alpha) != ZERO &&
+        GEMM_SMALL_ಮಾತೃಕೆ_PERMIT(ಗುಂಪು_transa, ಗುಂಪು_transb, ಗುಂಪು_m, ಗುಂಪು_n, ಗುಂಪು_k,
                                  *(FLOAT *)(&alpha), *(FLOAT *)(&beta))){
-#else
-    if (((FLOAT *)(alpha))[0] != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಆದರೆ (((FLOAT *)(alpha))[0] != ZERO &&
+        GEMM_SMALL_ಮಾತೃಕೆ_PERMIT(ಗುಂಪು_transa, ಗುಂಪು_transb, ಗುಂಪು_m, ಗುಂಪು_n, ಗುಂಪು_k,
                                  ((FLOAT *)(alpha))[0], ((FLOAT *)(alpha))[1],
                                  ((FLOAT *)(beta))[0], ((FLOAT *)(beta))[1])){
-#endif
-      group_routine=NULL;
-#if !defined(COMPLEX)
-      if(beta == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((group_transb<<2)|group_transa));
+#ಆದರೆ_ಅಂತ್ಯ
+      ಗುಂಪು_routine=ಖಾಲಿ;
+#ಆದರೆ !defined(COMPLEX)
+      ಆದರೆ(beta == 0.0){
+	ಗುಂಪು_ಬಹುಲಕ=ಬಹುಲಕ | BLAS_SMALL_B0_OPT;
+	ಗುಂಪು_small_ಮಾತೃಕೆ_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((ಗುಂಪು_transb<<2)|ಗುಂಪು_transa));
+      }ಇಲ್ಲದಿದ್ದರೆ{
+	ಗುಂಪು_ಬಹುಲಕ=ಬಹುಲಕ | BLAS_SMALL_OPT;
+	ಗುಂಪು_small_ಮಾತೃಕೆ_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((ಗುಂಪು_transb<<2)|ಗುಂಪು_transa));
       }
-#else
-      if(beta[0] == 0.0 && beta[1] == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((group_transb<<2)|group_transa));
+#ಇಲ್ಲದಿದ್ದರೆ
+      ಆದರೆ(beta[0] == 0.0 && beta[1] == 0.0){
+	ಗುಂಪು_ಬಹುಲಕ=ಬಹುಲಕ | BLAS_SMALL_B0_OPT;
+	ಗುಂಪು_small_ಮಾತೃಕೆ_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((ಗುಂಪು_transb<<2)|ಗುಂಪು_transa));
+      }ಇಲ್ಲದಿದ್ದರೆ{
+	ಗುಂಪು_ಬಹುಲಕ=ಬಹುಲಕ | BLAS_SMALL_OPT;
+	ಗುಂಪು_small_ಮಾತೃಕೆ_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((ಗುಂಪು_transb<<2)|ಗುಂಪು_transa));
       }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
       
-    }else{
-#endif
-      group_routine=(void*)(gemm[(group_transb<<2)|group_transa]);
-#ifdef SMALL_MATRIX_OPT
+    }ಇಲ್ಲದಿದ್ದರೆ{
+#ಆದರೆ_ಅಂತ್ಯ
+      ಗುಂಪು_routine=(ಶೂನ್ಯ*)(gemm[(ಗುಂಪು_transb<<2)|ಗುಂಪು_transa]);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMALL_ಮಾತೃಕೆ_OPT
     }
-#endif    
+#ಆದರೆ_ಅಂತ್ಯ    
 
     
-      args_array[i].m=group_m;
-      args_array[i].n=group_n;
-      args_array[i].k=group_k;
-      args_array[i].lda=group_lda;
-      args_array[i].ldb=group_ldb;
-      args_array[i].ldc=group_ldc;
-#ifdef COMPLEX
-      args_array[i].alpha=alpha;
-      args_array[i].beta=beta;
-#else
-      args_array[i].alpha=&alpha;
-      args_array[i].beta=&beta;
-#endif
+      ವಾದಗಳು_array[i].m=ಗುಂಪು_m;
+      ವಾದಗಳು_array[i].n=ಗುಂಪು_n;
+      ವಾದಗಳು_array[i].k=ಗುಂಪು_k;
+      ವಾದಗಳು_array[i].lda=ಗುಂಪು_lda;
+      ವಾದಗಳು_array[i].ldb=ಗುಂಪು_ldb;
+      ವಾದಗಳು_array[i].ldc=ಗುಂಪು_ldc;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ COMPLEX
+      ವಾದಗಳು_array[i].alpha=alpha;
+      ವಾದಗಳು_array[i].beta=beta;
+#ಇಲ್ಲದಿದ್ದರೆ
+      ವಾದಗಳು_array[i].alpha=&alpha;
+      ವಾದಗಳು_array[i].beta=&beta;
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if defined(CBLAS)
-      if (order == CblasColMajor) {      
-	args_array[i].a=&(a[i*stridea]);
-	args_array[i].b=&(b[i*strideb]);
-      }else if(order == CblasRowMajor){
-	args_array[i].a=&(b[i*strideb]);
-	args_array[i].b=&(a[i*stridea]);
+#ಆದರೆ defined(CBLAS)
+      ಆದರೆ (ಕ್ರಮ == Cblas_ಲಂಬಸಾಲು_Major) {      
+	ವಾದಗಳು_array[i].a=&(a[i*stridea]);
+	ವಾದಗಳು_array[i].b=&(b[i*strideb]);
+      }ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ(ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major){
+	ವಾದಗಳು_array[i].a=&(b[i*strideb]);
+	ವಾದಗಳು_array[i].b=&(a[i*stridea]);
       }
-#else
-	args_array[i].a=&(a[i*stridea]);
-	args_array[i].b=&(b[i*strideb]);
-#endif
+#ಇಲ್ಲದಿದ್ದರೆ
+	ವಾದಗಳು_array[i].a=&(a[i*stridea]);
+	ವಾದಗಳು_array[i].b=&(b[i*strideb]);
+#ಆದರೆ_ಅಂತ್ಯ
       
-      args_array[i].c= &c[i*stridec];
+      ವಾದಗಳು_array[i].c= &c[i*stridec];
       
-      args_array[i].routine_mode=group_mode;
-      args_array[i].routine=group_routine;
-#ifdef SMALL_MATRIX_OPT
-      if (!group_routine)
-        args_array[i].routine=group_small_matrix_opt_routine;
-#endif      
+      ವಾದಗಳು_array[i].routine_ಬಹುಲಕ=ಗುಂಪು_ಬಹುಲಕ;
+      ವಾದಗಳು_array[i].routine=ಗುಂಪು_routine;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMALL_ಮಾತೃಕೆ_OPT
+      ಆದರೆ (!ಗುಂಪು_routine)
+        ವಾದಗಳು_array[i].routine=ಗುಂಪು_small_ಮಾತೃಕೆ_opt_routine;
+#ಆದರೆ_ಅಂತ್ಯ      
   }
 
-  if(count>0) {
-    GEMM_BATCH_THREAD(args_array,count);
+  ಆದರೆ(ಎಣಿಕೆ_2>0) {
+    GEMM_BATCH_THREAD(ವಾದಗಳು_array,ಎಣಿಕೆ_2);
   }
 
-  free(args_array);
+  ಬಿಡುಗಡೆ(ವಾದಗಳು_array);
 }

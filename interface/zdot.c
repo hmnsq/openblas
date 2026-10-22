@@ -36,180 +36,180 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef RETURN_BY_STRUCT
-#ifdef XDOUBLE
-#define MYTYPE myxcomplex_t
-#elif defined DOUBLE
-#define MYTYPE myzcomplex_t
-#else
-#define MYTYPE myccomplex_t
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ RETURN_BY_STRUCT
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MYTYPE myxcomplex_t
+#ಅಥವಾಆದರೆ defined DOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MYTYPE myzcomplex_t
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು MYTYPE myccomplex_t
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-#ifdef RETURN_BY_STRUCT
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ RETURN_BY_STRUCT
 MYTYPE         NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#elif defined RETURN_BY_STACK
-void           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#else
+#ಅಥವಾಆದರೆ defined RETURN_BY_ರಾಶಿ
+ಶೂನ್ಯ           NAME(OPENBLAS_COMPLEX_FLOAT *ಫಲಿತಾಂಶ, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
+#ಇಲ್ಲದಿದ್ದರೆ
 OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-#ifndef RETURN_BY_STACK
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ RETURN_BY_ರಾಶಿ
   OPENBLAS_COMPLEX_FLOAT ret;
-#endif
-#ifdef RETURN_BY_STRUCT
+#ಆದರೆ_ಅಂತ್ಯ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ RETURN_BY_STRUCT
   MYTYPE  myret;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef RETURN_BY_STRUCT
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ RETURN_BY_STRUCT
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) {
-#ifdef RETURN_BY_STRUCT
+  ಆದರೆ (n <= 0) {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ RETURN_BY_STRUCT
     myret.r = 0.;
     myret.i = 0.;
-    return myret;
-#elif defined RETURN_BY_STACK
-    *result = zero;
-    return;
-#else
-    return zero;
-#endif
+    ಹಿಂತಿರುಗಿ myret;
+#ಅಥವಾಆದರೆ defined RETURN_BY_ರಾಶಿ
+    *ಫಲಿತಾಂಶ = zero;
+    ಹಿಂತಿರುಗಿ;
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಹಿಂತಿರುಗಿ zero;
+#ಆದರೆ_ಅಂತ್ಯ
   }
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ಆದರೆ (incx < 0) x -= (n - 1) * incx * 2;
+  ಆದರೆ (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef RETURN_BY_STRUCT
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ RETURN_BY_STRUCT
 
-#ifndef CONJ
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
   myret.r = CREAL ret;
   myret.i = CIMAG ret;
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return myret;
+  ಹಿಂತಿರುಗಿ myret;
 
-#elif defined RETURN_BY_STACK
+#ಅಥವಾಆದರೆ defined RETURN_BY_ರಾಶಿ
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONJ
+  *ಫಲಿತಾಂಶ = DOTU_K(n, x, incx, y, incy);
+#ಇಲ್ಲದಿದ್ದರೆ
+  *ಫಲಿತಾಂಶ = DOTC_K(n, x, incx, y, incy);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-#ifndef CONJ
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return ret;
+  ಹಿಂತಿರುಗಿ ret;
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 }
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-#ifdef FORCE_USE_STACK
-void           CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy, void* vresult){
-OPENBLAS_COMPLEX_FLOAT *result= (OPENBLAS_COMPLEX_FLOAT*)vresult;
-#else
-OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FORCE_USE_ರಾಶಿ
+ಶೂನ್ಯ           CNAME(blasint n, ಶೂನ್ಯ *vx, blasint incx, ಶೂನ್ಯ *vy, blasint incy, ಶೂನ್ಯ* vresult){
+OPENBLAS_COMPLEX_FLOAT *ಫಲಿತಾಂಶ= (OPENBLAS_COMPLEX_FLOAT*)vresult;
+#ಇಲ್ಲದಿದ್ದರೆ
+OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, ಶೂನ್ಯ *vx, blasint incx, ಶೂನ್ಯ *vy, blasint incy){
 
   OPENBLAS_COMPLEX_FLOAT ret;
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
   FLOAT *x = (FLOAT*) vx;
   FLOAT *y = (FLOAT*) vy;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) {
-#ifdef FORCE_USE_STACK
+  ಆದರೆ (n <= 0) {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FORCE_USE_ರಾಶಿ
     OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-    *result = zero;
+    *ಫಲಿತಾಂಶ = zero;
 //	CREAL(*result) = 0.0;
 //	CIMAG(*result) = 0.0;
-    return;
-#else
-    return zero;
-#endif
+    ಹಿಂತಿರುಗಿ;
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಹಿಂತಿರುಗಿ zero;
+#ಆದರೆ_ಅಂತ್ಯ
   }
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  ಆದರೆ (incx < 0) x -= (n - 1) * incx * 2;
+  ಆದರೆ (incy < 0) y -= (n - 1) * incy * 2;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-#ifdef FORCE_USE_STACK
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FORCE_USE_ರಾಶಿ
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONJ
+  *ಫಲಿತಾಂಶ = DOTU_K(n, x, incx, y, incy);
+#ಇಲ್ಲದಿದ್ದರೆ
+  *ಫಲಿತಾಂಶ = DOTC_K(n, x, incx, y, incy);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-#ifndef CONJ
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return ret;
+  ಹಿಂತಿರುಗಿ ret;
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

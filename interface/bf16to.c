@@ -1,63 +1,63 @@
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
-#endif
+#ಆದರೆ defined(DOUBLE_PREC)
+#ವ್ಯಾಖ್ಯಾನಿಸು FLOAT_TYPE ದ್ವಿಗುಣ
+#ಅಥವಾಆದರೆ defined(SINGLE_PREC)
+#ವ್ಯಾಖ್ಯಾನಿಸು FLOAT_TYPE ದಶಮಾಂಶ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
-void NAME(blasint *N, bfloat16 *in, blasint *INC_IN, FLOAT_TYPE *out, blasint *INC_OUT){
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
+ಶೂನ್ಯ NAME(blasint *N, bfloat16 *ಒಳ, blasint *INC_ಒಳ, FLOAT_TYPE *ಹೊರಹೋಗು, blasint *INC_ಹೊರಹೋಗು){
   BLASLONG n    = *N;
-  BLASLONG inc_in = *INC_IN;
-  BLASLONG inc_out = *INC_OUT;
+  BLASLONG inc_ಒಳ = *INC_ಒಳ;
+  BLASLONG inc_ಹೊರಹೋಗು = *INC_ಹೊರಹೋಗು;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return;
+  ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
-  FUNCTION_PROFILE_START();
+  IDEBUG_ಆರಂಭ;
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  ಆದರೆ (inc_ಒಳ < 0)   ಒಳ -= (n - 1) * inc_ಒಳ;
+  ಆದರೆ (inc_ಹೊರಹೋಗು < 0) ಹೊರಹೋಗು -= (n - 1) * inc_ಹೊರಹೋಗು;
 
-#if defined(DOUBLE_PREC)
-  D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-  S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
-#endif
+#ಆದರೆ defined(DOUBLE_PREC)
+  D_BF16_ಗಮ್ಯ_K(n, ಒಳ, inc_ಒಳ, ಹೊರಹೋಗು, inc_ಹೊರಹೋಗು);
+#ಅಥವಾಆದರೆ defined(SINGLE_PREC)
+  S_BF16_ಗಮ್ಯ_K(n, ಒಳ, inc_ಒಳ, ಹೊರಹೋಗು, inc_ಹೊರಹೋಗು);
+#ಇಲ್ಲದಿದ್ದರೆ
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_ಕೊನೆ(1, 2 * n, 2 * n);
+  IDEBUG_ಕೊನೆ;
 }
-#else
-void CNAME(blasint n, bfloat16 * in, blasint inc_in, FLOAT_TYPE * out, blasint inc_out){
+#ಇಲ್ಲದಿದ್ದರೆ
+ಶೂನ್ಯ CNAME(blasint n, bfloat16 * ಒಳ, blasint inc_ಒಳ, FLOAT_TYPE * ಹೊರಹೋಗು, blasint inc_ಹೊರಹೋಗು){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
-  FUNCTION_PROFILE_START();
+  IDEBUG_ಆರಂಭ;
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  ಆದರೆ (inc_ಒಳ < 0)   ಒಳ -= (n - 1) * inc_ಒಳ;
+  ಆದರೆ (inc_ಹೊರಹೋಗು < 0) ಹೊರಹೋಗು -= (n - 1) * inc_ಹೊರಹೋಗು;
 
-#if defined(DOUBLE_PREC)
-  D_BF16_TO_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-  S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
-#endif
+#ಆದರೆ defined(DOUBLE_PREC)
+  D_BF16_ಗಮ್ಯ_K(n, ಒಳ, inc_ಒಳ, ಹೊರಹೋಗು, inc_ಹೊರಹೋಗು);
+#ಅಥವಾಆದರೆ defined(SINGLE_PREC)
+  S_BF16_ಗಮ್ಯ_K(n, ಒಳ, inc_ಒಳ, ಹೊರಹೋಗು, inc_ಹೊರಹೋಗು);
+#ಇಲ್ಲದಿದ್ದರೆ
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_ಕೊನೆ(1, 2 * n, 2 * n);
+  IDEBUG_ಕೊನೆ;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

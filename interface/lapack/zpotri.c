@@ -36,135 +36,135 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XPOTRI"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZPOTRI"
-#else
-#define ERROR_NAME "CPOTRI"
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XPOTRI"
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZPOTRI"
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CPOTRI"
+#ಆದರೆ_ಅಂತ್ಯ
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ಸ್ಥಿರ blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_SINGLE, TRTRI_LN_SINGLE,
 };
 
-static blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ಸ್ಥಿರ blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_SINGLE, LAUUM_L_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+ಸ್ಥಿರ blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_PARALLEL, TRTRI_LN_PARALLEL,
 };
 
-static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ಸ್ಥಿರ blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_PARALLEL, LAUUM_L_PARALLEL,
 };
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t ವಾದಗಳು;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *ಬಫರ್;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ PPC440
+  ಬಾಹ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  ವಾದಗಳು.n    = *N;
+  ವಾದಗಳು.a    = (ಶೂನ್ಯ *)a;
+  ವಾದಗಳು.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ಆದರೆ (uplo_arg == 'U') uplo = 0;
+  ಆದರೆ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 4;
-  if (args.n    < 0)             info = 2;
-  if (uplo < 0)                  info = 1;
+  ಆದರೆ (ವಾದಗಳು.lda  < MAX(1,ವಾದಗಳು.n)) info = 4;
+  ಆದರೆ (ವಾದಗಳು.n    < 0)             info = 2;
+  ಆದರೆ (uplo < 0)                  info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ಆದರೆ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ಹಿಂತಿರುಗಿ;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  ಆದರೆ (ವಾದಗಳು.n == 0) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  ಬಫರ್ = (FLOAT *)blas_ಸ್ಮರಣೆ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)ಬಫರ್ + GEMM_ಸ್ಥಾನಾಂತರ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ಗಾತ್ರ_2 + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ಸ್ಥಾನಾಂತರ_B);
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef SMP
-  args.nthreads = num_cpu_avail(4);
-#ifndef DOUBLE
-  if (args.n < 200)
-#else
-  if (args.n < 150)
-#endif
-	  args.nthreads=1;
-  else
-#endif
-  args.nthreads = num_cpu_avail(4);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ವಾದಗಳು.nthreads = ಅಂಕೆ_cpu_avail(4);
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ DOUBLE
+  ಆದರೆ (ವಾದಗಳು.n < 200)
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಆದರೆ (ವಾದಗಳು.n < 150)
+#ಆದರೆ_ಅಂತ್ಯ
+	  ವಾದಗಳು.nthreads=1;
+  ಇಲ್ಲದಿದ್ದರೆ
+#ಆದರೆ_ಅಂತ್ಯ
+  ವಾದಗಳು.nthreads = ಅಂಕೆ_cpu_avail(4);
 
-  if (args.nthreads == 1) {
-#endif
+  ಆದರೆ (ವಾದಗಳು.nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-  info = (trtri_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (trtri_single[uplo])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
-  if (!info) {
-    info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  ಆದರೆ (!info) {
+    info = (lauum_single[uplo])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
   }
 
   *Info = info;
 
-#ifdef SMP
-  } else {
-    info = (trtri_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
+    info = (trtri_parallel[uplo])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
-    if (!info) {
-      info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    ಆದರೆ (!info) {
+      info = (lauum_parallel[uplo])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
     }
 
     *Info = info;
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  blas_ಸ್ಮರಣೆ_free(ಬಫರ್);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, .5 * args.n * args.n,
-                          args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-                       +  args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE * COMPSIZE, .5 * ವಾದಗಳು.n * ವಾದಗಳು.n,
+                          ವಾದಗಳು.n * (1./3. + ವಾದಗಳು.n * ( 1./2. + ವಾದಗಳು.n * 1./6.))
+                       +  ವಾದಗಳು.n * (1./3. + ವಾದಗಳು.n * (-1./2. + ವಾದಗಳು.n * 1./6.)));
 
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

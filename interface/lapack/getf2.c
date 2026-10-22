@@ -36,75 +36,75 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGETF2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGETF2"
-#else
-#define ERROR_NAME "SGETF2"
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "QGETF2"
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "DGETF2"
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "SGETF2"
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+ಶೂನ್ಯ NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t ವಾದಗಳು;
 
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *ಬಫರ್;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ PPC440
+  ಬಾಹ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *M;
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  ವಾದಗಳು.m    = *M;
+  ವಾದಗಳು.n    = *N;
+  ವಾದಗಳು.a    = (ಶೂನ್ಯ *)a;
+  ವಾದಗಳು.lda  = *ldA;
+  ವಾದಗಳು.c    = (ಶೂನ್ಯ *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ಆದರೆ (ವಾದಗಳು.lda < MAX(1,ವಾದಗಳು.m)) info = 4;
+  ಆದರೆ (ವಾದಗಳು.n   < 0)             info = 2;
+  ಆದರೆ (ವಾದಗಳು.m   < 0)             info = 1;
+  ಆದರೆ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ಹಿಂತಿರುಗಿ;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  ಆದರೆ (ವಾದಗಳು.m == 0 || ವಾದಗಳು.n == 0) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  ಬಫರ್ = (FLOAT *)blas_ಸ್ಮರಣೆ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)ಬಫರ್ + GEMM_ಸ್ಥಾನಾಂತರ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ಗಾತ್ರ_2 + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ಸ್ಥಾನಾಂತರ_B);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  info = GETF2(&args, NULL, NULL, sa, sb, 0);
+  info = GETF2(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  blas_ಸ್ಮರಣೆ_free(ಬಫರ್);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n,  2. / 3. * args.m * args.n * args.n);
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE * COMPSIZE, ವಾದಗಳು.m * ವಾದಗಳು.n,  2. / 3. * ವಾದಗಳು.m * ವಾದಗಳು.n * ವಾದಗಳು.n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

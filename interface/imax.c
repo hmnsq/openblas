@@ -36,91 +36,91 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#undef MAX_K
+#ವ್ಯಾಖ್ಯಾನ_ರದ್ದು MAX_K
 
-#ifdef USE_ABS
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ USE_ABS
 
-#ifndef USE_MIN
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMAX_K
-#else
-#define MAX_K	ISAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMAX_K
-#else
-#define MAX_K	ICAMAX_K
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IQAMAX_K
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IDAMAX_K
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	ISAMAX_K
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IXAMAX_K
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IZAMAX_K
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	ICAMAX_K
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMIN_K
-#else
-#define MAX_K	ISAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMIN_K
-#else
-#define MAX_K	ICAMIN_K
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IQAMIN_K
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IDAMIN_K
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	ISAMIN_K
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IXAMIN_K
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IZAMIN_K
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	ICAMIN_K
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-#ifndef USE_MIN
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	IQMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMAX_K
-#else
-#define MAX_K	ISMAX_K
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IQMAX_K
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IDMAX_K
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	ISMAX_K
+#ಆದರೆ_ಅಂತ್ಯ
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	IQMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMIN_K
-#else
-#define MAX_K	ISMIN_K
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IQMIN_K
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	IDMIN_K
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_K	ISMIN_K
+#ಆದರೆ_ಅಂತ್ಯ
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
 blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -130,52 +130,52 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ 0;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  ಆದರೆ(ret > n) ret=n;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return ret;
+  ಹಿಂತಿರುಗಿ ret;
 }
 
-#else
-#ifdef COMPLEX
-CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ COMPLEX
+CBLAS_ಸೂಚ್ಯಂಕ CNAME(blasint n, ಶೂನ್ಯ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
-CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#ಇಲ್ಲದಿದ್ದರೆ
+CBLAS_ಸೂಚ್ಯಂಕ CNAME(blasint n, FLOAT *x, blasint incx){
+#ಆದರೆ_ಅಂತ್ಯ
 
-  CBLAS_INDEX ret;
+  CBLAS_ಸೂಚ್ಯಂಕ ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ 0;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  ಆದರೆ (ret > n) ret=n;
 
-  if (ret) ret --;
+  ಆದರೆ (ret) ret --;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return ret;
+  ಹಿಂತಿರುಗಿ ret;
 }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

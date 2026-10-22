@@ -36,41 +36,41 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef SMP
-#ifdef __64BIT__
-#define SMPTEST 1
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __64BIT__
+#ವ್ಯಾಖ್ಯಾನಿಸು SMPTEST 1
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGER  "
-#elif defined DOUBLE
-#define ERROR_NAME "DGER  "
-#else
-#define ERROR_NAME "SGER  "
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "QGER  "
+#ಅಥವಾಆದರೆ defined DOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "DGER  "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "SGER  "
+#ಆದರೆ_ಅಂತ್ಯ
 
-#define GER		GERU_K
+#ವ್ಯಾಖ್ಯಾನಿಸು GER		GERU_K
 
-#if   defined XDOUBLE
-#define GER_THREAD	qger_thread
-#elif defined DOUBLE
-#define GER_THREAD	dger_thread
-#else
-#define GER_THREAD	sger_thread
-#endif
+#ಆದರೆ   defined XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು GER_THREAD	qger_thread
+#ಅಥವಾಆದರೆ defined DOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು GER_THREAD	dger_thread
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು GER_THREAD	sger_thread
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+ಶೂನ್ಯ NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -81,10 +81,10 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    incx  = *INCX;
   blasint    incy  = *INCY;
   blasint    lda   = *LDA;
-  FLOAT *buffer;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+  FLOAT *ಬಫರ್;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMPTEST
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
   blasint info;
 
@@ -92,47 +92,47 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  ಆದರೆ (lda < MAX(1,m)) info = 9;
+  ಆದರೆ (incy == 0)      info = 7;
+  ಆದರೆ (incx == 0)      info = 5;
+  ಆದರೆ (n < 0)          info = 2;
+  ಆದರೆ (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-void CNAME(enum CBLAS_ORDER order,
+ಶೂನ್ಯ CNAME(ಎಣಿಕೆ CBLAS_ಕ್ರಮ ಕ್ರಮ,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
 	   FLOAT  *y, blasint incy,
 	   FLOAT  *a, blasint lda) {
 
-  FLOAT *buffer;
+  FLOAT *ಬಫರ್;
   blasint info, t;
-#ifdef SMPTEST
-  int nthreads;
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMPTEST
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಲಂಬಸಾಲು_Major) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ಆದರೆ (lda < MAX(1,m)) info = 9;
+    ಆದರೆ (incy == 0)      info = 7;
+    ಆದರೆ (incx == 0)      info = 5;
+    ಆದರೆ (n < 0)          info = 2;
+    ಆದರೆ (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major) {
     info = -1;
 
     t = n;
@@ -143,68 +143,68 @@ void CNAME(enum CBLAS_ORDER order,
     incx = incy;
     incy = t;
 
-    buffer = x;
+    ಬಫರ್ = x;
     x = y;
-    y = buffer;
+    y = ಬಫರ್;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    ಆದರೆ (lda < MAX(1,m)) info = 9;
+    ಆದರೆ (incy == 0)      info = 7;
+    ಆದರೆ (incx == 0)      info = 5;
+    ಆದರೆ (n < 0)          info = 2;
+    ಆದರೆ (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
-  if (alpha == 0.) return;
+  ಆದರೆ (m == 0 || n == 0) ಹಿಂತಿರುಗಿ;
+  ಆದರೆ (alpha == 0.) ಹಿಂತಿರುಗಿ;
 
-  if (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_THRESHOLD) {
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, NULL);
-    return;
+  ಆದರೆ (incx == 1 && incy == 1 && 1L*m*n <= 2048 *GEMM_MULTITHREAD_ಮಿತಿ) {
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, ಖಾಲಿ);
+    ಹಿಂತಿರುಗಿ;
   }  
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (incy < 0) y -= (n - 1) * incy;
-  if (incx < 0) x -= (m - 1) * incx;
+  ಆದರೆ (incy < 0) y -= (n - 1) * incy;
+  ಆದರೆ (incx < 0) x -= (m - 1) * incx;
 
-  STACK_ALLOC(m, FLOAT, buffer);
+  ರಾಶಿ_ALLOC(m, FLOAT, ಬಫರ್);
 
-#ifdef SMPTEST
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 20480L * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else if(1L * m * n > 2048L * GEMM_MULTITHREAD_THRESHOLD)
-	  nthreads = MIN(3,num_cpu_avail(2));
-  else
+  ಆದರೆ(1L * m * n > 20480L * GEMM_MULTITHREAD_ಮಿತಿ)
+    nthreads = ಅಂಕೆ_cpu_avail(2);
+  ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ(1L * m * n > 2048L * GEMM_MULTITHREAD_ಮಿತಿ)
+	  nthreads = MIN(3,ಅಂಕೆ_cpu_avail(2));
+  ಇಲ್ಲದಿದ್ದರೆ
     nthreads = 1;
 
-  if (nthreads == 1) {
-#endif
+  ಆದರೆ (nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, buffer);
+    GER(m, n, 0, alpha, x, incx, y, incy, a, lda, ಬಫರ್);
 
-#ifdef SMPTEST
-  } else {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMPTEST
+  } ಇಲ್ಲದಿದ್ದರೆ {
 
-    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
+    GER_THREAD(m, n, alpha, x, incx, y, incy, a, lda, ಬಫರ್, nthreads);
 
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  STACK_FREE(buffer);
-  FUNCTION_PROFILE_END(1, m * n + m + n, 2 * m * n);
+  ರಾಶಿ_FREE(ಬಫರ್);
+  FUNCTION_PROFILE_ಕೊನೆ(1, m * n + m + n, 2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

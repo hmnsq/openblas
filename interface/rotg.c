@@ -1,74 +1,74 @@
-#include <math.h>
-#include <float.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <math.h>
+#ಅನ್ತರ್ಭಾವ <float.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+ಶೂನ್ಯ NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+ಶೂನ್ಯ CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef DOUBLE
-  long double safmin = DBL_MIN;
-#else
-  long double safmin = FLT_MIN;
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
+  ದೀರ್ಘ ದ್ವಿಗುಣ safmin = DBL_MIN;
+#ಇಲ್ಲದಿದ್ದರೆ
+  ದೀರ್ಘ ದ್ವಿಗುಣ safmin = FLT_MIN;
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
+#ಆದರೆ defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
 
-  long double da = *DA;
-  long double db = *DB;
-  long double c;
-  long double s;
-  long double r, z;
-  long double sigma, dascal,dbscal;
+  ದೀರ್ಘ ದ್ವಿಗುಣ da = *DA;
+  ದೀರ್ಘ ದ್ವಿಗುಣ db = *DB;
+  ದೀರ್ಘ ದ್ವಿಗುಣ c;
+  ದೀರ್ಘ ದ್ವಿಗುಣ s;
+  ದೀರ್ಘ ದ್ವಿಗುಣ r, z;
+  ದೀರ್ಘ ದ್ವಿಗುಣ sigma, dascal,dbscal;
 
-  long double ada = fabsl(da);
-  long double adb = fabsl(db);
-  long double maxab = MAX(ada,adb);
-  long double safmax;
-  long double scale;
+  ದೀರ್ಘ ದ್ವಿಗುಣ ada = fabsl(da);
+  ದೀರ್ಘ ದ್ವಿಗುಣ adb = fabsl(db);
+  ದೀರ್ಘ ದ್ವಿಗುಣ maxab = MAX(ada,adb);
+  ದೀರ್ಘ ದ್ವಿಗುಣ safmax;
+  ದೀರ್ಘ ದ್ವಿಗುಣ scale;
 
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   PRINT_DEBUG_CNAME;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if (adb == ZERO) {
+  ಆದರೆ (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } ಇಲ್ಲದಿದ್ದರೆ {
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
-    if (ada > adb)
+    ಆದರೆ (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
 	sigma = copysign(1.,db);
     dascal = da / scale;
     dbscal = db / scale;
-    r = sigma * (scale * sqrt(dascal * dascal + dbscal * dbscal));
+    r = sigma * (scale * ವರ್ಗಮೂಲ(dascal * dascal + dbscal * dbscal));
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ಆದರೆ (ada > adb) z = s;
+    ಆದರೆ ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -76,7 +76,7 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     *DB = z;
   }
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   FLOAT da = *DA;
   FLOAT db = *DB;
   FLOAT c  = *C;
@@ -87,50 +87,50 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   FLOAT ada = fabs(da);
   FLOAT adb = fabs(db);
   FLOAT maxab = MAX(ada,adb);
-  long double safmax ;
+  ದೀರ್ಘ ದ್ವಿಗುಣ safmax ;
   FLOAT scale ;
 
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
 
-  if (ada > adb)
+  ಆದರೆ (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
 	sigma = copysign(1.,db);
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   PRINT_DEBUG_CNAME;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 
-  if (adb == ZERO) {
+  ಆದರೆ (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } ಇಲ್ಲದಿದ್ದರೆ {
     FLOAT aa = da / scale;
     FLOAT bb = db / scale;
 
-    r = sigma * scale * sqrt(aa * aa + bb * bb);
+    r = sigma * scale * ವರ್ಗಮೂಲ(aa * aa + bb * bb);
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ಆದರೆ (ada > adb) z = s;
+    ಆದರೆ ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
     *DA = r;
     *DB = z;
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

@@ -36,89 +36,89 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+ಶೂನ್ಯ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
 
-#ifndef SSCAL
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ SSCAL
   FLOAT *alpha=ALPHA;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   FLOAT alpha[2] = {ALPHA[0], ZERO};
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-#ifndef SSCAL
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx){
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ SSCAL
+ಶೂನ್ಯ CNAME(blasint n, ಶೂನ್ಯ *VALPHA, ಶೂನ್ಯ *vx, blasint incx){
 
   FLOAT *x = (FLOAT*) vx;
   FLOAT *alpha=(FLOAT*)VALPHA;
-#else
-void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
+#ಇಲ್ಲದಿದ್ದರೆ
+ಶೂನ್ಯ CNAME(blasint n, FLOAT alpha_r, ಶೂನ್ಯ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
 
   FLOAT alpha[2] = {alpha_r, ZERO};
-#endif
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef SMP
-  int mode;
-  int nthreads;
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಪೂರ್ಣಾಂಕ ಬಹುಲಕ;
+  ಪೂರ್ಣಾಂಕ nthreads;
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   PRINT_DEBUG_CNAME;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if (incx <= 0 || n <= 0) return;
+  ಆದರೆ (incx <= 0 || n <= 0) ಹಿಂತಿರುಗಿ;
 
-  if ((alpha[0] == ONE) && (alpha[1] == ZERO)) return;
+  ಆದರೆ ((alpha[0] == ONE) && (alpha[1] == ZERO)) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-#ifdef SMP
-  if ( n <= 1048576 )
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಆದರೆ ( n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  ಇಲ್ಲದಿದ್ದರೆ
+	nthreads = ಅಂಕೆ_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  ಆದರೆ (nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, ಖಾಲಿ, 0, ಖಾಲಿ, 1);
 
-#ifdef SMP
-  } else {
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE | BLAS_COMPLEX;
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
+    ಬಹುಲಕ  =  BLAS_DOUBLE | BLAS_COMPLEX;
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಬಹುಲಕ  =  BLAS_SINGLE | BLAS_COMPLEX;
+#ಆದರೆ_ಅಂತ್ಯ
 
-    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (int (*)(void))SCAL_K, nthreads);
+    blas_level1_thread(ಬಹುಲಕ, n, 0, 0,  alpha, x, incx, ಖಾಲಿ, 0, ಖಾಲಿ, 1, (ಪೂರ್ಣಾಂಕ (*)(ಶೂನ್ಯ))SCAL_K, nthreads);
 
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(4, n, n);
+  FUNCTION_PROFILE_ಕೊನೆ(4, n, n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 
 }

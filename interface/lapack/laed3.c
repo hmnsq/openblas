@@ -30,18 +30,18 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DLAED3"
-#else
-#define ERROR_NAME "SLAED3"
-#endif
+#ಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "DLAED3"
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "SLAED3"
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* ===================================================================== */
 OPENBLAS_EXPORT
-void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
+ಶೂನ್ಯ NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
         FLOAT *q, blasint *ldq, FLOAT *rho, FLOAT *dlamda,
         FLOAT *q2, blasint *indx, blasint *ctot, FLOAT *w, 
         FLOAT *s, blasint *Info)
@@ -54,36 +54,36 @@ void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d,
 
 /*   Test the input parameters. */
   info = 0;
-  if (kval < 0) {
+  ಆದರೆ (kval < 0) {
     info = 1;
-  } else if (nval < kval) {
+  } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (nval < kval) {
     info = 2;
-  } else if (qdim < nval || qdim < 1) {
+  } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (qdim < nval || qdim < 1) {
     info = 6;
   }
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ಆದರೆ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ಹಿಂತಿರುಗಿ;
   }
 
 /*   Quick return if possible */
 
   *Info = 0;
-  if (kval == 0) return;
+  ಆದರೆ (kval == 0) ಹಿಂತಿರುಗಿ;
 
-#ifdef SMP
-  int nthreads = 1;
-  if (nval >= 64) nthreads = num_cpu_avail(4);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಪೂರ್ಣಾಂಕ nthreads = 1;
+  ಆದರೆ (nval >= 64) nthreads = ಅಂಕೆ_cpu_avail(4);
 
-  if (nthreads == 1) {
-#endif
+  ಆದರೆ (nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
     LAED3_SINGLE(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
-#ifdef SMP
-  } else {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
     LAED3_PARALLEL(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 }

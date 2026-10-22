@@ -36,123 +36,123 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XGETRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGETRS"
-#else
-#define ERROR_NAME "CGETRS"
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ XDOUBLE
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "XGETRS"
+#ಅಥವಾಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZGETRS"
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CGETRS"
+#ಆದರೆ_ಅಂತ್ಯ
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ಸ್ಥಿರ blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   GETRS_N_SINGLE, GETRS_T_SINGLE, GETRS_R_SINGLE, GETRS_C_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+ಸ್ಥಿರ blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   GETRS_N_PARALLEL, GETRS_T_PARALLEL, GETRS_R_PARALLEL, GETRS_C_PARALLEL,
 };
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+ಶೂನ್ಯ NAME(ಅಕ್ಷರ *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 	    blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  ಅಕ್ಷರ trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t ವಾದಗಳು;
 
   blasint info;
-  int trans;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  ಪೂರ್ಣಾಂಕ trans;
+  FLOAT *ಬಫರ್;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ PPC440
+  ಬಾಹ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  ವಾದಗಳು.m    = *N;
+  ವಾದಗಳು.n    = *NRHS;
+  ವಾದಗಳು.a    = (ಶೂನ್ಯ *)a;
+  ವಾದಗಳು.lda  = *ldA;
+  ವಾದಗಳು.b    = (ಶೂನ್ಯ *)b;
+  ವಾದಗಳು.ldb  = *ldB;
+  ವಾದಗಳು.c    = (ಶೂನ್ಯ *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  ಆದರೆ (trans_arg == 'N') trans = 0;
+  ಆದರೆ (trans_arg == 'T') trans = 1;
+  ಆದರೆ (trans_arg == 'R') trans = 2;
+  ಆದರೆ (trans_arg == 'C') trans = 3;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  ಆದರೆ (ವಾದಗಳು.ldb  < MAX(1, ವಾದಗಳು.m)) info = 8;
+  ಆದರೆ (ವಾದಗಳು.lda  < MAX(1, ವಾದಗಳು.m)) info = 5;
+  ಆದರೆ (ವಾದಗಳು.n    < 0) info = 3;
+  ಆದರೆ (ವಾದಗಳು.m    < 0) info = 2;
+  ಆದರೆ (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  ಆದರೆ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME) - 1);
+    ಹಿಂತಿರುಗಿ;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  ವಾದಗಳು.alpha = ಖಾಲಿ;
+  ವಾದಗಳು.beta  = ಖಾಲಿ;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  ಆದರೆ (ವಾದಗಳು.m == 0 || ವಾದಗಳು.n == 0) ಹಿಂತಿರುಗಿ;
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  ಬಫರ್ = (FLOAT *)blas_ಸ್ಮರಣೆ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)ಬಫರ್ + GEMM_ಸ್ಥಾನಾಂತರ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ಗಾತ್ರ_2 + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_ಸ್ಥಾನಾಂತರ_B);
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifdef SMP
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  ಆದರೆ (ವಾದಗಳು.m < 64) {
+    ವಾದಗಳು.nthreads = 1;
+  } ಇಲ್ಲದಿದ್ದರೆ {
+    ವಾದಗಳು.nthreads = ಅಂಕೆ_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  ಆದರೆ (ವಾದಗಳು.nthreads == 1) {
+#ಆದರೆ_ಅಂತ್ಯ
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ SMP
+  } ಇಲ್ಲದಿದ್ದರೆ {
 
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_parallel[trans])(&ವಾದಗಳು, ಖಾಲಿ, ಖಾಲಿ, sa, sb, 0);
 
   }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ PPC440
+  blas_ಸ್ಮರಣೆ_free(ಬಫರ್);
+#ಆದರೆ_ಅಂತ್ಯ
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE * COMPSIZE, ವಾದಗಳು.m * ವಾದಗಳು.n, 2 * ವಾದಗಳು.m * ವಾದಗಳು.m * ವಾದಗಳು.n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 
 }

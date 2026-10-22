@@ -36,24 +36,24 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if defined(DOUBLE)
-#define ERROR_NAME "ZGEADD "
-#else
-#define ERROR_NAME "CGEADD "
-#endif
+#ಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "ZGEADD "
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "CGEADD "
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
-		                  FLOAT *BETA,  FLOAT *c, blasint *LDC,char *TRANS_A,char *TRANS_C)
+ಶೂನ್ಯ NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
+		                  FLOAT *BETA,  FLOAT *c, blasint *LDC,ಅಕ್ಷರ *TRANS_A,ಅಕ್ಷರ *TRANS_C)
 {
 
   blasint m = *M;
@@ -62,8 +62,8 @@ void NAME(blasint *M, blasint *N, FLOAT *ALPHA, FLOAT *a, blasint *LDA,
   blasint ldc = *LDC; 
 
   blasint info;
-char transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
-char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
+ಅಕ್ಷರ transa = (*TRANS_A == 'T') || (*TRANS_A == 't') || (*TRANS_A == 'C') || (*TRANS_A == 'c');
+ಅಕ್ಷರ transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*TRANS_C == 'c');
 
 
   PRINT_DEBUG_NAME;
@@ -71,36 +71,36 @@ char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*T
   info = 0;
 
 
-if(transa){
-  if (lda < MAX(1, n))info = 5;
+ಆದರೆ(transa){
+  ಆದರೆ (lda < MAX(1, n))info = 5;
 
 
-  }	else{
+  }	ಇಲ್ಲದಿದ್ದರೆ{
 
-   if (lda < MAX(1, m))	info = 5;
+   ಆದರೆ (lda < MAX(1, m))	info = 5;
   }
  
 
-  if(transc){
-        if (ldc < MAX(1, n))	info = 8;
+  ಆದರೆ(transc){
+        ಆದರೆ (ldc < MAX(1, n))	info = 8;
 
 
-   }else{
+   }ಇಲ್ಲದಿದ್ದರೆ{
        
-      if (ldc < MAX(1, m))	info = 8;
+      ಆದರೆ (ldc < MAX(1, m))	info = 8;
           }
 
 
-  if (n < 0)		info = 2;
-  if (m < 0)		info = 1;
+  ಆದರೆ (n < 0)		info = 2;
+  ಆದರೆ (m < 0)		info = 1;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#else
-void CNAME( enum CBLAS_ORDER order,enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transc, blasint m,  blasint n,  FLOAT *ALPHA, FLOAT *a,  blasint lda, FLOAT *BETA, 
+#ಇಲ್ಲದಿದ್ದರೆ
+ಶೂನ್ಯ CNAME( ಎಣಿಕೆ CBLAS_ಕ್ರಮ ಕ್ರಮ,ಎಣಿಕೆ CBLAS_TRANSPOSE transa, ಎಣಿಕೆ CBLAS_TRANSPOSE transc, blasint m,  blasint n,  FLOAT *ALPHA, FLOAT *a,  blasint lda, FLOAT *BETA, 
 		  FLOAT *c,  blasint ldc)
 {
 /* 
@@ -117,82 +117,82 @@ void CNAME(enum CBLAS_ORDER order,
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಲಂಬಸಾಲು_Major) {
 
     info = -1;
 
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ಆದರೆ ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ಆದರೆ (ldc < MAX(1, m))  info = 8;
+    } ಇಲ್ಲದಿದ್ದರೆ {
+      ಆದರೆ (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ಆದರೆ ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ಆದರೆ (lda < MAX(1, m))  info = 5;
+    } ಇಲ್ಲದಿದ್ದರೆ {
+      ಆದರೆ (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 2;
-    if (m < 0)		  info = 1;  
+    ಆದರೆ (n < 0)		  info = 2;
+    ಆದರೆ (m < 0)		  info = 1;  
   }
 
-  if (order == CblasRowMajor) {
+  ಆದರೆ (ಕ್ರಮ == Cblas_ಅಡ್ಡಸಾಲು_Major) {
     info = -1;
 
     t = n;
     n = m;
     m = t;
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ಆದರೆ ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ಆದರೆ (ldc < MAX(1, m))  info = 8;
+    } ಇಲ್ಲದಿದ್ದರೆ {
+      ಆದರೆ (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ಆದರೆ ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ಆದರೆ (lda < MAX(1, m))  info = 5;
+    } ಇಲ್ಲದಿದ್ದರೆ {
+      ಆದರೆ (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 1;
-    if (m < 0)		  info = 2;
+    ಆದರೆ (n < 0)		  info = 1;
+    ಆದರೆ (m < 0)		  info = 2;
   }
 
  
   
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ಆದರೆ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    ಹಿಂತಿರುಗಿ;
   }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if ((m==0) || (n==0)) return;
+  ಆದರೆ ((m==0) || (n==0)) ಹಿಂತಿರುಗಿ;
 
 
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
 
   GEADD_K(m,n,ALPHA[0],ALPHA[1], a, lda, BETA[0], BETA[1], c, ldc,
         
-          #ifdef CBLAS
+          #ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CBLAS
           (transa == CblasTrans) || (transa == CblasConjTrans),
           (transc == CblasTrans) || (transc == CblasConjTrans)
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
           transa, transc
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
           );
 
 
            
 
 
-  FUNCTION_PROFILE_END(1, 2* m * n ,  2 * m * n);
+  FUNCTION_PROFILE_ಕೊನೆ(1, 2* m * n ,  2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return;
+  ಹಿಂತಿರುಗಿ;
 
 }

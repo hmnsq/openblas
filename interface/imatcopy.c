@@ -30,173 +30,173 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2015-09-07 grisuthedragon 
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DIMATCOPY"
-#else
-#define ERROR_NAME "SIMATCOPY"
-#endif
+#ಆದರೆ defined(DOUBLE)
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "DIMATCOPY"
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು ERROR_NAME "SIMATCOPY"
+#ಆದರೆ_ಅಂತ್ಯ
 
-#define BlasRowMajor 0
-#define BlasColMajor 1
-#define BlasNoTrans  0
-#define BlasTrans    1
+#ವ್ಯಾಖ್ಯಾನಿಸು Blas_ಅಡ್ಡಸಾಲು_Major 0
+#ವ್ಯಾಖ್ಯಾನಿಸು Blas_ಲಂಬಸಾಲು_Major 1
+#ವ್ಯಾಖ್ಯಾನಿಸು BlasNoTrans  0
+#ವ್ಯಾಖ್ಯಾನಿಸು BlasTrans    1
 
-#undef malloc
-#undef free
+#ವ್ಯಾಖ್ಯಾನ_ರದ್ದು ಸ್ಮರಣೆ_ಕೊಡು
+#ವ್ಯಾಖ್ಯಾನ_ರದ್ದು ಬಿಡುಗಡೆ
 
 /* Enables the New IMATCOPY code with inplace operation if lda == ldb   */
-#define NEW_IMATCOPY
+#ವ್ಯಾಖ್ಯಾನಿಸು NEW_IMATCOPY
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
+ಶೂನ್ಯ NAME( ಅಕ್ಷರ* ಕ್ರಮ_2, ಅಕ್ಷರ* TRANS, blasint *ಅಡ್ಡಸಾಲುಗಳು, blasint *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	ಅಕ್ಷರ ಕ್ರಮ_3, Trans;
+	ಪೂರ್ಣಾಂಕ ಕ್ರಮ=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
 
-	Order = *ORDER;
+	ಕ್ರಮ_3 = *ಕ್ರಮ_2;
 	Trans = *TRANS;
 
-	TOUPPER(Order);
+	TOUPPER(ಕ್ರಮ_3);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
+	ಆದರೆ ( ಕ್ರಮ_3 == 'C' ) ಕ್ರಮ = Blas_ಲಂಬಸಾಲು_Major;
+	ಆದರೆ ( ಕ್ರಮ_3 == 'R' ) ಕ್ರಮ = Blas_ಅಡ್ಡಸಾಲು_Major;
+	ಆದರೆ ( Trans == 'N' ) trans = BlasNoTrans;
+	ಆದರೆ ( Trans == 'R' ) trans = BlasNoTrans;
+	ಆದರೆ ( Trans == 'T' ) trans = BlasTrans;
+	ಆದರೆ ( Trans == 'C' ) trans = BlasTrans;
+#ಇಲ್ಲದಿದ್ದರೆ 
+ಶೂನ್ಯ CNAME( ಎಣಿಕೆ CBLAS_ಕ್ರಮ CORDER, ಎಣಿಕೆ CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	ಪೂರ್ಣಾಂಕ ಕ್ರಮ=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
-	blasint *lda, *ldb, *rows, *cols; 
+	blasint *lda, *ldb, *ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	ಆದರೆ ( CORDER == Cblas_ಲಂಬಸಾಲು_Major) ಕ್ರಮ = Blas_ಲಂಬಸಾಲು_Major; 
+	ಆದರೆ ( CORDER == Cblas_ಅಡ್ಡಸಾಲು_Major) ಕ್ರಮ = Blas_ಅಡ್ಡಸಾಲು_Major; 
+	ಆದರೆ ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	ಆದರೆ ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
-	rows = &crows; 
-	cols = &ccols; 
+	ಅಡ್ಡಸಾಲುಗಳು = &crows; 
+	ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ = &ccols; 
 	alpha = &calpha; 
 	lda = &clda; 
 	ldb = &cldb; 	
-#endif 
+#ಆದರೆ_ಅಂತ್ಯ 
 
-	if ( order == BlasColMajor)
+	ಆದರೆ ( ಕ್ರಮ == Blas_ಲಂಬಸಾಲು_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	ಆದರೆ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*ಅಡ್ಡಸಾಲುಗಳು) ) info = 8;
+        	ಆದರೆ ( trans == BlasTrans    &&  *ldb < MAX(1,*ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	ಆದರೆ ( ಕ್ರಮ == Blas_ಅಡ್ಡಸಾಲು_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	ಆದರೆ ( trans == BlasNoTrans  &&  *ldb < MAX(1,*ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ) ) info = 8;
+        	ಆದರೆ ( trans == BlasTrans    &&  *ldb < MAX(1,*ಅಡ್ಡಸಾಲುಗಳು) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ಆದರೆ ( ಕ್ರಮ == Blas_ಲಂಬಸಾಲು_Major &&  *lda < MAX(1,*ಅಡ್ಡಸಾಲುಗಳು) ) info = 7;
+	ಆದರೆ ( ಕ್ರಮ == Blas_ಅಡ್ಡಸಾಲು_Major &&  *lda < MAX(1,*ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ) ) info = 7;
+	ಆದರೆ ( *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ < 0 ) info = 4;
+	ಆದರೆ ( *ಅಡ್ಡಸಾಲುಗಳು < 0 ) info = 3;
+	ಆದರೆ ( trans < 0 ) info = 2;
+	ಆದರೆ ( ಕ್ರಮ < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ಆದರೆ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, ಗಾತ್ರ(ERROR_NAME));
+    		ಹಿಂತಿರುಗಿ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ಆದರೆ ((*ಅಡ್ಡಸಾಲುಗಳು == 0) || (*ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ == 0)) ಹಿಂತಿರುಗಿ;
 
-#ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ NEW_IMATCOPY
+    ಆದರೆ ( *lda == *ldb ) {
+        ಆದರೆ ( ಕ್ರಮ == Blas_ಲಂಬಸಾಲು_Major )
         {
-            if ( trans == BlasNoTrans )
+            ಆದರೆ ( trans == BlasNoTrans )
             {
-                IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_CN(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda );
+                ಹಿಂತಿರುಗಿ;
             }
-            else if ( *rows == *cols )
+            ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ( *ಅಡ್ಡಸಾಲುಗಳು == *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ )
             {
-                IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_CT(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda );
+                ಹಿಂತಿರುಗಿ;
             }
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            if ( trans == BlasNoTrans )
+            ಆದರೆ ( trans == BlasNoTrans )
             {
-                IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_RN(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda );
+                ಹಿಂತಿರುಗಿ;
             }
-            else if ( *rows == *cols )
+            ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ( *ಅಡ್ಡಸಾಲುಗಳು == *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ )
             {
-                IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_RT(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda );
+                ಹಿಂತಿರುಗಿ;
             }
         }
     }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-	if ( *rows >  *cols )
-            msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
-            msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
+	ಆದರೆ ( *ಅಡ್ಡಸಾಲುಗಳು >  *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ )
+            msize = (size_t)(*ಅಡ್ಡಸಾಲುಗಳು) * (*ldb)  * ಗಾತ್ರ(FLOAT);
+    ಇಲ್ಲದಿದ್ದರೆ
+            msize = (size_t)(*ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ) * (*ldb)  * ಗಾತ್ರ(FLOAT);
 
-	b = malloc(msize);
-	if ( b == NULL )
+	b = ಸ್ಮರಣೆ_ಕೊಡು(msize);
+	ಆದರೆ ( b == ಖಾಲಿ )
 	{
-		printf("Memory alloc failed in imatcopy\n");
-		exit(1);
+		ಬರೆ("Memory alloc failed in imatcopy\n");
+		ನಿರ್ಗಮಿಸು(1);
 	}
 
-	if ( order == BlasColMajor )
+	ಆದರೆ ( ಕ್ರಮ == Blas_ಲಂಬಸಾಲು_Major )
 	{
-		if ( trans == BlasNoTrans )
+		ಆದರೆ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
-			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
+			OMATCOPY_K_CN(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda, b, *ಅಡ್ಡಸಾಲುಗಳು );
+			OMATCOPY_K_CN(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, (FLOAT) 1.0 , b, *ಅಡ್ಡಸಾಲುಗಳು, a, *ldb );
 		}
-		else
+		ಇಲ್ಲದಿದ್ದರೆ
 		{
-			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
-			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
+			OMATCOPY_K_CT(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda, b, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ );
+			OMATCOPY_K_CN(*ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *ಅಡ್ಡಸಾಲುಗಳು, (FLOAT) 1.0, b, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, a, *ldb );
 		}
 	}
-	else
+	ಇಲ್ಲದಿದ್ದರೆ
 	{
-		if ( trans == BlasNoTrans )
+		ಆದರೆ ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
-			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
+			OMATCOPY_K_RN(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda, b, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ );
+			OMATCOPY_K_RN(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, (FLOAT) 1.0, b, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, a, *ldb );
 		}
-		else
+		ಇಲ್ಲದಿದ್ದರೆ
 		{
-			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
-			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
+			OMATCOPY_K_RT(*ಅಡ್ಡಸಾಲುಗಳು, *ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *alpha, a, *lda, b, *ಅಡ್ಡಸಾಲುಗಳು );
+			OMATCOPY_K_RN(*ಲಂಬಸಾಲು_ಸಂಖ್ಯೆ, *ಅಡ್ಡಸಾಲುಗಳು, (FLOAT) 1.0, b, *ಅಡ್ಡಸಾಲುಗಳು, a, *ldb );
 		}
 	}
 
-	free(b);
-	return;
+	ಬಿಡುಗಡೆ(b);
+	ಹಿಂತಿರುಗಿ;
 
 }
 

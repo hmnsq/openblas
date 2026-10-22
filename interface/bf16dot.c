@@ -1,53 +1,53 @@
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
-float NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
+ದಶಮಾಂಶ NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
    BLASLONG n    = *N;
    BLASLONG incx = *INCX;
    BLASLONG incy = *INCY;
-   float ret;
+   ದಶಮಾಂಶ ret;
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return 0.;
+   ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ 0.;
 
-   IDEBUG_START;
-   FUNCTION_PROFILE_START();
+   IDEBUG_ಆರಂಭ;
+   FUNCTION_PROFILE_ಆರಂಭ();
 
-   if (incx < 0) x -= (n - 1) * incx;
-   if (incy < 0) y -= (n - 1) * incy;
+   ಆದರೆ (incx < 0) x -= (n - 1) * incx;
+   ಆದರೆ (incy < 0) y -= (n - 1) * incy;
    ret = BF16_DOT_K(n, x, incx, y, incy);
 
-   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-   IDEBUG_END;
+   FUNCTION_PROFILE_ಕೊನೆ(1, 2 * n, 2 * n);
+   IDEBUG_ಕೊನೆ;
 
-   return ret;
+   ಹಿಂತಿರುಗಿ ret;
  }
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-float CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
+ದಶಮಾಂಶ CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
 
-  float ret;
+  ದಶಮಾಂಶ ret;
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ 0.;
 
-  IDEBUG_START;
-  FUNCTION_PROFILE_START();
+  IDEBUG_ಆರಂಭ;
+  FUNCTION_PROFILE_ಆರಂಭ();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ಆದರೆ (incx < 0) x -= (n - 1) * incx;
+  ಆದರೆ (incy < 0) y -= (n - 1) * incy;
   ret = BF16_DOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_ಕೊನೆ(1, 2 * n, 2 * n);
+  IDEBUG_ಕೊನೆ;
 
-  return ret;
+  ಹಿಂತಿರುಗಿ ret;
 }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

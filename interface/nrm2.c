@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ "common.h"
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ FUNCTION_PROFILE
+#ಅನ್ತರ್ಭಾವ "functable.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -54,140 +54,140 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+  ಆದರೆ (n == 1)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
+    ಹಿಂತಿರುಗಿ fabs(x[0]);
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಹಿಂತಿರುಗಿ fabsf(x[0]);
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  ಆದರೆ (incx == 0)
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದ್ವಿಗುಣ)n)*fabs(x[0]));
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದಶಮಾಂಶ)n)*fabsf(x[0]));
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ದ್ವಿಗುಣ fr=fabs(x[0]);
+  ದ್ವಿಗುಣ fi=fabs(x[1]);
+  ದ್ವಿಗುಣ fmin=MIN(fr,fi);
+  ದ್ವಿಗುಣ fmax=MAX(fr,fi);
+  ಆದರೆ (fmax==0.) ಹಿಂತಿರುಗಿ(fmax);
+  ಆದರೆ (fmax==fmin) ಹಿಂತಿರುಗಿ(ವರ್ಗಮೂಲ((ದ್ವಿಗುಣ)n)*ವರ್ಗಮೂಲ(2.)*fmax);
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದ್ವಿಗುಣ)n) * fmax * ವರ್ಗಮೂಲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ದಶಮಾಂಶ fr=fabs(x[0]);
+  ದಶಮಾಂಶ fi=fabs(x[1]);
+  ದಶಮಾಂಶ fmin=MIN(fr,fi);
+  ದಶಮಾಂಶ fmax=MAX(fr,fi);
+  ಆದರೆ (fmax==0.) ಹಿಂತಿರುಗಿ(fmax);
+  ಆದರೆ (fmax==fmin) ಹಿಂತಿರುಗಿ(ವರ್ಗಮೂಲ((ದಶಮಾಂಶ)n)*ವರ್ಗಮೂಲ(2.)*fmax);
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದಶಮಾಂಶ)n) * fmax * ವರ್ಗಮೂಲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  ಆದರೆ (incx < 0) 
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
     x -= (n - 1) * incx;
-#endif
-  IDEBUG_START;
+#ಆದರೆ_ಅಂತ್ಯ
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
   ret = (FLOATRET)NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return ret;
+  ಹಿಂತಿರುಗಿ ret;
 }
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ COMPLEX
+FLOAT CNAME(blasint n, ಶೂನ್ಯ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ಆದರೆ (n <= 0) ಹಿಂತಿರುಗಿ 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+  ಆದರೆ (n == 1)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
+    ಹಿಂತಿರುಗಿ fabs(x[0]);
+#ಇಲ್ಲದಿದ್ದರೆ
+    ಹಿಂತಿರುಗಿ fabsf(x[0]);
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  ಆದರೆ (incx == 0)
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ COMPLEX
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದ್ವಿಗುಣ)n)*fabs(x[0]));
+#ಇಲ್ಲದಿದ್ದರೆ
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದಶಮಾಂಶ)n)*fabsf(x[0]));
+#ಆದರೆ_ಅಂತ್ಯ
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ದ್ವಿಗುಣ fr=fabs(x[0]);
+  ದ್ವಿಗುಣ fi=fabs(x[1]);
+  ದ್ವಿಗುಣ fmin=MIN(fr,fi);
+  ದ್ವಿಗುಣ fmax=MAX(fr,fi);
+  ಆದರೆ (fmax==0.) ಹಿಂತಿರುಗಿ(fmax);
+  ಆದರೆ (fmax==fmin) ಹಿಂತಿರುಗಿ(ವರ್ಗಮೂಲ((ದ್ವಿಗುಣ)n)*ವರ್ಗಮೂಲ(2.)*fmax);
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದ್ವಿಗುಣ)n) * fmax * ವರ್ಗಮೂಲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ದಶಮಾಂಶ fr=fabs(x[0]);
+  ದಶಮಾಂಶ fi=fabs(x[1]);
+  ದಶಮಾಂಶ fmin=MIN(fr,fi);
+  ದಶಮಾಂಶ fmax=MAX(fr,fi);
+  ಆದರೆ (fmax==0.) ಹಿಂತಿರುಗಿ(fmax);
+  ಆದರೆ (fmax==fmin) ಹಿಂತಿರುಗಿ(ವರ್ಗಮೂಲ((ದಶಮಾಂಶ)n)*ವರ್ಗಮೂಲ(2.)*fmax);
+  ಹಿಂತಿರುಗಿ (ವರ್ಗಮೂಲ((ದಶಮಾಂಶ)n) * fmax * ವರ್ಗಮೂಲ (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ_ಅಂತ್ಯ
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  ಆದರೆ (incx < 0) 
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
     x -= (n - 1) * incx;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
   
-  IDEBUG_START;
+  IDEBUG_ಆರಂಭ;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_ಆರಂಭ();
 
   ret = NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_ಕೊನೆ(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_ಕೊನೆ;
 
-  return ret;
+  ಹಿಂತಿರುಗಿ ret;
 }
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
