@@ -36,16 +36,16 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+خالی NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
@@ -53,35 +53,35 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   PRINT_DEBUG_NAME;
 
-#else
+#ورنہ
 
-#ifdef COMPLEX
-void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#اگر_تعریف_شدہ COMPLEX
+خالی CNAME(blasint n, خالی *vx, blasint incx, خالی *vy, blasint incy){
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
-#endif
+#ورنہ
+خالی CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#اگر_ختم
 
   PRINT_DEBUG_CNAME;
 
-#endif
+#اگر_ختم
 
-  if (n <= 0) return;
+  اگر (n <= 0) واپس;
 
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-  if (incx < 0) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0) y -= (n - 1) * incy * COMPSIZE;
+  اگر (incx < 0) x -= (n - 1) * incx * COMPSIZE;
+  اگر (incy < 0) y -= (n - 1) * incy * COMPSIZE;
 
   COPY_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(COMPSIZE, COMPSIZE * n, 0);
+  FUNCTION_PROFILE_انتہا(COMPSIZE, COMPSIZE * n, 0);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return;
+  واپس;
 
 }

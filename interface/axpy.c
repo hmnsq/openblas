@@ -36,96 +36,96 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
-#if  defined(Z13)
-#define MULTI_THREAD_MINIMAL  200000
-#else
-#define MULTI_THREAD_MINIMAL  10000
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
+#اگر  defined(Z13)
+#تعریف_کرو MULTI_THREAD_اقل  200000
+#ورنہ
+#تعریف_کرو MULTI_THREAD_اقل  10000
+#اگر_ختم
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+خالی NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
   FLOAT alpha = *ALPHA;
 
-#else
+#ورنہ
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+خالی CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
-#endif
+#اگر_ختم
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#اگر_تعریف_شدہ SMP
+  صحیح منوال, nthreads;
+#اگر_ختم
 
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ورنہ
   PRINT_DEBUG_CNAME;
-#endif
+#اگر_ختم
 
-  if (n <= 0) return;
+  اگر (n <= 0) واپس;
 
-  if (alpha == ZERO) return;
+  اگر (alpha == ZERO) واپس;
 
-  if (incx == 0 && incy == 0) {
+  اگر (incx == 0 && incy == 0) {
     *y += n * alpha *(*x);
-    return;
+    واپس;
   }
     
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  اگر (incx < 0) x -= (n - 1) * incx;
+  اگر (incy < 0) y -= (n - 1) * incy;
 
-#ifdef SMP
+#اگر_تعریف_شدہ SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  اگر (incx == 0 || incy == 0 || n <= MULTI_THREAD_اقل)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  ورنہ
+	  nthreads = عدد_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  اگر (nthreads == 1) {
+#اگر_ختم
 
-  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, NULL, 0);
+  AXPYU_K(n, 0, 0, alpha, x, incx, y, incy, تہی, 0);
 
-#ifdef SMP
-  } else {
+#اگر_تعریف_شدہ SMP
+  } ورنہ {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
+#اگر_تعریف_شدہ XDOUBLE
+    منوال  =  BLAS_XDOUBLE | BLAS_REAL;
+#وگرنہ_اگر defined(DOUBLE)
+    منوال  =  BLAS_DOUBLE  | BLAS_REAL;
+#ورنہ
+    منوال  =  BLAS_SINGLE  | BLAS_REAL;
+#اگر_ختم
 
-    blas_level1_thread(mode, n, 0, 0, &alpha,
-		       x, incx, y, incy, NULL, 0,  (int (*)(void))AXPYU_K, nthreads);
+    blas_level1_thread(منوال, n, 0, 0, &alpha,
+		       x, incx, y, incy, تہی, 0,  (صحیح (*)(خالی))AXPYU_K, nthreads);
 
   }
-#endif
+#اگر_ختم
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتہا(1, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return;
+  واپس;
 
 }

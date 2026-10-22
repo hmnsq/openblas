@@ -1,53 +1,53 @@
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
-float NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
+#اگر_غیر_تعریف_شدہ CBLAS
+اعشاری NAME(blasint *N, bfloat16 *x, blasint *INCX, bfloat16 *y, blasint *INCY){
    BLASLONG n    = *N;
    BLASLONG incx = *INCX;
    BLASLONG incy = *INCY;
-   float ret;
+   اعشاری ret;
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return 0.;
+   اگر (n <= 0) واپس 0.;
 
-   IDEBUG_START;
-   FUNCTION_PROFILE_START();
+   IDEBUG_آغاز;
+   FUNCTION_PROFILE_آغاز();
 
-   if (incx < 0) x -= (n - 1) * incx;
-   if (incy < 0) y -= (n - 1) * incy;
+   اگر (incx < 0) x -= (n - 1) * incx;
+   اگر (incy < 0) y -= (n - 1) * incy;
    ret = BF16_DOT_K(n, x, incx, y, incy);
 
-   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-   IDEBUG_END;
+   FUNCTION_PROFILE_انتہا(1, 2 * n, 2 * n);
+   IDEBUG_انتہا;
 
-   return ret;
+   واپس ret;
  }
 
-#else
+#ورنہ
 
-float CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
+اعشاری CNAME(blasint n, bfloat16 *x, blasint incx, bfloat16 *y, blasint incy){
 
-  float ret;
+  اعشاری ret;
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  اگر (n <= 0) واپس 0.;
 
-  IDEBUG_START;
-  FUNCTION_PROFILE_START();
+  IDEBUG_آغاز;
+  FUNCTION_PROFILE_آغاز();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  اگر (incx < 0) x -= (n - 1) * incx;
+  اگر (incy < 0) y -= (n - 1) * incy;
   ret = BF16_DOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_انتہا(1, 2 * n, 2 * n);
+  IDEBUG_انتہا;
 
-  return ret;
+  واپس ret;
 }
 
-#endif
+#اگر_ختم

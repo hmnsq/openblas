@@ -1,63 +1,63 @@
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
-#endif
+#اگر defined(DOUBLE_PREC)
+#تعریف_کرو FLOAT_TYPE دوہرا
+#وگرنہ_اگر defined(SINGLE_PREC)
+#تعریف_کرو FLOAT_TYPE اعشاری
+#ورنہ
+#اگر_ختم
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *INC_OUT){
+#اگر_غیر_تعریف_شدہ CBLAS
+خالی NAME(blasint *N, FLOAT_TYPE *اندر, blasint *INC_اندر, bfloat16 *برآمد, blasint *INC_برآمد){
    BLASLONG n    = *N;
-   BLASLONG inc_in = *INC_IN;
-   BLASLONG inc_out = *INC_OUT;
+   BLASLONG inc_اندر = *INC_اندر;
+   BLASLONG inc_برآمد = *INC_برآمد;
 
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return;
+   اگر (n <= 0) واپس;
 
-   IDEBUG_START;
-   FUNCTION_PROFILE_START();
+   IDEBUG_آغاز;
+   FUNCTION_PROFILE_آغاز();
 
-   if (inc_in < 0)   in -= (n - 1) * inc_in;
-   if (inc_out < 0) out -= (n - 1) * inc_out;
+   اگر (inc_اندر < 0)   اندر -= (n - 1) * inc_اندر;
+   اگر (inc_برآمد < 0) برآمد -= (n - 1) * inc_برآمد;
 
-#if defined(DOUBLE_PREC)
-   D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-   S_TO_BF16_K(n, in, inc_in, out, inc_out);
-#else
-#endif
+#اگر defined(DOUBLE_PREC)
+   D_مقصد_BF16_K(n, اندر, inc_اندر, برآمد, inc_برآمد);
+#وگرنہ_اگر defined(SINGLE_PREC)
+   S_مقصد_BF16_K(n, اندر, inc_اندر, برآمد, inc_برآمد);
+#ورنہ
+#اگر_ختم
 
-   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-   IDEBUG_END;
+   FUNCTION_PROFILE_انتہا(1, 2 * n, 2 * n);
+   IDEBUG_انتہا;
 }
-#else
-void CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
+#ورنہ
+خالی CNAME(blasint n, FLOAT_TYPE *اندر, blasint inc_اندر, bfloat16 *برآمد, blasint inc_برآمد){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  اگر (n <= 0) واپس;
 
-  IDEBUG_START;
-  FUNCTION_PROFILE_START();
+  IDEBUG_آغاز;
+  FUNCTION_PROFILE_آغاز();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  اگر (inc_اندر < 0)   اندر -= (n - 1) * inc_اندر;
+  اگر (inc_برآمد < 0) برآمد -= (n - 1) * inc_برآمد;
 
-#if defined(DOUBLE_PREC)
-  D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-  S_TO_BF16_K(n, in, inc_in, out, inc_out);
-#endif
+#اگر defined(DOUBLE_PREC)
+  D_مقصد_BF16_K(n, اندر, inc_اندر, برآمد, inc_برآمد);
+#وگرنہ_اگر defined(SINGLE_PREC)
+  S_مقصد_BF16_K(n, اندر, inc_اندر, برآمد, inc_برآمد);
+#اگر_ختم
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_انتہا(1, 2 * n, 2 * n);
+  IDEBUG_انتہا;
 }
-#endif
+#اگر_ختم

@@ -36,107 +36,107 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل <ctype.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QSYR2K"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSYR2K"
-#else
-#define ERROR_NAME "SSYR2K"
-#endif
-#else
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYR2K"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYR2K"
-#else
-#define ERROR_NAME "CSYR2K"
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHER2K"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHER2K"
-#else
-#define ERROR_NAME "CHER2K"
-#endif
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ COMPLEX
+#اگر_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "QSYR2K"
+#وگرنہ_اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DSYR2K"
+#ورنہ
+#تعریف_کرو ERROR_NAME "SSYR2K"
+#اگر_ختم
+#ورنہ
+#اگر_غیر_تعریف_شدہ HEMM
+#اگر_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "XSYR2K"
+#وگرنہ_اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "ZSYR2K"
+#ورنہ
+#تعریف_کرو ERROR_NAME "CSYR2K"
+#اگر_ختم
+#ورنہ
+#اگر_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "XHER2K"
+#وگرنہ_اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "ZHER2K"
+#ورنہ
+#تعریف_کرو ERROR_NAME "CHER2K"
+#اگر_ختم
+#اگر_ختم
+#اگر_ختم
 
-static int (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef HEMM
+ساکن صحیح (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#اگر_غیر_تعریف_شدہ HEMM
   SYR2K_UN, SYR2K_UC, SYR2K_LN, SYR2K_LC,
-#else
+#ورنہ
   HER2K_UN, HER2K_UC, HER2K_LN, HER2K_LC,
-#endif
+#اگر_ختم
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
 
-void NAME(char *UPLO, char *TRANS,
+خالی NAME(حرف *UPLO, حرف *TRANS,
          blasint *N, blasint *K,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
 	               FLOAT *b, blasint *ldB,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
+  حرف uplo_arg  = *UPLO;
+  حرف trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t دلائل;
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   FLOAT *sa, *sb;
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#اگر_تعریف_شدہ SMP
+#اگر_غیر_تعریف_شدہ COMPLEX
+#اگر_تعریف_شدہ XDOUBLE
+  صحیح منوال  =  BLAS_XDOUBLE | BLAS_REAL;
+#وگرنہ_اگر defined(DOUBLE)
+  صحیح منوال  =  BLAS_DOUBLE  | BLAS_REAL;
+#ورنہ
+  صحیح منوال  =  BLAS_SINGLE  | BLAS_REAL;
+#اگر_ختم
+#ورنہ
+#اگر_تعریف_شدہ XDOUBLE
+  صحیح منوال  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وگرنہ_اگر defined(DOUBLE)
+  صحیح منوال  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ورنہ
+  صحیح منوال  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#اگر_ختم
+#اگر_ختم
+#اگر_ختم
 
   blasint info;
-  int uplo;
-  int trans;
-  int nrowa;
+  صحیح uplo;
+  صحیح trans;
+  صحیح nrowa;
 
   PRINT_DEBUG_NAME;
 
-  args.n = *N;
-  args.k = *K;
+  دلائل.n = *N;
+  دلائل.k = *K;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
-  args.c = (void *)c;
+  دلائل.a = (خالی *)a;
+  دلائل.b = (خالی *)b;
+  دلائل.c = (خالی *)c;
 
-  args.lda = *ldA;
-  args.ldb = *ldB;
-  args.ldc = *ldC;
+  دلائل.lda = *ldA;
+  دلائل.ldb = *ldB;
+  دلائل.ldc = *ldC;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  دلائل.alpha = (خالی *)alpha;
+  دلائل.beta  = (خالی *)beta;
 
   TOUPPER(uplo_arg);
   TOUPPER(trans_arg);
@@ -144,298 +144,298 @@ void NAME(char *UPLO, char *TRANS,
   uplo  = -1;
   trans = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  اگر (uplo_arg  == 'U') uplo  = 0;
+  اگر (uplo_arg  == 'L') uplo  = 1;
 
-#ifndef COMPLEX
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'C') trans = 1;
-#else
-#ifdef HEMM
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'C') trans = 1;
-#else
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-#endif
+#اگر_غیر_تعریف_شدہ COMPLEX
+  اگر (trans_arg == 'N') trans = 0;
+  اگر (trans_arg == 'T') trans = 1;
+  اگر (trans_arg == 'C') trans = 1;
+#ورنہ
+#اگر_تعریف_شدہ HEMM
+  اگر (trans_arg == 'N') trans = 0;
+  اگر (trans_arg == 'C') trans = 1;
+#ورنہ
+  اگر (trans_arg == 'N') trans = 0;
+  اگر (trans_arg == 'T') trans = 1;
+#اگر_ختم
 
-#endif
+#اگر_ختم
 
 
-  nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  nrowa = دلائل.n;
+  اگر (trans & 1) nrowa = دلائل.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 12;
-  if (args.ldb < MAX(1,nrowa))  info =  9;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
-  if (trans < 0)                info =  2;
-  if (uplo  < 0)                info =  1;
+  اگر (دلائل.ldc < MAX(1,دلائل.n)) info = 12;
+  اگر (دلائل.ldb < MAX(1,nrowa))  info =  9;
+  اگر (دلائل.lda < MAX(1,nrowa))  info =  7;
+  اگر (دلائل.k < 0)               info =  4;
+  اگر (دلائل.n < 0)               info =  3;
+  اگر (trans < 0)                info =  2;
+  اگر (uplo  < 0)                info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  اگر (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
   }
 
-#else
+#ورنہ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Trans,
+خالی CNAME(شمار CBLAS_ترتیب ترتیب, شمار CBLAS_UPLO Uplo, شمار CBLAS_TRANSPOSE Trans,
 	   blasint n, blasint k,
-#ifndef COMPLEX
+#اگر_غیر_تعریف_شدہ COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb,
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb,
-#endif
-#if !defined(COMPLEX) || defined(HEMM)
+#ورنہ
+	   خالی *valpha,
+	   خالی *va, blasint lda,
+	   خالی *vb, blasint ldb,
+#اگر_ختم
+#اگر !defined(COMPLEX) || defined(HEMM)
 	   FLOAT beta,
-#else
-	   void *vbeta,
-#endif
-#ifndef COMPLEX
+#ورنہ
+	   خالی *vbeta,
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ COMPLEX
 	   FLOAT *c,
-#else
-	   void *vc,
-#endif
+#ورنہ
+	   خالی *vc,
+#اگر_ختم
            blasint ldc) {
 
-#ifdef COMPLEX
+#اگر_تعریف_شدہ COMPLEX
   FLOAT* alpha = (FLOAT*) valpha;
-#if !defined(HEMM)
+#اگر !defined(HEMM)
   FLOAT* beta = (FLOAT*) vbeta;
-#endif
+#اگر_ختم
   FLOAT* a = (FLOAT*) va;
   FLOAT* b = (FLOAT*) vb;
   FLOAT* c = (FLOAT*) vc;
-#endif
+#اگر_ختم
 
-  blas_arg_t args;
-  int uplo, trans;
+  blas_arg_t دلائل;
+  صحیح uplo, trans;
   blasint info, nrowa;
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   FLOAT *sa, *sb;
 
-#ifdef HEMM
+#اگر_تعریف_شدہ HEMM
   FLOAT CAlpha[2];
-#endif
+#اگر_ختم
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#اگر_تعریف_شدہ SMP
+#اگر_غیر_تعریف_شدہ COMPLEX
+#اگر_تعریف_شدہ XDOUBLE
+  صحیح منوال  =  BLAS_XDOUBLE | BLAS_REAL;
+#وگرنہ_اگر defined(DOUBLE)
+  صحیح منوال  =  BLAS_DOUBLE  | BLAS_REAL;
+#ورنہ
+  صحیح منوال  =  BLAS_SINGLE  | BLAS_REAL;
+#اگر_ختم
+#ورنہ
+#اگر_تعریف_شدہ XDOUBLE
+  صحیح منوال  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وگرنہ_اگر defined(DOUBLE)
+  صحیح منوال  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ورنہ
+  صحیح منوال  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#اگر_ختم
+#اگر_ختم
+#اگر_ختم
 
   PRINT_DEBUG_CNAME;
 
-  args.n = n;
-  args.k = k;
+  دلائل.n = n;
+  دلائل.k = k;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
-  args.c = (void *)c;
+  دلائل.a = (خالی *)a;
+  دلائل.b = (خالی *)b;
+  دلائل.c = (خالی *)c;
 
-  args.lda = lda;
-  args.ldb = ldb;
-  args.ldc = ldc;
+  دلائل.lda = lda;
+  دلائل.ldb = ldb;
+  دلائل.ldc = ldc;
 
-#ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-#else
-  args.alpha = (void *)alpha;
-#endif
+#اگر_غیر_تعریف_شدہ COMPLEX
+  دلائل.alpha = (خالی *)&alpha;
+#ورنہ
+  دلائل.alpha = (خالی *)alpha;
+#اگر_ختم
 
-#if !defined(COMPLEX) || defined(HEMM)
-  args.beta  = (void *)&beta;
-#else
-  args.beta  = (void *)beta;
-#endif
+#اگر !defined(COMPLEX) || defined(HEMM)
+  دلائل.beta  = (خالی *)&beta;
+#ورنہ
+  دلائل.beta  = (خالی *)beta;
+#اگر_ختم
 
   trans = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+  اگر (ترتیب == Cblas_ستون_Major) {
+    اگر (Uplo == Cblas_بالائی) uplo  = 0;
+    اگر (Uplo == Cblas_زیریں) uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 1;
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 1;
-#else
-    if (Trans == CblasConjTrans)   trans = 1;
-#endif
+    اگر (Trans == CblasNoTrans)     trans = 0;
+#اگر_غیر_تعریف_شدہ COMPLEX
+    اگر (Trans == CblasTrans)       trans = 1;
+    اگر (Trans == CblasConjNoTrans) trans = 0;
+    اگر (Trans == CblasConjTrans)   trans = 1;
+#وگرنہ_اگر !defined(HEMM)
+    اگر (Trans == CblasTrans)       trans = 1;
+#ورنہ
+    اگر (Trans == CblasConjTrans)   trans = 1;
+#اگر_ختم
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = دلائل.n;
+    اگر (trans & 1) nrowa = دلائل.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    اگر (دلائل.ldc < MAX(1,دلائل.n)) info = 12;
+    اگر (دلائل.ldb < MAX(1,nrowa))  info =  9;
+    اگر (دلائل.lda < MAX(1,nrowa))  info =  7;
+    اگر (دلائل.k < 0)               info =  4;
+    اگر (دلائل.n < 0)               info =  3;
+    اگر (trans < 0)                info =  2;
+    اگر (uplo  < 0)                info =  1;
   }
 
-  if (order == CblasRowMajor) {
+  اگر (ترتیب == Cblas_صف_Major) {
 
-#ifdef HEMM
+#اگر_تعریف_شدہ HEMM
     CAlpha[0] =  alpha[0];
     CAlpha[1] = -alpha[1];
 
-    args.alpha = (void *)CAlpha;
-#endif
+    دلائل.alpha = (خالی *)CAlpha;
+#اگر_ختم
 
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    اگر (Uplo == Cblas_بالائی) uplo  = 1;
+    اگر (Uplo == Cblas_زیریں) uplo  = 0;
 
-    if (Trans == CblasNoTrans)     trans = 1;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 0;
-    if (Trans == CblasConjNoTrans) trans = 1;
-    if (Trans == CblasConjTrans)   trans = 0;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 0;
-#else
-    if (Trans == CblasConjTrans)   trans = 0;
-#endif
+    اگر (Trans == CblasNoTrans)     trans = 1;
+#اگر_غیر_تعریف_شدہ COMPLEX
+    اگر (Trans == CblasTrans)       trans = 0;
+    اگر (Trans == CblasConjNoTrans) trans = 1;
+    اگر (Trans == CblasConjTrans)   trans = 0;
+#وگرنہ_اگر !defined(HEMM)
+    اگر (Trans == CblasTrans)       trans = 0;
+#ورنہ
+    اگر (Trans == CblasConjTrans)   trans = 0;
+#اگر_ختم
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = دلائل.n;
+    اگر (trans & 1) nrowa = دلائل.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    اگر (دلائل.ldc < MAX(1,دلائل.n)) info = 12;
+    اگر (دلائل.ldb < MAX(1,nrowa))  info =  9;
+    اگر (دلائل.lda < MAX(1,nrowa))  info =  7;
+    اگر (دلائل.k < 0)               info =  4;
+    اگر (دلائل.n < 0)               info =  3;
+    اگر (trans < 0)                info =  2;
+    اگر (uplo  < 0)                info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  اگر (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
   }
 
-  if (args.n == 0) return;
+  اگر (دلائل.n == 0) واپس;
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);
-#endif
+#اگر_تعریف_شدہ DYNAMIC_ARCH
+خارجی حرف* gotoblas_corename(خالی);
+#اگر_ختم
 
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYR2K_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#اگر !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#اگر defined(ARCH_ARM64) && (defined(USE_SSYR2_K_KERNEL_براہ_راست)||defined(DYNAMIC_ARCH))
+#اگر defined(DYNAMIC_ARCH)
+اگر (strcmp(gotoblas_corename(), "armv9sme") == 0
+#اگر defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#اگر_ختم
 )
-#endif
-   if (order == CblasRowMajor && n == ldc) {
-     if (Trans == CblasNoTrans && k == lda && k == ldb) {
-      if (Uplo == CblasUpper) {
-        SSYR2K_DIRECT_ALPHA_BETA_UN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
-        SSYR2K_DIRECT_ALPHA_BETA_LN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+#اگر_ختم
+   اگر (ترتیب == Cblas_صف_Major && n == ldc) {
+     اگر (Trans == CblasNoTrans && k == lda && k == ldb) {
+      اگر (Uplo == Cblas_بالائی) {
+        SSYR2_K_براہ_راست_ALPHA_BETA_UN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        واپس;
+      }ورنہ اگر (Uplo == Cblas_زیریں) {
+        SSYR2_K_براہ_راست_ALPHA_BETA_LN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        واپس;
       }
      }
-     else if (Trans == CblasTrans && n == lda && n ==ldb) {
-      if (Uplo == CblasUpper) {
-        SSYR2K_DIRECT_ALPHA_BETA_UT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
-        SSYR2K_DIRECT_ALPHA_BETA_LT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+     ورنہ اگر (Trans == CblasTrans && n == lda && n ==ldb) {
+      اگر (Uplo == Cblas_بالائی) {
+        SSYR2_K_براہ_راست_ALPHA_BETA_UT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        واپس;
+      }ورنہ اگر (Uplo == Cblas_زیریں) {
+        SSYR2_K_براہ_راست_ALPHA_BETA_LT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        واپس;
       }
      }
    }
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 
-#endif
+#اگر_ختم
 
 
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  بفر = (FLOAT *)blas_حافظہ_alloc(0);
+  اگر (!بفر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_انحراف_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_انحراف_B);
 
-#ifdef SMP
-  if (!trans){
-    mode |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
-  } else {
-    mode |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
+#اگر_تعریف_شدہ SMP
+  اگر (!trans){
+    منوال |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
+  } ورنہ {
+    منوال |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
   }
 
-  mode |= (uplo  << BLAS_UPLO_SHIFT);
+  منوال |= (uplo  << BLAS_UPLO_سرکاؤ);
 
-  args.common = NULL;
-  if (args.n*args.k <1000)
-	  args.nthreads =1 ;
-  else
-  args.nthreads = num_cpu_avail(3);
+  دلائل.common = تہی;
+  اگر (دلائل.n*دلائل.k <1000)
+	  دلائل.nthreads =1 ;
+  ورنہ
+  دلائل.nthreads = عدد_cpu_avail(3);
 
-  if (args.nthreads == 1) {
-#endif
+  اگر (دلائل.nthreads == 1) {
+#اگر_ختم
 
-    (syr2k[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syr2k[(uplo << 1) | trans ])(&دلائل, تہی, تہی, sa, sb, 0);
 
-#ifdef SMP
+#اگر_تعریف_شدہ SMP
 
-  } else {
+  } ورنہ {
 
-    syrk_thread(mode, &args, NULL, NULL, syr2k[(uplo << 1) | trans ], sa, sb, args.nthreads);
+    syrk_thread(منوال, &دلائل, تہی, تہی, syr2k[(uplo << 1) | trans ], sa, sb, دلائل.nthreads);
 
   }
-#endif
+#اگر_ختم
 
-  blas_memory_free(buffer);
+  blas_حافظہ_free(بفر);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, 2 * args.n * args.k + args.n * args.n, 2 * args.n * args.n * args.k);
+  FUNCTION_PROFILE_انتہا(COMPSIZE * COMPSIZE, 2 * دلائل.n * دلائل.k + دلائل.n * دلائل.n, 2 * دلائل.n * دلائل.n * دلائل.k);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return;
+  واپس;
 }

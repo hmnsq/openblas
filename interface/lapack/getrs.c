@@ -36,122 +36,122 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGETRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGETRS"
-#else
-#define ERROR_NAME "SGETRS"
-#endif
+#اگر_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "QGETRS"
+#وگرنہ_اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DGETRS"
+#ورنہ
+#تعریف_کرو ERROR_NAME "SGETRS"
+#اگر_ختم
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساکن blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_SINGLE, GETRS_T_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#اگر_تعریف_شدہ SMP
+ساکن blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_PARALLEL, GETRS_T_PARALLEL,
 };
-#endif
+#اگر_ختم
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+خالی NAME(حرف *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  حرف trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t دلائل;
 
   blasint info;
-  int trans;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  صحیح trans;
+  FLOAT *بفر;
+#اگر_تعریف_شدہ PPC440
+  خارجی
+#اگر_ختم
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  دلائل.m    = *N;
+  دلائل.n    = *NRHS;
+  دلائل.a    = (خالی *)a;
+  دلائل.lda  = *ldA;
+  دلائل.b    = (خالی *)b;
+  دلائل.ldb  = *ldB;
+  دلائل.c    = (خالی *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  اگر (trans_arg == 'N') trans = 0;
+  اگر (trans_arg == 'T') trans = 1;
+  اگر (trans_arg == 'R') trans = 0;
+  اگر (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  اگر (دلائل.ldb  < MAX(1, دلائل.m)) info = 8;
+  اگر (دلائل.lda  < MAX(1, دلائل.m)) info = 5;
+  اگر (دلائل.n    < 0) info = 3;
+  اگر (دلائل.m    < 0) info = 2;
+  اگر (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  اگر (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
+    واپس;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  دلائل.alpha = تہی;
+  دلائل.beta  = تہی;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  اگر (دلائل.m == 0 || دلائل.n == 0) واپس;
 
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#اگر_غیر_تعریف_شدہ PPC440
+  بفر = (FLOAT *)blas_حافظہ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_انحراف_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_انحراف_B);
+#اگر_ختم
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#اگر_تعریف_شدہ SMP
+  دلائل.common = تہی;
+  اگر (دلائل.m < 64) {
+    دلائل.nthreads = 1;
+  } ورنہ {
+    دلائل.nthreads = عدد_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  اگر (دلائل.nthreads == 1) {
+#اگر_ختم
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&دلائل, تہی, تہی, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+#اگر_تعریف_شدہ SMP
+  } ورنہ {
+    (getrs_parallel[trans])(&دلائل, تہی, تہی, sa, sb, 0);
   }
-#endif
+#اگر_ختم
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#اگر_غیر_تعریف_شدہ PPC440
+  blas_حافظہ_free(بفر);
+#اگر_ختم
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_انتہا(COMPSIZE * COMPSIZE, دلائل.m * دلائل.n, 2 * دلائل.m * دلائل.m * دلائل.n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return;
+  واپس;
 
 }

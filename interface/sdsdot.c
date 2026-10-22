@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *a, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
@@ -55,26 +55,26 @@ FLOATRET NAME(blasint *N, FLOAT *a, FLOAT *x, blasint *INCX, FLOAT *y, blasint *
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return(*a) ;
+  اگر (n <= 0) واپس(*a) ;
 
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  اگر (incx < 0) x -= (n - 1) * incx;
+  اگر (incy < 0) y -= (n - 1) * incy;
 
   ret = (FLOATRET)(SDSDOT_K(n, x, incx, y, incy) + *a);
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتہا(1, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return ret;
+  واپس ret;
 
 }
 
-#else
+#ورنہ
 
 FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
@@ -82,22 +82,22 @@ FLOAT CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint in
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return (alpha);
+  اگر (n <= 0) واپس (alpha);
 
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  اگر (incx < 0) x -= (n - 1) * incx;
+  اگر (incy < 0) y -= (n - 1) * incy;
 
   ret = SDSDOT_K(n, x, incx, y, incy) + alpha;
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتہا(1, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return ret;
+  واپس ret;
 }
 
-#endif
+#اگر_ختم

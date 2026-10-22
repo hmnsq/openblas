@@ -36,83 +36,83 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل <ctype.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XTPMV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTPMV "
-#else
-#define ERROR_NAME "CTPMV "
-#endif
+#اگر_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "XTPMV "
+#وگرنہ_اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "ZTPMV "
+#ورنہ
+#تعریف_کرو ERROR_NAME "CTPMV "
+#اگر_ختم
 
-static int (*tpmv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, void *) = {
-#ifdef XDOUBLE
+ساکن صحیح (*tpmv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, خالی *) = {
+#اگر_تعریف_شدہ XDOUBLE
   xtpmv_NUU, xtpmv_NUN, xtpmv_NLU, xtpmv_NLN,
   xtpmv_TUU, xtpmv_TUN, xtpmv_TLU, xtpmv_TLN,
-  xtpmv_RUU, xtpmv_RUN, xtpmv_RLU, xtpmv_RLN,
+  xtpmv_RUU, xtpmv_تسلسل, xtpmv_RLU, xtpmv_RLN,
   xtpmv_CUU, xtpmv_CUN, xtpmv_CLU, xtpmv_CLN,
-#elif defined(DOUBLE)
+#وگرنہ_اگر defined(DOUBLE)
   ztpmv_NUU, ztpmv_NUN, ztpmv_NLU, ztpmv_NLN,
   ztpmv_TUU, ztpmv_TUN, ztpmv_TLU, ztpmv_TLN,
-  ztpmv_RUU, ztpmv_RUN, ztpmv_RLU, ztpmv_RLN,
+  ztpmv_RUU, ztpmv_تسلسل, ztpmv_RLU, ztpmv_RLN,
   ztpmv_CUU, ztpmv_CUN, ztpmv_CLU, ztpmv_CLN,
-#else
+#ورنہ
   ctpmv_NUU, ctpmv_NUN, ctpmv_NLU, ctpmv_NLN,
   ctpmv_TUU, ctpmv_TUN, ctpmv_TLU, ctpmv_TLN,
-  ctpmv_RUU, ctpmv_RUN, ctpmv_RLU, ctpmv_RLN,
+  ctpmv_RUU, ctpmv_تسلسل, ctpmv_RLU, ctpmv_RLN,
   ctpmv_CUU, ctpmv_CUN, ctpmv_CLU, ctpmv_CLN,
-#endif
+#اگر_ختم
 };
 
-#ifdef SMP
-static int (*tpmv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#اگر_تعریف_شدہ SMP
+ساکن صحیح (*tpmv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, صحیح) = {
+#اگر_تعریف_شدہ XDOUBLE
   xtpmv_thread_NUU, xtpmv_thread_NUN, xtpmv_thread_NLU, xtpmv_thread_NLN,
   xtpmv_thread_TUU, xtpmv_thread_TUN, xtpmv_thread_TLU, xtpmv_thread_TLN,
-  xtpmv_thread_RUU, xtpmv_thread_RUN, xtpmv_thread_RLU, xtpmv_thread_RLN,
+  xtpmv_thread_RUU, xtpmv_thread_تسلسل, xtpmv_thread_RLU, xtpmv_thread_RLN,
   xtpmv_thread_CUU, xtpmv_thread_CUN, xtpmv_thread_CLU, xtpmv_thread_CLN,
-#elif defined(DOUBLE)
+#وگرنہ_اگر defined(DOUBLE)
   ztpmv_thread_NUU, ztpmv_thread_NUN, ztpmv_thread_NLU, ztpmv_thread_NLN,
   ztpmv_thread_TUU, ztpmv_thread_TUN, ztpmv_thread_TLU, ztpmv_thread_TLN,
-  ztpmv_thread_RUU, ztpmv_thread_RUN, ztpmv_thread_RLU, ztpmv_thread_RLN,
+  ztpmv_thread_RUU, ztpmv_thread_تسلسل, ztpmv_thread_RLU, ztpmv_thread_RLN,
   ztpmv_thread_CUU, ztpmv_thread_CUN, ztpmv_thread_CLU, ztpmv_thread_CLN,
-#else
+#ورنہ
   ctpmv_thread_NUU, ctpmv_thread_NUN, ctpmv_thread_NLU, ctpmv_thread_NLN,
   ctpmv_thread_TUU, ctpmv_thread_TUN, ctpmv_thread_TLU, ctpmv_thread_TLN,
-  ctpmv_thread_RUU, ctpmv_thread_RUN, ctpmv_thread_RLU, ctpmv_thread_RLN,
+  ctpmv_thread_RUU, ctpmv_thread_تسلسل, ctpmv_thread_RLU, ctpmv_thread_RLN,
   ctpmv_thread_CUU, ctpmv_thread_CUN, ctpmv_thread_CLU, ctpmv_thread_CLN,
-#endif
+#اگر_ختم
 };
-#endif
+#اگر_ختم
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+خالی NAME(حرف *UPLO, حرف *TRANS, حرف *DIAG,
 	   blasint *N, FLOAT *a, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  حرف uplo_arg  = *UPLO;
+  حرف trans_arg = *TRANS;
+  حرف diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  صحیح uplo;
+  صحیح unit;
+  صحیح trans;
+  FLOAT *بفر;
+#اگر_تعریف_شدہ SMP
+  صحیح nthreads;
+#اگر_ختم
 
   PRINT_DEBUG_NAME;
 
@@ -124,42 +124,42 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  اگر (trans_arg == 'N') trans = 0;
+  اگر (trans_arg == 'T') trans = 1;
+  اگر (trans_arg == 'R') trans = 2;
+  اگر (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  اگر (diag_arg  == 'U') unit  = 0;
+  اگر (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  اگر (uplo_arg  == 'U') uplo  = 0;
+  اگر (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  7;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  اگر (incx == 0)          info =  7;
+  اگر (n < 0)              info =  4;
+  اگر (unit  < 0)          info =  3;
+  اگر (trans < 0)          info =  2;
+  اگر (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  اگر (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
   }
 
-#else
+#ورنہ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
-	   blasint n, void  *va, void  *vx, blasint incx) {
+خالی CNAME(شمار CBLAS_ترتیب ترتیب, شمار CBLAS_UPLO Uplo,
+	   شمار CBLAS_TRANSPOSE TransA, شمار CBLAS_DIAG Diag,
+	   blasint n, خالی  *va, خالی  *vx, blasint incx) {
 
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit;
+  صحیح trans, uplo, unit;
   blasint info;
-  FLOAT *buffer;
+  FLOAT *بفر;
 
   PRINT_DEBUG_CNAME;
 
@@ -167,99 +167,99 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   uplo  = -1;
   trans = -1;
   info  =  0;
-#ifdef SMP
-  int nthreads;
-#endif
+#اگر_تعریف_شدہ SMP
+  صحیح nthreads;
+#اگر_ختم
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  اگر (ترتیب == Cblas_ستون_Major) {
+    اگر (Uplo == Cblas_بالائی)         uplo  = 0;
+    اگر (Uplo == Cblas_زیریں)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    اگر (TransA == CblasNoTrans)     trans = 0;
+    اگر (TransA == CblasTrans)       trans = 1;
+    اگر (TransA == CblasConjNoTrans) trans = 2;
+    اگر (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  7;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    اگر (Diag == CblasUnit)          unit  = 0;
+    اگر (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    اگر (incx == 0)          info =  7;
+    اگر (n < 0)              info =  4;
+    اگر (unit  < 0)          info =  3;
+    اگر (trans < 0)          info =  2;
+    اگر (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  اگر (ترتیب == Cblas_صف_Major) {
+    اگر (Uplo == Cblas_بالائی)         uplo  = 1;
+    اگر (Uplo == Cblas_زیریں)         uplo  = 0;
+
+    اگر (TransA == CblasNoTrans)     trans = 1;
+    اگر (TransA == CblasTrans)       trans = 0;
+    اگر (TransA == CblasConjNoTrans) trans = 3;
+    اگر (TransA == CblasConjTrans)   trans = 2;
+
+    اگر (Diag == CblasUnit)          unit  = 0;
+    اگر (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    اگر (incx == 0)          info =  7;
+    اگر (n < 0)              info =  4;
+    اگر (unit  < 0)          info =  3;
+    اگر (trans < 0)          info =  2;
+    اگر (uplo  < 0)          info =  1;
   }
 
-#endif
+  اگر (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
+  }
 
-  if (n == 0) return;
+#اگر_ختم
 
-  IDEBUG_START;
+  اگر (n == 0) واپس;
 
-  FUNCTION_PROFILE_START();
+  IDEBUG_آغاز;
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  FUNCTION_PROFILE_آغاز();
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  اگر (incx < 0 ) x -= (n - 1) * incx * 2;
+
+  بفر = (FLOAT *)blas_حافظہ_alloc(1);
+  اگر (!بفر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
   }
 
-#ifdef SMP
-  nthreads = num_cpu_avail(2);
+#اگر_تعریف_شدہ SMP
+  nthreads = عدد_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  اگر (n < 50) nthreads = 1;
+  اگر (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
-#endif
+  اگر (nthreads == 1) {
+#اگر_ختم
 
-  (tpmv[(trans<<2) | (uplo<<1) | unit])(n, a, x, incx, buffer);
+  (tpmv[(trans<<2) | (uplo<<1) | unit])(n, a, x, incx, بفر);
 
-#ifdef SMP
+#اگر_تعریف_شدہ SMP
 
-  } else {
+  } ورنہ {
 
-    (tpmv_thread[(trans<<2) | (uplo<<1) | unit])(n, a, x, incx, buffer, nthreads);
+    (tpmv_thread[(trans<<2) | (uplo<<1) | unit])(n, a, x, incx, بفر, nthreads);
 
   }
-#endif
+#اگر_ختم
 
-  blas_memory_free(buffer);
+  blas_حافظہ_free(بفر);
 
-  FUNCTION_PROFILE_END(4, n * n / 2 + n, n * n);
+  FUNCTION_PROFILE_انتہا(4, n * n / 2 + n, n * n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return;
+  واپس;
 }

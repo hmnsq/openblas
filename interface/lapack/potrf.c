@@ -36,116 +36,116 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QPOTRF"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DPOTRF"
-#else
-#define ERROR_NAME "SPOTRF"
-#endif
+#اگر_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "QPOTRF"
+#وگرنہ_اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DPOTRF"
+#ورنہ
+#تعریف_کرو ERROR_NAME "SPOTRF"
+#اگر_ختم
 
-static blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساکن blasint (*potrf_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_SINGLE, POTRF_L_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#اگر_تعریف_شدہ SMP
+ساکن blasint (*potrf_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   POTRF_U_PARALLEL, POTRF_L_PARALLEL,
 };
-#endif
+#اگر_ختم
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+خالی NAME(حرف *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t دلائل;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *بفر;
+#اگر_تعریف_شدہ PPC440
+  خارجی
+#اگر_ختم
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  دلائل.n    = *N;
+  دلائل.a    = (خالی *)a;
+  دلائل.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  اگر (uplo_arg == 'U') uplo = 0;
+  اگر (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  اگر (دلائل.lda < MAX(1,دلائل.n)) info = 4;
+  اگر (دلائل.n   < 0)             info = 2;
+  اگر (uplo     < 0)             info = 1;
+  اگر (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    واپس;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  اگر (دلائل.n == 0) واپس;
 
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#اگر_غیر_تعریف_شدہ PPC440
+  بفر = (FLOAT *)blas_حافظہ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_انحراف_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * سائز + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_انحراف_B);
+#اگر_ختم
 
-#ifdef SMP
-  args.common = NULL;
-#ifndef DOUBLE
-  int nmax = 128;
-#else 
-  int nmax = 64;
-#endif
-  if (args.n <nmax) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
-    if (args.n/args.nthreads <nmax)
-	    args.nthreads = args.n/nmax;
+#اگر_تعریف_شدہ SMP
+  دلائل.common = تہی;
+#اگر_غیر_تعریف_شدہ DOUBLE
+  صحیح nmax = 128;
+#ورنہ 
+  صحیح nmax = 64;
+#اگر_ختم
+  اگر (دلائل.n <nmax) {
+    دلائل.nthreads = 1;
+  } ورنہ {
+    دلائل.nthreads = عدد_cpu_avail(4);
+    اگر (دلائل.n/دلائل.nthreads <nmax)
+	    دلائل.nthreads = دلائل.n/nmax;
   }
 
-  if (args.nthreads == 1) {
-#endif
+  اگر (دلائل.nthreads == 1) {
+#اگر_ختم
 
-    *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (potrf_single[uplo])(&دلائل, تہی, تہی, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+#اگر_تعریف_شدہ SMP
+  } ورنہ {
+    *Info = (potrf_parallel[uplo])(&دلائل, تہی, تہی, sa, sb, 0);
   }
-#endif
+#اگر_ختم
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#اگر_غیر_تعریف_شدہ PPC440
+  blas_حافظہ_free(بفر);
+#اگر_ختم
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_انتہا(1, .5 * دلائل.n * دلائل.n,
+		       دلائل.n * (1./3. + دلائل.n * ( 1./2. + دلائل.n * 1./6.))
+		       +  1./6. * دلائل.n * (دلائل.n * دلائل.n - 1));
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return;
+  واپس;
 }

@@ -30,173 +30,173 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2015-09-07 grisuthedragon 
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل <stdlib.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DIMATCOPY"
-#else
-#define ERROR_NAME "SIMATCOPY"
-#endif
+#اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DIMATCOPY"
+#ورنہ
+#تعریف_کرو ERROR_NAME "SIMATCOPY"
+#اگر_ختم
 
-#define BlasRowMajor 0
-#define BlasColMajor 1
-#define BlasNoTrans  0
-#define BlasTrans    1
+#تعریف_کرو Blas_صف_Major 0
+#تعریف_کرو Blas_ستون_Major 1
+#تعریف_کرو BlasNoTrans  0
+#تعریف_کرو BlasTrans    1
 
-#undef malloc
-#undef free
+#تعریف_منسوخ حافظہ_دو
+#تعریف_منسوخ آزاد
 
 /* Enables the New IMATCOPY code with inplace operation if lda == ldb   */
-#define NEW_IMATCOPY
+#تعریف_کرو NEW_IMATCOPY
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
+#اگر_غیر_تعریف_شدہ CBLAS
+خالی NAME( حرف* ترتیب_2, حرف* TRANS, blasint *صفیں, blasint *ستون_تعداد, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	حرف ترتیب_3, Trans;
+	صحیح ترتیب=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
 
-	Order = *ORDER;
+	ترتیب_3 = *ترتیب_2;
 	Trans = *TRANS;
 
-	TOUPPER(Order);
+	TOUPPER(ترتیب_3);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
+	اگر ( ترتیب_3 == 'C' ) ترتیب = Blas_ستون_Major;
+	اگر ( ترتیب_3 == 'R' ) ترتیب = Blas_صف_Major;
+	اگر ( Trans == 'N' ) trans = BlasNoTrans;
+	اگر ( Trans == 'R' ) trans = BlasNoTrans;
+	اگر ( Trans == 'T' ) trans = BlasTrans;
+	اگر ( Trans == 'C' ) trans = BlasTrans;
+#ورنہ 
+خالی CNAME( شمار CBLAS_ترتیب CORDER, شمار CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	صحیح ترتیب=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
-	blasint *lda, *ldb, *rows, *cols; 
+	blasint *lda, *ldb, *صفیں, *ستون_تعداد; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	اگر ( CORDER == Cblas_ستون_Major) ترتیب = Blas_ستون_Major; 
+	اگر ( CORDER == Cblas_صف_Major) ترتیب = Blas_صف_Major; 
+	اگر ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	اگر ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
-	rows = &crows; 
-	cols = &ccols; 
+	صفیں = &crows; 
+	ستون_تعداد = &ccols; 
 	alpha = &calpha; 
 	lda = &clda; 
 	ldb = &cldb; 	
-#endif 
+#اگر_ختم 
 
-	if ( order == BlasColMajor)
+	اگر ( ترتیب == Blas_ستون_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	اگر ( trans == BlasNoTrans  &&  *ldb < MAX(1,*صفیں) ) info = 8;
+        	اگر ( trans == BlasTrans    &&  *ldb < MAX(1,*ستون_تعداد) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	اگر ( ترتیب == Blas_صف_Major)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	اگر ( trans == BlasNoTrans  &&  *ldb < MAX(1,*ستون_تعداد) ) info = 8;
+        	اگر ( trans == BlasTrans    &&  *ldb < MAX(1,*صفیں) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	اگر ( ترتیب == Blas_ستون_Major &&  *lda < MAX(1,*صفیں) ) info = 7;
+	اگر ( ترتیب == Blas_صف_Major &&  *lda < MAX(1,*ستون_تعداد) ) info = 7;
+	اگر ( *ستون_تعداد < 0 ) info = 4;
+	اگر ( *صفیں < 0 ) info = 3;
+	اگر ( trans < 0 ) info = 2;
+	اگر ( ترتیب < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	اگر (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    		واپس;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	اگر ((*صفیں == 0) || (*ستون_تعداد == 0)) واپس;
 
-#ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+#اگر_تعریف_شدہ NEW_IMATCOPY
+    اگر ( *lda == *ldb ) {
+        اگر ( ترتیب == Blas_ستون_Major )
         {
-            if ( trans == BlasNoTrans )
+            اگر ( trans == BlasNoTrans )
             {
-                IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_CN(*صفیں, *ستون_تعداد, *alpha, a, *lda );
+                واپس;
             }
-            else if ( *rows == *cols )
+            ورنہ اگر ( *صفیں == *ستون_تعداد )
             {
-                IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_CT(*صفیں, *ستون_تعداد, *alpha, a, *lda );
+                واپس;
             }
         }
-        else
+        ورنہ
         {
-            if ( trans == BlasNoTrans )
+            اگر ( trans == BlasNoTrans )
             {
-                IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_RN(*صفیں, *ستون_تعداد, *alpha, a, *lda );
+                واپس;
             }
-            else if ( *rows == *cols )
+            ورنہ اگر ( *صفیں == *ستون_تعداد )
             {
-                IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                IMATCOPY_K_RT(*صفیں, *ستون_تعداد, *alpha, a, *lda );
+                واپس;
             }
         }
     }
-#endif
+#اگر_ختم
 
-	if ( *rows >  *cols )
-            msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
-            msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
+	اگر ( *صفیں >  *ستون_تعداد )
+            msize = (size_t)(*صفیں) * (*ldb)  * حجم(FLOAT);
+    ورنہ
+            msize = (size_t)(*ستون_تعداد) * (*ldb)  * حجم(FLOAT);
 
-	b = malloc(msize);
-	if ( b == NULL )
+	b = حافظہ_دو(msize);
+	اگر ( b == تہی )
 	{
-		printf("Memory alloc failed in imatcopy\n");
-		exit(1);
+		لکھو("Memory alloc failed in imatcopy\n");
+		باہر_نکلو(1);
 	}
 
-	if ( order == BlasColMajor )
+	اگر ( ترتیب == Blas_ستون_Major )
 	{
-		if ( trans == BlasNoTrans )
+		اگر ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
-			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
+			OMATCOPY_K_CN(*صفیں, *ستون_تعداد, *alpha, a, *lda, b, *صفیں );
+			OMATCOPY_K_CN(*صفیں, *ستون_تعداد, (FLOAT) 1.0 , b, *صفیں, a, *ldb );
 		}
-		else
+		ورنہ
 		{
-			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
-			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
+			OMATCOPY_K_CT(*صفیں, *ستون_تعداد, *alpha, a, *lda, b, *ستون_تعداد );
+			OMATCOPY_K_CN(*ستون_تعداد, *صفیں, (FLOAT) 1.0, b, *ستون_تعداد, a, *ldb );
 		}
 	}
-	else
+	ورنہ
 	{
-		if ( trans == BlasNoTrans )
+		اگر ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
-			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
+			OMATCOPY_K_RN(*صفیں, *ستون_تعداد, *alpha, a, *lda, b, *ستون_تعداد );
+			OMATCOPY_K_RN(*صفیں, *ستون_تعداد, (FLOAT) 1.0, b, *ستون_تعداد, a, *ldb );
 		}
-		else
+		ورنہ
 		{
-			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
-			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
+			OMATCOPY_K_RT(*صفیں, *ستون_تعداد, *alpha, a, *lda, b, *صفیں );
+			OMATCOPY_K_RN(*ستون_تعداد, *صفیں, (FLOAT) 1.0, b, *صفیں, a, *ldb );
 		}
 	}
 
-	free(b);
-	return;
+	آزاد(b);
+	واپس;
 
 }
 

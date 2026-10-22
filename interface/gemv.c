@@ -37,42 +37,42 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#include "l1param.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#شامل "l1param.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMV "
-#else
-#define ERROR_NAME "SGEMV "
-#endif
+#اگر_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "QGEMV "
+#وگرنہ_اگر defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DGEMV "
+#ورنہ
+#تعریف_کرو ERROR_NAME "SGEMV "
+#اگر_ختم
 
-#ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#اگر_تعریف_شدہ SMP
+ساکن صحیح (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, صحیح) = {
+#اگر_تعریف_شدہ XDOUBLE
   qgemv_thread_n, qgemv_thread_t,
-#elif defined DOUBLE
+#وگرنہ_اگر defined DOUBLE
   dgemv_thread_n, dgemv_thread_t,
-#else
+#ورنہ
   sgemv_thread_n, sgemv_thread_t,
-#endif
+#اگر_ختم
 };
-#endif
+#اگر_ختم
 
-#ifdef SMP
-#ifdef DYNAMIC_ARCH
- extern char* gotoblas_corename(void);
-#endif
+#اگر_تعریف_شدہ SMP
+#اگر_تعریف_شدہ DYNAMIC_ARCH
+ خارجی حرف* gotoblas_corename(خالی);
+#اگر_ختم
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
-static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
-  #ifdef DOUBLE
-      return (MN < 8100L)      ? 1
+#اگر defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
+ساکن اندرونی صحیح get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, صحیح ncpu) {
+  #اگر_تعریف_شدہ DOUBLE
+      واپس (MN < 8100L)      ? 1
           : (MN < 12100L)     ? MIN(ncpu, 2)
           : (MN < 36100L)     ? MIN(ncpu, 4)
           : (MN < 84100L)     ? MIN(ncpu, 8)
@@ -81,66 +81,66 @@ static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
           : (MN < 810000L)    ? MIN(ncpu, 32)
           : (MN < 1050625L)   ? MIN(ncpu, 40)
           : ncpu;
-  #else
-      return
+  #ورنہ
+      واپس
             (MN < 25600L)     ? 1
           : (MN < 63001L)     ? MIN(ncpu, 4)
           : (MN < 202500L)    ? MIN(ncpu, 8)
           : (MN < 806404L)    ? MIN(ncpu, 16)
           : (MN < 1638400L)    ? MIN(ncpu, 32)
           : ncpu;
-  #endif
+  #اگر_ختم
 }
-#endif
+#اگر_ختم
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
-static inline int get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, int ncpu) {
-  return
+#اگر defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
+ساکن اندرونی صحیح get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, صحیح ncpu) {
+  واپس
       MN < 24964L    ? 1
     : MN < 145924L    ? MIN(ncpu, 8)
     : MN < 692224L   ? MIN(ncpu, 16)
     : MN < 1638400L  ? MIN(ncpu, 32)
     : ncpu;
 }
-#endif
+#اگر_ختم
 
-static inline int get_gemv_optimal_nthreads(BLASLONG MN) {
-  int ncpu = num_cpu_avail(3);
-#if defined(_WIN64) && defined(_M_ARM64)
-  if (MN > 100000000L)
-    return num_cpu_avail(4);
-  return 1;
-#endif
-#if defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(BFLOAT16)
-  return get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
-#elif defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)
-  return get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
-#elif defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(BFLOAT16)
-  if (strcmp(gotoblas_corename(), "neoversev1") == 0) {
-    return get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
+ساکن اندرونی صحیح get_gemv_optimal_nthreads(BLASLONG MN) {
+  صحیح ncpu = عدد_cpu_avail(3);
+#اگر defined(_WIN64) && defined(_M_ARM64)
+  اگر (MN > 100000000L)
+    واپس عدد_cpu_avail(4);
+  واپس 1;
+#اگر_ختم
+#اگر defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(BFLOAT16)
+  واپس get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
+#وگرنہ_اگر defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)
+  واپس get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
+#وگرنہ_اگر defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(BFLOAT16)
+  اگر (strcmp(gotoblas_corename(), "neoversev1") == 0) {
+    واپس get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
   }
-  if (strcmp(gotoblas_corename(), "neoversev2") == 0) {
-    return get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
+  اگر (strcmp(gotoblas_corename(), "neoversev2") == 0) {
+    واپس get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
   }
-#endif
+#اگر_ختم
 
-  if ( MN < 115200L * GEMM_MULTITHREAD_THRESHOLD )
-    return 1;
-  else
-    return num_cpu_avail(2);
+  اگر ( MN < 115200L * GEMM_MULTITHREAD_حد )
+    واپس 1;
+  ورنہ
+    واپس عدد_cpu_avail(2);
 }
-#endif
+#اگر_ختم
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+خالی NAME(حرف *TRANS, blasint *M, blasint *N,
 	   FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	   FLOAT *x, blasint *INCX,
 	   FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  حرف trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint lda = *LDA;
@@ -148,13 +148,13 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint incy = *INCY;
   FLOAT alpha = *ALPHA;
   FLOAT beta  = *BETA;
-  FLOAT *buffer;
-  int buffer_size;
-#ifdef SMP
-  int nthreads;
-#endif
+  FLOAT *بفر;
+  صحیح بفر_سائز;
+#اگر_تعریف_شدہ SMP
+  صحیح nthreads;
+#اگر_ختم
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  صحیح (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     GEMV_N, GEMV_T,
   };
 
@@ -170,29 +170,29 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N') i = 0;
-  if (trans == 'T') i = 1;
-  if (trans == 'R') i = 0;
-  if (trans == 'C') i = 1;
+  اگر (trans == 'N') i = 0;
+  اگر (trans == 'T') i = 1;
+  اگر (trans == 'R') i = 0;
+  اگر (trans == 'C') i = 1;
 
-  if (incy == 0)	info = 11;
-  if (incx == 0)	info = 8;
-  if (lda < MAX(1, m))	info = 6;
-  if (n < 0)		info = 3;
-  if (m < 0)		info = 2;
-  if (i < 0)          info = 1;
+  اگر (incy == 0)	info = 11;
+  اگر (incx == 0)	info = 8;
+  اگر (lda < MAX(1, m))	info = 6;
+  اگر (n < 0)		info = 3;
+  اگر (m < 0)		info = 2;
+  اگر (i < 0)          info = 1;
 
   trans = i;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  اگر (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
   }
 
-#else
+#ورنہ
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+خالی CNAME(شمار CBLAS_ترتیب ترتیب,
+	   شمار CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
 	   FLOAT alpha,
 	   FLOAT  *a, blasint lda,
@@ -200,15 +200,15 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT beta,
 	   FLOAT  *y, blasint incy){
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   blasint lenx, leny;
-  int trans, buffer_size;
+  صحیح trans, بفر_سائز;
   blasint info, t;
-#ifdef SMP
-  int nthreads;
-#endif
+#اگر_تعریف_شدہ SMP
+  صحیح nthreads;
+#اگر_ختم
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  صحیح (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     GEMV_N, GEMV_T,
   };
 
@@ -217,28 +217,28 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+  اگر (ترتیب == Cblas_ستون_Major) {
+    اگر (TransA == CblasNoTrans)     trans = 0;
+    اگر (TransA == CblasTrans)       trans = 1;
+    اگر (TransA == CblasConjNoTrans) trans = 0;
+    اگر (TransA == CblasConjTrans)   trans = 1;
 
     info = -1;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    اگر (incy == 0)	  info = 11;
+    اگر (incx == 0)	  info = 8;
+    اگر (lda < MAX(1, m))  info = 6;
+    اگر (n < 0)		  info = 3;
+    اگر (m < 0)		  info = 2;
+    اگر (trans < 0)        info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
+  اگر (ترتیب == Cblas_صف_Major) {
+    اگر (TransA == CblasNoTrans)     trans = 1;
+    اگر (TransA == CblasTrans)       trans = 0;
+    اگر (TransA == CblasConjNoTrans) trans = 1;
+    اگر (TransA == CblasConjTrans)   trans = 0;
 
     info = -1;
 
@@ -246,68 +246,68 @@ void CNAME(enum CBLAS_ORDER order,
     n = m;
     m = t;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    اگر (incy == 0)	  info = 11;
+    اگر (incx == 0)	  info = 8;
+    اگر (lda < MAX(1, m))  info = 6;
+    اگر (n < 0)		  info = 3;
+    اگر (m < 0)		  info = 2;
+    اگر (trans < 0)        info = 1;
 
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  اگر (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    واپس;
   }
 
-#endif
-  if ((m==0) || (n==0)) return;
+#اگر_ختم
+  اگر ((m==0) || (n==0)) واپس;
 
   lenx = n;
   leny = m;
-  if (trans) lenx = m;
-  if (trans) leny = n;
+  اگر (trans) lenx = m;
+  اگر (trans) leny = n;
 
-  if (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  اگر (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), تہی, 0, تہی, 0);
 
-  if (alpha == ZERO) return;
+  اگر (alpha == ZERO) واپس;
 	
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
-  if (incx < 0) x -= (lenx - 1) * incx;
-  if (incy < 0) y -= (leny - 1) * incy;
+  اگر (incx < 0) x -= (lenx - 1) * incx;
+  اگر (incy < 0) y -= (leny - 1) * incy;
 
-  buffer_size = m + n + 128 / sizeof(FLOAT);
-#ifdef WINDOWS_ABI
-  buffer_size += 160 / sizeof(FLOAT) ;
-#endif
+  بفر_سائز = m + n + 128 / حجم(FLOAT);
+#اگر_تعریف_شدہ WINDOWS_ABI
+  بفر_سائز += 160 / حجم(FLOAT) ;
+#اگر_ختم
   // for alignment
-  buffer_size = (buffer_size + 3) & ~3;
-  STACK_ALLOC(buffer_size, FLOAT, buffer);
+  بفر_سائز = (بفر_سائز + 3) & ~3;
+  ڈھیر_ALLOC(بفر_سائز, FLOAT, بفر);
 
-#ifdef SMP
+#اگر_تعریف_شدہ SMP
   nthreads = get_gemv_optimal_nthreads(1L * m * n);
 
-  if (nthreads == 1) {
-#endif
+  اگر (nthreads == 1) {
+#اگر_ختم
 
-    (gemv[(int)trans])(m, n, 0, alpha, a, lda, x, incx, y, incy, buffer);
+    (gemv[(صحیح)trans])(m, n, 0, alpha, a, lda, x, incx, y, incy, بفر);
 
-#ifdef SMP
-  } else {
+#اگر_تعریف_شدہ SMP
+  } ورنہ {
 
-    (gemv_thread[(int)trans])(m, n, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gemv_thread[(صحیح)trans])(m, n, alpha, a, lda, x, incx, y, incy, بفر, nthreads);
 
   }
-#endif
+#اگر_ختم
 
-  STACK_FREE(buffer);
-  FUNCTION_PROFILE_END(1, m * n + m + n,  2 * m * n);
+  ڈھیر_FREE(بفر);
+  FUNCTION_PROFILE_انتہا(1, m * n + m + n,  2 * m * n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return;
+  واپس;
 
 }

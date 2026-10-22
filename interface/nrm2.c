@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#شامل <stdio.h>
+#شامل "common.h"
+#اگر_تعریف_شدہ FUNCTION_PROFILE
+#شامل "functable.h"
+#اگر_ختم
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_غیر_تعریف_شدہ CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -54,140 +54,140 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  اگر (n <= 0) واپس 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ COMPLEX
+  اگر (n == 1)
+#اگر_تعریف_شدہ DOUBLE
+    واپس fabs(x[0]);
+#ورنہ
+    واپس fabsf(x[0]);
+#اگر_ختم
+#اگر_ختم
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  اگر (incx == 0)
+#اگر_غیر_تعریف_شدہ COMPLEX
+#اگر_تعریف_شدہ DOUBLE
+  واپس (جذر((دوہرا)n)*fabs(x[0]));
+#ورنہ
+  واپس (جذر((اعشاری)n)*fabsf(x[0]));
+#اگر_ختم
+#ورنہ
+#اگر_تعریف_شدہ DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  دوہرا fr=fabs(x[0]);
+  دوہرا fi=fabs(x[1]);
+  دوہرا fmin=MIN(fr,fi);
+  دوہرا fmax=MAX(fr,fi);
+  اگر (fmax==0.) واپس(fmax);
+  اگر (fmax==fmin) واپس(جذر((دوہرا)n)*جذر(2.)*fmax);
+  واپس (جذر((دوہرا)n) * fmax * جذر (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ورنہ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  اعشاری fr=fabs(x[0]);
+  اعشاری fi=fabs(x[1]);
+  اعشاری fmin=MIN(fr,fi);
+  اعشاری fmax=MAX(fr,fi);
+  اگر (fmax==0.) واپس(fmax);
+  اگر (fmax==fmin) واپس(جذر((اعشاری)n)*جذر(2.)*fmax);
+  واپس (جذر((اعشاری)n) * fmax * جذر (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  اگر (incx < 0) 
+#اگر_تعریف_شدہ COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ورنہ
     x -= (n - 1) * incx;
-#endif
-  IDEBUG_START;
+#اگر_ختم
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
   ret = (FLOATRET)NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_انتہا(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return ret;
+  واپس ret;
 }
 
-#else
+#ورنہ
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#اگر_تعریف_شدہ COMPLEX
+FLOAT CNAME(blasint n, خالی *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ورنہ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#اگر_ختم
 
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  اگر (n <= 0) واپس 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ COMPLEX
+  اگر (n == 1)
+#اگر_تعریف_شدہ DOUBLE
+    واپس fabs(x[0]);
+#ورنہ
+    واپس fabsf(x[0]);
+#اگر_ختم
+#اگر_ختم
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  اگر (incx == 0)
+#اگر_غیر_تعریف_شدہ COMPLEX
+#اگر_تعریف_شدہ DOUBLE
+  واپس (جذر((دوہرا)n)*fabs(x[0]));
+#ورنہ
+  واپس (جذر((اعشاری)n)*fabsf(x[0]));
+#اگر_ختم
+#ورنہ
+#اگر_تعریف_شدہ DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  دوہرا fr=fabs(x[0]);
+  دوہرا fi=fabs(x[1]);
+  دوہرا fmin=MIN(fr,fi);
+  دوہرا fmax=MAX(fr,fi);
+  اگر (fmax==0.) واپس(fmax);
+  اگر (fmax==fmin) واپس(جذر((دوہرا)n)*جذر(2.)*fmax);
+  واپس (جذر((دوہرا)n) * fmax * جذر (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ورنہ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  اعشاری fr=fabs(x[0]);
+  اعشاری fi=fabs(x[1]);
+  اعشاری fmin=MIN(fr,fi);
+  اعشاری fmax=MAX(fr,fi);
+  اگر (fmax==0.) واپس(fmax);
+  اگر (fmax==fmin) واپس(جذر((اعشاری)n)*جذر(2.)*fmax);
+  واپس (جذر((اعشاری)n) * fmax * جذر (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  اگر (incx < 0) 
+#اگر_تعریف_شدہ COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ورنہ
     x -= (n - 1) * incx;
-#endif
+#اگر_ختم
   
-  IDEBUG_START;
+  IDEBUG_آغاز;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_آغاز();
 
   ret = NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_انتہا(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتہا;
 
-  return ret;
+  واپس ret;
 }
 
-#endif
+#اگر_ختم
