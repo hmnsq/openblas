@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <ctype.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QTRSV "
-#elif defined(DOUBLE)
+#अथवायदि defined(DOUBLE)
 #define ERROR_NAME "DTRSV "
-#else
+#अन्यथा
 #define ERROR_NAME "STRSV "
 #endif
 
-static int (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+स्थिर पूर्णाङ्क (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, शून्य *) = {
 #ifdef XDOUBLE
   qtrsv_NUU, qtrsv_NUN, qtrsv_NLU, qtrsv_NLN,
   qtrsv_TUU, qtrsv_TUN, qtrsv_TLU, qtrsv_TLN,
-#elif defined(DOUBLE)
+#अथवायदि defined(DOUBLE)
   dtrsv_NUU, dtrsv_NUN, dtrsv_NLU, dtrsv_NLN,
   dtrsv_TUU, dtrsv_TUN, dtrsv_TLU, dtrsv_TLN,
-#else
+#अन्यथा
   strsv_NUU, strsv_NUN, strsv_NLU, strsv_NLN,
   strsv_TUU, strsv_TUN, strsv_TLU, strsv_TLN,
 #endif
@@ -68,21 +68,21 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+शून्य NAME(वर्ण *UPLO, वर्ण *TRANS, वर्ण *DIAG,
 	   blasint *N, FLOAT *a, blasint *LDA, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  वर्ण uplo_arg  = *UPLO;
+  वर्ण trans_arg = *TRANS;
+  वर्ण diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  पूर्णाङ्क uplo;
+  पूर्णाङ्क unit;
+  पूर्णाङ्क trans;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -95,38 +95,38 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  यदि (trans_arg == 'N') trans = 0;
+  यदि (trans_arg == 'T') trans = 1;
+  यदि (trans_arg == 'R') trans = 0;
+  यदि (trans_arg == 'C') trans = 1;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  यदि (diag_arg  == 'U') unit  = 0;
+  यदि (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  यदि (uplo_arg  == 'U') uplo  = 0;
+  यदि (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  8;
-  if (lda  < MAX(1, n))   info =  6;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  यदि (incx == 0)          info =  8;
+  यदि (lda  < MAX(1, n))   info =  6;
+  यदि (n < 0)              info =  4;
+  यदि (unit  < 0)          info =  3;
+  यदि (trans < 0)          info =  2;
+  यदि (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    फर्काऊ;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
+शून्य CNAME(गणना CBLAS_ORDER order, गणना CBLAS_UPLO Uplo,
+	   गणना CBLAS_TRANSPOSE TransA, गणना CBLAS_DIAG Diag,
 	   blasint n, FLOAT  *a, blasint lda, FLOAT  *x, blasint incx) {
 
-  int trans, uplo, unit;
+  पूर्णाङ्क trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 
@@ -137,70 +137,70 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  यदि (order == CblasColMajor) {
+    यदि (Uplo == CblasUpper)         uplo  = 0;
+    यदि (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+    यदि (TransA == CblasNoTrans)     trans = 0;
+    यदि (TransA == CblasTrans)       trans = 1;
+    यदि (TransA == CblasConjNoTrans) trans = 0;
+    यदि (TransA == CblasConjTrans)   trans = 1;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    यदि (Diag == CblasUnit)          unit  = 0;
+    यदि (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    यदि (incx == 0)          info =  8;
+    यदि (lda  < MAX(1, n))   info =  6;
+    यदि (n < 0)              info =  4;
+    यदि (unit  < 0)          info =  3;
+    यदि (trans < 0)          info =  2;
+    यदि (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (order == CblasRowMajor) {
+    यदि (Uplo == CblasUpper)         uplo  = 1;
+    यदि (Uplo == CblasLower)         uplo  = 0;
+
+    यदि (TransA == CblasNoTrans)     trans = 1;
+    यदि (TransA == CblasTrans)       trans = 0;
+    यदि (TransA == CblasConjNoTrans) trans = 1;
+    यदि (TransA == CblasConjTrans)   trans = 0;
+
+    यदि (Diag == CblasUnit)          unit  = 0;
+    यदि (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    यदि (incx == 0)          info =  8;
+    यदि (lda  < MAX(1, n))   info =  6;
+    यदि (n < 0)              info =  4;
+    यदि (unit  < 0)          info =  3;
+    यदि (trans < 0)          info =  2;
+    यदि (uplo  < 0)          info =  1;
+  }
+
+  यदि (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    फर्काऊ;
   }
 
 #endif
 
-  if (n == 0) return;
+  यदि (n == 0) फर्काऊ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
+  यदि (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  यदि (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    फर्काऊ;
   }
 
   (trsv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer);
@@ -211,5 +211,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  फर्काऊ;
 }

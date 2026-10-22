@@ -36,40 +36,40 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QPOTRI"
-#elif defined(DOUBLE)
+#अथवायदि defined(DOUBLE)
 #define ERROR_NAME "DPOTRI"
-#else
+#अन्यथा
 #define ERROR_NAME "SPOTRI"
 #endif
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_SINGLE, TRTRI_LN_SINGLE,
 };
 
-static blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_SINGLE, LAUUM_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_PARALLEL, TRTRI_LN_PARALLEL,
 };
 
-static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_PARALLEL, LAUUM_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+शून्य NAME(वर्ण *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -78,36 +78,36 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  बाह्य
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (शून्य *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  यदि (uplo_arg == 'U') uplo = 0;
+  यदि (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 4;
-  if (args.n    < 0)             info = 2;
-  if (uplo < 0)                  info = 1;
+  यदि (args.lda  < MAX(1,args.n)) info = 4;
+  यदि (args.n    < 0)             info = 2;
+  यदि (uplo < 0)                  info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  यदि (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    फर्काऊ;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  यदि (args.n == 0) फर्काऊ;
 
   IDEBUG_START;
 
@@ -121,29 +121,29 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.n < 180)
+  args.common = रिक्त;
+  यदि (args.n < 180)
     args.nthreads = 1;
-  else
-  args.nthreads = num_cpu_avail(4);
+  अन्यथा
+  args.nthreads = अङ्क_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  यदि (args.nthreads == 1) {
 #endif
 
-  info = (trtri_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (trtri_single[uplo])(&args, रिक्त, रिक्त, sa, sb, 0);
 
-  if (!info) {
-    info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  यदि (!info) {
+    info = (lauum_single[uplo])(&args, रिक्त, रिक्त, sa, sb, 0);
   }
 
   *Info = info;
 
 #ifdef SMP
-  } else {
-    info = (trtri_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+  } अन्यथा {
+    info = (trtri_parallel[uplo])(&args, रिक्त, रिक्त, sa, sb, 0);
 
-    if (!info) {
-      info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    यदि (!info) {
+      info = (lauum_parallel[uplo])(&args, रिक्त, रिक्त, sa, sb, 0);
     }
 
     *Info = info;
@@ -160,5 +160,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  फर्काऊ;
 }

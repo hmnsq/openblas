@@ -30,16 +30,16 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2015-09-07 grisuthedragon 
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <stdlib.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#यदि defined(DOUBLE)
 #define ERROR_NAME "DIMATCOPY"
-#else
+#अन्यथा
 #define ERROR_NAME "SIMATCOPY"
 #endif
 
@@ -48,8 +48,8 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define BlasNoTrans  0
 #define BlasTrans    1
 
-#undef malloc
-#undef free
+#undef दो_स्मृति
+#undef मुक्त
 
 /* Enables the New IMATCOPY code with inplace operation if lda == ldb   */
 #define NEW_IMATCOPY
@@ -57,14 +57,14 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
+शून्य NAME( वर्ण* ORDER, वर्ण* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	वर्ण Order, Trans;
+	पूर्णाङ्क order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
-	size_t msize;
+	माप_प्रकार msize;
 
 	Order = *ORDER;
 	Trans = *TRANS;
@@ -72,26 +72,26 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
+	यदि ( Order == 'C' ) order = BlasColMajor;
+	यदि ( Order == 'R' ) order = BlasRowMajor;
+	यदि ( Trans == 'N' ) trans = BlasNoTrans;
+	यदि ( Trans == 'R' ) trans = BlasNoTrans;
+	यदि ( Trans == 'T' ) trans = BlasTrans;
+	यदि ( Trans == 'C' ) trans = BlasTrans;
+#अन्यथा 
+शून्य CNAME( गणना CBLAS_ORDER CORDER, गणना CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	पूर्णाङ्क order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
-	size_t msize;
+	माप_प्रकार msize;
 	blasint *lda, *ldb, *rows, *cols; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	यदि ( CORDER == CblasColMajor) order = BlasColMajor; 
+	यदि ( CORDER == CblasRowMajor) order = BlasRowMajor; 
+	यदि ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	यदि ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -100,103 +100,103 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	ldb = &cldb; 	
 #endif 
 
-	if ( order == BlasColMajor)
+	यदि ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	यदि ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
+        	यदि ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	यदि ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	यदि ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
+        	यदि ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	यदि ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	यदि ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	यदि ( *cols < 0 ) info = 4;
+	यदि ( *rows < 0 ) info = 3;
+	यदि ( trans < 0 ) info = 2;
+	यदि ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	यदि (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    		फर्काऊ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	यदि ((*rows == 0) || (*cols == 0)) फर्काऊ;
 
 #ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+    यदि ( *lda == *ldb ) {
+        यदि ( order == BlasColMajor )
         {
-            if ( trans == BlasNoTrans )
+            यदि ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                फर्काऊ;
             }
-            else if ( *rows == *cols )
+            अन्यथा यदि ( *rows == *cols )
             {
                 IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                फर्काऊ;
             }
         }
-        else
+        अन्यथा
         {
-            if ( trans == BlasNoTrans )
+            यदि ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                फर्काऊ;
             }
-            else if ( *rows == *cols )
+            अन्यथा यदि ( *rows == *cols )
             {
                 IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                फर्काऊ;
             }
         }
     }
 #endif
 
-	if ( *rows >  *cols )
-            msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
-            msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
+	यदि ( *rows >  *cols )
+            msize = (माप_प्रकार)(*rows) * (*ldb)  * परिमाण(FLOAT);
+    अन्यथा
+            msize = (माप_प्रकार)(*cols) * (*ldb)  * परिमाण(FLOAT);
 
-	b = malloc(msize);
-	if ( b == NULL )
+	b = दो_स्मृति(msize);
+	यदि ( b == रिक्त )
 	{
-		printf("Memory alloc failed in imatcopy\n");
-		exit(1);
+		म_लिखो("Memory alloc failed in imatcopy\n");
+		निकास(1);
 	}
 
-	if ( order == BlasColMajor )
+	यदि ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		यदि ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
 		}
-		else
+		अन्यथा
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
 	}
-	else
+	अन्यथा
 	{
-		if ( trans == BlasNoTrans )
+		यदि ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
-		else
+		अन्यथा
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
 		}
 	}
 
-	free(b);
-	return;
+	मुक्त(b);
+	फर्काऊ;
 
 }
 

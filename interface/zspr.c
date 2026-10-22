@@ -36,58 +36,58 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <ctype.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XSPR  "
-#elif defined(DOUBLE)
+#अथवायदि defined(DOUBLE)
 #define ERROR_NAME "ZSPR  "
-#else
+#अन्यथा
 #define ERROR_NAME "CSPR  "
 #endif
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+स्थिर पूर्णाङ्क (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xspr_U, xspr_L,
-#elif defined(DOUBLE)
+#अथवायदि defined(DOUBLE)
   zspr_U, zspr_L,
-#else
+#अन्यथा
   cspr_U, cspr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+स्थिर पूर्णाङ्क (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, पूर्णाङ्क) = {
 #ifdef XDOUBLE
   xspr_thread_U, xspr_thread_L,
-#elif defined(DOUBLE)
+#अथवायदि defined(DOUBLE)
   zspr_thread_U, zspr_thread_L,
-#else
+#अन्यथा
   cspr_thread_U, cspr_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+शून्य NAME(वर्ण *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  वर्ण uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  पूर्णाङ्क uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  पूर्णाङ्क nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -95,50 +95,50 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  यदि (uplo_arg  == 'U') uplo  = 0;
+  यदि (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  यदि (incx == 0)          info =  5;
+  यदि (n < 0)              info =  2;
+  यदि (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    फर्काऊ;
   }
 
-  if (n == 0) return;
+  यदि (n == 0) फर्काऊ;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  यदि ((alpha_r == ZERO) && (alpha_i == ZERO)) फर्काऊ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  यदि (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  यदि (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    फर्काऊ;
   }
 
 #ifdef SMP
-  nthreads = num_cpu_avail(2);
+  nthreads = अङ्क_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  यदि (n < 50) nthreads = 1;
+  यदि (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  यदि (nthreads == 1) {
 #endif
 
     (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, buffer);
 
 #ifdef SMP
-  } else {
+  } अन्यथा {
 
     (spr_thread[uplo])(n, ALPHA, x, incx, a, buffer, nthreads);
 
@@ -151,5 +151,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  फर्काऊ;
 }

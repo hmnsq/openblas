@@ -36,18 +36,18 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef RETURN_BY_STRUCT
 #ifdef XDOUBLE
 #define MYTYPE myxcomplex_t
-#elif defined DOUBLE
+#अथवायदि defined DOUBLE
 #define MYTYPE myzcomplex_t
-#else
+#अन्यथा
 #define MYTYPE myccomplex_t
 #endif
 #endif
@@ -58,16 +58,16 @@ OPENBLAS_EXPORT
 
 #ifdef RETURN_BY_STRUCT
 MYTYPE         NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#elif defined RETURN_BY_STACK
-void           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#else
+#अथवायदि defined RETURN_BY_थाक
+शून्य           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
+#अन्यथा
 OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
 #endif
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-#ifndef RETURN_BY_STACK
+#ifndef RETURN_BY_थाक
   OPENBLAS_COMPLEX_FLOAT ret;
 #endif
 #ifdef RETURN_BY_STRUCT
@@ -80,16 +80,16 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) {
+  यदि (n <= 0) {
 #ifdef RETURN_BY_STRUCT
     myret.r = 0.;
     myret.i = 0.;
-    return myret;
-#elif defined RETURN_BY_STACK
+    फर्काऊ myret;
+#अथवायदि defined RETURN_BY_थाक
     *result = zero;
-    return;
-#else
-    return zero;
+    फर्काऊ;
+#अन्यथा
+    फर्काऊ zero;
 #endif
   }
 
@@ -97,14 +97,14 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  यदि (incx < 0) x -= (n - 1) * incx * 2;
+  यदि (incy < 0) y -= (n - 1) * incy * 2;
 
 #ifdef RETURN_BY_STRUCT
 
 #ifndef CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#अन्यथा
   ret = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -115,13 +115,13 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   IDEBUG_END;
 
-  return myret;
+  फर्काऊ myret;
 
-#elif defined RETURN_BY_STACK
+#अथवायदि defined RETURN_BY_थाक
 
 #ifndef CONJ
   *result = DOTU_K(n, x, incx, y, incy);
-#else
+#अन्यथा
   *result = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -129,11 +129,11 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   IDEBUG_END;
 
-#else
+#अन्यथा
 
 #ifndef CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#अन्यथा
   ret = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -141,19 +141,19 @@ OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasin
 
   IDEBUG_END;
 
-  return ret;
+  फर्काऊ ret;
 
 #endif
 
 }
 
-#else
+#अन्यथा
 
-#ifdef FORCE_USE_STACK
-void           CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy, void* vresult){
+#ifdef FORCE_USE_थाक
+शून्य           CNAME(blasint n, शून्य *vx, blasint incx, शून्य *vy, blasint incy, शून्य* vresult){
 OPENBLAS_COMPLEX_FLOAT *result= (OPENBLAS_COMPLEX_FLOAT*)vresult;
-#else
-OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#अन्यथा
+OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, शून्य *vx, blasint incx, शून्य *vy, blasint incy){
 
   OPENBLAS_COMPLEX_FLOAT ret;
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
@@ -163,30 +163,30 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) {
-#ifdef FORCE_USE_STACK
+  यदि (n <= 0) {
+#ifdef FORCE_USE_थाक
     OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
     *result = zero;
 //	CREAL(*result) = 0.0;
 //	CIMAG(*result) = 0.0;
-    return;
-#else
-    return zero;
+    फर्काऊ;
+#अन्यथा
+    फर्काऊ zero;
 #endif
   }
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  यदि (incx < 0) x -= (n - 1) * incx * 2;
+  यदि (incy < 0) y -= (n - 1) * incy * 2;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-#ifdef FORCE_USE_STACK
+#ifdef FORCE_USE_थाक
 
 #ifndef CONJ
   *result = DOTU_K(n, x, incx, y, incy);
-#else
+#अन्यथा
   *result = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -194,11 +194,11 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
 
   IDEBUG_END;
 
-#else
+#अन्यथा
 
 #ifndef CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#अन्यथा
   ret = DOTC_K(n, x, incx, y, incy);
 #endif
 
@@ -206,7 +206,7 @@ OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasin
 
   IDEBUG_END;
 
-  return ret;
+  फर्काऊ ret;
 
 #endif
 
