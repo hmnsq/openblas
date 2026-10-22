@@ -36,43 +36,43 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETRS"
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "DGETRS"
-#else
+#अण्णहा
 #define ERROR_NAME "SGETRS"
 #endif
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+स्थिर blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_SINGLE, GETRS_T_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+स्थिर blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_PARALLEL, GETRS_T_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+शून्य NAME(वर्ण *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  वर्ण trans_arg = *TRANS;
 
   blas_arg_t args;
 
   blasint info;
-  int trans;
+  पूर्णाङ्क trans;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  बाह्य
 #endif
   FLOAT *sa, *sb;
 
@@ -80,39 +80,39 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (शून्य *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (शून्य *)b;
   args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  args.c    = (शून्य *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  जइ (trans_arg == 'N') trans = 0;
+  जइ (trans_arg == 'T') trans = 1;
+  जइ (trans_arg == 'R') trans = 0;
+  जइ (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  जइ (args.ldb  < MAX(1, args.m)) info = 8;
+  जइ (args.lda  < MAX(1, args.m)) info = 5;
+  जइ (args.n    < 0) info = 3;
+  जइ (args.m    < 0) info = 2;
+  जइ (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  जइ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME) - 1);
+    प्रत्यागम;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = रिक्त;
+  args.beta  = रिक्त;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  जइ (args.m == 0 || args.n == 0) प्रत्यागम;
 
   IDEBUG_START;
 
@@ -126,21 +126,21 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
+  args.common = रिक्त;
+  जइ (args.m < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } अण्णहा {
+    args.nthreads = अङ्कः_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  जइ (args.nthreads == 1) {
 #endif
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&args, रिक्त, रिक्त, sa, sb, 0);
 
 #ifdef SMP
-  } else {
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+  } अण्णहा {
+    (getrs_parallel[trans])(&args, रिक्त, रिक्त, sa, sb, 0);
   }
 #endif
 
@@ -152,6 +152,6 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   IDEBUG_END;
 
-  return;
+  प्रत्यागम;
 
 }
