@@ -42,9 +42,9 @@
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ако defined(DOUBLE)
 #define ERROR_NAME "DGEADD "
-#else
+#инако
 #define ERROR_NAME "SGEADD "
 #endif
 
@@ -71,34 +71,34 @@ char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*T
   PRINT_DEBUG_NAME;
 
   info = 0;
- if(transa){
-  if (lda < MAX(1, n))info = 5;
+ ако(transa){
+  ако (lda < MAX(1, n))info = 5;
 
 
-  }	else{
+  }	инако{
 
-   if (lda < MAX(1, m))	info = 5;
+   ако (lda < MAX(1, m))	info = 5;
   }
  
 
-  if(transc){
-        if (ldc < MAX(1, n))	info = 8;
+  ако(transc){
+        ако (ldc < MAX(1, n))	info = 8;
 
 
-   }else{
+   }инако{
        
-      if (ldc < MAX(1, m))	info = 8;
+      ако (ldc < MAX(1, m))	info = 8;
           }
 
-  if (n < 0)		info = 2;
-  if (m < 0)		info = 1;
+  ако (n < 0)		info = 2;
+  ако (m < 0)		info = 1;
 
-  if (info != 0){
+  ако (info != 0){
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    врати;
   }
 
-#else
+#инако
 void CNAME( enum CBLAS_ORDER order,enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transc,blasint m,  blasint n,  FLOAT alpha, FLOAT *a,  blasint lda, FLOAT beta, 
 		  FLOAT *c,  blasint ldc)
 {
@@ -116,55 +116,55 @@ void CNAME(enum CBLAS_ORDER order,
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ако (order == CblasColMajor) {
 
     info = -1;
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ако ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ако (ldc < MAX(1, m))  info = 8;
+    } инако {
+      ако (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ако ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ако (lda < MAX(1, m))  info = 5;
+    } инако {
+      ако (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 2;
-    if (m < 0)		  info = 1;
+    ако (n < 0)		  info = 2;
+    ако (m < 0)		  info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
+  ако (order == CblasRowMajor) {
     info = -1;
 
     t = n;
     n = m;
     m = t;
 
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+ако ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      ако (ldc < MAX(1, m))  info = 8;
+    } инако {
+      ако (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    ако ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      ако (lda < MAX(1, m))  info = 5;
+    } инако {
+      ако (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 1;
-    if (m < 0)		  info = 2;
+    ако (n < 0)		  info = 1;
+    ако (m < 0)		  info = 2;
   }
 
-  if (info >= 0) {
+  ако (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    врати;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  ако ((m==0) || (n==0)) врати;
 
 
   IDEBUG_START;
@@ -176,7 +176,7 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
 #ifdef CBLAS
           (transa == CblasTrans) || (transa == CblasConjTrans),
           (transc == CblasTrans) || (transc == CblasConjTrans)
-#else
+#инако
           transa, transc
 #endif
           ); 
@@ -186,6 +186,6 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
 
   IDEBUG_END;
 
-  return;
+  врати;
 
 }

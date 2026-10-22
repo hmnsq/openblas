@@ -42,12 +42,12 @@
 #include "functable.h"
 #endif
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+static цео (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
 #ifdef XDOUBLE
   qlaswp_plus, qlaswp_minus,
 #elif defined(DOUBLE)
   dlaswp_plus, dlaswp_minus,
-#else
+#инако
   slaswp_plus, slaswp_minus,
 #endif
 };
@@ -60,16 +60,16 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  цео flag;
 
 #ifdef SMP
-  int mode, nthreads;
+  цео mode, nthreads;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
 #endif
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  ако (incx == 0 || n <= 0) врати;
 
   IDEBUG_START;
 
@@ -78,31 +78,31 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   flag = (incx < 0);
 
 #ifdef SMP
-  if (n < 64) {
+  ако (n < 64) {
     nthreads = 1;
-  } else {
+  } инако {
     nthreads = num_cpu_avail(1);
   }
 
-  if (nthreads == 1) {
+  ако (nthreads == 1) {
 #endif
 
   (laswp[flag])(n, k1, k2, ZERO, a, lda, NULL, 0, ipiv, incx);
 
 #ifdef SMP
-  } else {
+  } инако {
 
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#инако
   mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
 
   blas_level1_thread(mode, n, k1, k2, dummyalpha,
 		     a, lda, NULL, 0, ipiv, incx,
-		     (int(*)(void))laswp[flag], nthreads);
+		     (цео(*)(void))laswp[flag], nthreads);
   }
 #endif
 
@@ -110,6 +110,6 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
 
   IDEBUG_END;
 
-  return;
+  врати;
 
 }

@@ -47,27 +47,27 @@
 #define ERROR_NAME "QSYR  "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYR  "
-#else
+#инако
 #define ERROR_NAME "SSYR  "
 #endif
 
-static int (*syr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static цео (*syr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   qsyr_U, qsyr_L,
 #elif defined(DOUBLE)
   dsyr_U, dsyr_L,
-#else
+#инако
   ssyr_U, ssyr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static цео (*syr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, цео) = {
 #ifdef XDOUBLE
   qsyr_thread_U, qsyr_thread_L,
 #elif defined(DOUBLE)
   dsyr_thread_U, dsyr_thread_L,
-#else
+#инако
   ssyr_thread_U, ssyr_thread_L,
 #endif
 };
@@ -87,10 +87,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  цео uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  цео nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -98,30 +98,30 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ако (uplo_arg  == 'U') uplo  = 0;
+  ако (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ако (lda  < MAX(1, n))   info =  7;
+  ако (incx == 0)          info =  5;
+  ако (n < 0)              info =  2;
+  ако (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  ако (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    врати;
   }
 
-#else
+#инако
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *a, blasint lda) {
 
   FLOAT *buffer;
-  int uplo;
+  цео uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  цео nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -129,91 +129,91 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ако (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    ако (Uplo == CblasUpper) uplo  = 0;
+    ако (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ако (lda  < MAX(1, n))   info =  7;
+    ако (incx == 0)          info =  5;
+    ако (n < 0)              info =  2;
+    ако (uplo  < 0)          info =  1;
+
   }
 
-  if (info >= 0) {
+  ако (order == CblasRowMajor) {
+
+    ако (Uplo == CblasUpper) uplo  = 1;
+    ако (Uplo == CblasLower) uplo  = 0;
+
+    info = -1;
+
+    ако (lda  < MAX(1, n))   info =  7;
+    ако (incx == 0)          info =  5;
+    ако (n < 0)              info =  2;
+    ако (uplo  < 0)          info =  1;
+  }
+
+  ако (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    врати;
   }
 
 #endif
 
-  if (n == 0) return;
+  ако (n == 0) врати;
 
-  if (alpha == ZERO) return;
+  ако (alpha == ZERO) врати;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
-#if 1
-  if (incx == 1 && n < 100) {
+#ако 1
+  ако (incx == 1 && n < 100) {
     BLASLONG i;
 
-    if (uplo == 0) {
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
+    ако (uplo == 0) {
+      за (i = 0; i < n; i++){
+        ако (x[i] != ZERO) {
           AXPYU_K(i + 1, 0, 0, alpha * x[i], x,     1, a, 1, NULL, 0);
         }
         a += lda;
       }  
-    } else {
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
+    } инако {
+      за (i = 0; i < n; i++){
+        ако (x[i] != ZERO) {
           AXPYU_K(n - i, 0, 0, alpha * x[i], x + i, 1, a, 1, NULL, 0);
         }
         a += 1 + lda;
       }
     }
-    return;
+    врати;
   } 
 #endif
-  if (incx < 0 ) x -= (n - 1) * incx;
+  ако (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ако (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    врати;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ако (n < 50) nthreads = 1;
+  ако (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ако (nthreads == 1) {
 #endif
 
   (syr[uplo])(n, alpha, x, incx, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } инако {
 
     (syr_thread[uplo])(n, alpha, x, incx, a, lda, buffer, nthreads);
 
@@ -226,5 +226,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
 
   IDEBUG_END;
 
-  return;
+  врати;
 }

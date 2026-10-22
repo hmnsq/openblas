@@ -46,7 +46,7 @@
 #define ERROR_NAME "XTRTRI"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTRTRI"
-#else
+#инако
 #define ERROR_NAME "CTRTRI"
 #endif
 
@@ -85,31 +85,31 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ако (uplo_arg == 'U') uplo = 0;
+  ако (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ако (diag_arg == 'U') diag = 0;
+  ако (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
+  ако (args.lda  < MAX(1,args.n)) info = 5;
+  ако (args.n    < 0)             info = 3;
+  ако (diag < 0)                  info = 2;
+  ако (uplo < 0)                  info = 1;
+  ако (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    врати;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  ако (args.n == 0) врати;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
+  ако (diag) {
+    ако (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+      врати;
     }
   }
 
@@ -126,19 +126,19 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
 #ifdef SMP
   args.common = NULL;
-  if (args.n < 64) {
+  ако (args.n < 64) {
     args.nthreads = 1;
-  } else {
+  } инако {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  ако (args.nthreads == 1) {
 #endif
 
     *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } инако {
 
     *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
@@ -155,5 +155,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  врати;
 }
