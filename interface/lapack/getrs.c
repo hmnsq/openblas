@@ -46,7 +46,7 @@
 #define ERROR_NAME "QGETRS"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGETRS"
-#else
+#ᬮᬶᬬ
 #define ERROR_NAME "SGETRS"
 #endif
 
@@ -61,15 +61,15 @@ static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+void NAME(var_na *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  var_na trans_arg = *TRANS;
 
   blas_arg_t args;
 
   blasint info;
-  int trans;
+  puur_naa_nka trans;
   FLOAT *buffer;
 #ifdef PPC440
   extern
@@ -91,20 +91,20 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  ᬬᬾᬦ᭄ (trans_arg == 'N') trans = 0;
+  ᬬᬾᬦ᭄ (trans_arg == 'T') trans = 1;
+  ᬬᬾᬦ᭄ (trans_arg == 'R') trans = 0;
+  ᬬᬾᬦ᭄ (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  ᬬᬾᬦ᭄ (args.ldb  < MAX(1, args.m)) info = 8;
+  ᬬᬾᬦ᭄ (args.lda  < MAX(1, args.m)) info = 5;
+  ᬬᬾᬦ᭄ (args.n    < 0) info = 3;
+  ᬬᬾᬦ᭄ (args.m    < 0) info = 2;
+  ᬬᬾᬦ᭄ (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  ᬬᬾᬦ᭄ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
+    ᬯᬮᬶ;
   }
 
   args.alpha = NULL;
@@ -112,7 +112,7 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  ᬬᬾᬦ᭄ (args.m == 0 || args.n == 0) ᬯᬮᬶ;
 
   IDEBUG_START;
 
@@ -127,19 +127,19 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
 #ifdef SMP
   args.common = NULL;
-  if (args.m < 64) {
+  ᬬᬾᬦ᭄ (args.m < 64) {
     args.nthreads = 1;
-  } else {
+  } ᬮᬶᬬ {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  ᬬᬾᬦ᭄ (args.nthreads == 1) {
 #endif
 
     (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } ᬮᬶᬬ {
     (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
   }
 #endif
@@ -152,6 +152,6 @@ void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 
   IDEBUG_END;
 
-  return;
+  ᬯᬮᬶ;
 
 }

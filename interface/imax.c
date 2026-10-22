@@ -54,20 +54,20 @@
 #define MAX_K	IQAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	IDAMAX_K
-#else
+#ᬮᬶᬬ
 #define MAX_K	ISAMAX_K
 #endif
-#else
+#ᬮᬶᬬ
 #ifdef XDOUBLE
 #define MAX_K	IXAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	IZAMAX_K
-#else
+#ᬮᬶᬬ
 #define MAX_K	ICAMAX_K
 #endif
 #endif
 
-#else
+#ᬮᬶᬬ
 
 /* ABS & MIN */
 #ifndef COMPLEX
@@ -75,22 +75,22 @@
 #define MAX_K	IQAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	IDAMIN_K
-#else
+#ᬮᬶᬬ
 #define MAX_K	ISAMIN_K
 #endif
-#else
+#ᬮᬶᬬ
 #ifdef XDOUBLE
 #define MAX_K	IXAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	IZAMIN_K
-#else
+#ᬮᬶᬬ
 #define MAX_K	ICAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#ᬮᬶᬬ
 
 #ifndef USE_MIN
 
@@ -99,18 +99,18 @@
 #define MAX_K	IQMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	IDMAX_K
-#else
+#ᬮᬶᬬ
 #define MAX_K	ISMAX_K
 #endif
 
-#else
+#ᬮᬶᬬ
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	IQMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	IDMIN_K
-#else
+#ᬮᬶᬬ
 #define MAX_K	ISMIN_K
 #endif
 
@@ -130,7 +130,7 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ᬬᬾᬦ᭄ (n <= 0) ᬯᬮᬶ 0;
 
   IDEBUG_START;
 
@@ -138,20 +138,20 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  ᬬᬾᬦ᭄(ret > n) ret=n;
 
   FUNCTION_PROFILE_END(COMPSIZE, n, 0);
 
   IDEBUG_END;
 
-  return ret;
+  ᬯᬮᬶ ret;
 }
 
-#else
+#ᬮᬶᬬ
 #ifdef COMPLEX
 CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ᬮᬶᬬ
 CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -159,7 +159,7 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ᬬᬾᬦ᭄ (n <= 0) ᬯᬮᬶ 0;
 
   IDEBUG_START;
 
@@ -167,15 +167,15 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  ᬬᬾᬦ᭄ (ret > n) ret=n;
 
-  if (ret) ret --;
+  ᬬᬾᬦ᭄ (ret) ret --;
 
   FUNCTION_PROFILE_END(COMPSIZE, n, 0);
 
   IDEBUG_END;
 
-  return ret;
+  ᬯᬮᬶ ret;
 }
 
 #endif

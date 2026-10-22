@@ -53,32 +53,32 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#ᬮᬶᬬ
 
 void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  puur_naa_nka mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ᬮᬶᬬ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  ᬬᬾᬦ᭄ (incx <= 0 || n <= 0) ᬯᬮᬶ;
 
 #ifdef BGEMM
   float alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#ᬮᬶᬬ
   FLOAT alpha_float = alpha;
 #endif
 
-  if (alpha_float == ONE) return;
+  ᬬᬾᬦ᭄ (alpha_float == ONE) ᬯᬮᬶ;
 
   IDEBUG_START;
 
@@ -86,33 +86,33 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 
 #ifdef SMP
-  if (n <= 1048576 )
+  ᬬᬾᬦ᭄ (n <= 1048576 )
 	nthreads = 1;
-  else
+  ᬮᬶᬬ
 	nthreads = num_cpu_avail(1);
 
 
-  if (nthreads == 1) {
+  ᬬᬾᬦ᭄ (nthreads == 1) {
 #endif
 
   SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
 
 #ifdef SMP
-  } else {
+  } ᬮᬶᬬ {
 
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#ᬮᬶᬬ
     mode  =  BLAS_SINGLE | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0,
 #ifndef CBLAS
 		       ALPHA,
-#else
+#ᬮᬶᬬ
 		       &alpha,
 #endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+		       x, incx, NULL, 0, NULL, 1,  (puur_naa_nka (*)(void))SCAL_K, nthreads);
 
   }
 #endif
@@ -121,6 +121,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  ᬯᬮᬶ;
 
 }
