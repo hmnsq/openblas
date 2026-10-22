@@ -35,7 +35,7 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+void openblas_warning(puur_naa_nka verbose, const var_na * msg);
 
 #ifndef COMPLEX
 #ifdef XDOUBLE
@@ -43,39 +43,39 @@ void openblas_warning(int verbose, const char * msg);
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGEMM_BATCH_STRIDED "
 #define GEMM_BATCH_THREAD dgemm_batch_thread
-#else
+#ပေႃးဢမ်ႇ
 #define ERROR_NAME "SGEMM_BATCH_STRIDED "
 #define GEMM_BATCH_THREAD sgemm_batch_thread
 #endif
-#else
+#ပေႃးဢမ်ႇ
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMM_BATCH_STRIDED "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMM_BATCH_STRIDED "
 #define GEMM_BATCH_THREAD zgemm_batch_thread
-#else
+#ပေႃးဢမ်ႇ
 #define ERROR_NAME "CGEMM_BATCH_STRIDED "
 #define GEMM_BATCH_THREAD cgemm_batch_thread
 #endif
 #endif
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+static puur_naa_nka (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
+#ပေႃး defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
 #define USE_SMALL_MATRIX_OPT 1
-#else
+#ပေႃးဢမ်ႇ
 #define USE_SMALL_MATRIX_OPT 0
 #endif
 
-#if USE_SMALL_MATRIX_OPT
+#ပေႃး USE_SMALL_MATRIX_OPT
 #ifndef DYNAMIC_ARCH
 #define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
+#ပေႃးဢမ်ႇ
+#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((var_na *)gotoblas + (size_t)(table[idx]))))
 #endif
 
 
@@ -91,9 +91,9 @@ static size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#define GEMM_SMALL_KERNEL_B0(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#define GEMM_SMALL_KERNEL(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#ပေႃးဢမ်ႇ
 
 static size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
@@ -109,15 +109,15 @@ static size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#define ZGEMM_SMALL_KERNEL(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#define ZGEMM_SMALL_KERNEL_B0(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
 #endif
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME(char *transa, char *transb,
+void NAME(var_na *transa, var_na *transb,
 	   blasint * M, blasint * N, blasint * K,
 	   FLOAT * Alpha,
 	   IFLOAT * a, blasint * Lda,
@@ -127,8 +127,8 @@ void NAME(char *transa, char *transb,
 	   FLOAT * Beta,
 	   FLOAT * c, blasint * Ldc, blasint * stride_c, blasint * matcount) {
  	  
-           char ta = *transa;
-   	   char tb = *transb;	   
+           var_na ta = *transa;
+   	   var_na tb = *transb;	   
 	   blasint count = *matcount;
 	   blasint stridea= *stride_a;
 	   blasint strideb= *stride_b;
@@ -139,16 +139,16 @@ void NAME(char *transa, char *transb,
 	   blasint lda=*Lda;
 	   blasint ldb=*Ldb;
 	   blasint ldc=*Ldc;
-#if !defined(COMPLEX)	   
+#ပေႃး !defined(COMPLEX)	   
 	   FLOAT alpha=*Alpha;
 	   FLOAT beta=*Beta;
-#else
+#ပေႃးဢမ်ႇ
 	   FLOAT *alpha=Alpha;
 	   FLOAT *beta=Beta;
 #endif
-#else
+#ပေႃးဢမ်ႇ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transb,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_TRANSPOSE transa, ga_nanaa CBLAS_TRANSPOSE transb,
 	   blasint m, blasint n, blasint k,
 #ifndef COMPLEX
 	   FLOAT alpha,
@@ -156,7 +156,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
 	   IFLOAT * b, blasint ldb, blasint strideb,
 	   FLOAT beta,
 	   FLOAT * c, blasint ldc, blasint stridec, blasint count) {
-#else
+#ပေႃးဢမ်ႇ
 	   void * valpha,
 	   void * va, blasint lda, blasint stridea,
 	   void * vb, blasint ldb, blasint strideb,
@@ -175,11 +175,11 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
 
   blas_arg_t * args_array=NULL;
 
-  int mode=0, group_mode=0;
+  puur_naa_nka mode=0, group_mode=0;
 
   blasint i=0;
 
-  int group_transa, group_transb;
+  puur_naa_nka group_transa, group_transb;
   BLASLONG group_nrowa, group_nrowb;
   blasint info;
 
@@ -188,17 +188,17 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
   void * group_small_matrix_opt_routine=NULL;
 #endif
   
-#if defined (SMP) || defined(SMALL_MATRIX_OPT)
-  double MNK;
+#ပေႃး defined (SMP) || defined(SMALL_MATRIX_OPT)
+  dviguu_na MNK;
 #endif
 
   PRINT_DEBUG_CNAME;
 
-  args_array=(blas_arg_t *)malloc(count * sizeof(blas_arg_t));
+  args_array=(blas_arg_t *)malloc(count * parimaa_na(blas_arg_t));
   
-  if(args_array == NULL){
+  ပေႃး(args_array == NULL){
     openblas_warning(0, "memory alloc failed!\n");
-    return;
+    ပွၵ်ႈ;
   }
 
 #ifdef SMP
@@ -207,15 +207,15 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
   mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#ပေႃးဢမ်ႇ
   mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#ပေႃးဢမ်ႇ
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#ပေႃးဢမ်ႇ
   mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
@@ -229,8 +229,8 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
     group_transb = -1;
     info   = 0;
    
-#if defined(CBLAS)
-    if (order == CblasColMajor) {
+#ပေႃး defined(CBLAS)
+    ပေႃး (order == CblasColMajor) {
       group_m = m;
       group_n = n;
       group_k = k;
@@ -239,41 +239,41 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
       group_ldb = ldb;
       group_ldc = ldc;
 
-      if (transa == CblasNoTrans)     group_transa = 0;
-      if (transa == CblasTrans)       group_transa = 1;
+      ပေႃး (transa == CblasNoTrans)     group_transa = 0;
+      ပေႃး (transa == CblasTrans)       group_transa = 1;
 #ifndef COMPLEX
-      if (transa == CblasConjNoTrans) group_transa = 0;
-      if (transa == CblasConjTrans)   group_transa = 1;
-#else
-      if (transa == CblasConjNoTrans) group_transa = 2;
-      if (transa == CblasConjTrans)   group_transa = 3;
+      ပေႃး (transa == CblasConjNoTrans) group_transa = 0;
+      ပေႃး (transa == CblasConjTrans)   group_transa = 1;
+#ပေႃးဢမ်ႇ
+      ပေႃး (transa == CblasConjNoTrans) group_transa = 2;
+      ပေႃး (transa == CblasConjTrans)   group_transa = 3;
 #endif
-      if (transb == CblasNoTrans)     group_transb = 0;
-      if (transb == CblasTrans)       group_transb = 1;
+      ပေႃး (transb == CblasNoTrans)     group_transb = 0;
+      ပေႃး (transb == CblasTrans)       group_transb = 1;
 #ifndef COMPLEX
-      if (transb == CblasConjNoTrans) group_transb = 0;
-      if (transb == CblasConjTrans)   group_transb = 1;
-#else
-      if (transb == CblasConjNoTrans) group_transb = 2;
-      if (transb == CblasConjTrans)   group_transb = 3;
+      ပေႃး (transb == CblasConjNoTrans) group_transb = 0;
+      ပေႃး (transb == CblasConjTrans)   group_transb = 1;
+#ပေႃးဢမ်ႇ
+      ပေႃး (transb == CblasConjNoTrans) group_transb = 2;
+      ပေႃး (transb == CblasConjTrans)   group_transb = 3;
 #endif
       group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
+      ပေႃး (group_transa & 1) group_nrowa = group_k;
       group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ပေႃး (group_transb & 1) group_nrowb = group_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;
+      ပေႃး (group_ldc < group_m) info = 13;
+      ပေႃး (group_ldb < group_nrowb)  info = 10;
+      ပေႃး (group_lda < group_nrowa)  info =  8;
+      ပေႃး (group_k < 0)        info =  5;
+      ပေႃး (group_n < 0)        info =  4;
+      ပေႃး (group_m < 0)        info =  3;
+      ပေႃး (group_transb < 0)        info =  2;
+      ပေႃး (group_transa < 0)        info =  1;
 
-    }else if (order == CblasRowMajor) {
+    }ပေႃးဢမ်ႇ ပေႃး (order == CblasRowMajor) {
       
       group_m = n;
       group_n = m;
@@ -283,26 +283,26 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
       group_ldb = lda;
       group_ldc = ldc;
 
-      if (transb == CblasNoTrans)     group_transa = 0;
-      if (transb == CblasTrans)       group_transa = 1;
+      ပေႃး (transb == CblasNoTrans)     group_transa = 0;
+      ပေႃး (transb == CblasTrans)       group_transa = 1;
 #ifndef COMPLEX
-      if (transb == CblasConjNoTrans) group_transa = 0;
-      if (transb == CblasConjTrans)   group_transa = 1;
-#else
-      if (transb == CblasConjNoTrans) group_transa = 2;
-      if (transb == CblasConjTrans)   group_transa = 3;
+      ပေႃး (transb == CblasConjNoTrans) group_transa = 0;
+      ပေႃး (transb == CblasConjTrans)   group_transa = 1;
+#ပေႃးဢမ်ႇ
+      ပေႃး (transb == CblasConjNoTrans) group_transa = 2;
+      ပေႃး (transb == CblasConjTrans)   group_transa = 3;
 #endif
-      if (transa == CblasNoTrans)     group_transb = 0;
-      if (transa == CblasTrans)       group_transb = 1;
+      ပေႃး (transa == CblasNoTrans)     group_transb = 0;
+      ပေႃး (transa == CblasTrans)       group_transb = 1;
 #ifndef COMPLEX
-      if (transa == CblasConjNoTrans) group_transb = 0;
-      if (transa == CblasConjTrans)   group_transb = 1;
-#else
-      if (transa == CblasConjNoTrans) group_transb = 2;
-      if (transa == CblasConjTrans)   group_transb = 3;
+      ပေႃး (transa == CblasConjNoTrans) group_transb = 0;
+      ပေႃး (transa == CblasConjTrans)   group_transb = 1;
+#ပေႃးဢမ်ႇ
+      ပေႃး (transa == CblasConjNoTrans) group_transb = 2;
+      ပေႃး (transa == CblasConjTrans)   group_transb = 3;
 #endif
 
-#else
+#ပေႃးဢမ်ႇ
       group_m = m;
       group_n = n;
       group_k = k;
@@ -311,88 +311,88 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
       group_ldb = ldb;
       group_ldc = ldc;
       
-      if (ta == 'N')   group_transa = 0;
-      if (ta == 'T')   group_transa = 1;
+      ပေႃး (ta == 'N')   group_transa = 0;
+      ပေႃး (ta == 'T')   group_transa = 1;
 #ifndef COMPLEX
-      if (ta == 'C')   group_transa = 1;
-#else
-      if (ta == 'C')   group_transa = 3;
+      ပေႃး (ta == 'C')   group_transa = 1;
+#ပေႃးဢမ်ႇ
+      ပေႃး (ta == 'C')   group_transa = 3;
 #endif
-      if (tb == 'N')   group_transb = 0;
-      if (tb == 'T')   group_transb = 1;
+      ပေႃး (tb == 'N')   group_transb = 0;
+      ပေႃး (tb == 'T')   group_transb = 1;
 #ifndef COMPLEX
-      if (tb == 'C')   group_transb = 1;
-#else
-      if (tb == 'C')   group_transb = 3;
+      ပေႃး (tb == 'C')   group_transb = 1;
+#ပေႃးဢမ်ႇ
+      ပေႃး (tb == 'C')   group_transb = 3;
 #endif
 #endif
 
       group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
+      ပေႃး (group_transa & 1) group_nrowa = group_k;
       group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      ပေႃး (group_transb & 1) group_nrowb = group_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;      
-#if defined(CBLAS)
+      ပေႃး (group_ldc < group_m) info = 13;
+      ပေႃး (group_ldb < group_nrowb)  info = 10;
+      ပေႃး (group_lda < group_nrowa)  info =  8;
+      ပေႃး (group_k < 0)        info =  5;
+      ပေႃး (group_n < 0)        info =  4;
+      ပေႃး (group_m < 0)        info =  3;
+      ပေႃး (group_transb < 0)        info =  2;
+      ပေႃး (group_transa < 0)        info =  1;      
+#ပေႃး defined(CBLAS)
     }
 #endif
 
-    if (info >= 0) {
-      BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
+    ပေႃး (info >= 0) {
+      BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
       free(args_array);
-      return;
+      ပွၵ်ႈ;
     }
 
     /* Every member shares M and N: an empty member means an empty batch. */
-    if (group_m == 0 || group_n == 0) { free(args_array); return; }
+    ပေႃး (group_m == 0 || group_n == 0) { free(args_array); ပွၵ်ႈ; }
 
     group_mode=mode;
 
-#if defined(SMP) || defined(SMALL_MATRIX_OPT)
-    MNK = (double) group_m * (double) group_n * (double) group_k;
+#ပေႃး defined(SMP) || defined(SMALL_MATRIX_OPT)
+    MNK = (dviguu_na) group_m * (dviguu_na) group_n * (dviguu_na) group_k;
 #endif
 
 #ifdef SMALL_MATRIX_OPT
-#if !defined(COMPLEX)
-    if (*(FLOAT *)(&alpha) != ZERO &&
+#ပေႃး !defined(COMPLEX)
+    ပေႃး (*(FLOAT *)(&alpha) != ZERO &&
         GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
                                  *(FLOAT *)(&alpha), *(FLOAT *)(&beta))){
-#else
-    if (((FLOAT *)(alpha))[0] != ZERO &&
+#ပေႃးဢမ်ႇ
+    ပေႃး (((FLOAT *)(alpha))[0] != ZERO &&
         GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
                                  ((FLOAT *)(alpha))[0], ((FLOAT *)(alpha))[1],
                                  ((FLOAT *)(beta))[0], ((FLOAT *)(beta))[1])){
 #endif
       group_routine=NULL;
-#if !defined(COMPLEX)
-      if(beta == 0.0){
+#ပေႃး !defined(COMPLEX)
+      ပေႃး(beta == 0.0){
 	group_mode=mode | BLAS_SMALL_B0_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
+      }ပေႃးဢမ်ႇ{
 	group_mode=mode | BLAS_SMALL_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((group_transb<<2)|group_transa));
       }
-#else
-      if(beta[0] == 0.0 && beta[1] == 0.0){
+#ပေႃးဢမ်ႇ
+      ပေႃး(beta[0] == 0.0 && beta[1] == 0.0){
 	group_mode=mode | BLAS_SMALL_B0_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
+      }ပေႃးဢမ်ႇ{
 	group_mode=mode | BLAS_SMALL_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((group_transb<<2)|group_transa));
       }
 
 #endif
       
-    }else{
+    }ပေႃးဢမ်ႇ{
 #endif
       group_routine=(void*)(gemm[(group_transb<<2)|group_transa]);
 #ifdef SMALL_MATRIX_OPT
@@ -409,20 +409,20 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
 #ifdef COMPLEX
       args_array[i].alpha=alpha;
       args_array[i].beta=beta;
-#else
+#ပေႃးဢမ်ႇ
       args_array[i].alpha=&alpha;
       args_array[i].beta=&beta;
 #endif
 
-#if defined(CBLAS)
-      if (order == CblasColMajor) {      
+#ပေႃး defined(CBLAS)
+      ပေႃး (order == CblasColMajor) {      
 	args_array[i].a=&(a[i*stridea]);
 	args_array[i].b=&(b[i*strideb]);
-      }else if(order == CblasRowMajor){
+      }ပေႃးဢမ်ႇ ပေႃး(order == CblasRowMajor){
 	args_array[i].a=&(b[i*strideb]);
 	args_array[i].b=&(a[i*stridea]);
       }
-#else
+#ပေႃးဢမ်ႇ
 	args_array[i].a=&(a[i*stridea]);
 	args_array[i].b=&(b[i*strideb]);
 #endif
@@ -432,12 +432,12 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANS
       args_array[i].routine_mode=group_mode;
       args_array[i].routine=group_routine;
 #ifdef SMALL_MATRIX_OPT
-      if (!group_routine)
+      ပေႃး (!group_routine)
         args_array[i].routine=group_small_matrix_opt_routine;
 #endif      
   }
 
-  if(count>0) {
+  ပေႃး(count>0) {
     GEMM_BATCH_THREAD(args_array,count);
   }
 

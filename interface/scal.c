@@ -53,32 +53,32 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#ပေႃးဢမ်ႇ
 
 void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  puur_naa_nka mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#ပေႃးဢမ်ႇ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  ပေႃး (incx <= 0 || n <= 0) ပွၵ်ႈ;
 
 #ifdef BGEMM
   float alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#ပေႃးဢမ်ႇ
   FLOAT alpha_float = alpha;
 #endif
 
-  if (alpha_float == ONE) return;
+  ပေႃး (alpha_float == ONE) ပွၵ်ႈ;
 
   IDEBUG_START;
 
@@ -86,33 +86,33 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 
 #ifdef SMP
-  if (n <= 1048576 )
+  ပေႃး (n <= 1048576 )
 	nthreads = 1;
-  else
+  ပေႃးဢမ်ႇ
 	nthreads = num_cpu_avail(1);
 
 
-  if (nthreads == 1) {
+  ပေႃး (nthreads == 1) {
 #endif
 
   SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
 
 #ifdef SMP
-  } else {
+  } ပေႃးဢမ်ႇ {
 
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#ပေႃးဢမ်ႇ
     mode  =  BLAS_SINGLE | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0,
 #ifndef CBLAS
 		       ALPHA,
-#else
+#ပေႃးဢမ်ႇ
 		       &alpha,
 #endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+		       x, incx, NULL, 0, NULL, 1,  (puur_naa_nka (*)(void))SCAL_K, nthreads);
 
   }
 #endif
@@ -121,6 +121,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  ပွၵ်ႈ;
 
 }

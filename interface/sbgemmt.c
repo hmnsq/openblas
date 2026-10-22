@@ -47,7 +47,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+void NAME(var_na *UPLO, var_na *TRANSA, var_na *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -56,10 +56,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	puur_naa_nka transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	var_na transA, transB, Uplo;
 	blasint nrowa, nrowb;
 	IFLOAT *buffer;
 	IFLOAT *aa, *bb;
@@ -89,62 +89,62 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	ပေႃး (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	ပေႃး (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	ပေႃး (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	ပေႃး (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	ပေႃး (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	ပေႃး (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	ပေႃး (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	ပေႃး (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	ပေႃး (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	ပေႃး (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	ပေႃး (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	ပေႃး (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	ပေႃး (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	ပေႃး (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	ပေႃး (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	ပေႃး (k < 0)
 		info = 5;
-	if (m < 0)
+	ပေႃး (m < 0)
 		info = 4;
-	if (transb < 0)
+	ပေႃး (transb < 0)
 		info = 3;
-	if (transa < 0)
+	ပေႃး (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	ပေႃး (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ပေႃး (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		ပွၵ်ႈ;
 	}
-#else
+#ပေႃးဢမ်ႇ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	puur_naa_nka transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,28 +166,28 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	ပေႃး (order == CblasColMajor) {
+		ပေႃး (Uplo == CblasUpper) uplo = 0;
+		ပေႃး (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		ပေႃး (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		ပေႃး (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ပေႃး (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		ပေႃး (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		ပေႃး (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		ပေႃး (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ပေႃး (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		ပေႃး (TransB == CblasConjTrans)
 			transb = 1;
 
 		a = (void *)A;
@@ -200,29 +200,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		ပေႃး (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		ပေႃး (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		ပေႃး (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		ပေႃး (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		ပေႃး (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		ပေႃး (k < 0)
 			info = 5;
-		if (m < 0)
+		ပေႃး (m < 0)
 			info = 4;
-		if (transb < 0)
+		ပေႃး (transb < 0)
 			info = 3;
-		if (transa < 0)
+		ပေႃး (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		ပေႃး (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	ပေႃး (order == CblasRowMajor) {
 
 		a = (void *)B;
 		b = (void *)A;
@@ -230,27 +230,27 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		ပေႃး (Uplo == CblasUpper) uplo = 0;
+		ပေႃး (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		ပေႃး (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		ပေႃး (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ပေႃး (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		ပေႃး (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		ပေႃး (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		ပေႃး (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ပေႃး (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		ပေႃး (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,90 +259,90 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		ပေႃး (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		ပေႃး (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		ပေႃး (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		ပေႃး (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		ပေႃး (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		ပေႃး (k < 0)
 			info = 5;
-		if (m < 0)
+		ပေႃး (m < 0)
 			info = 4;
-		if (transb < 0)
+		ပေႃး (transb < 0)
 			info = 2;
-		if (transa < 0)
+		ပေႃး (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		ပေႃး (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ပေႃး (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		ပွၵ်ႈ;
 	}
 
 #endif
-	int buffer_size;
+	puur_naa_nka buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	puur_naa_nka nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	static puur_naa_nka (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, puur_naa_nka) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	puur_naa_nka (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	ပေႃး (m == 0)
+		ပွၵ်ႈ;
 
 	IDEBUG_START;
 
 	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
+	ပေႃး (uplo == 1) {
 		for (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			ပေႃး (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			ပေႃး (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
+#ပေႃး 0
+			ပေႃး (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			ပေႃး (alpha == ZERO)
 				continue;
 #endif
 
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / parimaa_na(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / parimaa_na(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -350,29 +350,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ပေႃး (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			ပေႃးဢမ်ႇ
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ပေႃး (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				ပေႃး (!(transa & 1))
+				(gemv[(puur_naa_nka)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				ပေႃးဢမ်ႇ
+				(gemv[(puur_naa_nka)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} ပေႃးဢမ်ႇ {
+				ပေႃး (!(transa & 1))
+				(gemv_thread[(puur_naa_nka)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				ပေႃးဢမ်ႇ
+				(gemv_thread[(puur_naa_nka)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
@@ -381,29 +381,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 			STACK_FREE(buffer);
 		}
-	} else {
+	} ပေႃးဢမ်ႇ {
 
 		for (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			ပေႃး (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
+#ပေႃး 0
+			ပေႃး (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			ပေႃး (alpha == ZERO)
 				continue;
 #endif
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / parimaa_na(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / parimaa_na(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -411,29 +411,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ပေႃး (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			ပေႃးဢမ်ႇ
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ပေႃး (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				ပေႃး (!(transa & 1))
+				(gemv[(puur_naa_nka)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				ပေႃးဢမ်ႇ
+				(gemv[(puur_naa_nka)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} ပေႃးဢမ်ႇ {
+				ပေႃး (!(transa & 1))
+				(gemv_thread[(puur_naa_nka)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				ပေႃးဢမ်ႇ
+				(gemv_thread[(puur_naa_nka)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
@@ -445,5 +445,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	ပွၵ်ႈ;
 }

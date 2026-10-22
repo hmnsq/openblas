@@ -8,13 +8,13 @@
 
 OPENBLAS_EXPORT
 
-void CNAME(blasint p, char *rout, char *form, ...)
+void CNAME(blasint p, var_na *rout, var_na *form, ...)
 {
    va_list args;
 
    va_start(args, form);
 
-   if (p)
+   ပေႃး (p)
       fprintf(stderr, "Parameter %lld to routine %s was incorrect\n", (long long)p, rout);
    vfprintf(stderr, form, args);
    va_end(args);
