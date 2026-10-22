@@ -31,93 +31,93 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 **********************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن <stdlib.h>
+#ضمن "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+فراغ openblas_warning(صحيح verbose, ثابت حرف * پیغام);
 
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMM_BATCH_STRIDED "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD dgemm_batch_thread
-#else
-#define ERROR_NAME "SGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD sgemm_batch_thread
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMM_BATCH_STRIDED "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD zgemm_batch_thread
-#else
-#define ERROR_NAME "CGEMM_BATCH_STRIDED "
-#define GEMM_BATCH_THREAD cgemm_batch_thread
-#endif
-#endif
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+#که_نه_تعریف_شوی COMPLEX
+#که_تعریف_شوی XDOUBLE
+#تعریف_کړه ERROR_NAME "QGEMM_BATCH_STRIDED "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کړه ERROR_NAME "DGEMM_BATCH_STRIDED "
+#تعریف_کړه GEMM_BATCH_THREAD dgemm_batch_thread
+#وإلا
+#تعریف_کړه ERROR_NAME "SGEMM_BATCH_STRIDED "
+#تعریف_کړه GEMM_BATCH_THREAD sgemm_batch_thread
+#د_که_پای
+#وإلا
+#که_تعریف_شوی XDOUBLE
+#تعریف_کړه ERROR_NAME "XGEMM_BATCH_STRIDED "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کړه ERROR_NAME "ZGEMM_BATCH_STRIDED "
+#تعریف_کړه GEMM_BATCH_THREAD zgemm_batch_thread
+#وإلا
+#تعریف_کړه ERROR_NAME "CGEMM_BATCH_STRIDED "
+#تعریف_کړه GEMM_BATCH_THREAD cgemm_batch_thread
+#د_که_پای
+#د_که_پای
+ساكن صحيح (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
-#define USE_SMALL_MATRIX_OPT 1
-#else
-#define USE_SMALL_MATRIX_OPT 0
-#endif
+#إذا defined(SMALL_ماتریکس_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
+#تعریف_کړه USE_SMALL_ماتریکس_OPT 1
+#وإلا
+#تعریف_کړه USE_SMALL_ماتریکس_OPT 0
+#د_که_پای
 
-#if USE_SMALL_MATRIX_OPT
-#ifndef DYNAMIC_ARCH
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
-#endif
+#إذا USE_SMALL_ماتریکس_OPT
+#که_نه_تعریف_شوی DYNAMIC_ARCH
+#تعریف_کړه SMALL_KERNEL_ADDR(جدول, idx) ((فراغ *)(جدول[idx]))
+#وإلا
+#تعریف_کړه SMALL_KERNEL_ADDR(جدول, idx) ((فراغ *)(*(uintptr_t *)((حرف *)gotoblas + (size_t)(جدول[idx]))))
+#د_که_پای
 
 
-#ifndef COMPLEX
-static size_t gemm_small_kernel[] = {
+#که_نه_تعریف_شوی COMPLEX
+ساكن size_t gemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, 0, 0,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, 0, 0,
 };
 
 
-static size_t gemm_small_kernel_b0[] = {
+ساكن size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, 0, 0,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#تعریف_کړه GEMM_SMALL_KERNEL_B0(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#تعریف_کړه GEMM_SMALL_KERNEL(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#وإلا
 
-static size_t zgemm_small_kernel[] = {
+ساكن size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, GEMM_SMALL_KERNEL_RT, GEMM_SMALL_KERNEL_CT,
 	GEMM_SMALL_KERNEL_NR, GEMM_SMALL_KERNEL_TR, GEMM_SMALL_KERNEL_RR, GEMM_SMALL_KERNEL_CR,
 	GEMM_SMALL_KERNEL_NC, GEMM_SMALL_KERNEL_TC, GEMM_SMALL_KERNEL_RC, GEMM_SMALL_KERNEL_CC,
 };
 
-static size_t zgemm_small_kernel_b0[] = {
+ساكن size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, GEMM_SMALL_KERNEL_B0_RN, GEMM_SMALL_KERNEL_B0_CN,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, GEMM_SMALL_KERNEL_B0_RT, GEMM_SMALL_KERNEL_B0_CT,
 	GEMM_SMALL_KERNEL_B0_NR, GEMM_SMALL_KERNEL_B0_TR, GEMM_SMALL_KERNEL_B0_RR, GEMM_SMALL_KERNEL_B0_CR,
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
-#endif
-#endif
+#تعریف_کړه ZGEMM_SMALL_KERNEL(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#تعریف_کړه ZGEMM_SMALL_KERNEL_B0(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#د_که_پای
+#د_که_پای
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME(char *transa, char *transb,
+#که_نه_تعریف_شوی CBLAS
+فراغ NAME(حرف *transa, حرف *transb,
 	   blasint * M, blasint * N, blasint * K,
 	   FLOAT * Alpha,
 	   IFLOAT * a, blasint * Lda,
@@ -127,9 +127,9 @@ void NAME(char *transa, char *transb,
 	   FLOAT * Beta,
 	   FLOAT * c, blasint * Ldc, blasint * stride_c, blasint * matcount) {
  	  
-           char ta = *transa;
-   	   char tb = *transb;	   
-	   blasint count = *matcount;
+           حرف ta = *transa;
+   	   حرف tb = *transb;	   
+	   blasint شمېر = *matcount;
 	   blasint stridea= *stride_a;
 	   blasint strideb= *stride_b;
 	   blasint stridec= *stride_c;
@@ -139,307 +139,307 @@ void NAME(char *transa, char *transb,
 	   blasint lda=*Lda;
 	   blasint ldb=*Ldb;
 	   blasint ldc=*Ldc;
-#if !defined(COMPLEX)	   
+#إذا !defined(COMPLEX)	   
 	   FLOAT alpha=*Alpha;
 	   FLOAT beta=*Beta;
-#else
+#وإلا
 	   FLOAT *alpha=Alpha;
 	   FLOAT *beta=Beta;
-#endif
-#else
+#د_که_پای
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transb,
+فراغ CNAME(تعداد CBLAS_ترتیب ترتیب, تعداد CBLAS_TRANSPOSE transa, تعداد CBLAS_TRANSPOSE transb,
 	   blasint m, blasint n, blasint k,
-#ifndef COMPLEX
+#که_نه_تعریف_شوی COMPLEX
 	   FLOAT alpha,
 	   IFLOAT * a, blasint lda, blasint stridea,
 	   IFLOAT * b, blasint ldb, blasint strideb,
 	   FLOAT beta,
-	   FLOAT * c, blasint ldc, blasint stridec, blasint count) {
-#else
-	   void * valpha,
-	   void * va, blasint lda, blasint stridea,
-	   void * vb, blasint ldb, blasint strideb,
-	   void * vbeta,
-	   void * vc, blasint ldc, blasint stridec, blasint count) {
+	   FLOAT * c, blasint ldc, blasint stridec, blasint شمېر) {
+#وإلا
+	   فراغ * valpha,
+	   فراغ * va, blasint lda, blasint stridea,
+	   فراغ * vb, blasint ldb, blasint strideb,
+	   فراغ * vbeta,
+	   فراغ * vc, blasint ldc, blasint stridec, blasint شمېر) {
 
   FLOAT * alpha=(FLOAT *)valpha;
   FLOAT * beta=(FLOAT *)vbeta;
   FLOAT * a=(FLOAT*)va;
   FLOAT * b=(FLOAT*)vb;
   FLOAT * c=(FLOAT*)vc;
-#endif
-#endif
-  BLASLONG group_m, group_n, group_k;
-  BLASLONG group_lda, group_ldb, group_ldc;
+#د_که_پای
+#د_که_پای
+  BLASLONG ډله_m, ډله_n, ډله_k;
+  BLASLONG ډله_lda, ډله_ldb, ډله_ldc;
 
-  blas_arg_t * args_array=NULL;
+  blas_arg_t * دلیلونه_array=عدم;
 
-  int mode=0, group_mode=0;
+  صحيح ډېرپېښ=0, ډله_ډېرپېښ=0;
 
   blasint i=0;
 
-  int group_transa, group_transb;
-  BLASLONG group_nrowa, group_nrowb;
+  صحيح ډله_transa, ډله_transb;
+  BLASLONG ډله_nrowa, ډله_nrowb;
   blasint info;
 
-  void * group_routine=NULL;
-#ifdef SMALL_MATRIX_OPT
-  void * group_small_matrix_opt_routine=NULL;
-#endif
+  فراغ * ډله_routine=عدم;
+#که_تعریف_شوی SMALL_ماتریکس_OPT
+  فراغ * ډله_small_ماتریکس_opt_routine=عدم;
+#د_که_پای
   
-#if defined (SMP) || defined(SMALL_MATRIX_OPT)
-  double MNK;
-#endif
+#إذا defined (SMP) || defined(SMALL_ماتریکس_OPT)
+  مزدوج MNK;
+#د_که_پای
 
   PRINT_DEBUG_CNAME;
 
-  args_array=(blas_arg_t *)malloc(count * sizeof(blas_arg_t));
+  دلیلونه_array=(blas_arg_t *)حافظه_ورکړه(شمېر * حجم(blas_arg_t));
   
-  if(args_array == NULL){
+  إذا(دلیلونه_array == عدم){
     openblas_warning(0, "memory alloc failed!\n");
-    return;
+    أرجع;
   }
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
+#که_تعریف_شوی SMP
+#که_نه_تعریف_شوی COMPLEX
+#که_تعریف_شوی XDOUBLE
+  ډېرپېښ  =  BLAS_XDOUBLE | BLAS_REAL;
+#وإلاإذا defined(DOUBLE)
+  ډېرپېښ  =  BLAS_DOUBLE  | BLAS_REAL;
+#وإلا
+  ډېرپېښ  =  BLAS_SINGLE  | BLAS_REAL;
+#د_که_پای
+#وإلا
+#که_تعریف_شوی XDOUBLE
+  ډېرپېښ  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وإلاإذا defined(DOUBLE)
+  ډېرپېښ  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#وإلا
+  ډېرپېښ  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#د_که_پای
+#د_که_پای
+#د_که_پای
   
-  for(i=0; i<count; i++) {
+  لكل(i=0; i<شمېر; i++) {
 
-    group_m = group_n = group_k = 0;
-    group_lda = group_ldb = group_ldc = 0;
-    group_transa = -1;
-    group_transb = -1;
+    ډله_m = ډله_n = ډله_k = 0;
+    ډله_lda = ډله_ldb = ډله_ldc = 0;
+    ډله_transa = -1;
+    ډله_transb = -1;
     info   = 0;
    
-#if defined(CBLAS)
-    if (order == CblasColMajor) {
-      group_m = m;
-      group_n = n;
-      group_k = k;
+#إذا defined(CBLAS)
+    إذا (ترتیب == Cblas_ستون_Major) {
+      ډله_m = m;
+      ډله_n = n;
+      ډله_k = k;
 
-      group_lda = lda;
-      group_ldb = ldb;
-      group_ldc = ldc;
+      ډله_lda = lda;
+      ډله_ldb = ldb;
+      ډله_ldc = ldc;
 
-      if (transa == CblasNoTrans)     group_transa = 0;
-      if (transa == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transa == CblasConjNoTrans) group_transa = 0;
-      if (transa == CblasConjTrans)   group_transa = 1;
-#else
-      if (transa == CblasConjNoTrans) group_transa = 2;
-      if (transa == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transb == CblasNoTrans)     group_transb = 0;
-      if (transb == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transb == CblasConjNoTrans) group_transb = 0;
-      if (transb == CblasConjTrans)   group_transb = 1;
-#else
-      if (transb == CblasConjNoTrans) group_transb = 2;
-      if (transb == CblasConjTrans)   group_transb = 3;
-#endif
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
-
-      info=-1;
-	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;
-
-    }else if (order == CblasRowMajor) {
-      
-      group_m = n;
-      group_n = m;
-      group_k = k;
-
-      group_lda = ldb;
-      group_ldb = lda;
-      group_ldc = ldc;
-
-      if (transb == CblasNoTrans)     group_transa = 0;
-      if (transb == CblasTrans)       group_transa = 1;
-#ifndef COMPLEX
-      if (transb == CblasConjNoTrans) group_transa = 0;
-      if (transb == CblasConjTrans)   group_transa = 1;
-#else
-      if (transb == CblasConjNoTrans) group_transa = 2;
-      if (transb == CblasConjTrans)   group_transa = 3;
-#endif
-      if (transa == CblasNoTrans)     group_transb = 0;
-      if (transa == CblasTrans)       group_transb = 1;
-#ifndef COMPLEX
-      if (transa == CblasConjNoTrans) group_transb = 0;
-      if (transa == CblasConjTrans)   group_transb = 1;
-#else
-      if (transa == CblasConjNoTrans) group_transb = 2;
-      if (transa == CblasConjTrans)   group_transb = 3;
-#endif
-
-#else
-      group_m = m;
-      group_n = n;
-      group_k = k;
-
-      group_lda = lda;
-      group_ldb = ldb;
-      group_ldc = ldc;
-      
-      if (ta == 'N')   group_transa = 0;
-      if (ta == 'T')   group_transa = 1;
-#ifndef COMPLEX
-      if (ta == 'C')   group_transa = 1;
-#else
-      if (ta == 'C')   group_transa = 3;
-#endif
-      if (tb == 'N')   group_transb = 0;
-      if (tb == 'T')   group_transb = 1;
-#ifndef COMPLEX
-      if (tb == 'C')   group_transb = 1;
-#else
-      if (tb == 'C')   group_transb = 3;
-#endif
-#endif
-
-      group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
-      group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      إذا (transa == CblasNoTrans)     ډله_transa = 0;
+      إذا (transa == CblasTrans)       ډله_transa = 1;
+#که_نه_تعریف_شوی COMPLEX
+      إذا (transa == CblasConjNoTrans) ډله_transa = 0;
+      إذا (transa == CblasConjTrans)   ډله_transa = 1;
+#وإلا
+      إذا (transa == CblasConjNoTrans) ډله_transa = 2;
+      إذا (transa == CblasConjTrans)   ډله_transa = 3;
+#د_که_پای
+      إذا (transb == CblasNoTrans)     ډله_transb = 0;
+      إذا (transb == CblasTrans)       ډله_transb = 1;
+#که_نه_تعریف_شوی COMPLEX
+      إذا (transb == CblasConjNoTrans) ډله_transb = 0;
+      إذا (transb == CblasConjTrans)   ډله_transb = 1;
+#وإلا
+      إذا (transb == CblasConjNoTrans) ډله_transb = 2;
+      إذا (transb == CblasConjTrans)   ډله_transb = 3;
+#د_که_پای
+      ډله_nrowa = ډله_m;
+      إذا (ډله_transa & 1) ډله_nrowa = ډله_k;
+      ډله_nrowb = ډله_k;
+      إذا (ډله_transb & 1) ډله_nrowb = ډله_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;      
-#if defined(CBLAS)
+      إذا (ډله_ldc < ډله_m) info = 13;
+      إذا (ډله_ldb < ډله_nrowb)  info = 10;
+      إذا (ډله_lda < ډله_nrowa)  info =  8;
+      إذا (ډله_k < 0)        info =  5;
+      إذا (ډله_n < 0)        info =  4;
+      إذا (ډله_m < 0)        info =  3;
+      إذا (ډله_transb < 0)        info =  2;
+      إذا (ډله_transa < 0)        info =  1;
+
+    }وإلا إذا (ترتیب == Cblas_لیکه_Major) {
+      
+      ډله_m = n;
+      ډله_n = m;
+      ډله_k = k;
+
+      ډله_lda = ldb;
+      ډله_ldb = lda;
+      ډله_ldc = ldc;
+
+      إذا (transb == CblasNoTrans)     ډله_transa = 0;
+      إذا (transb == CblasTrans)       ډله_transa = 1;
+#که_نه_تعریف_شوی COMPLEX
+      إذا (transb == CblasConjNoTrans) ډله_transa = 0;
+      إذا (transb == CblasConjTrans)   ډله_transa = 1;
+#وإلا
+      إذا (transb == CblasConjNoTrans) ډله_transa = 2;
+      إذا (transb == CblasConjTrans)   ډله_transa = 3;
+#د_که_پای
+      إذا (transa == CblasNoTrans)     ډله_transb = 0;
+      إذا (transa == CblasTrans)       ډله_transb = 1;
+#که_نه_تعریف_شوی COMPLEX
+      إذا (transa == CblasConjNoTrans) ډله_transb = 0;
+      إذا (transa == CblasConjTrans)   ډله_transb = 1;
+#وإلا
+      إذا (transa == CblasConjNoTrans) ډله_transb = 2;
+      إذا (transa == CblasConjTrans)   ډله_transb = 3;
+#د_که_پای
+
+#وإلا
+      ډله_m = m;
+      ډله_n = n;
+      ډله_k = k;
+
+      ډله_lda = lda;
+      ډله_ldb = ldb;
+      ډله_ldc = ldc;
+      
+      إذا (ta == 'N')   ډله_transa = 0;
+      إذا (ta == 'T')   ډله_transa = 1;
+#که_نه_تعریف_شوی COMPLEX
+      إذا (ta == 'C')   ډله_transa = 1;
+#وإلا
+      إذا (ta == 'C')   ډله_transa = 3;
+#د_که_پای
+      إذا (tb == 'N')   ډله_transb = 0;
+      إذا (tb == 'T')   ډله_transb = 1;
+#که_نه_تعریف_شوی COMPLEX
+      إذا (tb == 'C')   ډله_transb = 1;
+#وإلا
+      إذا (tb == 'C')   ډله_transb = 3;
+#د_که_پای
+#د_که_پای
+
+      ډله_nrowa = ډله_m;
+      إذا (ډله_transa & 1) ډله_nrowa = ډله_k;
+      ډله_nrowb = ډله_k;
+      إذا (ډله_transb & 1) ډله_nrowb = ډله_n;
+
+      info=-1;
+	
+      إذا (ډله_ldc < ډله_m) info = 13;
+      إذا (ډله_ldb < ډله_nrowb)  info = 10;
+      إذا (ډله_lda < ډله_nrowa)  info =  8;
+      إذا (ډله_k < 0)        info =  5;
+      إذا (ډله_n < 0)        info =  4;
+      إذا (ډله_m < 0)        info =  3;
+      إذا (ډله_transb < 0)        info =  2;
+      إذا (ډله_transa < 0)        info =  1;      
+#إذا defined(CBLAS)
     }
-#endif
+#د_که_پای
 
-    if (info >= 0) {
-      BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-      free(args_array);
-      return;
+    إذا (info >= 0) {
+      BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+      حرر(دلیلونه_array);
+      أرجع;
     }
 
     /* Every member shares M and N: an empty member means an empty batch. */
-    if (group_m == 0 || group_n == 0) { free(args_array); return; }
+    إذا (ډله_m == 0 || ډله_n == 0) { حرر(دلیلونه_array); أرجع; }
 
-    group_mode=mode;
+    ډله_ډېرپېښ=ډېرپېښ;
 
-#if defined(SMP) || defined(SMALL_MATRIX_OPT)
-    MNK = (double) group_m * (double) group_n * (double) group_k;
-#endif
+#إذا defined(SMP) || defined(SMALL_ماتریکس_OPT)
+    MNK = (مزدوج) ډله_m * (مزدوج) ډله_n * (مزدوج) ډله_k;
+#د_که_پای
 
-#ifdef SMALL_MATRIX_OPT
-#if !defined(COMPLEX)
-    if (*(FLOAT *)(&alpha) != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
+#که_تعریف_شوی SMALL_ماتریکس_OPT
+#إذا !defined(COMPLEX)
+    إذا (*(FLOAT *)(&alpha) != ZERO &&
+        GEMM_SMALL_ماتریکس_PERMIT(ډله_transa, ډله_transb, ډله_m, ډله_n, ډله_k,
                                  *(FLOAT *)(&alpha), *(FLOAT *)(&beta))){
-#else
-    if (((FLOAT *)(alpha))[0] != ZERO &&
-        GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
+#وإلا
+    إذا (((FLOAT *)(alpha))[0] != ZERO &&
+        GEMM_SMALL_ماتریکس_PERMIT(ډله_transa, ډله_transb, ډله_m, ډله_n, ډله_k,
                                  ((FLOAT *)(alpha))[0], ((FLOAT *)(alpha))[1],
                                  ((FLOAT *)(beta))[0], ((FLOAT *)(beta))[1])){
-#endif
-      group_routine=NULL;
-#if !defined(COMPLEX)
-      if(beta == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((group_transb<<2)|group_transa));
+#د_که_پای
+      ډله_routine=عدم;
+#إذا !defined(COMPLEX)
+      إذا(beta == 0.0){
+	ډله_ډېرپېښ=ډېرپېښ | BLAS_SMALL_B0_OPT;
+	ډله_small_ماتریکس_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((ډله_transb<<2)|ډله_transa));
+      }وإلا{
+	ډله_ډېرپېښ=ډېرپېښ | BLAS_SMALL_OPT;
+	ډله_small_ماتریکس_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((ډله_transb<<2)|ډله_transa));
       }
-#else
-      if(beta[0] == 0.0 && beta[1] == 0.0){
-	group_mode=mode | BLAS_SMALL_B0_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
-	group_mode=mode | BLAS_SMALL_OPT;
-	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((group_transb<<2)|group_transa));
+#وإلا
+      إذا(beta[0] == 0.0 && beta[1] == 0.0){
+	ډله_ډېرپېښ=ډېرپېښ | BLAS_SMALL_B0_OPT;
+	ډله_small_ماتریکس_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((ډله_transb<<2)|ډله_transa));
+      }وإلا{
+	ډله_ډېرپېښ=ډېرپېښ | BLAS_SMALL_OPT;
+	ډله_small_ماتریکس_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((ډله_transb<<2)|ډله_transa));
       }
 
-#endif
+#د_که_پای
       
-    }else{
-#endif
-      group_routine=(void*)(gemm[(group_transb<<2)|group_transa]);
-#ifdef SMALL_MATRIX_OPT
+    }وإلا{
+#د_که_پای
+      ډله_routine=(فراغ*)(gemm[(ډله_transb<<2)|ډله_transa]);
+#که_تعریف_شوی SMALL_ماتریکس_OPT
     }
-#endif    
+#د_که_پای    
 
     
-      args_array[i].m=group_m;
-      args_array[i].n=group_n;
-      args_array[i].k=group_k;
-      args_array[i].lda=group_lda;
-      args_array[i].ldb=group_ldb;
-      args_array[i].ldc=group_ldc;
-#ifdef COMPLEX
-      args_array[i].alpha=alpha;
-      args_array[i].beta=beta;
-#else
-      args_array[i].alpha=&alpha;
-      args_array[i].beta=&beta;
-#endif
+      دلیلونه_array[i].m=ډله_m;
+      دلیلونه_array[i].n=ډله_n;
+      دلیلونه_array[i].k=ډله_k;
+      دلیلونه_array[i].lda=ډله_lda;
+      دلیلونه_array[i].ldb=ډله_ldb;
+      دلیلونه_array[i].ldc=ډله_ldc;
+#که_تعریف_شوی COMPLEX
+      دلیلونه_array[i].alpha=alpha;
+      دلیلونه_array[i].beta=beta;
+#وإلا
+      دلیلونه_array[i].alpha=&alpha;
+      دلیلونه_array[i].beta=&beta;
+#د_که_پای
 
-#if defined(CBLAS)
-      if (order == CblasColMajor) {      
-	args_array[i].a=&(a[i*stridea]);
-	args_array[i].b=&(b[i*strideb]);
-      }else if(order == CblasRowMajor){
-	args_array[i].a=&(b[i*strideb]);
-	args_array[i].b=&(a[i*stridea]);
+#إذا defined(CBLAS)
+      إذا (ترتیب == Cblas_ستون_Major) {      
+	دلیلونه_array[i].a=&(a[i*stridea]);
+	دلیلونه_array[i].b=&(b[i*strideb]);
+      }وإلا إذا(ترتیب == Cblas_لیکه_Major){
+	دلیلونه_array[i].a=&(b[i*strideb]);
+	دلیلونه_array[i].b=&(a[i*stridea]);
       }
-#else
-	args_array[i].a=&(a[i*stridea]);
-	args_array[i].b=&(b[i*strideb]);
-#endif
+#وإلا
+	دلیلونه_array[i].a=&(a[i*stridea]);
+	دلیلونه_array[i].b=&(b[i*strideb]);
+#د_که_پای
       
-      args_array[i].c= &c[i*stridec];
+      دلیلونه_array[i].c= &c[i*stridec];
       
-      args_array[i].routine_mode=group_mode;
-      args_array[i].routine=group_routine;
-#ifdef SMALL_MATRIX_OPT
-      if (!group_routine)
-        args_array[i].routine=group_small_matrix_opt_routine;
-#endif      
+      دلیلونه_array[i].routine_ډېرپېښ=ډله_ډېرپېښ;
+      دلیلونه_array[i].routine=ډله_routine;
+#که_تعریف_شوی SMALL_ماتریکس_OPT
+      إذا (!ډله_routine)
+        دلیلونه_array[i].routine=ډله_small_ماتریکس_opt_routine;
+#د_که_پای      
   }
 
-  if(count>0) {
-    GEMM_BATCH_THREAD(args_array,count);
+  إذا(شمېر>0) {
+    GEMM_BATCH_THREAD(دلیلونه_array,شمېر);
   }
 
-  free(args_array);
+  حرر(دلیلونه_array);
 }
