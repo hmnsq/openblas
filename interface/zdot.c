@@ -36,180 +36,180 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-#ifdef RETURN_BY_STRUCT
-#ifdef XDOUBLE
-#define MYTYPE myxcomplex_t
-#elif defined DOUBLE
-#define MYTYPE myzcomplex_t
-#else
-#define MYTYPE myccomplex_t
-#endif
-#endif
+#اگر_تعریف_شده RETURN_BY_STRUCT
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن MYTYPE myxcomplex_t
+#وإلاإذا defined DOUBLE
+#تعریف_کن MYTYPE myzcomplex_t
+#وإلا
+#تعریف_کن MYTYPE myccomplex_t
+#پایان_اگر
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-#ifdef RETURN_BY_STRUCT
+#اگر_تعریف_شده RETURN_BY_STRUCT
 MYTYPE         NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#elif defined RETURN_BY_STACK
-void           NAME(OPENBLAS_COMPLEX_FLOAT *result, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#else
+#وإلاإذا defined RETURN_BY_پشته
+فراغ           NAME(OPENBLAS_COMPLEX_FLOAT *نتیجه, blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
+#وإلا
 OPENBLAS_COMPLEX_FLOAT NAME(                        blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY) {
-#endif
+#پایان_اگر
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-#ifndef RETURN_BY_STACK
+#اگر_تعریف_نشده RETURN_BY_پشته
   OPENBLAS_COMPLEX_FLOAT ret;
-#endif
-#ifdef RETURN_BY_STRUCT
+#پایان_اگر
+#اگر_تعریف_شده RETURN_BY_STRUCT
   MYTYPE  myret;
-#endif
+#پایان_اگر
 
-#ifndef RETURN_BY_STRUCT
+#اگر_تعریف_نشده RETURN_BY_STRUCT
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#پایان_اگر
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) {
-#ifdef RETURN_BY_STRUCT
+  إذا (n <= 0) {
+#اگر_تعریف_شده RETURN_BY_STRUCT
     myret.r = 0.;
     myret.i = 0.;
-    return myret;
-#elif defined RETURN_BY_STACK
-    *result = zero;
-    return;
-#else
-    return zero;
-#endif
+    أرجع myret;
+#وإلاإذا defined RETURN_BY_پشته
+    *نتیجه = zero;
+    أرجع;
+#وإلا
+    أرجع zero;
+#پایان_اگر
   }
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  إذا (incx < 0) x -= (n - 1) * incx * 2;
+  إذا (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef RETURN_BY_STRUCT
+#اگر_تعریف_شده RETURN_BY_STRUCT
 
-#ifndef CONJ
+#اگر_تعریف_نشده CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#وإلا
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#پایان_اگر
 
   myret.r = CREAL ret;
   myret.i = CIMAG ret;
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتها(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return myret;
+  أرجع myret;
 
-#elif defined RETURN_BY_STACK
+#وإلاإذا defined RETURN_BY_پشته
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#اگر_تعریف_نشده CONJ
+  *نتیجه = DOTU_K(n, x, incx, y, incy);
+#وإلا
+  *نتیجه = DOTC_K(n, x, incx, y, incy);
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتها(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-#else
+#وإلا
 
-#ifndef CONJ
+#اگر_تعریف_نشده CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#وإلا
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتها(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return ret;
+  أرجع ret;
 
-#endif
+#پایان_اگر
 
 }
 
-#else
+#وإلا
 
-#ifdef FORCE_USE_STACK
-void           CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy, void* vresult){
-OPENBLAS_COMPLEX_FLOAT *result= (OPENBLAS_COMPLEX_FLOAT*)vresult;
-#else
-OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+#اگر_تعریف_شده FORCE_USE_پشته
+فراغ           CNAME(blasint n, فراغ *vx, blasint incx, فراغ *vy, blasint incy, فراغ* vresult){
+OPENBLAS_COMPLEX_FLOAT *نتیجه= (OPENBLAS_COMPLEX_FLOAT*)vresult;
+#وإلا
+OPENBLAS_COMPLEX_FLOAT CNAME(blasint n, فراغ *vx, blasint incx, فراغ *vy, blasint incy){
 
   OPENBLAS_COMPLEX_FLOAT ret;
   OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-#endif
+#پایان_اگر
   FLOAT *x = (FLOAT*) vx;
   FLOAT *y = (FLOAT*) vy;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) {
-#ifdef FORCE_USE_STACK
+  إذا (n <= 0) {
+#اگر_تعریف_شده FORCE_USE_پشته
     OPENBLAS_COMPLEX_FLOAT zero=OPENBLAS_MAKE_COMPLEX_FLOAT(0.0, 0.0);
-    *result = zero;
+    *نتیجه = zero;
 //	CREAL(*result) = 0.0;
 //	CIMAG(*result) = 0.0;
-    return;
-#else
-    return zero;
-#endif
+    أرجع;
+#وإلا
+    أرجع zero;
+#پایان_اگر
   }
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  إذا (incx < 0) x -= (n - 1) * incx * 2;
+  إذا (incy < 0) y -= (n - 1) * incy * 2;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-#ifdef FORCE_USE_STACK
+#اگر_تعریف_شده FORCE_USE_پشته
 
-#ifndef CONJ
-  *result = DOTU_K(n, x, incx, y, incy);
-#else
-  *result = DOTC_K(n, x, incx, y, incy);
-#endif
+#اگر_تعریف_نشده CONJ
+  *نتیجه = DOTU_K(n, x, incx, y, incy);
+#وإلا
+  *نتیجه = DOTC_K(n, x, incx, y, incy);
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتها(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-#else
+#وإلا
 
-#ifndef CONJ
+#اگر_تعریف_نشده CONJ
   ret = DOTU_K(n, x, incx, y, incy);
-#else
+#وإلا
   ret = DOTC_K(n, x, incx, y, incy);
-#endif
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتها(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return ret;
+  أرجع ret;
 
-#endif
+#پایان_اگر
 
 }
 
-#endif
+#پایان_اگر

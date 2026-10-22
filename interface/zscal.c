@@ -36,89 +36,89 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+فراغ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
 
-#ifndef SSCAL
+#اگر_تعریف_نشده SSCAL
   FLOAT *alpha=ALPHA;
-#else
+#وإلا
   FLOAT alpha[2] = {ALPHA[0], ZERO};
-#endif
+#پایان_اگر
 
-#else
+#وإلا
 
-#ifndef SSCAL
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx){
+#اگر_تعریف_نشده SSCAL
+فراغ CNAME(blasint n, فراغ *VALPHA, فراغ *vx, blasint incx){
 
   FLOAT *x = (FLOAT*) vx;
   FLOAT *alpha=(FLOAT*)VALPHA;
-#else
-void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
+#وإلا
+فراغ CNAME(blasint n, FLOAT alpha_r, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
 
   FLOAT alpha[2] = {alpha_r, ZERO};
-#endif
-#endif
+#پایان_اگر
+#پایان_اگر
 
-#ifdef SMP
-  int mode;
-  int nthreads;
-#endif
+#اگر_تعریف_شده SMP
+  صحيح نما;
+  صحيح nthreads;
+#پایان_اگر
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#پایان_اگر
 
-  if (incx <= 0 || n <= 0) return;
+  إذا (incx <= 0 || n <= 0) أرجع;
 
-  if ((alpha[0] == ONE) && (alpha[1] == ZERO)) return;
+  إذا ((alpha[0] == ONE) && (alpha[1] == ZERO)) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-#ifdef SMP
-  if ( n <= 1048576 )
+#اگر_تعریف_شده SMP
+  إذا ( n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  وإلا
+	nthreads = رقم_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#پایان_اگر
 
-  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, عدم, 0, عدم, 1);
 
-#ifdef SMP
-  } else {
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE | BLAS_COMPLEX;
-#endif
+#اگر_تعریف_شده SMP
+  } وإلا {
+#اگر_تعریف_شده DOUBLE
+    نما  =  BLAS_DOUBLE | BLAS_COMPLEX;
+#وإلا
+    نما  =  BLAS_SINGLE | BLAS_COMPLEX;
+#پایان_اگر
 
-    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (int (*)(void))SCAL_K, nthreads);
+    blas_level1_thread(نما, n, 0, 0,  alpha, x, incx, عدم, 0, عدم, 1, (صحيح (*)(فراغ))SCAL_K, nthreads);
 
   }
-#endif
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(4, n, n);
+  FUNCTION_PROFILE_انتها(4, n, n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 
 }

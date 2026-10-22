@@ -1,74 +1,74 @@
-#include <math.h>
-#include <float.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <math.h>
+#ضمن <float.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+فراغ NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#وإلا
 
-void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+فراغ CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#endif
+#پایان_اگر
 
-#ifdef DOUBLE
-  long double safmin = DBL_MIN;
-#else
-  long double safmin = FLT_MIN;
-#endif
+#اگر_تعریف_شده DOUBLE
+  دراز مزدوج safmin = DBL_MIN;
+#وإلا
+  دراز مزدوج safmin = FLT_MIN;
+#پایان_اگر
 
-#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
+#إذا defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
 
-  long double da = *DA;
-  long double db = *DB;
-  long double c;
-  long double s;
-  long double r, z;
-  long double sigma, dascal,dbscal;
+  دراز مزدوج da = *DA;
+  دراز مزدوج db = *DB;
+  دراز مزدوج c;
+  دراز مزدوج s;
+  دراز مزدوج r, z;
+  دراز مزدوج sigma, dascal,dbscal;
 
-  long double ada = fabsl(da);
-  long double adb = fabsl(db);
-  long double maxab = MAX(ada,adb);
-  long double safmax;
-  long double scale;
+  دراز مزدوج ada = fabsl(da);
+  دراز مزدوج adb = fabsl(db);
+  دراز مزدوج maxab = MAX(ada,adb);
+  دراز مزدوج safmax;
+  دراز مزدوج scale;
 
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#پایان_اگر
 
-  if (adb == ZERO) {
+  إذا (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } وإلا إذا (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } وإلا {
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
-    if (ada > adb)
+    إذا (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    وإلا
 	sigma = copysign(1.,db);
     dascal = da / scale;
     dbscal = db / scale;
-    r = sigma * (scale * sqrt(dascal * dascal + dbscal * dbscal));
+    r = sigma * (scale * جذر(dascal * dascal + dbscal * dbscal));
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    إذا (ada > adb) z = s;
+    إذا ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -76,7 +76,7 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     *DB = z;
   }
 
-#else
+#وإلا
   FLOAT da = *DA;
   FLOAT db = *DB;
   FLOAT c  = *C;
@@ -87,50 +87,50 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   FLOAT ada = fabs(da);
   FLOAT adb = fabs(db);
   FLOAT maxab = MAX(ada,adb);
-  long double safmax ;
+  دراز مزدوج safmax ;
   FLOAT scale ;
 
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
 
-  if (ada > adb)
+  إذا (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    وإلا
 	sigma = copysign(1.,db);
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#پایان_اگر
 
 
-  if (adb == ZERO) {
+  إذا (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } وإلا إذا (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } وإلا {
     FLOAT aa = da / scale;
     FLOAT bb = db / scale;
 
-    r = sigma * scale * sqrt(aa * aa + bb * bb);
+    r = sigma * scale * جذر(aa * aa + bb * bb);
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    إذا (ada > adb) z = s;
+    إذا ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
     *DA = r;
     *DB = z;
   }
-#endif
+#پایان_اگر
 
-  return;
+  أرجع;
 }

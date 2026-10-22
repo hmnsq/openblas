@@ -36,92 +36,92 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-#if defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
+#إذا defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
 // Multithreaded swap gives performance benefits in ThunderX2T99
-#else
+#وإلا
 // Disable multi-threading as it does not show any performance
 // benefits. Keep the multi-threading code for the record.
-#undef SMP
-#endif
+#لغو_تعریف SMP
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+فراغ NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   blasint n    = *N;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
+#وإلا
 
-void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+فراغ CNAME(blasint n, فراغ *vx, blasint incx, فراغ *vy, blasint incy){
 FLOAT *x = (FLOAT*)vx;
 FLOAT *y = (FLOAT*)vy;
-#endif
+#پایان_اگر
 
-#ifdef SMP
-  int mode;
+#اگر_تعریف_شده SMP
+  صحيح نما;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-  int nthreads;
-#endif
+  صحيح nthreads;
+#پایان_اگر
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#پایان_اگر
 
-  if (n <= 0) return;
+  إذا (n <= 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  إذا (incx < 0) x -= (n - 1) * incx * 2;
+  إذا (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef SMP
+#اگر_تعریف_شده SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
-  if (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / sizeof(FLOAT))
+  إذا (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_آستانه / حجم(FLOAT))
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  وإلا
+	  nthreads = رقم_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#پایان_اگر
 
-  SWAP_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, NULL, 0);
+  جابجا_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, عدم, 0);
 
-#ifdef SMP
-  } else {
+#اگر_تعریف_شده SMP
+  } وإلا {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
+#اگر_تعریف_شده XDOUBLE
+    نما  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وإلاإذا defined(DOUBLE)
+    نما  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#وإلا
+    نما  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#پایان_اگر
 
-    blas_level1_thread(mode, n, 0, 0, dummyalpha,
-		       x, incx, y, incy, NULL, 0, (void *)SWAP_K, nthreads);
+    blas_level1_thread(نما, n, 0, 0, dummyalpha,
+		       x, incx, y, incy, عدم, 0, (فراغ *)جابجا_K, nthreads);
 
   }
-#endif
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(2, 2 * n, 0);
+  FUNCTION_PROFILE_انتها(2, 2 * n, 0);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 
 }

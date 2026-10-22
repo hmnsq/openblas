@@ -37,90 +37,90 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+فراغ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#وإلا
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+فراغ CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
-#endif
+#پایان_اگر
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#اگر_تعریف_شده SMP
+  صحيح نما, nthreads;
+#پایان_اگر
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
   PRINT_DEBUG_NAME;
-#else
+#وإلا
   PRINT_DEBUG_CNAME;
-#endif
+#پایان_اگر
 
-  if (incx <= 0 || n <= 0) return;
+  إذا (incx <= 0 || n <= 0) أرجع;
 
-#ifdef BGEMM
-  float alpha_float;
+#اگر_تعریف_شده BGEMM
+  عائم alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#وإلا
   FLOAT alpha_float = alpha;
-#endif
+#پایان_اگر
 
-  if (alpha_float == ONE) return;
+  إذا (alpha_float == ONE) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
 
-#ifdef SMP
-  if (n <= 1048576 )
+#اگر_تعریف_شده SMP
+  إذا (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  وإلا
+	nthreads = رقم_cpu_avail(1);
 
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#پایان_اگر
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, عدم, 0, عدم, 1);
 
-#ifdef SMP
-  } else {
+#اگر_تعریف_شده SMP
+  } وإلا {
 
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE | BLAS_REAL;
-#endif
+#اگر_تعریف_شده DOUBLE
+    نما  =  BLAS_DOUBLE | BLAS_REAL;
+#وإلا
+    نما  =  BLAS_SINGLE | BLAS_REAL;
+#پایان_اگر
 
-    blas_level1_thread(mode, n, 0, 0,
-#ifndef CBLAS
+    blas_level1_thread(نما, n, 0, 0,
+#اگر_تعریف_نشده CBLAS
 		       ALPHA,
-#else
+#وإلا
 		       &alpha,
-#endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+#پایان_اگر
+		       x, incx, عدم, 0, عدم, 1,  (صحيح (*)(فراغ))SCAL_K, nthreads);
 
   }
-#endif
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_انتها(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 
 }

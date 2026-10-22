@@ -36,109 +36,109 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QLAUUM"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DLAUUM"
-#else
-#define ERROR_NAME "SLAUUM"
-#endif
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن ERROR_NAME "QLAUUM"
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن ERROR_NAME "DLAUUM"
+#وإلا
+#تعریف_کن ERROR_NAME "SLAUUM"
+#پایان_اگر
 
-static blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   LAUUM_U_SINGLE, LAUUM_L_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#اگر_تعریف_شده SMP
+ساكن blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   LAUUM_U_PARALLEL, LAUUM_L_PARALLEL,
 };
-#endif
+#پایان_اگر
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t آرگومانها;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *میانگیر;
+#اگر_تعریف_شده PPC440
+  خارجي
+#پایان_اگر
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  آرگومانها.n    = *N;
+  آرگومانها.a    = (فراغ *)a;
+  آرگومانها.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (آرگومانها.lda < MAX(1,آرگومانها.n)) info = 4;
+  إذا (آرگومانها.n   < 0)             info = 2;
+  إذا (uplo     < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  إذا (آرگومانها.n == 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#اگر_تعریف_نشده PPC440
+  میانگیر = (FLOAT *)blas_حافظه_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)میانگیر + GEMM_جابه_جایی_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * اندازه + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_جابه_جایی_B);
+#پایان_اگر
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.n < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#اگر_تعریف_شده SMP
+  آرگومانها.common = عدم;
+  إذا (آرگومانها.n < 64) {
+    آرگومانها.nthreads = 1;
+  } وإلا {
+    آرگومانها.nthreads = رقم_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  إذا (آرگومانها.nthreads == 1) {
+#پایان_اگر
 
-    *Info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (lauum_single[uplo])(&آرگومانها, عدم, عدم, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    *Info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+#اگر_تعریف_شده SMP
+  } وإلا {
+    *Info = (lauum_parallel[uplo])(&آرگومانها, عدم, عدم, sa, sb, 0);
   }
-#endif
+#پایان_اگر
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#اگر_تعریف_نشده PPC440
+  blas_حافظه_free(میانگیر);
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_انتها(1, .5 * آرگومانها.n * آرگومانها.n,
+		       آرگومانها.n * (1./3. + آرگومانها.n * ( 1./2. + آرگومانها.n * 1./6.))
+		       +  1./6. * آرگومانها.n * (آرگومانها.n * آرگومانها.n - 1));
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 }

@@ -36,122 +36,122 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGETRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGETRS"
-#else
-#define ERROR_NAME "SGETRS"
-#endif
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن ERROR_NAME "QGETRS"
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن ERROR_NAME "DGETRS"
+#وإلا
+#تعریف_کن ERROR_NAME "SGETRS"
+#پایان_اگر
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_SINGLE, GETRS_T_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#اگر_تعریف_شده SMP
+ساكن blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_PARALLEL, GETRS_T_PARALLEL,
 };
-#endif
+#پایان_اگر
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+فراغ NAME(حرف *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  حرف trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t آرگومانها;
 
   blasint info;
-  int trans;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  صحيح trans;
+  FLOAT *میانگیر;
+#اگر_تعریف_شده PPC440
+  خارجي
+#پایان_اگر
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  آرگومانها.m    = *N;
+  آرگومانها.n    = *NRHS;
+  آرگومانها.a    = (فراغ *)a;
+  آرگومانها.lda  = *ldA;
+  آرگومانها.b    = (فراغ *)b;
+  آرگومانها.ldb  = *ldB;
+  آرگومانها.c    = (فراغ *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  إذا (trans_arg == 'N') trans = 0;
+  إذا (trans_arg == 'T') trans = 1;
+  إذا (trans_arg == 'R') trans = 0;
+  إذا (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  إذا (آرگومانها.ldb  < MAX(1, آرگومانها.m)) info = 8;
+  إذا (آرگومانها.lda  < MAX(1, آرگومانها.m)) info = 5;
+  إذا (آرگومانها.n    < 0) info = 3;
+  إذا (آرگومانها.m    < 0) info = 2;
+  إذا (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
+    أرجع;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  آرگومانها.alpha = عدم;
+  آرگومانها.beta  = عدم;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  إذا (آرگومانها.m == 0 || آرگومانها.n == 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#اگر_تعریف_نشده PPC440
+  میانگیر = (FLOAT *)blas_حافظه_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)میانگیر + GEMM_جابه_جایی_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * اندازه + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_جابه_جایی_B);
+#پایان_اگر
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#اگر_تعریف_شده SMP
+  آرگومانها.common = عدم;
+  إذا (آرگومانها.m < 64) {
+    آرگومانها.nthreads = 1;
+  } وإلا {
+    آرگومانها.nthreads = رقم_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  إذا (آرگومانها.nthreads == 1) {
+#پایان_اگر
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&آرگومانها, عدم, عدم, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+#اگر_تعریف_شده SMP
+  } وإلا {
+    (getrs_parallel[trans])(&آرگومانها, عدم, عدم, sa, sb, 0);
   }
-#endif
+#پایان_اگر
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#اگر_تعریف_نشده PPC440
+  blas_حافظه_free(میانگیر);
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_انتها(COMPSIZE * COMPSIZE, آرگومانها.m * آرگومانها.n, 2 * آرگومانها.m * آرگومانها.m * آرگومانها.n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 
 }

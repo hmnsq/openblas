@@ -36,60 +36,60 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن <ctype.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRSV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRSV "
-#else
-#define ERROR_NAME "CTRSV "
-#endif
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن ERROR_NAME "XTRSV "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن ERROR_NAME "ZTRSV "
+#وإلا
+#تعریف_کن ERROR_NAME "CTRSV "
+#پایان_اگر
 
-static int (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
-#ifdef XDOUBLE
+ساكن صحيح (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, فراغ *) = {
+#اگر_تعریف_شده XDOUBLE
   xtrsv_NUU, xtrsv_NUN, xtrsv_NLU, xtrsv_NLN,
   xtrsv_TUU, xtrsv_TUN, xtrsv_TLU, xtrsv_TLN,
-  xtrsv_RUU, xtrsv_RUN, xtrsv_RLU, xtrsv_RLN,
+  xtrsv_RUU, xtrsv_پیاپی, xtrsv_RLU, xtrsv_RLN,
   xtrsv_CUU, xtrsv_CUN, xtrsv_CLU, xtrsv_CLN,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   ztrsv_NUU, ztrsv_NUN, ztrsv_NLU, ztrsv_NLN,
   ztrsv_TUU, ztrsv_TUN, ztrsv_TLU, ztrsv_TLN,
-  ztrsv_RUU, ztrsv_RUN, ztrsv_RLU, ztrsv_RLN,
+  ztrsv_RUU, ztrsv_پیاپی, ztrsv_RLU, ztrsv_RLN,
   ztrsv_CUU, ztrsv_CUN, ztrsv_CLU, ztrsv_CLN,
-#else
+#وإلا
   ctrsv_NUU, ctrsv_NUN, ctrsv_NLU, ctrsv_NLN,
   ctrsv_TUU, ctrsv_TUN, ctrsv_TLU, ctrsv_TLN,
-  ctrsv_RUU, ctrsv_RUN, ctrsv_RLU, ctrsv_RLN,
+  ctrsv_RUU, ctrsv_پیاپی, ctrsv_RLU, ctrsv_RLN,
   ctrsv_CUU, ctrsv_CUN, ctrsv_CLU, ctrsv_CLN,
-#endif
+#پایان_اگر
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+فراغ NAME(حرف *UPLO, حرف *TRANS, حرف *DIAG,
 	   blasint *N, FLOAT *a, blasint *LDA, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  حرف uplo_arg  = *UPLO;
+  حرف trans_arg = *TRANS;
+  حرف diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
-  FLOAT *buffer;
+  صحيح uplo;
+  صحيح unit;
+  صحيح trans;
+  FLOAT *میانگیر;
 
   PRINT_DEBUG_NAME;
 
@@ -101,45 +101,45 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  إذا (trans_arg == 'N') trans = 0;
+  إذا (trans_arg == 'T') trans = 1;
+  إذا (trans_arg == 'R') trans = 2;
+  إذا (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  إذا (diag_arg  == 'U') unit  = 0;
+  إذا (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  إذا (uplo_arg  == 'U') uplo  = 0;
+  إذا (uplo_arg  == 'L') uplo  = 1;
 
 
   info = 0;
 
-  if (incx == 0)          info =  8;
-  if (lda  < MAX(1, n))   info =  6;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  إذا (incx == 0)          info =  8;
+  إذا (lda  < MAX(1, n))   info =  6;
+  إذا (n < 0)              info =  4;
+  إذا (unit  < 0)          info =  3;
+  إذا (trans < 0)          info =  2;
+  إذا (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
 
-#else
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
-	   blasint n, void  *va, blasint lda, void  *vx, blasint incx) {
+فراغ CNAME(تعداد CBLAS_ترتیب ترتیب, تعداد CBLAS_UPLO Uplo,
+	   تعداد CBLAS_TRANSPOSE TransA, تعداد CBLAS_DIAG Diag,
+	   blasint n, فراغ  *va, blasint lda, فراغ  *vx, blasint incx) {
 
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit;
+  صحيح trans, uplo, unit;
   blasint info;
-  FLOAT *buffer;
+  FLOAT *میانگیر;
 
   PRINT_DEBUG_CNAME;
 
@@ -148,79 +148,79 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  إذا (ترتیب == Cblas_ستون_Major) {
+    إذا (Uplo == Cblas_فوقانی)         uplo  = 0;
+    إذا (Uplo == Cblas_پایینی)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    إذا (TransA == CblasNoTrans)     trans = 0;
+    إذا (TransA == CblasTrans)       trans = 1;
+    إذا (TransA == CblasConjNoTrans) trans = 2;
+    إذا (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    إذا (Diag == CblasUnit)          unit  = 0;
+    إذا (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    إذا (incx == 0)          info =  8;
+    إذا (lda  < MAX(1, n))   info =  6;
+    إذا (n < 0)              info =  4;
+    إذا (unit  < 0)          info =  3;
+    إذا (trans < 0)          info =  2;
+    إذا (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (ترتیب == Cblas_ردیف_Major) {
+    إذا (Uplo == Cblas_فوقانی)         uplo  = 1;
+    إذا (Uplo == Cblas_پایینی)         uplo  = 0;
+
+    إذا (TransA == CblasNoTrans)     trans = 1;
+    إذا (TransA == CblasTrans)       trans = 0;
+    إذا (TransA == CblasConjNoTrans) trans = 3;
+    إذا (TransA == CblasConjTrans)   trans = 2;
+
+    إذا (Diag == CblasUnit)          unit  = 0;
+    إذا (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    إذا (incx == 0)          info =  8;
+    إذا (lda  < MAX(1, n))   info =  6;
+    إذا (n < 0)              info =  4;
+    إذا (unit  < 0)          info =  3;
+    إذا (trans < 0)          info =  2;
+    إذا (uplo  < 0)          info =  1;
   }
 
-#endif
+  إذا (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
+  }
 
-  if (n == 0) return;
+#پایان_اگر
 
-  IDEBUG_START;
+  إذا (n == 0) أرجع;
 
-  FUNCTION_PROFILE_START();
+  IDEBUG_شروع;
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  FUNCTION_PROFILE_شروع();
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  إذا (incx < 0 ) x -= (n - 1) * incx * 2;
+
+  میانگیر = (FLOAT *)blas_حافظه_alloc(1);
+  إذا (!میانگیر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-  (trsv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer);
+  (trsv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, میانگیر);
 
-  blas_memory_free(buffer);
+  blas_حافظه_free(میانگیر);
 
-  FUNCTION_PROFILE_END(4, n * n / 2 + n,  n * n);
+  FUNCTION_PROFILE_انتها(4, n * n / 2 + n,  n * n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 }

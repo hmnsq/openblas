@@ -1,29 +1,29 @@
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(blasint *N, FLOAT *dx, blasint *INCX, FLOAT *dy, blasint *INCY, FLOAT *dparam){
+فراغ NAME(blasint *N, FLOAT *dx, blasint *INCX, FLOAT *dy, blasint *INCY, FLOAT *dparam){
 
     blasint n = *N;
     blasint incx = *INCX;
     blasint incy = *INCY;
 
     PRINT_DEBUG_NAME
-#else
+#وإلا
 
-void CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *dparam){
+فراغ CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *dparam){
 
     PRINT_DEBUG_CNAME;
 
-#endif
+#پایان_اگر
 
     ROTM_K(n, dx, incx, dy, incy, dparam);
 
-    return;
+    أرجع;
 }
 

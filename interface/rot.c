@@ -36,17 +36,17 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C, FLOAT *S){
+فراغ NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C, FLOAT *S){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
@@ -56,29 +56,29 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C
 
   PRINT_DEBUG_NAME;
 
-#else
+#وإلا
 
-void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT c, FLOAT s){
+فراغ CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT c, FLOAT s){
 
   PRINT_DEBUG_CNAME;
 
-#endif
+#پایان_اگر
 
-  if (n <= 0) return;
+  إذا (n <= 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  إذا (incx < 0) x -= (n - 1) * incx;
+  إذا (incy < 0) y -= (n - 1) * incy;
 
   ROT_K(n, x, incx, y, incy, c, s);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_انتها(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 
 }

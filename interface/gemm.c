@@ -37,164 +37,164 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن <stdlib.h>
+#ضمن <stdbool.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-#ifndef COMPLEX
-#define SMP_THRESHOLD_MIN 65536.0
-#ifdef XDOUBLE
-#define ERROR_NAME "QGEMM "
-#define GEMV BLASFUNC(qgemv)
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGEMM "
-#define GEMV BLASFUNC(dgemv)
-#elif defined(BFLOAT16)
-#ifdef BGEMM
-#define ERROR_NAME "BGEMM "
-#define GEMV BLASFUNC(bgemv)
-#else
-#define ERROR_NAME "SBGEMM "
-#define GEMV BLASFUNC(sbgemv)
-#endif
-#elif defined(HFLOAT16)
-#define ERROR_NAME "SHGEMM "
-#else
-#define ERROR_NAME "SGEMM "
-#define GEMV BLASFUNC(sgemv)
-#endif
-#else
-#define SMP_THRESHOLD_MIN 8192.0
-#ifndef GEMM3M
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMM "
-#define GEMV BLASFUNC(xgemv)
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMM "
-#define GEMV BLASFUNC(zgemv)
-#else
-#define ERROR_NAME "CGEMM "
-#define GEMV BLASFUNC(cgemv)
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XGEMM3M "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGEMM3M "
-#else
-#define ERROR_NAME "CGEMM3M "
-#endif
-#endif
-#endif
+#اگر_تعریف_نشده COMPLEX
+#تعریف_کن SMP_آستانه_MIN 65536.0
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن ERROR_NAME "QGEMM "
+#تعریف_کن GEMV BLASFUNC(qgemv)
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن ERROR_NAME "DGEMM "
+#تعریف_کن GEMV BLASFUNC(dgemv)
+#وإلاإذا defined(BFLOAT16)
+#اگر_تعریف_شده BGEMM
+#تعریف_کن ERROR_NAME "BGEMM "
+#تعریف_کن GEMV BLASFUNC(bgemv)
+#وإلا
+#تعریف_کن ERROR_NAME "SBGEMM "
+#تعریف_کن GEMV BLASFUNC(sbgemv)
+#پایان_اگر
+#وإلاإذا defined(HFLOAT16)
+#تعریف_کن ERROR_NAME "SHGEMM "
+#وإلا
+#تعریف_کن ERROR_NAME "SGEMM "
+#تعریف_کن GEMV BLASFUNC(sgemv)
+#پایان_اگر
+#وإلا
+#تعریف_کن SMP_آستانه_MIN 8192.0
+#اگر_تعریف_نشده GEMM3M
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن ERROR_NAME "XGEMM "
+#تعریف_کن GEMV BLASFUNC(xgemv)
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن ERROR_NAME "ZGEMM "
+#تعریف_کن GEMV BLASFUNC(zgemv)
+#وإلا
+#تعریف_کن ERROR_NAME "CGEMM "
+#تعریف_کن GEMV BLASFUNC(cgemv)
+#پایان_اگر
+#وإلا
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن ERROR_NAME "XGEMM3M "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن ERROR_NAME "ZGEMM3M "
+#وإلا
+#تعریف_کن ERROR_NAME "CGEMM3M "
+#پایان_اگر
+#پایان_اگر
+#پایان_اگر
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#اگر_تعریف_نشده GEMM_MULTITHREAD_آستانه
+#تعریف_کن GEMM_MULTITHREAD_آستانه 4
+#پایان_اگر
 
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
-#if !defined(GEMM3M) || defined(GENERIC)
+ساكن صحيح (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+#إذا !defined(GEMM3M) || defined(GENERIC)
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#إذا defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   GEMM_THREAD_NN, GEMM_THREAD_TN, GEMM_THREAD_RN, GEMM_THREAD_CN,
   GEMM_THREAD_NT, GEMM_THREAD_TT, GEMM_THREAD_RT, GEMM_THREAD_CT,
   GEMM_THREAD_NR, GEMM_THREAD_TR, GEMM_THREAD_RR, GEMM_THREAD_CR,
   GEMM_THREAD_NC, GEMM_THREAD_TC, GEMM_THREAD_RC, GEMM_THREAD_CC,
-#endif
-#else
+#پایان_اگر
+#وإلا
   GEMM3M_NN, GEMM3M_TN, GEMM3M_RN, GEMM3M_CN,
   GEMM3M_NT, GEMM3M_TT, GEMM3M_RT, GEMM3M_CT,
   GEMM3M_NR, GEMM3M_TR, GEMM3M_RR, GEMM3M_CR,
   GEMM3M_NC, GEMM3M_TC, GEMM3M_RC, GEMM3M_CC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#إذا defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   GEMM3M_THREAD_NN, GEMM3M_THREAD_TN, GEMM3M_THREAD_RN, GEMM3M_THREAD_CN,
   GEMM3M_THREAD_NT, GEMM3M_THREAD_TT, GEMM3M_THREAD_RT, GEMM3M_THREAD_CT,
   GEMM3M_THREAD_NR, GEMM3M_THREAD_TR, GEMM3M_THREAD_RR, GEMM3M_THREAD_CR,
   GEMM3M_THREAD_NC, GEMM3M_THREAD_TC, GEMM3M_THREAD_RC, GEMM3M_THREAD_CC,
-#endif
-#endif
+#پایان_اگر
+#پایان_اگر
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE) && !defined(HFLOAT16) && !defined(BGEMM)
-#define USE_SMALL_MATRIX_OPT 1
-#else
-#define USE_SMALL_MATRIX_OPT 0
-#endif
+#إذا defined(SMALL_ماتریس_OPT) && !defined(GEMM3M) && !defined(XDOUBLE) && !defined(HFLOAT16) && !defined(BGEMM)
+#تعریف_کن USE_SMALL_ماتریس_OPT 1
+#وإلا
+#تعریف_کن USE_SMALL_ماتریس_OPT 0
+#پایان_اگر
 
-#if USE_SMALL_MATRIX_OPT
-#ifndef DYNAMIC_ARCH
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
-#endif
+#إذا USE_SMALL_ماتریس_OPT
+#اگر_تعریف_نشده DYNAMIC_ARCH
+#تعریف_کن SMALL_KERNEL_ADDR(جدول, idx) ((فراغ *)(جدول[idx]))
+#وإلا
+#تعریف_کن SMALL_KERNEL_ADDR(جدول, idx) ((فراغ *)(*(uintptr_t *)((حرف *)gotoblas + (size_t)(جدول[idx]))))
+#پایان_اگر
 
 
-#ifndef COMPLEX
-static size_t gemm_small_kernel[] = {
+#اگر_تعریف_نشده COMPLEX
+ساكن size_t gemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, 0, 0,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, 0, 0,
 };
 
 
-static size_t gemm_small_kernel_b0[] = {
+ساكن size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, 0, 0,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#تعریف_کن GEMM_SMALL_KERNEL_B0(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#تعریف_کن GEMM_SMALL_KERNEL(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#وإلا
 
-static size_t zgemm_small_kernel[] = {
+ساكن size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
 	GEMM_SMALL_KERNEL_NT, GEMM_SMALL_KERNEL_TT, GEMM_SMALL_KERNEL_RT, GEMM_SMALL_KERNEL_CT,
 	GEMM_SMALL_KERNEL_NR, GEMM_SMALL_KERNEL_TR, GEMM_SMALL_KERNEL_RR, GEMM_SMALL_KERNEL_CR,
 	GEMM_SMALL_KERNEL_NC, GEMM_SMALL_KERNEL_TC, GEMM_SMALL_KERNEL_RC, GEMM_SMALL_KERNEL_CC,
 };
 
-static size_t zgemm_small_kernel_b0[] = {
+ساكن size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NN, GEMM_SMALL_KERNEL_B0_TN, GEMM_SMALL_KERNEL_B0_RN, GEMM_SMALL_KERNEL_B0_CN,
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, GEMM_SMALL_KERNEL_B0_RT, GEMM_SMALL_KERNEL_B0_CT,
 	GEMM_SMALL_KERNEL_B0_NR, GEMM_SMALL_KERNEL_B0_TR, GEMM_SMALL_KERNEL_B0_RR, GEMM_SMALL_KERNEL_B0_CR,
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
-#endif
-#endif
+#تعریف_کن ZGEMM_SMALL_KERNEL(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#تعریف_کن ZGEMM_SMALL_KERNEL_B0(idx) (صحيح (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#پایان_اگر
+#پایان_اگر
 
-#if defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
-#define XFEATURE_XTILEDATA 18
-#define ARCH_REQ_XCOMP_PERM 0x1023
-static int openblas_amxtile_permission = 0;
-static int init_amxtile_permission() {
-  long status =
+#إذا defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
+#تعریف_کن XFEATURE_XTILEDATA 18
+#تعریف_کن ARCH_REQ_XCOMP_PERM 0x1023
+ساكن صحيح openblas_amxtile_permission = 0;
+ساكن صحيح init_amxtile_permission() {
+  دراز وضعیت =
       syscall(SYS_arch_prctl, ARCH_REQ_XCOMP_PERM, XFEATURE_XTILEDATA);
-  if (status != 0) {
+  إذا (وضعیت != 0) {
     fprintf(stderr, "XTILEDATA permission not granted in your device(Linux, "
                     "Intel Sapphier Rapids), skip sbgemm calculation\n");
-    return -1;
+    أرجع -1;
   }
   openblas_amxtile_permission = 1;
-  return 0;
+  أرجع 0;
 }
-#endif
+#پایان_اگر
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);
-#endif
+#اگر_تعریف_شده DYNAMIC_ARCH
+خارجي حرف* gotoblas_corename(فراغ);
+#پایان_اگر
 
-#ifdef SMP
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
-static inline int get_gemm_optimal_nthreads_neoversev1(double MNK, int ncpu) {
-  return
+#اگر_تعریف_شده SMP
+#إذا defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
+ساكن مضمن صحيح get_gemm_optimal_nthreads_neoversev1(مزدوج MNK, صحيح ncpu) {
+  أرجع
       MNK < 262144L    ? 1
     : MNK < 1124864L   ? MIN(ncpu, 6)
     : MNK < 7880599L   ? MIN(ncpu, 12)
@@ -207,11 +207,11 @@ static inline int get_gemm_optimal_nthreads_neoversev1(double MNK, int ncpu) {
     : MNK < 729000000L ? MIN(ncpu, 56)
     : ncpu;
 }
-#endif
+#پایان_اگر
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
-static inline int get_gemm_optimal_nthreads_neoversev2(double MNK, int ncpu) {
-  return
+#إذا defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
+ساكن مضمن صحيح get_gemm_optimal_nthreads_neoversev2(مزدوج MNK, صحيح ncpu) {
+  أرجع
       MNK < 125000L     ? 1
     : MNK < 1092727L    ? MIN(ncpu, 6)
     : MNK < 2628072L    ? MIN(ncpu, 8)
@@ -225,41 +225,41 @@ static inline int get_gemm_optimal_nthreads_neoversev2(double MNK, int ncpu) {
     : MNK < 1073741824L ? MIN(ncpu, 64)
     : ncpu;
 }
-#endif
+#پایان_اگر
 
-static inline int get_gemm_optimal_nthreads(double MNK) {
-  int ncpu = num_cpu_avail(3);
-#if defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
-  return get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
-#elif defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
-  return get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
-#elif defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
-  if (strcmp(gotoblas_corename(), "neoversev1") == 0) {
-    return get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
+ساكن مضمن صحيح get_gemm_optimal_nthreads(مزدوج MNK) {
+  صحيح ncpu = رقم_cpu_avail(3);
+#إذا defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
+  أرجع get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
+#وإلاإذا defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
+  أرجع get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
+#وإلاإذا defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
+  إذا (strcmp(gotoblas_corename(), "neoversev1") == 0) {
+    أرجع get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
   }
-  if (strcmp(gotoblas_corename(), "neoversev2") == 0) {
-    return get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
+  إذا (strcmp(gotoblas_corename(), "neoversev2") == 0) {
+    أرجع get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
   }
-#endif
-  if ( MNK <= (SMP_THRESHOLD_MIN  * (double) GEMM_MULTITHREAD_THRESHOLD) ) {
-    return 1;
+#پایان_اگر
+  إذا ( MNK <= (SMP_آستانه_MIN  * (مزدوج) GEMM_MULTITHREAD_آستانه) ) {
+    أرجع 1;
   }
-  else {
-    if (MNK/ncpu < SMP_THRESHOLD_MIN*(double)GEMM_MULTITHREAD_THRESHOLD) {
-      return MNK/(SMP_THRESHOLD_MIN*(double)GEMM_MULTITHREAD_THRESHOLD);
+  وإلا {
+    إذا (MNK/ncpu < SMP_آستانه_MIN*(مزدوج)GEMM_MULTITHREAD_آستانه) {
+      أرجع MNK/(SMP_آستانه_MIN*(مزدوج)GEMM_MULTITHREAD_آستانه);
     }
-    else {
-      return ncpu;
+    وإلا {
+      أرجع ncpu;
     }
   }
 }
-#endif
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(char *TRANSA, char *TRANSB,
+فراغ NAME(حرف *TRANSA, حرف *TRANSB,
 	  blasint *M, blasint *N, blasint *K,
 	  FLOAT *alpha,
 	  IFLOAT *a, blasint *ldA,
@@ -267,58 +267,58 @@ void NAME(char *TRANSA, char *TRANSB,
 	  FLOAT *beta,
 	  FLOAT *c, blasint *ldC){
 
-  blas_arg_t args;
+  blas_arg_t آرگومانها;
 
-  int transa, transb, nrowa, nrowb;
+  صحيح transa, transb, nrowa, nrowb;
   blasint info;
 
-  char transA, transB;
-  IFLOAT *buffer;
+  حرف transA, transB;
+  IFLOAT *میانگیر;
   IFLOAT *sa, *sb;
 
-#ifdef SMP
-  double MNK;
-#if defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
-#endif
+#اگر_تعریف_شده SMP
+  مزدوج MNK;
+#إذا defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
+#اگر_تعریف_نشده COMPLEX
+#اگر_تعریف_شده XDOUBLE
+  صحيح نما  =  BLAS_XDOUBLE | BLAS_REAL;
+#وإلاإذا defined(DOUBLE)
+  صحيح نما  =  BLAS_DOUBLE  | BLAS_REAL;
+#وإلا
+  صحيح نما  =  BLAS_SINGLE  | BLAS_REAL;
+#پایان_اگر
+#وإلا
+#اگر_تعریف_شده XDOUBLE
+  صحيح نما  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وإلاإذا defined(DOUBLE)
+  صحيح نما  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#وإلا
+  صحيح نما  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#پایان_اگر
+#پایان_اگر
+#پایان_اگر
+#پایان_اگر
 
-#if defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
-  int nodes;
-#endif
+#إذا defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+  صحيح nodes;
+#پایان_اگر
 
   PRINT_DEBUG_NAME;
 
-  args.m = *M;
-  args.n = *N;
-  args.k = *K;
+  آرگومانها.m = *M;
+  آرگومانها.n = *N;
+  آرگومانها.k = *K;
 
-  args.a = (void *)a;
-  args.b = (void *)b;
-  args.c = (void *)c;
+  آرگومانها.a = (فراغ *)a;
+  آرگومانها.b = (فراغ *)b;
+  آرگومانها.c = (فراغ *)c;
 
-  args.lda = *ldA;
-  args.ldb = *ldB;
-  args.ldc = *ldC;
+  آرگومانها.lda = *ldA;
+  آرگومانها.ldb = *ldB;
+  آرگومانها.ldc = *ldC;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  آرگومانها.alpha = (فراغ *)alpha;
+  آرگومانها.beta  = (فراغ *)beta;
   
   transA = *TRANSA;
   transB = *TRANSB;
@@ -329,516 +329,516 @@ void NAME(char *TRANSA, char *TRANSB,
   transa = -1;
   transb = -1;
 
-  if (transA == 'N') transa = 0;
-  if (transA == 'T') transa = 1;
-#ifndef COMPLEX
-  if (transA == 'R') transa = 0;
-  if (transA == 'C') transa = 1;
-#else
-  if (transA == 'R') transa = 2;
-  if (transA == 'C') transa = 3;
-#endif
+  إذا (transA == 'N') transa = 0;
+  إذا (transA == 'T') transa = 1;
+#اگر_تعریف_نشده COMPLEX
+  إذا (transA == 'R') transa = 0;
+  إذا (transA == 'C') transa = 1;
+#وإلا
+  إذا (transA == 'R') transa = 2;
+  إذا (transA == 'C') transa = 3;
+#پایان_اگر
 
-  if (transB == 'N') transb = 0;
-  if (transB == 'T') transb = 1;
-#ifndef COMPLEX
-  if (transB == 'R') transb = 0;
-  if (transB == 'C') transb = 1;
-#else
-  if (transB == 'R') transb = 2;
-  if (transB == 'C') transb = 3;
-#endif
-  nrowa = args.m;
-  if (transa & 1) nrowa = args.k;
-  nrowb = args.k;
-  if (transb & 1) nrowb = args.n;
+  إذا (transB == 'N') transb = 0;
+  إذا (transB == 'T') transb = 1;
+#اگر_تعریف_نشده COMPLEX
+  إذا (transB == 'R') transb = 0;
+  إذا (transB == 'C') transb = 1;
+#وإلا
+  إذا (transB == 'R') transb = 2;
+  إذا (transB == 'C') transb = 3;
+#پایان_اگر
+  nrowa = آرگومانها.m;
+  إذا (transa & 1) nrowa = آرگومانها.k;
+  nrowb = آرگومانها.k;
+  إذا (transb & 1) nrowb = آرگومانها.n;
 
   info = 0;
 
-  if (args.ldc < args.m) info = 13;
-  if (args.ldb < nrowb)  info = 10;
-  if (args.lda < nrowa)  info =  8;
-  if (args.k < 0)        info =  5;
-  if (args.n < 0)        info =  4;
-  if (args.m < 0)        info =  3;
-  if (transb < 0)        info =  2;
-  if (transa < 0)        info =  1;
+  إذا (آرگومانها.ldc < آرگومانها.m) info = 13;
+  إذا (آرگومانها.ldb < nrowb)  info = 10;
+  إذا (آرگومانها.lda < nrowa)  info =  8;
+  إذا (آرگومانها.k < 0)        info =  5;
+  إذا (آرگومانها.n < 0)        info =  4;
+  إذا (آرگومانها.m < 0)        info =  3;
+  إذا (transb < 0)        info =  2;
+  إذا (transa < 0)        info =  1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#else
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB,
+فراغ CNAME(تعداد CBLAS_ترتیب ترتیب, تعداد CBLAS_TRANSPOSE TransA, تعداد CBLAS_TRANSPOSE TransB,
 	   blasint m, blasint n, blasint k,
-#ifndef COMPLEX
+#اگر_تعریف_نشده COMPLEX
 	   FLOAT alpha,
 	   IFLOAT *a, blasint lda,
 	   IFLOAT *b, blasint ldb,
 	   FLOAT beta,
 	   FLOAT *c, blasint ldc) {
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb,
-	   void *vbeta,
-	   void *vc, blasint ldc) {
+#وإلا
+	   فراغ *valpha,
+	   فراغ *va, blasint lda,
+	   فراغ *vb, blasint ldb,
+	   فراغ *vbeta,
+	   فراغ *vc, blasint ldc) {
   FLOAT *alpha = (FLOAT*) valpha;
   FLOAT *beta  = (FLOAT*) vbeta;
   FLOAT *a = (FLOAT*) va;
   FLOAT *b = (FLOAT*) vb;
   FLOAT *c = (FLOAT*) vc;
-#endif
+#پایان_اگر
 
-  blas_arg_t args;
-  int transa, transb;
+  blas_arg_t آرگومانها;
+  صحيح transa, transb;
   blasint nrowa, nrowb, info;
 
-  XFLOAT *buffer;
+  XFLOAT *میانگیر;
   XFLOAT *sa, *sb;
 
-#ifdef SMP
-  double MNK;
-#if defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
-#endif
+#اگر_تعریف_شده SMP
+  مزدوج MNK;
+#إذا defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
+#اگر_تعریف_نشده COMPLEX
+#اگر_تعریف_شده XDOUBLE
+  صحيح نما  =  BLAS_XDOUBLE | BLAS_REAL;
+#وإلاإذا defined(DOUBLE)
+  صحيح نما  =  BLAS_DOUBLE  | BLAS_REAL;
+#وإلا
+  صحيح نما  =  BLAS_SINGLE  | BLAS_REAL;
+#پایان_اگر
+#وإلا
+#اگر_تعریف_شده XDOUBLE
+  صحيح نما  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#وإلاإذا defined(DOUBLE)
+  صحيح نما  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#وإلا
+  صحيح نما  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#پایان_اگر
+#پایان_اگر
+#پایان_اگر
+#پایان_اگر
 
-#if defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
-  int nodes;
-#endif
+#إذا defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+  صحيح nodes;
+#پایان_اگر
 
   PRINT_DEBUG_CNAME;
 
-#ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
-#else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
-#endif
+#اگر_تعریف_نشده COMPLEX
+  آرگومانها.alpha = (فراغ *)&alpha;
+  آرگومانها.beta  = (فراغ *)&beta;
+#وإلا
+  آرگومانها.alpha = (فراغ *)alpha;
+  آرگومانها.beta  = (فراغ *)beta;
+#پایان_اگر
 
   transa = -1;
   transb = -1;
   info   =  0;
 
-  if (order == CblasColMajor) {
-    args.m = m;
-    args.n = n;
-    args.k = k;
+  إذا (ترتیب == Cblas_ستون_Major) {
+    آرگومانها.m = m;
+    آرگومانها.n = n;
+    آرگومانها.k = k;
 
-    args.a = (void *)a;
-    args.b = (void *)b;
-    args.c = (void *)c;
+    آرگومانها.a = (فراغ *)a;
+    آرگومانها.b = (فراغ *)b;
+    آرگومانها.c = (فراغ *)c;
 
-    args.lda = lda;
-    args.ldb = ldb;
-    args.ldc = ldc;
+    آرگومانها.lda = lda;
+    آرگومانها.ldb = ldb;
+    آرگومانها.ldc = ldc;
 
-    if (TransA == CblasNoTrans)     transa = 0;
-    if (TransA == CblasTrans)       transa = 1;
-#ifndef COMPLEX
-    if (TransA == CblasConjNoTrans) transa = 0;
-    if (TransA == CblasConjTrans)   transa = 1;
-#else
-    if (TransA == CblasConjNoTrans) transa = 2;
-    if (TransA == CblasConjTrans)   transa = 3;
-#endif
-    if (TransB == CblasNoTrans)     transb = 0;
-    if (TransB == CblasTrans)       transb = 1;
-#ifndef COMPLEX
-    if (TransB == CblasConjNoTrans) transb = 0;
-    if (TransB == CblasConjTrans)   transb = 1;
-#else
-    if (TransB == CblasConjNoTrans) transb = 2;
-    if (TransB == CblasConjTrans)   transb = 3;
-#endif
+    إذا (TransA == CblasNoTrans)     transa = 0;
+    إذا (TransA == CblasTrans)       transa = 1;
+#اگر_تعریف_نشده COMPLEX
+    إذا (TransA == CblasConjNoTrans) transa = 0;
+    إذا (TransA == CblasConjTrans)   transa = 1;
+#وإلا
+    إذا (TransA == CblasConjNoTrans) transa = 2;
+    إذا (TransA == CblasConjTrans)   transa = 3;
+#پایان_اگر
+    إذا (TransB == CblasNoTrans)     transb = 0;
+    إذا (TransB == CblasTrans)       transb = 1;
+#اگر_تعریف_نشده COMPLEX
+    إذا (TransB == CblasConjNoTrans) transb = 0;
+    إذا (TransB == CblasConjTrans)   transb = 1;
+#وإلا
+    إذا (TransB == CblasConjNoTrans) transb = 2;
+    إذا (TransB == CblasConjTrans)   transb = 3;
+#پایان_اگر
 
-    nrowa = args.m;
-    if (transa & 1) nrowa = args.k;
-    nrowb = args.k;
-    if (transb & 1) nrowb = args.n;
-
-    info = -1;
-
-    if (args.ldc < args.m) info = 13;
-    if (args.ldb < nrowb)  info = 10;
-    if (args.lda < nrowa)  info =  8;
-    if (args.k < 0)        info =  5;
-    if (args.n < 0)        info =  4;
-    if (args.m < 0)        info =  3;
-    if (transb < 0)        info =  2;
-    if (transa < 0)        info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    args.m = n;
-    args.n = m;
-    args.k = k;
-
-    args.a = (void *)b;
-    args.b = (void *)a;
-    args.c = (void *)c;
-
-    args.lda = ldb;
-    args.ldb = lda;
-    args.ldc = ldc;
-
-    if (TransB == CblasNoTrans)     transa = 0;
-    if (TransB == CblasTrans)       transa = 1;
-#ifndef COMPLEX
-    if (TransB == CblasConjNoTrans) transa = 0;
-    if (TransB == CblasConjTrans)   transa = 1;
-#else
-    if (TransB == CblasConjNoTrans) transa = 2;
-    if (TransB == CblasConjTrans)   transa = 3;
-#endif
-    if (TransA == CblasNoTrans)     transb = 0;
-    if (TransA == CblasTrans)       transb = 1;
-#ifndef COMPLEX
-    if (TransA == CblasConjNoTrans) transb = 0;
-    if (TransA == CblasConjTrans)   transb = 1;
-#else
-    if (TransA == CblasConjNoTrans) transb = 2;
-    if (TransA == CblasConjTrans)   transb = 3;
-#endif
-
-    nrowa = args.m;
-    if (transa & 1) nrowa = args.k;
-    nrowb = args.k;
-    if (transb & 1) nrowb = args.n;
+    nrowa = آرگومانها.m;
+    إذا (transa & 1) nrowa = آرگومانها.k;
+    nrowb = آرگومانها.k;
+    إذا (transb & 1) nrowb = آرگومانها.n;
 
     info = -1;
 
-    if (args.ldc < args.m) info = 13;
-    if (args.ldb < nrowb)  info = 10;
-    if (args.lda < nrowa)  info =  8;
-    if (args.k < 0)        info =  5;
-    if (args.n < 0)        info =  4;
-    if (args.m < 0)        info =  3;
-    if (transb < 0)        info =  2;
-    if (transa < 0)        info =  1;
+    إذا (آرگومانها.ldc < آرگومانها.m) info = 13;
+    إذا (آرگومانها.ldb < nrowb)  info = 10;
+    إذا (آرگومانها.lda < nrowa)  info =  8;
+    إذا (آرگومانها.k < 0)        info =  5;
+    إذا (آرگومانها.n < 0)        info =  4;
+    إذا (آرگومانها.m < 0)        info =  3;
+    إذا (transb < 0)        info =  2;
+    إذا (transa < 0)        info =  1;
+  }
+
+  إذا (ترتیب == Cblas_ردیف_Major) {
+    آرگومانها.m = n;
+    آرگومانها.n = m;
+    آرگومانها.k = k;
+
+    آرگومانها.a = (فراغ *)b;
+    آرگومانها.b = (فراغ *)a;
+    آرگومانها.c = (فراغ *)c;
+
+    آرگومانها.lda = ldb;
+    آرگومانها.ldb = lda;
+    آرگومانها.ldc = ldc;
+
+    إذا (TransB == CblasNoTrans)     transa = 0;
+    إذا (TransB == CblasTrans)       transa = 1;
+#اگر_تعریف_نشده COMPLEX
+    إذا (TransB == CblasConjNoTrans) transa = 0;
+    إذا (TransB == CblasConjTrans)   transa = 1;
+#وإلا
+    إذا (TransB == CblasConjNoTrans) transa = 2;
+    إذا (TransB == CblasConjTrans)   transa = 3;
+#پایان_اگر
+    إذا (TransA == CblasNoTrans)     transb = 0;
+    إذا (TransA == CblasTrans)       transb = 1;
+#اگر_تعریف_نشده COMPLEX
+    إذا (TransA == CblasConjNoTrans) transb = 0;
+    إذا (TransA == CblasConjTrans)   transb = 1;
+#وإلا
+    إذا (TransA == CblasConjNoTrans) transb = 2;
+    إذا (TransA == CblasConjTrans)   transb = 3;
+#پایان_اگر
+
+    nrowa = آرگومانها.m;
+    إذا (transa & 1) nrowa = آرگومانها.k;
+    nrowb = آرگومانها.k;
+    إذا (transb & 1) nrowb = آرگومانها.n;
+
+    info = -1;
+
+    إذا (آرگومانها.ldc < آرگومانها.m) info = 13;
+    إذا (آرگومانها.ldb < nrowb)  info = 10;
+    إذا (آرگومانها.lda < nrowa)  info =  8;
+    إذا (آرگومانها.k < 0)        info =  5;
+    إذا (آرگومانها.n < 0)        info =  4;
+    إذا (آرگومانها.m < 0)        info =  3;
+    إذا (transb < 0)        info =  2;
+    إذا (transa < 0)        info =  1;
 
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
 
-  if ((args.m == 0) || (args.n == 0)) return;
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_x86) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-  if (support_avx512() )
-#endif
-  if (order == CblasRowMajor && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
-        SGEMM_DIRECT(m, n, k, a, lda, b, ldb, c, ldc);
-        return;
+  إذا ((آرگومانها.m == 0) || (آرگومانها.n == 0)) أرجع;
+#إذا !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#إذا defined(ARCH_x86) && (defined(USE_SGEMM_KERNEL_مستقیم)||defined(DYNAMIC_ARCH))
+#إذا defined(DYNAMIC_ARCH)
+  إذا (support_avx512() )
+#پایان_اگر
+  إذا (ترتیب == Cblas_ردیف_Major && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_مستقیم_PERFORMANT(m,n,k)) {
+        SGEMM_مستقیم(m, n, k, a, lda, b, ldb, c, ldc);
+        أرجع;
   }
-#endif
-#if defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#پایان_اگر
+#إذا defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_مستقیم)||defined(DYNAMIC_ARCH))
+#إذا defined(DYNAMIC_ARCH)
+إذا (strcmp(gotoblas_corename(), "armv9sme") == 0
+#إذا defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#پایان_اگر
 )
-#endif
+#پایان_اگر
 
-  if (order == CblasRowMajor && k==lda && n==ldb && n==ldc && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
-        SGEMM_DIRECT(m, n, k, a, lda, b, ldb, c, ldc);
-        return;
+  إذا (ترتیب == Cblas_ردیف_Major && k==lda && n==ldb && n==ldc && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_مستقیم_PERFORMANT(m,n,k)) {
+        SGEMM_مستقیم(m, n, k, a, lda, b, ldb, c, ldc);
+        أرجع;
   }
-else if (order == CblasRowMajor && k==lda && n==ldb && n==ldc && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
-        SGEMM_DIRECT_ALPHA_BETA(m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+وإلا إذا (ترتیب == Cblas_ردیف_Major && k==lda && n==ldb && n==ldc && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_مستقیم_PERFORMANT(m,n,k)) {
+        SGEMM_مستقیم_ALPHA_BETA(m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+        أرجع;
   }
 
-#endif //defined arm64
-#endif //defined complex
+#پایان_اگر //defined arm64
+#پایان_اگر //defined complex
 
 
-#endif //defined CBLAS
+#پایان_اگر //defined CBLAS
 
-#if !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#إذا !defined(BFLOAT16)  && !defined(HFLOAT16)
+#إذا defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_مستقیم)||defined(DYNAMIC_ARCH))
+#إذا defined(DYNAMIC_ARCH)
+إذا (strcmp(gotoblas_corename(), "armv9sme") == 0
+#إذا defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#پایان_اگر
 )
-#endif //defined dynarch
+#پایان_اگر //defined dynarch
 {
-char* TA,*TB;
-      if (transa & 1) 
+حرف* TA,*TB;
+      إذا (transa & 1) 
         TA = "T";
-	else 
+	وإلا 
 	TA= "N";
-      if (transb & 1) 
+      إذا (transb & 1) 
         TB = "T";
-	else 
+	وإلا 
 	TB= "N";
-#ifndef COMPLEX
-      if (transa == 3) 
+#اگر_تعریف_نشده COMPLEX
+      إذا (transa == 3) 
 	TA= "T";
-      if (transb == 3) 
+      إذا (transb == 3) 
 	TB= "T";
-FLOAT* al=(FLOAT*)args.alpha;
-FLOAT* be=(FLOAT*)args.beta;
-#ifndef DOUBLE
-        SME_SGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al, args.a, args.lda, args.b, args.ldb, be, args.c, args.ldc);
-#else
-        SME_DGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al, args.a, args.lda, args.b, args.ldb, be, args.c, args.ldc);
-#endif
-#else
-      if (transa == 2) 
+FLOAT* al=(FLOAT*)آرگومانها.alpha;
+FLOAT* be=(FLOAT*)آرگومانها.beta;
+#اگر_تعریف_نشده DOUBLE
+        SME_SGEMM_KERNEL(TA,TB, آرگومانها.m, آرگومانها.n, آرگومانها.k, al, آرگومانها.a, آرگومانها.lda, آرگومانها.b, آرگومانها.ldb, be, آرگومانها.c, آرگومانها.ldc);
+#وإلا
+        SME_DGEMM_KERNEL(TA,TB, آرگومانها.m, آرگومانها.n, آرگومانها.k, al, آرگومانها.a, آرگومانها.lda, آرگومانها.b, آرگومانها.ldb, be, آرگومانها.c, آرگومانها.ldc);
+#پایان_اگر
+#وإلا
+      إذا (transa == 2) 
 	TA= "R";
-      if (transb == 2) 
+      إذا (transb == 2) 
 	TB= "R";
-      if (transa == 3) 
+      إذا (transa == 3) 
 	TA= "C";
-      if (transb == 3) 
+      إذا (transb == 3) 
 	TB= "C";
-FLOAT* al=(FLOAT*)args.alpha;
-FLOAT* be=(FLOAT*)args.beta;
-#ifndef DOUBLE
-float _Complex c_al={al[0],al[1]};
-float _Complex c_be={be[0],be[1]};
-        SME_CGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al[0],al[1], args.a, args.lda, args.b, args.ldb, be[0],be[1], args.c, args.ldc);
-#else
-double _Complex c_al={al[0],al[1]};
-double _Complex c_be={be[0],be[1]};
-        SME_ZGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al[0],al[1], args.a, args.lda, args.b, args.ldb, be[0],be[1], args.c, args.ldc);
-#endif
-#endif
-	return;
+FLOAT* al=(FLOAT*)آرگومانها.alpha;
+FLOAT* be=(FLOAT*)آرگومانها.beta;
+#اگر_تعریف_نشده DOUBLE
+عائم _Complex c_al={al[0],al[1]};
+عائم _Complex c_be={be[0],be[1]};
+        SME_CGEMM_KERNEL(TA,TB, آرگومانها.m, آرگومانها.n, آرگومانها.k, al[0],al[1], آرگومانها.a, آرگومانها.lda, آرگومانها.b, آرگومانها.ldb, be[0],be[1], آرگومانها.c, آرگومانها.ldc);
+#وإلا
+مزدوج _Complex c_al={al[0],al[1]};
+مزدوج _Complex c_be={be[0],be[1]};
+        SME_ZGEMM_KERNEL(TA,TB, آرگومانها.m, آرگومانها.n, آرگومانها.k, al[0],al[1], آرگومانها.a, آرگومانها.lda, آرگومانها.b, آرگومانها.ldb, be[0],be[1], آرگومانها.c, آرگومانها.ldc);
+#پایان_اگر
+#پایان_اگر
+	أرجع;
 }
-#endif //defined arm64
+#پایان_اگر //defined arm64
 
-#endif //defined b/hfloat16 
+#پایان_اگر //defined b/hfloat16 
 
-#if defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
-#if defined(DYNAMIC_ARCH)
-  if (gotoblas->need_amxtile_permission &&
+#إذا defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
+#إذا defined(DYNAMIC_ARCH)
+  إذا (gotoblas->need_amxtile_permission &&
       openblas_amxtile_permission == 0 && init_amxtile_permission() == -1) {
-    return;
+    أرجع;
   }
-#endif
-#if !defined(DYNAMIC_ARCH) && defined(SAPPHIRERAPIDS)
-  if (openblas_amxtile_permission == 0 && init_amxtile_permission() == -1) {
-    return;
+#پایان_اگر
+#إذا !defined(DYNAMIC_ARCH) && defined(SAPPHIRERAPIDS)
+  إذا (openblas_amxtile_permission == 0 && init_amxtile_permission() == -1) {
+    أرجع;
   }
-#endif
-#endif  // defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
+#پایان_اگر
+#پایان_اگر  // defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
 
-  if ((args.m == 0) || (args.n == 0)) return;
+  إذا ((آرگومانها.m == 0) || (آرگومانها.n == 0)) أرجع;
 
-#if 0
+#إذا 0
   fprintf(stderr, "m = %4d  n = %d  k = %d  lda = %4d  ldb = %4d  ldc = %4d\n",
-	 args.m, args.n, args.k, args.lda, args.ldb, args.ldc);
-#endif
+	 آرگومانها.m, آرگومانها.n, آرگومانها.k, آرگومانها.lda, آرگومانها.ldb, آرگومانها.ldc);
+#پایان_اگر
 
-#if (!defined(BFLOAT16) || (!defined(BGEMM) && defined(SBGEMM_GEMV_FORWARD)) || (defined(BGEMM) && defined(BGEMM_GEMV_FORWARD)))
-#define BFLOAT16_GEMM_GEMV_FORWARD 1
-#else
-#define BFLOAT16_GEMM_GEMV_FORWARD 0
-#endif
-#if (!defined(HFLOAT16) || (!defined(HGEMM) && defined(SHGEMM_GEMV_FORWARD)) || (defined(HGEMM) && defined(HGEMM_GEMV_FORWARD)))
-#define HFLOAT16_GEMM_GEMV_FORWARD 1
-#else
-#define HFLOAT16_GEMM_GEMV_FORWARD 0
-#endif
+#إذا (!defined(BFLOAT16) || (!defined(BGEMM) && defined(SBGEMM_GEMV_FORWARD)) || (defined(BGEMM) && defined(BGEMM_GEMV_FORWARD)))
+#تعریف_کن BFLOAT16_GEMM_GEMV_FORWARD 1
+#وإلا
+#تعریف_کن BFLOAT16_GEMM_GEMV_FORWARD 0
+#پایان_اگر
+#إذا (!defined(HFLOAT16) || (!defined(HGEMM) && defined(SHGEMM_GEMV_FORWARD)) || (defined(HGEMM) && defined(HGEMM_GEMV_FORWARD)))
+#تعریف_کن HFLOAT16_GEMM_GEMV_FORWARD 1
+#وإلا
+#تعریف_کن HFLOAT16_GEMM_GEMV_FORWARD 0
+#پایان_اگر
 
-#if defined(GEMM_GEMV_FORWARD) && !defined(GEMM3M) && HFLOAT16_GEMM_GEMV_FORWARD && BFLOAT16_GEMM_GEMV_FORWARD
-#if defined(ARCH_ARM64)
+#إذا defined(GEMM_GEMV_FORWARD) && !defined(GEMM3M) && HFLOAT16_GEMM_GEMV_FORWARD && BFLOAT16_GEMM_GEMV_FORWARD
+#إذا defined(ARCH_ARM64)
   // The gemv kernels in arm64/{gemv_n.S,gemv_n_sve.c,gemv_t.S,gemv_t_sve.c}
   // perform poorly in certain circumstances. We use the following boolean
   // variable along with the gemv argument values to avoid these inefficient
   // gemv cases, see github issue#4951.
   bool have_tuned_gemv = false;
-#else
+#وإلا
   bool have_tuned_gemv = true;
-#endif
+#پایان_اگر
   // GEMV transpose modes indexed by the GEMM transpose codes (N=0, T=1, R=2, C=3).
   // For real types only N and T occur. For complex types the OpenBLAS GEMV
   // extensions O, U, S and D (index 4..7) behave like N, T, R and C but
   // additionally conjugate the vector x, which lets a conjugated vector-shaped
   // operand of GEMM be handled without an explicit conjugation pass.
   // Even indices run on the GEMV_N kernels, odd indices on the GEMV_T kernels.
-  static const char gemv_trans[] = "NTRCOUSD";
+  ساكن ثابت حرف gemv_trans[] = "NTRCOUSD";
   // Check if we can convert GEMM -> GEMV
-  if (args.k != 0) {
-    if (args.n == 1) {
+  إذا (آرگومانها.k != 0) {
+    إذا (آرگومانها.n == 1) {
       blasint inc_x = 1;
       blasint inc_y = 1;
       // These were passed in as blasint, but the struct translates them to blaslong
-      blasint m = args.m;
-      blasint n = args.k;
-      blasint lda = args.lda;
+      blasint m = آرگومانها.m;
+      blasint n = آرگومانها.k;
+      blasint lda = آرگومانها.lda;
       // C = alpha * op(A) * op(B) + beta * C with op(B) a k x 1 vector: GEMV on A,
       // where a conjugated op(B) selects the x-conjugating modes.
-      int trans_idx = transa | ((transb & 2) << 1);
-      char NT = gemv_trans[trans_idx];
-      if (transa & 1) {
-        m = args.k;
-        n = args.m;
+      صحيح trans_idx = transa | ((transb & 2) << 1);
+      حرف NT = gemv_trans[trans_idx];
+      إذا (transa & 1) {
+        m = آرگومانها.k;
+        n = آرگومانها.m;
       }
-      if (transb & 1) {
-        inc_x = args.ldb;
+      إذا (transb & 1) {
+        inc_x = آرگومانها.ldb;
       }
       bool is_efficient_gemv = have_tuned_gemv || (!(trans_idx & 1) || inc_x == 1);
-      if (is_efficient_gemv) {
-        GEMV(&NT, &m, &n, args.alpha, args.a, &lda, args.b, &inc_x, args.beta, args.c, &inc_y);
-        return;
+      إذا (is_efficient_gemv) {
+        GEMV(&NT, &m, &n, آرگومانها.alpha, آرگومانها.a, &lda, آرگومانها.b, &inc_x, آرگومانها.beta, آرگومانها.c, &inc_y);
+        أرجع;
       }
     }
-    if (args.m == 1) {
-      blasint inc_x = args.lda;
-      blasint inc_y = args.ldc;
+    إذا (آرگومانها.m == 1) {
+      blasint inc_x = آرگومانها.lda;
+      blasint inc_y = آرگومانها.ldc;
       // These were passed in as blasint, but the struct translates them to blaslong
-      blasint m = args.k;
-      blasint n = args.n;
-      blasint ldb = args.ldb;
+      blasint m = آرگومانها.k;
+      blasint n = آرگومانها.n;
+      blasint ldb = آرگومانها.ldb;
       // C^T = op(B)^T * op(A)^T with op(A) a 1 x k vector: GEMV on B, where the
       // transposition swaps N<->T and R<->C, and a conjugated op(A) selects the
       // x-conjugating modes.
-      int trans_idx = (transb ^ 1) | ((transa & 2) << 1);
-      char NT = gemv_trans[trans_idx];
-      if (transa & 1) {
+      صحيح trans_idx = (transb ^ 1) | ((transa & 2) << 1);
+      حرف NT = gemv_trans[trans_idx];
+      إذا (transa & 1) {
         inc_x = 1;
       }
-      if (transb & 1) {
-        m = args.n;
-        n = args.k;
+      إذا (transb & 1) {
+        m = آرگومانها.n;
+        n = آرگومانها.k;
       }
       bool is_efficient_gemv = have_tuned_gemv || ((!(trans_idx & 1) && inc_y == 1) || ((trans_idx & 1) && inc_x == 1));
-      if (is_efficient_gemv) {
-        GEMV(&NT, &m, &n, args.alpha, args.b, &ldb, args.a, &inc_x, args.beta, args.c, &inc_y);
-        return;
+      إذا (is_efficient_gemv) {
+        GEMV(&NT, &m, &n, آرگومانها.alpha, آرگومانها.b, &ldb, آرگومانها.a, &inc_x, آرگومانها.beta, آرگومانها.c, &inc_y);
+        أرجع;
       }
     }
   }
-#endif
+#پایان_اگر
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-#if USE_SMALL_MATRIX_OPT
-if (*(FLOAT*)args.alpha != 0.0) {
-#if !defined(COMPLEX)
-  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, *(FLOAT *)(args.alpha), *(FLOAT *)(args.beta))){
+#إذا USE_SMALL_ماتریس_OPT
+إذا (*(FLOAT*)آرگومانها.alpha != 0.0) {
+#إذا !defined(COMPLEX)
+  إذا(GEMM_SMALL_ماتریس_PERMIT(transa, transb, آرگومانها.m, آرگومانها.n, آرگومانها.k, *(FLOAT *)(آرگومانها.alpha), *(FLOAT *)(آرگومانها.beta))){
 
-	  if(*(FLOAT *)(args.beta) == 0.0){
-		(GEMM_SMALL_KERNEL_B0((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, *(FLOAT *)(args.alpha), args.b, args.ldb, args.c, args.ldc);
-	  }else{
-		(GEMM_SMALL_KERNEL((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, *(FLOAT *)(args.alpha), args.b, args.ldb, *(FLOAT *)(args.beta), args.c, args.ldc);
+	  إذا(*(FLOAT *)(آرگومانها.beta) == 0.0){
+		(GEMM_SMALL_KERNEL_B0((transb << 2) | transa))(آرگومانها.m, آرگومانها.n, آرگومانها.k, آرگومانها.a, آرگومانها.lda, *(FLOAT *)(آرگومانها.alpha), آرگومانها.b, آرگومانها.ldb, آرگومانها.c, آرگومانها.ldc);
+	  }وإلا{
+		(GEMM_SMALL_KERNEL((transb << 2) | transa))(آرگومانها.m, آرگومانها.n, آرگومانها.k, آرگومانها.a, آرگومانها.lda, *(FLOAT *)(آرگومانها.alpha), آرگومانها.b, آرگومانها.ldb, *(FLOAT *)(آرگومانها.beta), آرگومانها.c, آرگومانها.ldc);
 	  }
-	  return;
+	  أرجع;
   }
-#else
-  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, alpha[0], alpha[1], beta[0], beta[1])){
-	  if(beta[0] == 0.0 && beta[1] == 0.0){
-		(ZGEMM_SMALL_KERNEL_B0((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, alpha[0], alpha[1], args.b, args.ldb, args.c, args.ldc);
-	  }else{
-		(ZGEMM_SMALL_KERNEL((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, alpha[0], alpha[1], args.b, args.ldb, beta[0], beta[1], args.c, args.ldc);
+#وإلا
+  إذا(GEMM_SMALL_ماتریس_PERMIT(transa, transb, آرگومانها.m, آرگومانها.n, آرگومانها.k, alpha[0], alpha[1], beta[0], beta[1])){
+	  إذا(beta[0] == 0.0 && beta[1] == 0.0){
+		(ZGEMM_SMALL_KERNEL_B0((transb << 2) | transa))(آرگومانها.m, آرگومانها.n, آرگومانها.k, آرگومانها.a, آرگومانها.lda, alpha[0], alpha[1], آرگومانها.b, آرگومانها.ldb, آرگومانها.c, آرگومانها.ldc);
+	  }وإلا{
+		(ZGEMM_SMALL_KERNEL((transb << 2) | transa))(آرگومانها.m, آرگومانها.n, آرگومانها.k, آرگومانها.a, آرگومانها.lda, alpha[0], alpha[1], آرگومانها.b, آرگومانها.ldb, beta[0], beta[1], آرگومانها.c, آرگومانها.ldc);
 	  }
-	  return;
+	  أرجع;
   }
-#endif
+#پایان_اگر
 }
-#endif
+#پایان_اگر
 
-  buffer = (XFLOAT *)blas_memory_alloc(0);
+  میانگیر = (XFLOAT *)blas_حافظه_alloc(0);
 //For LOONGARCH64, applying an offset to the buffer is essential
 //for minimizing cache conflicts and optimizing performance.
-#if defined(ARCH_LOONGARCH64) && !defined(NO_AFFINITY)
-  sa = (XFLOAT *)((BLASLONG)buffer + (WhereAmI() & 0xf) * GEMM_OFFSET_A);
-#else
-  sa = (XFLOAT *)((BLASLONG)buffer +GEMM_OFFSET_A);
-#endif
-  sb = (XFLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+#إذا defined(ARCH_LOONGARCH64) && !defined(NO_AFFINITY)
+  sa = (XFLOAT *)((BLASLONG)میانگیر + (WhereAmI() & 0xf) * GEMM_جابه_جایی_A);
+#وإلا
+  sa = (XFLOAT *)((BLASLONG)میانگیر +GEMM_جابه_جایی_A);
+#پایان_اگر
+  sb = (XFLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * اندازه + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_جابه_جایی_B);
 
-#ifdef SMP
-#if defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
-  mode |= (transa << BLAS_TRANSA_SHIFT);
-  mode |= (transb << BLAS_TRANSB_SHIFT);
-#endif
+#اگر_تعریف_شده SMP
+#إذا defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
+  نما |= (transa << BLAS_TRANSA_لغزش);
+  نما |= (transb << BLAS_TRANSB_لغزش);
+#پایان_اگر
 
-  MNK = (double) args.m * (double) args.n * (double) args.k;
-  args.nthreads = get_gemm_optimal_nthreads(MNK);
+  MNK = (مزدوج) آرگومانها.m * (مزدوج) آرگومانها.n * (مزدوج) آرگومانها.k;
+  آرگومانها.nthreads = get_gemm_optimal_nthreads(MNK);
 
-  args.common = NULL;
+  آرگومانها.common = عدم;
 
- if (args.nthreads == 1) {
-#endif
+ إذا (آرگومانها.nthreads == 1) {
+#پایان_اگر
 
-    (gemm[(transb << 2) | transa])(&args, NULL, NULL, sa, sb, 0);
+    (gemm[(transb << 2) | transa])(&آرگومانها, عدم, عدم, sa, sb, 0);
 
-#ifdef SMP
+#اگر_تعریف_شده SMP
 
-  } else {
+  } وإلا {
 
-#ifndef USE_SIMPLE_THREADED_LEVEL3
+#اگر_تعریف_نشده USE_SIMPLE_THREADED_LEVEL3
 
-#ifndef NO_AFFINITY
-      nodes = get_num_nodes();
+#اگر_تعریف_نشده NO_AFFINITY
+      nodes = get_رقم_nodes();
 
-      if ((nodes > 1) && get_node_equal()) {
+      إذا ((nodes > 1) && get_گره_equal()) {
 
-	args.nthreads /= nodes;
+	آرگومانها.nthreads /= nodes;
 
-	gemm_thread_mn(mode, &args, NULL, NULL, gemm[16 | (transb << 2) | transa], sa, sb, nodes);
+	gemm_thread_mn(نما, &آرگومانها, عدم, عدم, gemm[16 | (transb << 2) | transa], sa, sb, nodes);
 
-      } else {
-#endif
+      } وإلا {
+#پایان_اگر
 
-	(gemm[16 | (transb << 2) | transa])(&args, NULL, NULL, sa, sb, 0);
+	(gemm[16 | (transb << 2) | transa])(&آرگومانها, عدم, عدم, sa, sb, 0);
 
-#else
+#وإلا
 
-	GEMM_THREAD(mode, &args, NULL, NULL, gemm[(transb << 2) | transa], sa, sb, args.nthreads);
+	GEMM_THREAD(نما, &آرگومانها, عدم, عدم, gemm[(transb << 2) | transa], sa, sb, آرگومانها.nthreads);
 
-#endif
+#پایان_اگر
 
-#ifndef USE_SIMPLE_THREADED_LEVEL3
-#ifndef NO_AFFINITY
+#اگر_تعریف_نشده USE_SIMPLE_THREADED_LEVEL3
+#اگر_تعریف_نشده NO_AFFINITY
       }
-#endif
-#endif
+#پایان_اگر
+#پایان_اگر
 
-#endif
+#پایان_اگر
 
-#ifdef SMP
+#اگر_تعریف_شده SMP
   }
-#endif
+#پایان_اگر
 
- blas_memory_free(buffer);
+ blas_حافظه_free(میانگیر);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.k + args.k * args.n + args.m * args.n, 2 * args.m * args.n * args.k);
+  FUNCTION_PROFILE_انتها(COMPSIZE * COMPSIZE, آرگومانها.m * آرگومانها.k + آرگومانها.k * آرگومانها.n + آرگومانها.m * آرگومانها.n, 2 * آرگومانها.m * آرگومانها.n * آرگومانها.k);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 }

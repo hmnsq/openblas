@@ -30,16 +30,16 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************/
 
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
+فراغ NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
 {
 
   BLASLONG n    = *N;
@@ -48,25 +48,25 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT 
   FLOAT alpha   = *ALPHA;
   FLOAT beta    = *BETA;
 
-#else
+#وإلا
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
+فراغ CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
 {
 
-#endif
+#پایان_اگر
 
-  if (n <= 0) return;
+  إذا (n <= 0) أرجع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  إذا (incx < 0) x -= (n - 1) * incx;
+  إذا (incy < 0) y -= (n - 1) * incy;
 
   AXPBY_K(n, alpha, x, incx, beta, y, incy);
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
+  FUNCTION_PROFILE_انتها(1, 2 * n, 2 * n);
 
-  return;
+  أرجع;
 
 }
 

@@ -36,99 +36,99 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-#undef MAX_K
+#لغو_تعریف MAX_K
 
-#ifdef USE_ABS
+#اگر_تعریف_شده USE_ABS
 
-#if defined(DOUBLE)
-#define ABS fabs
-#else
-#define ABS fabsf
-#endif
+#إذا defined(DOUBLE)
+#تعریف_کن ABS fabs
+#وإلا
+#تعریف_کن ABS fabsf
+#پایان_اگر
 
-#ifndef USE_MIN
+#اگر_تعریف_نشده USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMAX_K
-#else
-#define MAX_K	SAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMAX_K
-#else
-#define MAX_K	CAMAX_K
-#endif
-#endif
+#اگر_تعریف_نشده COMPLEX
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن MAX_K	QAMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن MAX_K	DAMAX_K
+#وإلا
+#تعریف_کن MAX_K	SAMAX_K
+#پایان_اگر
+#وإلا
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن MAX_K	XAMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن MAX_K	ZAMAX_K
+#وإلا
+#تعریف_کن MAX_K	CAMAX_K
+#پایان_اگر
+#پایان_اگر
 
-#else
+#وإلا
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMIN_K
-#else
-#define MAX_K	SAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMIN_K
-#else
-#define MAX_K	CAMIN_K
-#endif
-#endif
+#اگر_تعریف_نشده COMPLEX
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن MAX_K	QAMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن MAX_K	DAMIN_K
+#وإلا
+#تعریف_کن MAX_K	SAMIN_K
+#پایان_اگر
+#وإلا
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن MAX_K	XAMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن MAX_K	ZAMIN_K
+#وإلا
+#تعریف_کن MAX_K	CAMIN_K
+#پایان_اگر
+#پایان_اگر
 
-#endif
+#پایان_اگر
 
-#else
+#وإلا
 
-#define ABS
+#تعریف_کن ABS
 
-#ifndef USE_MIN
+#اگر_تعریف_نشده USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	QMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DMAX_K
-#else
-#define MAX_K	SMAX_K
-#endif
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن MAX_K	QMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن MAX_K	DMAX_K
+#وإلا
+#تعریف_کن MAX_K	SMAX_K
+#پایان_اگر
 
-#else
+#وإلا
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	QMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DMIN_K
-#else
-#define MAX_K	SMIN_K
-#endif
+#اگر_تعریف_شده XDOUBLE
+#تعریف_کن MAX_K	QMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کن MAX_K	DMIN_K
+#وإلا
+#تعریف_کن MAX_K	SMIN_K
+#پایان_اگر
 
-#endif
+#پایان_اگر
 
-#endif
+#پایان_اگر
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#اگر_تعریف_نشده CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -138,59 +138,59 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#اگر_تعریف_نشده COMPLEX
+  إذا (incx == 0) أرجع (ABS(*x));
+#وإلا
+  إذا (incx == 0) أرجع (ABS(*x) + ABS(*(x+1)));
+#پایان_اگر
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
   ret = (FLOATRET)MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_انتها(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return ret;
+  أرجع ret;
 }
 
-#else
+#وإلا
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#اگر_تعریف_شده COMPLEX
+FLOAT CNAME(blasint n, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#وإلا
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#پایان_اگر
   
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#اگر_تعریف_نشده COMPLEX
+  إذا (incx == 0) أرجع (ABS(*x));
+#وإلا
+  إذا (incx == 0) أرجع (ABS(*x) + ABS(*(x+1)));
+#پایان_اگر
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
   ret = MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_انتها(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return ret;
+  أرجع ret;
 }
 
-#endif
+#پایان_اگر

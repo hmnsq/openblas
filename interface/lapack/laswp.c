@@ -36,80 +36,80 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#اگر_تعریف_شده FUNCTION_PROFILE
+#ضمن "functable.h"
+#پایان_اگر
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
-#ifdef XDOUBLE
+ساكن صحيح (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+#اگر_تعریف_شده XDOUBLE
   qlaswp_plus, qlaswp_minus,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   dlaswp_plus, dlaswp_minus,
-#else
+#وإلا
   slaswp_plus, slaswp_minus,
-#endif
+#پایان_اگر
 };
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
+فراغ NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  صحيح flag;
 
-#ifdef SMP
-  int mode, nthreads;
+#اگر_تعریف_شده SMP
+  صحيح نما, nthreads;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-#endif
+#پایان_اگر
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  إذا (incx == 0 || n <= 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
   flag = (incx < 0);
 
-#ifdef SMP
-  if (n < 64) {
+#اگر_تعریف_شده SMP
+  إذا (n < 64) {
     nthreads = 1;
-  } else {
-    nthreads = num_cpu_avail(1);
+  } وإلا {
+    nthreads = رقم_cpu_avail(1);
   }
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#پایان_اگر
 
-  (laswp[flag])(n, k1, k2, ZERO, a, lda, NULL, 0, ipiv, incx);
+  (laswp[flag])(n, k1, k2, ZERO, a, lda, عدم, 0, ipiv, incx);
 
-#ifdef SMP
-  } else {
+#اگر_تعریف_شده SMP
+  } وإلا {
 
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
+#اگر_تعریف_شده XDOUBLE
+  نما  =  BLAS_XDOUBLE | BLAS_REAL;
+#وإلاإذا defined(DOUBLE)
+  نما  =  BLAS_DOUBLE  | BLAS_REAL;
+#وإلا
+  نما  =  BLAS_SINGLE  | BLAS_REAL;
+#پایان_اگر
 
-  blas_level1_thread(mode, n, k1, k2, dummyalpha,
-		     a, lda, NULL, 0, ipiv, incx,
-		     (int(*)(void))laswp[flag], nthreads);
+  blas_level1_thread(نما, n, k1, k2, dummyalpha,
+		     a, lda, عدم, 0, ipiv, incx,
+		     (صحيح(*)(فراغ))laswp[flag], nthreads);
   }
-#endif
+#پایان_اگر
 
-  FUNCTION_PROFILE_END(COMPSIZE, n * (k2 - k1), 0);
+  FUNCTION_PROFILE_انتها(COMPSIZE, n * (k2 - k1), 0);
 
-  IDEBUG_END;
+  IDEBUG_انتها;
 
-  return;
+  أرجع;
 
 }

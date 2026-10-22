@@ -1699,16 +1699,16 @@ cblas_zdotc.$(SUFFIX) cblas_zdotc.$(PSUFFIX) : zdot.c
 	$(CC) $(CFLAGS) -DCBLAS -c -DCONJ $< -o $(@F)
 
 cblas_cdotu_sub.$(SUFFIX) cblas_cdotu_sub.$(PSUFFIX) : zdot.c
-	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_STACK -c -UCONJ $< -o $(@F)
+	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_پشته -c -UCONJ $< -o $(@F)
 
 cblas_cdotc_sub.$(SUFFIX) cblas_cdotc_sub.$(PSUFFIX) : zdot.c
-	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_STACK -c -DCONJ $< -o $(@F)
+	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_پشته -c -DCONJ $< -o $(@F)
 
 cblas_zdotu_sub.$(SUFFIX) cblas_zdotu_sub.$(PSUFFIX) : zdot.c
-	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_STACK -c -UCONJ $< -o $(@F)
+	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_پشته -c -UCONJ $< -o $(@F)
 
 cblas_zdotc_sub.$(SUFFIX) cblas_zdotc_sub.$(PSUFFIX) : zdot.c
-	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_STACK -c -DCONJ $< -o $(@F)
+	$(CC) $(CFLAGS) -DCBLAS -DFORCE_USE_پشته -c -DCONJ $< -o $(@F)
 
 cblas_snrm2.$(SUFFIX) cblas_snrm2.$(PSUFFIX) : nrm2.c
 	$(CC) $(CFLAGS) -DCBLAS -c $< -o $(@F)
