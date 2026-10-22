@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ако (n <= 0) върни 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ако (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    върни fabs(x[0]);
+#иначе
+    върни fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ако (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  върни (sqrt((double)n)*fabs(x[0]));
+#иначе
+  върни (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#иначе
 #ifdef DOUBLE
   {
   double fr=fabs(x[0]);
   double fi=fabs(x[1]);
   double fmin=MIN(fr,fi);
   double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ако (fmax==0.) върни(fmax);
+  ако (fmax==fmin) върни(sqrt((double)n)*sqrt(2.)*fmax);
+  върни (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#иначе
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ако (fmax==0.) върни(fmax);
+  ако (fmax==fmin) върни(sqrt((float)n)*sqrt(2.)*fmax);
+  върни (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ако (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#иначе
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  върни ret;
 }
 
-#else
+#иначе
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#иначе
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ако (n <= 0) върни 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ако (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    върни fabs(x[0]);
+#иначе
+    върни fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ако (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  върни (sqrt((double)n)*fabs(x[0]));
+#иначе
+  върни (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#иначе
 #ifdef DOUBLE
   {
   double fr=fabs(x[0]);
   double fi=fabs(x[1]);
   double fmin=MIN(fr,fi);
   double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ако (fmax==0.) върни(fmax);
+  ако (fmax==fmin) върни(sqrt((double)n)*sqrt(2.)*fmax);
+  върни (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#иначе
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ако (fmax==0.) върни(fmax);
+  ако (fmax==fmin) върни(sqrt((float)n)*sqrt(2.)*fmax);
+  върни (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ако (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#иначе
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  върни ret;
 }
 
 #endif

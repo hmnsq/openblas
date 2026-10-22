@@ -46,7 +46,7 @@
 #define ERROR_NAME "QPOTRF"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DPOTRF"
-#else
+#иначе
 #define ERROR_NAME "SPOTRF"
 #endif
 
@@ -83,22 +83,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ако (uplo_arg == 'U') uplo = 0;
+  ако (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
+  ако (args.lda < MAX(1,args.n)) info = 4;
+  ако (args.n   < 0)             info = 2;
+  ако (uplo     < 0)             info = 1;
+  ако (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    върни;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  ако (args.n == 0) върни;
 
   IDEBUG_START;
 
@@ -114,25 +114,25 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #ifdef SMP
   args.common = NULL;
 #ifndef DOUBLE
-  int nmax = 128;
-#else 
-  int nmax = 64;
+  цяло nmax = 128;
+#иначе 
+  цяло nmax = 64;
 #endif
-  if (args.n <nmax) {
+  ако (args.n <nmax) {
     args.nthreads = 1;
-  } else {
+  } иначе {
     args.nthreads = num_cpu_avail(4);
-    if (args.n/args.nthreads <nmax)
+    ако (args.n/args.nthreads <nmax)
 	    args.nthreads = args.n/nmax;
   }
 
-  if (args.nthreads == 1) {
+  ако (args.nthreads == 1) {
 #endif
 
     *Info = (potrf_single[uplo])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } иначе {
     *Info = (potrf_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
   }
 #endif
@@ -147,5 +147,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  върни;
 }

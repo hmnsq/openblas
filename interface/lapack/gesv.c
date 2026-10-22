@@ -47,15 +47,15 @@
 #define ERROR_NAME "QGESV"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGESV"
-#else
+#иначе
 #define ERROR_NAME "SGESV"
 #endif
-#else
+#иначе
 #ifdef XDOUBLE
 #define ERROR_NAME "XGESV"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGESV"
-#else
+#иначе
 #define ERROR_NAME "CGESV"
 #endif
 #endif
@@ -84,15 +84,15 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
   args.c    = (void *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  ако (args.ldb < MAX(1,args.m)) info = 7;
+  ако (args.lda < MAX(1,args.m)) info = 4;
+  ако (args.n   < 0)             info = 2;
+  ако (args.m   < 0)             info = 1;
 
-  if (info) {
+  ако (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    върни;
   }
 
   args.alpha = NULL;
@@ -100,7 +100,7 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  ако (args.m == 0) върни;
 
   IDEBUG_START;
 
@@ -116,46 +116,46 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 #ifdef SMP
   args.common = NULL;
 
-#if defined(_WIN64) && defined(_M_ARM64)
+#ако defined(_WIN64) && defined(_M_ARM64)
   #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
+    ако (args.m * args.m <= 300) 
+  #иначе
+    ако (args.m * args.m <= 500) 
   #endif
       args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
+  иначе ако (args.m * args.m <= 1000)
     args.nthreads = 4;
-  else
+  иначе
     args.nthreads = num_cpu_avail(4);
-#else
+#иначе
   #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
+    ако (args.m * args.m < 40000)
+  #иначе
+    ако (args.m * args.m < 10000)
   #endif
       args.nthreads = 1;
-    else
+    иначе
       args.nthreads = num_cpu_avail(4);
 #endif
 
-  if (args.nthreads == 1) {
+  ако (args.nthreads == 1) {
 #endif
 
     args.n    = *N;
     info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
+    ако (info == 0 && *NRHS >0){
       args.n    = *NRHS;
       GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
     }
 
 #ifdef SMP
-  } else {
+  } иначе {
 
     args.n    = *N;
     info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
+    ако (info == 0 && *NRHS > 0){
       args.n    = *NRHS;
       GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
     }
@@ -172,5 +172,5 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   IDEBUG_END;
 
-  return;
+  върни;
 }

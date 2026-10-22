@@ -37,9 +37,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ако defined(DOUBLE)
 #define ERROR_NAME "DIMATCOPY"
-#else
+#иначе
 #define ERROR_NAME "SIMATCOPY"
 #endif
 
@@ -61,7 +61,7 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 {
 
 	char Order, Trans;
-	int order=-1,trans=-1;
+	цяло order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
@@ -72,26 +72,26 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
+	ако ( Order == 'C' ) order = BlasColMajor;
+	ако ( Order == 'R' ) order = BlasRowMajor;
+	ако ( Trans == 'N' ) trans = BlasNoTrans;
+	ако ( Trans == 'R' ) trans = BlasNoTrans;
+	ако ( Trans == 'T' ) trans = BlasTrans;
+	ако ( Trans == 'C' ) trans = BlasTrans;
+#иначе 
 void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	цяло order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
 	blasint *lda, *ldb, *rows, *cols; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	ако ( CORDER == CblasColMajor) order = BlasColMajor; 
+	ако ( CORDER == CblasRowMajor) order = BlasRowMajor; 
+	ако ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	ако ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -100,95 +100,95 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	ldb = &cldb; 	
 #endif 
 
-	if ( order == BlasColMajor)
+	ако ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	ако ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
+        	ако ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	ако ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	ако ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
+        	ако ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ако ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	ако ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	ако ( *cols < 0 ) info = 4;
+	ако ( *rows < 0 ) info = 3;
+	ако ( trans < 0 ) info = 2;
+	ако ( order < 0 ) info = 1;
 
-	if (info >= 0) {
+	ако (info >= 0) {
     		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+    		върни;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ако ((*rows == 0) || (*cols == 0)) върни;
 
 #ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+    ако ( *lda == *ldb ) {
+        ако ( order == BlasColMajor )
         {
-            if ( trans == BlasNoTrans )
+            ако ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                върни;
             }
-            else if ( *rows == *cols )
+            иначе ако ( *rows == *cols )
             {
                 IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                върни;
             }
         }
-        else
+        иначе
         {
-            if ( trans == BlasNoTrans )
+            ако ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                върни;
             }
-            else if ( *rows == *cols )
+            иначе ако ( *rows == *cols )
             {
                 IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                върни;
             }
         }
     }
 #endif
 
-	if ( *rows >  *cols )
+	ако ( *rows >  *cols )
             msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
+    иначе
             msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
 
 	b = malloc(msize);
-	if ( b == NULL )
+	ако ( b == NULL )
 	{
 		printf("Memory alloc failed in imatcopy\n");
 		exit(1);
 	}
 
-	if ( order == BlasColMajor )
+	ако ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		ако ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
 		}
-		else
+		иначе
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
 	}
-	else
+	иначе
 	{
-		if ( trans == BlasNoTrans )
+		ако ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
-		else
+		иначе
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
@@ -196,7 +196,7 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	}
 
 	free(b);
-	return;
+	върни;
 
 }
 

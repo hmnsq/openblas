@@ -14,7 +14,7 @@ void NAME(blasint *N, FLOAT *dx, blasint *INCX, FLOAT *dy, blasint *INCY, FLOAT 
     blasint incy = *INCY;
 
     PRINT_DEBUG_NAME
-#else
+#иначе
 
 void CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *dparam){
 
@@ -24,6 +24,6 @@ void CNAME(blasint n, FLOAT *dx, blasint incx, FLOAT *dy, blasint incy, FLOAT *d
 
     ROTM_K(n, dx, incx, dy, incy, dparam);
 
-    return;
+    върни;
 }
 

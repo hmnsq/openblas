@@ -46,9 +46,9 @@
 
 #ifdef USE_ABS
 
-#if defined(DOUBLE)
+#ако defined(DOUBLE)
 #define ABS fabs
-#else
+#иначе
 #define ABS fabsf
 #endif
 
@@ -60,20 +60,20 @@
 #define MAX_K	QAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMAX_K
-#else
+#иначе
 #define MAX_K	SAMAX_K
 #endif
-#else
+#иначе
 #ifdef XDOUBLE
 #define MAX_K	XAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMAX_K
-#else
+#иначе
 #define MAX_K	CAMAX_K
 #endif
 #endif
 
-#else
+#иначе
 
 /* ABS & MIN */
 #ifndef COMPLEX
@@ -81,22 +81,22 @@
 #define MAX_K	QAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMIN_K
-#else
+#иначе
 #define MAX_K	SAMIN_K
 #endif
-#else
+#иначе
 #ifdef XDOUBLE
 #define MAX_K	XAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMIN_K
-#else
+#иначе
 #define MAX_K	CAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#иначе
 
 #define ABS
 
@@ -107,18 +107,18 @@
 #define MAX_K	QMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DMAX_K
-#else
+#иначе
 #define MAX_K	SMAX_K
 #endif
 
-#else
+#иначе
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	QMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DMIN_K
-#else
+#иначе
 #define MAX_K	SMIN_K
 #endif
 
@@ -138,12 +138,12 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ако (n <= 0) върни 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ако (incx == 0) върни (ABS(*x));
+#иначе
+  ако (incx == 0) върни (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -156,15 +156,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  върни ret;
 }
 
-#else
+#иначе
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#иначе
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
   
@@ -172,12 +172,12 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ако (n <= 0) върни 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ако (incx == 0) върни (ABS(*x));
+#иначе
+  ако (incx == 0) върни (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -190,7 +190,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  върни ret;
 }
 
 #endif

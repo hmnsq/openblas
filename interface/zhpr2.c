@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHPR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHPR2 "
-#else
+#иначе
 #define ERROR_NAME "CHPR2 "
 #endif
 
-static int (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static цяло (*hpr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr2_U, xhpr2_L, xhpr2_V, xhpr2_M,
 #elif defined(DOUBLE)
   zhpr2_U, zhpr2_L, zhpr2_V, zhpr2_M,
-#else
+#иначе
   chpr2_U, chpr2_L, chpr2_V, chpr2_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static цяло (*hpr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, цяло) = {
 #ifdef XDOUBLE
   xhpr2_thread_U, xhpr2_thread_L, xhpr2_thread_V, xhpr2_thread_M,
 #elif defined(DOUBLE)
   zhpr2_thread_U, zhpr2_thread_L, zhpr2_thread_V, zhpr2_thread_M,
-#else
+#иначе
   chpr2_thread_U, chpr2_thread_L, chpr2_thread_V, chpr2_thread_M,
 #endif
 };
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  цяло uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  цяло nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,22 +99,22 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ако (uplo_arg  == 'U') uplo  = 0;
+  ако (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ако (incy == 0)          info =  7;
+  ако (incx == 0)          info =  5;
+  ако (n < 0)              info =  2;
+  ако (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  ако (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    върни;
   }
 
-#else
+#иначе
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_UPLO Uplo,
@@ -132,10 +132,10 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   FLOAT *buffer;
-  int uplo;
+  цяло uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  цяло nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -143,69 +143,69 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ако (order == CblasColMajor) {
+    ако (Uplo == CblasUpper)         uplo  = 0;
+    ако (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ако (incy == 0)          info =  7;
+    ако (incx == 0)          info =  5;
+    ако (n < 0)              info =  2;
+    ако (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  ако (order == CblasRowMajor) {
+    ако (Uplo == CblasUpper)         uplo  = 3;
+    ако (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (incy == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ако (incx == 0)          info =  7;
+    ако (incy == 0)          info =  5;
+    ако (n < 0)              info =  2;
+    ако (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  ако (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    върни;
   }
 
 #endif
 
-  if (n == 0) return;
+  ако (n == 0) върни;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ако ((alpha_r == ZERO) && (alpha_i == ZERO)) върни;
 
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  ако (incx < 0 ) x -= (n - 1) * incx * 2;
+  ако (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ако (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    върни;
   }
 
 #ifdef SMP
-  if (n < 100)
+  ако (n < 100)
 	nthreads = 1;
-  else
+  иначе
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ако (nthreads == 1) {
 #endif
 
     (hpr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
 
 #ifdef SMP
-  } else {
+  } иначе {
 
     (hpr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
 
@@ -218,5 +218,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  върни;
 }

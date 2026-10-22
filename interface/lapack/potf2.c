@@ -46,7 +46,7 @@
 #define ERROR_NAME "QPOTF2"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DPOTF2"
-#else
+#иначе
 #define ERROR_NAME "SPOTF2"
 #endif
 
@@ -55,7 +55,7 @@ static blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *
   qpotf2_U, qpotf2_L,
 #elif defined(DOUBLE)
   dpotf2_U, dpotf2_L,
-#else
+#иначе
   spotf2_U, spotf2_L,
 #endif
   };
@@ -83,22 +83,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ако (uplo_arg == 'U') uplo = 0;
+  ако (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
+  ако (args.lda < MAX(1,args.n)) info = 4;
+  ако (args.n   < 0)             info = 2;
+  ако (uplo     < 0)             info = 1;
+  ако (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    върни;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  ако (args.n <= 0) върни;
 
   IDEBUG_START;
 
@@ -125,5 +125,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  върни;
 }

@@ -11,7 +11,7 @@ OPENBLAS_EXPORT
 
 void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#иначе
 
 void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
@@ -19,11 +19,11 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
 #ifdef DOUBLE
   long double safmin = DBL_MIN;
-#else
+#иначе
   long double safmin = FLT_MIN;
 #endif
 
-#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
+#ако defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
 
   long double da = *DA;
   long double db = *DB;
@@ -41,25 +41,25 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#иначе
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (adb == ZERO) {
+  ако (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } иначе ако (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } иначе {
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
-    if (ada > adb)
+    ако (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    иначе
 	sigma = copysign(1.,db);
     dascal = da / scale;
     dbscal = db / scale;
@@ -67,8 +67,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ако (ada > adb) z = s;
+    ако ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -76,7 +76,7 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     *DB = z;
   }
 
-#else
+#иначе
   FLOAT da = *DA;
   FLOAT db = *DB;
   FLOAT c  = *C;
@@ -93,28 +93,28 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
 
-  if (ada > adb)
+  ако (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    иначе
 	sigma = copysign(1.,db);
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#иначе
   PRINT_DEBUG_CNAME;
 #endif
 
 
-  if (adb == ZERO) {
+  ако (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } иначе ако (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } иначе {
     FLOAT aa = da / scale;
     FLOAT bb = db / scale;
 
@@ -122,8 +122,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    ако (ada > adb) z = s;
+    ако ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -132,5 +132,5 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   }
 #endif
 
-  return;
+  върни;
 }
