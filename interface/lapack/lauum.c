@@ -36,109 +36,109 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جے_تعریف_شدہ FUNCTION_PROFILE
+#ضمن "functable.h"
+#جے_انت
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QLAUUM"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DLAUUM"
-#else
-#define ERROR_NAME "SLAUUM"
-#endif
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "QLAUUM"
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DLAUUM"
+#وإلا
+#تعریف_کرو ERROR_NAME "SLAUUM"
+#جے_انت
 
-static blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   LAUUM_U_SINGLE, LAUUM_L_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#جے_تعریف_شدہ SMP
+ساكن blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   LAUUM_U_PARALLEL, LAUUM_L_PARALLEL,
 };
-#endif
+#جے_انت
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t دلیلاں;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *بفر;
+#جے_تعریف_شدہ PPC440
+  خارجي
+#جے_انت
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  دلیلاں.n    = *N;
+  دلیلاں.a    = (فراغ *)a;
+  دلیلاں.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (دلیلاں.lda < MAX(1,دلیلاں.n)) info = 4;
+  إذا (دلیلاں.n   < 0)             info = 2;
+  إذا (uplo     < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  إذا (دلیلاں.n == 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#جے_بنا_تعریف PPC440
+  بفر = (FLOAT *)blas_حافظہ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وتھ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ناپ + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وتھ_B);
+#جے_انت
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.n < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#جے_تعریف_شدہ SMP
+  دلیلاں.common = عدم;
+  إذا (دلیلاں.n < 64) {
+    دلیلاں.nthreads = 1;
+  } وإلا {
+    دلیلاں.nthreads = عدد_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  إذا (دلیلاں.nthreads == 1) {
+#جے_انت
 
-    *Info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (lauum_single[uplo])(&دلیلاں, عدم, عدم, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    *Info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+#جے_تعریف_شدہ SMP
+  } وإلا {
+    *Info = (lauum_parallel[uplo])(&دلیلاں, عدم, عدم, sa, sb, 0);
   }
-#endif
+#جے_انت
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#جے_بنا_تعریف PPC440
+  blas_حافظہ_free(بفر);
+#جے_انت
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_سرا(1, .5 * دلیلاں.n * دلیلاں.n,
+		       دلیلاں.n * (1./3. + دلیلاں.n * ( 1./2. + دلیلاں.n * 1./6.))
+		       +  1./6. * دلیلاں.n * (دلیلاں.n * دلیلاں.n - 1));
 
-  IDEBUG_END;
+  IDEBUG_سرا;
 
-  return;
+  أرجع;
 }

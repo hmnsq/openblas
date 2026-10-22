@@ -36,151 +36,151 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن <ctype.h>
+#ضمن "common.h"
+#جے_تعریف_شدہ FUNCTION_PROFILE
+#ضمن "functable.h"
+#جے_انت
 
-#ifndef COMPLEX
-#define SMP_THRESHOLD_MIN 65536.
-#ifdef XDOUBLE
-#define ERROR_NAME "QSYMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSYMM "
-#else
-#define ERROR_NAME "SSYMM "
-#endif
-#else
-#define SMP_THRESHOLD_MIN 8192.
-#ifndef GEMM3M
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYMM "
-#else
-#define ERROR_NAME "CSYMM "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHEMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHEMM "
-#else
-#define ERROR_NAME "CHEMM "
-#endif
-#endif
-#else
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYMM3M "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYMM3M "
-#else
-#define ERROR_NAME "CSYMM3M "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHEMM3M "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHEMM3M "
-#else
-#define ERROR_NAME "CHEMM3M "
-#endif
-#endif
-#endif
-#endif
+#جے_بنا_تعریف COMPLEX
+#تعریف_کرو SMP_حد_MIN 65536.
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "QSYMM "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DSYMM "
+#وإلا
+#تعریف_کرو ERROR_NAME "SSYMM "
+#جے_انت
+#وإلا
+#تعریف_کرو SMP_حد_MIN 8192.
+#جے_بنا_تعریف GEMM3M
+#جے_بنا_تعریف HEMM
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "XSYMM "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "ZSYMM "
+#وإلا
+#تعریف_کرو ERROR_NAME "CSYMM "
+#جے_انت
+#وإلا
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "XHEMM "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "ZHEMM "
+#وإلا
+#تعریف_کرو ERROR_NAME "CHEMM "
+#جے_انت
+#جے_انت
+#وإلا
+#جے_بنا_تعریف HEMM
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "XSYMM3M "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "ZSYMM3M "
+#وإلا
+#تعریف_کرو ERROR_NAME "CSYMM3M "
+#جے_انت
+#وإلا
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "XHEMM3M "
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "ZHEMM3M "
+#وإلا
+#تعریف_کرو ERROR_NAME "CHEMM3M "
+#جے_انت
+#جے_انت
+#جے_انت
+#جے_انت
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#جے_بنا_تعریف GEMM_MULTITHREAD_حد
+#تعریف_کرو GEMM_MULTITHREAD_حد 4
+#جے_انت
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);                                
-#endif                                                               
+#جے_تعریف_شدہ DYNAMIC_ARCH
+خارجي حرف* gotoblas_corename(فراغ);                                
+#جے_انت                                                               
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MODE	(BLAS_XDOUBLE | BLAS_REAL)
-#elif defined(DOUBLE)
-#define MODE	(BLAS_DOUBLE  | BLAS_REAL)
-#else
-#define MODE	(BLAS_SINGLE  | BLAS_REAL)
-#endif
-#else
-#ifdef XDOUBLE
-#define MODE	(BLAS_XDOUBLE | BLAS_COMPLEX)
-#elif defined(DOUBLE)
-#define MODE	(BLAS_DOUBLE  | BLAS_COMPLEX)
-#else
-#define MODE	(BLAS_SINGLE  | BLAS_COMPLEX)
-#endif
-#endif
-#endif
+#جے_تعریف_شدہ SMP
+#جے_بنا_تعریف COMPLEX
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو منوال_2	(BLAS_XDOUBLE | BLAS_REAL)
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو منوال_2	(BLAS_DOUBLE  | BLAS_REAL)
+#وإلا
+#تعریف_کرو منوال_2	(BLAS_SINGLE  | BLAS_REAL)
+#جے_انت
+#وإلا
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو منوال_2	(BLAS_XDOUBLE | BLAS_COMPLEX)
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو منوال_2	(BLAS_DOUBLE  | BLAS_COMPLEX)
+#وإلا
+#تعریف_کرو منوال_2	(BLAS_SINGLE  | BLAS_COMPLEX)
+#جے_انت
+#جے_انت
+#جے_انت
 
-static int (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef GEMM3M
-#ifndef HEMM
+ساكن صحيح (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#جے_بنا_تعریف GEMM3M
+#جے_بنا_تعریف HEMM
   SYMM_LU, SYMM_LL, SYMM_RU, SYMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#إذا defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM_THREAD_LU, SYMM_THREAD_LL, SYMM_THREAD_RU, SYMM_THREAD_RL,
-#endif
-#else
+#جے_انت
+#وإلا
   HEMM_LU, HEMM_LL, HEMM_RU, HEMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#إذا defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM_THREAD_LU, HEMM_THREAD_LL, HEMM_THREAD_RU, HEMM_THREAD_RL,
-#endif
-#endif
-#else
-#ifndef HEMM
+#جے_انت
+#جے_انت
+#وإلا
+#جے_بنا_تعریف HEMM
   SYMM3M_LU, SYMM3M_LL, SYMM3M_RU, SYMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#إذا defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM3M_THREAD_LU, SYMM3M_THREAD_LL, SYMM3M_THREAD_RU, SYMM3M_THREAD_RL,
-#endif
-#else
+#جے_انت
+#وإلا
   HEMM3M_LU, HEMM3M_LL, HEMM3M_RU, HEMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#إذا defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM3M_THREAD_LU, HEMM3M_THREAD_LL, HEMM3M_THREAD_RU, HEMM3M_THREAD_RL,
-#endif
-#endif
-#endif
+#جے_انت
+#جے_انت
+#جے_انت
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جے_بنا_تعریف CBLAS
 
-void NAME(char *SIDE, char *UPLO,
+فراغ NAME(حرف *SIDE, حرف *UPLO,
          blasint *M, blasint *N,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
          FLOAT *b, blasint *ldB,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char side_arg  = *SIDE;
-  char uplo_arg  = *UPLO;
+  حرف side_arg  = *SIDE;
+  حرف uplo_arg  = *UPLO;
 
-  blas_arg_t args;
+  blas_arg_t دلیلاں;
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
-#endif
-# if defined(SMP)
-  double MN;
-#endif
+#إذا defined(SMP) && !defined(NO_AFFINITY)
+  صحيح nodes;
+#جے_انت
+# إذا defined(SMP)
+  مزدوج MN;
+#جے_انت
   blasint info;
-  int side;
-  int uplo;
+  صحيح side;
+  صحيح uplo;
 
   PRINT_DEBUG_NAME;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  دلیلاں.alpha = (فراغ *)alpha;
+  دلیلاں.beta  = (فراغ *)beta;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -188,285 +188,285 @@ void NAME(char *SIDE, char *UPLO,
   side  = -1;
   uplo  = -1;
 
-  if (side_arg  == 'L') side  = 0;
-  if (side_arg  == 'R') side  = 1;
+  إذا (side_arg  == 'L') side  = 0;
+  إذا (side_arg  == 'R') side  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  إذا (uplo_arg  == 'U') uplo  = 0;
+  إذا (uplo_arg  == 'L') uplo  = 1;
 
-  args.m = *M;
-  args.n = *N;
+  دلیلاں.m = *M;
+  دلیلاں.n = *N;
 
-  args.c = (void *)c;
-  args.ldc = *ldC;
+  دلیلاں.c = (فراغ *)c;
+  دلیلاں.ldc = *ldC;
 
   info = 0;
 
-  if (args.ldc < MAX(1, args.m)) info = 12;
+  إذا (دلیلاں.ldc < MAX(1, دلیلاں.m)) info = 12;
 
-  if (!side) {
-    args.a = (void *)a;
-    args.b = (void *)b;
+  إذا (!side) {
+    دلیلاں.a = (فراغ *)a;
+    دلیلاں.b = (فراغ *)b;
 
-    args.lda = *ldA;
-    args.ldb = *ldB;
+    دلیلاں.lda = *ldA;
+    دلیلاں.ldb = *ldB;
 
-    if (args.ldb < MAX(1, args.m)) info =  9;
-    if (args.lda < MAX(1, args.m)) info =  7;
+    إذا (دلیلاں.ldb < MAX(1, دلیلاں.m)) info =  9;
+    إذا (دلیلاں.lda < MAX(1, دلیلاں.m)) info =  7;
 
-  } else {
-    args.a = (void *)b;
-    args.b = (void *)a;
+  } وإلا {
+    دلیلاں.a = (فراغ *)b;
+    دلیلاں.b = (فراغ *)a;
 
-    args.lda = *ldB;
-    args.ldb = *ldA;
+    دلیلاں.lda = *ldB;
+    دلیلاں.ldb = *ldA;
 
-  if (args.lda < MAX(1, args.m)) info =  9;
-  if (args.ldb < MAX(1, args.n)) info =  7;
+  إذا (دلیلاں.lda < MAX(1, دلیلاں.m)) info =  9;
+  إذا (دلیلاں.ldb < MAX(1, دلیلاں.n)) info =  7;
   }
 
-  if (args.n   < 0)              info =  4;
-  if (args.m   < 0)              info =  3;
-  if (uplo     < 0)              info =  2;
-  if (side     < 0)              info =  1;
+  إذا (دلیلاں.n   < 0)              info =  4;
+  إذا (دلیلاں.m   < 0)              info =  3;
+  إذا (uplo     < 0)              info =  2;
+  إذا (side     < 0)              info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-#else
+#وإلا
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
+فراغ CNAME(تعداد CBLAS_ترتیب ترتیب, تعداد CBLAS_SIDE Side, تعداد CBLAS_UPLO Uplo,
 	   blasint m, blasint n,
-#ifndef COMPLEX
+#جے_بنا_تعریف COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb,
 	   FLOAT beta,
 	   FLOAT *c, blasint ldc) {
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb,
-	   void *vbeta,
-	   void *vc, blasint ldc) {
+#وإلا
+	   فراغ *valpha,
+	   فراغ *va, blasint lda,
+	   فراغ *vb, blasint ldb,
+	   فراغ *vbeta,
+	   فراغ *vc, blasint ldc) {
   FLOAT *alpha = (FLOAT*) valpha;
   FLOAT *beta  = (FLOAT*) vbeta;
   FLOAT *a = (FLOAT*) va;
   FLOAT *b = (FLOAT*) vb;
   FLOAT *c = (FLOAT*) vc;	   
-#endif
+#جے_انت
 
-  blas_arg_t args;
-  int side, uplo;
+  blas_arg_t دلیلاں;
+  صحيح side, uplo;
   blasint info;
 
-  FLOAT *buffer;
+  FLOAT *بفر;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
-#endif
-#if defined(SMP)
-  double MN;
-#endif
+#إذا defined(SMP) && !defined(NO_AFFINITY)
+  صحيح nodes;
+#جے_انت
+#إذا defined(SMP)
+  مزدوج MN;
+#جے_انت
 
   PRINT_DEBUG_CNAME;
 
-#ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
-#else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
-#endif
+#جے_بنا_تعریف COMPLEX
+  دلیلاں.alpha = (فراغ *)&alpha;
+  دلیلاں.beta  = (فراغ *)&beta;
+#وإلا
+  دلیلاں.alpha = (فراغ *)alpha;
+  دلیلاں.beta  = (فراغ *)beta;
+#جے_انت
 
-  args.c = (void *)c;
-  args.ldc = ldc;
+  دلیلاں.c = (فراغ *)c;
+  دلیلاں.ldc = ldc;
 
   side  = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Side == CblasLeft)  side = 0;
-    if (Side == CblasRight) side = 1;
+  إذا (ترتیب == Cblas_خانہ_Major) {
+    إذا (Side == Cblas_بایاں)  side = 0;
+    إذا (Side == Cblas_دایاں) side = 1;
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    args.m = m;
-    args.n = n;
-
-    if (args.ldc < MAX(1, args.m)) info = 12;
-
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
-
-      args.lda = lda;
-      args.ldb = ldb;
-
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
-
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
-
-      args.lda = ldb;
-      args.ldb = lda;
-
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
-    }
-
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Side == CblasLeft)  side = 1;
-    if (Side == CblasRight) side = 0;
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    إذا (Uplo == Cblas_اتلا) uplo  = 0;
+    إذا (Uplo == Cblas_ہیٹھلا) uplo  = 1;
 
     info = -1;
 
-    args.m = n;
-    args.n = m;
+    دلیلاں.m = m;
+    دلیلاں.n = n;
 
-    if (args.ldc < MAX(1, args.m)) info = 12;
+    إذا (دلیلاں.ldc < MAX(1, دلیلاں.m)) info = 12;
 
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
+    إذا (!side) {
+      دلیلاں.a = (فراغ *)a;
+      دلیلاں.b = (فراغ *)b;
 
-      args.lda = lda;
-      args.ldb = ldb;
+      دلیلاں.lda = lda;
+      دلیلاں.ldb = ldb;
 
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
+      إذا (دلیلاں.ldb < MAX(1, دلیلاں.m)) info =  9;
+      إذا (دلیلاں.lda < MAX(1, دلیلاں.m)) info =  7;
 
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
+    } وإلا {
+      دلیلاں.a = (فراغ *)b;
+      دلیلاں.b = (فراغ *)a;
 
-      args.lda = ldb;
-      args.ldb = lda;
+      دلیلاں.lda = ldb;
+      دلیلاں.ldb = lda;
 
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
+      إذا (دلیلاں.lda < MAX(1, دلیلاں.m)) info =  9;
+      إذا (دلیلاں.ldb < MAX(1, دلیلاں.n)) info =  7;
     }
 
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
+    إذا (دلیلاں.n   < 0)              info =  4;
+    إذا (دلیلاں.m   < 0)              info =  3;
+    إذا (uplo     < 0)              info =  2;
+    إذا (side     < 0)              info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  إذا (ترتیب == Cblas_صف_Major) {
+    إذا (Side == Cblas_بایاں)  side = 1;
+    إذا (Side == Cblas_دایاں) side = 0;
+
+    إذا (Uplo == Cblas_اتلا) uplo  = 1;
+    إذا (Uplo == Cblas_ہیٹھلا) uplo  = 0;
+
+    info = -1;
+
+    دلیلاں.m = n;
+    دلیلاں.n = m;
+
+    إذا (دلیلاں.ldc < MAX(1, دلیلاں.m)) info = 12;
+
+    إذا (!side) {
+      دلیلاں.a = (فراغ *)a;
+      دلیلاں.b = (فراغ *)b;
+
+      دلیلاں.lda = lda;
+      دلیلاں.ldb = ldb;
+
+      إذا (دلیلاں.ldb < MAX(1, دلیلاں.m)) info =  9;
+      إذا (دلیلاں.lda < MAX(1, دلیلاں.m)) info =  7;
+
+    } وإلا {
+      دلیلاں.a = (فراغ *)b;
+      دلیلاں.b = (فراغ *)a;
+
+      دلیلاں.lda = ldb;
+      دلیلاں.ldb = lda;
+
+      إذا (دلیلاں.lda < MAX(1, دلیلاں.m)) info =  9;
+      إذا (دلیلاں.ldb < MAX(1, دلیلاں.n)) info =  7;
+    }
+
+    إذا (دلیلاں.n   < 0)              info =  4;
+    إذا (دلیلاں.m   < 0)              info =  3;
+    إذا (uplo     < 0)              info =  2;
+    إذا (side     < 0)              info =  1;
   }
 
-   if (args.m == 0 || args.n == 0) return;
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+  إذا (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
+  }
+
+   إذا (دلیلاں.m == 0 || دلیلاں.n == 0) أرجع;
+#إذا !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#إذا defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_سدھا)||defined(DYNAMIC_ARCH))
+#إذا defined(DYNAMIC_ARCH)
+إذا (strcmp(gotoblas_corename(), "armv9sme") == 0
+#إذا defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#جے_انت
 )
-#endif
-   if (order == CblasRowMajor && m == lda && n == ldb && n == ldc)
+#جے_انت
+   إذا (ترتیب == Cblas_صف_Major && m == lda && n == ldb && n == ldc)
    {
-     if (Side == CblasLeft && Uplo == CblasUpper) {
-       SSYMM_DIRECT_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     إذا (Side == Cblas_بایاں && Uplo == Cblas_اتلا) {
+       SSYMM_سدھا_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); أرجع;
      }
-     else if (Side == CblasLeft && Uplo == CblasLower) {
-       SSYMM_DIRECT_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     وإلا إذا (Side == Cblas_بایاں && Uplo == Cblas_ہیٹھلا) {
+       SSYMM_سدھا_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); أرجع;
      }
    }
-#endif
-#endif
+#جے_انت
+#جے_انت
 
-#endif
+#جے_انت
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  بفر = (FLOAT *)blas_حافظہ_alloc(0);
+  إذا (!بفر) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME));
+    أرجع;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وتھ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ناپ + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وتھ_B);
 
-#ifdef SMP
-  args.common = NULL;
-  MN = 2.* (double) args.m * (double)args.m * (double) args.n;
-  if (MN <= (SMP_THRESHOLD_MIN * (double) GEMM_MULTITHREAD_THRESHOLD) ) {
-	  args.nthreads = 1;
-  } else {
-	 args.nthreads = num_cpu_avail(3);
+#جے_تعریف_شدہ SMP
+  دلیلاں.common = عدم;
+  MN = 2.* (مزدوج) دلیلاں.m * (مزدوج)دلیلاں.m * (مزدوج) دلیلاں.n;
+  إذا (MN <= (SMP_حد_MIN * (مزدوج) GEMM_MULTITHREAD_حد) ) {
+	  دلیلاں.nthreads = 1;
+  } وإلا {
+	 دلیلاں.nthreads = عدد_cpu_avail(3);
   }
-  if (args.nthreads == 1) {
-#endif
+  إذا (دلیلاں.nthreads == 1) {
+#جے_انت
 
-    (symm[(side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+    (symm[(side << 1) | uplo ])(&دلیلاں, عدم, عدم, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#جے_تعریف_شدہ SMP
+  } وإلا {
 
-#ifndef NO_AFFINITY
-    nodes = get_num_nodes();
+#جے_بنا_تعریف NO_AFFINITY
+    nodes = get_عدد_nodes();
 
-    if (nodes > 1) {
+    إذا (nodes > 1) {
 
-      args.nthreads /= nodes;
+      دلیلاں.nthreads /= nodes;
 
-      gemm_thread_mn(MODE, &args, NULL, NULL,
+      gemm_thread_mn(منوال_2, &دلیلاں, عدم, عدم,
 		     symm[4 | (side << 1) | uplo ], sa, sb, nodes);
 
-    } else {
-#endif
+    } وإلا {
+#جے_انت
 
-#ifndef USE_SIMPLE_THREADED_LEVEL3
+#جے_بنا_تعریف USE_SIMPLE_THREADED_LEVEL3
 
-      (symm[4 | (side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+      (symm[4 | (side << 1) | uplo ])(&دلیلاں, عدم, عدم, sa, sb, 0);
 
-#else
+#وإلا
 
-      GEMM_THREAD(MODE, &args, NULL, NULL, symm[(side << 1) | uplo ], sa, sb, args.nthreads);
+      GEMM_THREAD(منوال_2, &دلیلاں, عدم, عدم, symm[(side << 1) | uplo ], sa, sb, دلیلاں.nthreads);
 
-#endif
+#جے_انت
 
-#ifndef NO_AFFINITY
+#جے_بنا_تعریف NO_AFFINITY
     }
-#endif
+#جے_انت
 
   }
-#endif
+#جے_انت
 
- blas_memory_free(buffer);
+ blas_حافظہ_free(بفر);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE,
-		       (!side)? args.m * (args.m / 2 + args.n) : args.n * (args.m + args.n / 2),
-		       (!side)? 2 * args.m * args.m * args.n : 2 * args.m * args.n * args.n);
+  FUNCTION_PROFILE_سرا(COMPSIZE * COMPSIZE,
+		       (!side)? دلیلاں.m * (دلیلاں.m / 2 + دلیلاں.n) : دلیلاں.n * (دلیلاں.m + دلیلاں.n / 2),
+		       (!side)? 2 * دلیلاں.m * دلیلاں.m * دلیلاں.n : 2 * دلیلاں.m * دلیلاں.n * دلیلاں.n);
 
-  IDEBUG_END;
+  IDEBUG_سرا;
 
-  return;
+  أرجع;
 }

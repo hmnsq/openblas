@@ -36,91 +36,91 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جے_تعریف_شدہ FUNCTION_PROFILE
+#ضمن "functable.h"
+#جے_انت
 
-#undef MAX_K
+#تعریف_رد MAX_K
 
-#ifdef USE_ABS
+#جے_تعریف_شدہ USE_ABS
 
-#ifndef USE_MIN
+#جے_بنا_تعریف USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMAX_K
-#else
-#define MAX_K	ISAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMAX_K
-#else
-#define MAX_K	ICAMAX_K
-#endif
-#endif
+#جے_بنا_تعریف COMPLEX
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	IQAMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	IDAMAX_K
+#وإلا
+#تعریف_کرو MAX_K	ISAMAX_K
+#جے_انت
+#وإلا
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	IXAMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	IZAMAX_K
+#وإلا
+#تعریف_کرو MAX_K	ICAMAX_K
+#جے_انت
+#جے_انت
 
-#else
+#وإلا
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMIN_K
-#else
-#define MAX_K	ISAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMIN_K
-#else
-#define MAX_K	ICAMIN_K
-#endif
-#endif
+#جے_بنا_تعریف COMPLEX
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	IQAMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	IDAMIN_K
+#وإلا
+#تعریف_کرو MAX_K	ISAMIN_K
+#جے_انت
+#وإلا
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	IXAMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	IZAMIN_K
+#وإلا
+#تعریف_کرو MAX_K	ICAMIN_K
+#جے_انت
+#جے_انت
 
-#endif
+#جے_انت
 
-#else
+#وإلا
 
-#ifndef USE_MIN
+#جے_بنا_تعریف USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	IQMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMAX_K
-#else
-#define MAX_K	ISMAX_K
-#endif
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	IQMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	IDMAX_K
+#وإلا
+#تعریف_کرو MAX_K	ISMAX_K
+#جے_انت
 
-#else
+#وإلا
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	IQMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMIN_K
-#else
-#define MAX_K	ISMIN_K
-#endif
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	IQMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	IDMIN_K
+#وإلا
+#تعریف_کرو MAX_K	ISMIN_K
+#جے_انت
 
-#endif
+#جے_انت
 
-#endif
+#جے_انت
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جے_بنا_تعریف CBLAS
 
 blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -130,52 +130,52 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  إذا(ret > n) ret=n;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_سرا(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_سرا;
 
-  return ret;
+  أرجع ret;
 }
 
-#else
-#ifdef COMPLEX
-CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
+#وإلا
+#جے_تعریف_شدہ COMPLEX
+CBLAS_اشاریہ CNAME(blasint n, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
-CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#وإلا
+CBLAS_اشاریہ CNAME(blasint n, FLOAT *x, blasint incx){
+#جے_انت
 
-  CBLAS_INDEX ret;
+  CBLAS_اشاریہ ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  إذا (ret > n) ret=n;
 
-  if (ret) ret --;
+  إذا (ret) ret --;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_سرا(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_سرا;
 
-  return ret;
+  أرجع ret;
 }
 
-#endif
+#جے_انت

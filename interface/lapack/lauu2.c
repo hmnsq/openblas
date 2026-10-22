@@ -36,94 +36,94 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جے_تعریف_شدہ FUNCTION_PROFILE
+#ضمن "functable.h"
+#جے_انت
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QLAUU2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DLAUU2"
-#else
-#define ERROR_NAME "SLAUU2"
-#endif
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو ERROR_NAME "QLAUU2"
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DLAUU2"
+#وإلا
+#تعریف_کرو ERROR_NAME "SLAUU2"
+#جے_انت
 
-static blasint (*lauu2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifdef XDOUBLE
+ساكن blasint (*lauu2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#جے_تعریف_شدہ XDOUBLE
   qlauu2_U, qlauu2_L,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   dlauu2_U, dlauu2_L,
-#else
+#وإلا
   slauu2_U, slauu2_L,
-#endif
+#جے_انت
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t دلیلاں;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *بفر;
+#جے_تعریف_شدہ PPC440
+  خارجي
+#جے_انت
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  دلیلاں.n    = *N;
+  دلیلاں.a    = (فراغ *)a;
+  دلیلاں.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (دلیلاں.lda < MAX(1,دلیلاں.n)) info = 4;
+  إذا (دلیلاں.n   < 0)             info = 2;
+  إذا (uplo     < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  إذا (دلیلاں.n <= 0) أرجع;
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#جے_بنا_تعریف PPC440
+  بفر = (FLOAT *)blas_حافظہ_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)بفر + GEMM_وتھ_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * ناپ + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_وتھ_B);
+#جے_انت
 
-  info = (lauu2[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (lauu2[uplo])(&دلیلاں, عدم, عدم, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#جے_بنا_تعریف PPC440
+  blas_حافظہ_free(بفر);
+#جے_انت
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_سرا(1, .5 * دلیلاں.n * دلیلاں.n,
+		       دلیلاں.n * (1./3. + دلیلاں.n * ( 1./2. + دلیلاں.n * 1./6.))
+		       +  1./6. * دلیلاں.n * (دلیلاں.n * دلیلاں.n - 1));
 
-  IDEBUG_END;
+  IDEBUG_سرا;
 
-  return;
+  أرجع;
 }

@@ -30,18 +30,18 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DLAED3"
-#else
-#define ERROR_NAME "SLAED3"
-#endif
+#إذا defined(DOUBLE)
+#تعریف_کرو ERROR_NAME "DLAED3"
+#وإلا
+#تعریف_کرو ERROR_NAME "SLAED3"
+#جے_انت
 
 /* ===================================================================== */
 OPENBLAS_EXPORT
-void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
+فراغ NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
         FLOAT *q, blasint *ldq, FLOAT *rho, FLOAT *dlamda,
         FLOAT *q2, blasint *indx, blasint *ctot, FLOAT *w, 
         FLOAT *s, blasint *Info)
@@ -54,36 +54,36 @@ void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d,
 
 /*   Test the input parameters. */
   info = 0;
-  if (kval < 0) {
+  إذا (kval < 0) {
     info = 1;
-  } else if (nval < kval) {
+  } وإلا إذا (nval < kval) {
     info = 2;
-  } else if (qdim < nval || qdim < 1) {
+  } وإلا إذا (qdim < nval || qdim < 1) {
     info = 6;
   }
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
 /*   Quick return if possible */
 
   *Info = 0;
-  if (kval == 0) return;
+  إذا (kval == 0) أرجع;
 
-#ifdef SMP
-  int nthreads = 1;
-  if (nval >= 64) nthreads = num_cpu_avail(4);
+#جے_تعریف_شدہ SMP
+  صحيح nthreads = 1;
+  إذا (nval >= 64) nthreads = عدد_cpu_avail(4);
 
-  if (nthreads == 1) {
-#endif
+  إذا (nthreads == 1) {
+#جے_انت
     LAED3_SINGLE(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
-#ifdef SMP
-  } else {
+#جے_تعریف_شدہ SMP
+  } وإلا {
     LAED3_PARALLEL(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
   }
-#endif
+#جے_انت
 
-  return;
+  أرجع;
 }

@@ -36,99 +36,99 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#ضمن <stdio.h>
+#ضمن "common.h"
+#جے_تعریف_شدہ FUNCTION_PROFILE
+#ضمن "functable.h"
+#جے_انت
 
-#undef MAX_K
+#تعریف_رد MAX_K
 
-#ifdef USE_ABS
+#جے_تعریف_شدہ USE_ABS
 
-#if defined(DOUBLE)
-#define ABS fabs
-#else
-#define ABS fabsf
-#endif
+#إذا defined(DOUBLE)
+#تعریف_کرو ABS fabs
+#وإلا
+#تعریف_کرو ABS fabsf
+#جے_انت
 
-#ifndef USE_MIN
+#جے_بنا_تعریف USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMAX_K
-#else
-#define MAX_K	SAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMAX_K
-#else
-#define MAX_K	CAMAX_K
-#endif
-#endif
+#جے_بنا_تعریف COMPLEX
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	QAMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	DAMAX_K
+#وإلا
+#تعریف_کرو MAX_K	SAMAX_K
+#جے_انت
+#وإلا
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	XAMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	ZAMAX_K
+#وإلا
+#تعریف_کرو MAX_K	CAMAX_K
+#جے_انت
+#جے_انت
 
-#else
+#وإلا
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	QAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DAMIN_K
-#else
-#define MAX_K	SAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	XAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	ZAMIN_K
-#else
-#define MAX_K	CAMIN_K
-#endif
-#endif
+#جے_بنا_تعریف COMPLEX
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	QAMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	DAMIN_K
+#وإلا
+#تعریف_کرو MAX_K	SAMIN_K
+#جے_انت
+#وإلا
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	XAMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	ZAMIN_K
+#وإلا
+#تعریف_کرو MAX_K	CAMIN_K
+#جے_انت
+#جے_انت
 
-#endif
+#جے_انت
 
-#else
+#وإلا
 
-#define ABS
+#تعریف_کرو ABS
 
-#ifndef USE_MIN
+#جے_بنا_تعریف USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	QMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	DMAX_K
-#else
-#define MAX_K	SMAX_K
-#endif
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	QMAX_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	DMAX_K
+#وإلا
+#تعریف_کرو MAX_K	SMAX_K
+#جے_انت
 
-#else
+#وإلا
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	QMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	DMIN_K
-#else
-#define MAX_K	SMIN_K
-#endif
+#جے_تعریف_شدہ XDOUBLE
+#تعریف_کرو MAX_K	QMIN_K
+#وإلاإذا defined(DOUBLE)
+#تعریف_کرو MAX_K	DMIN_K
+#وإلا
+#تعریف_کرو MAX_K	SMIN_K
+#جے_انت
 
-#endif
+#جے_انت
 
-#endif
+#جے_انت
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#جے_بنا_تعریف CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -138,59 +138,59 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#جے_بنا_تعریف COMPLEX
+  إذا (incx == 0) أرجع (ABS(*x));
+#وإلا
+  إذا (incx == 0) أرجع (ABS(*x) + ABS(*(x+1)));
+#جے_انت
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
   ret = (FLOATRET)MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_سرا(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_سرا;
 
-  return ret;
+  أرجع ret;
 }
 
-#else
+#وإلا
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#جے_تعریف_شدہ COMPLEX
+FLOAT CNAME(blasint n, فراغ *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#وإلا
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#جے_انت
   
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  إذا (n <= 0) أرجع 0;
 
-#ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
-#endif
+#جے_بنا_تعریف COMPLEX
+  إذا (incx == 0) أرجع (ABS(*x));
+#وإلا
+  إذا (incx == 0) أرجع (ABS(*x) + ABS(*(x+1)));
+#جے_انت
 
-  IDEBUG_START;
+  IDEBUG_شروع;
 
-  FUNCTION_PROFILE_START();
+  FUNCTION_PROFILE_شروع();
 
   ret = MAX_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_سرا(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_سرا;
 
-  return ret;
+  أرجع ret;
 }
 
-#endif
+#جے_انت
