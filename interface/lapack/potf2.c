@@ -46,7 +46,7 @@
 #define ERROR_NAME "QPOTF2"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DPOTF2"
-#else
+#དེ་མིན
 #define ERROR_NAME "SPOTF2"
 #endif
 
@@ -55,13 +55,13 @@ static blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *
   qpotf2_U, qpotf2_L,
 #elif defined(DOUBLE)
   dpotf2_U, dpotf2_L,
-#else
+#དེ་མིན
   spotf2_U, spotf2_L,
 #endif
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+void NAME(var_na *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -83,22 +83,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  གལ་ཏེ (uplo_arg == 'U') uplo = 0;
+  གལ་ཏེ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  གལ་ཏེ (args.lda < MAX(1,args.n)) info = 4;
+  གལ་ཏེ (args.n   < 0)             info = 2;
+  གལ་ཏེ (uplo     < 0)             info = 1;
+  གལ་ཏེ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ཕྱིར;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  གལ་ཏེ (args.n <= 0) ཕྱིར;
 
   IDEBUG_START;
 
@@ -125,5 +125,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  ཕྱིར;
 }

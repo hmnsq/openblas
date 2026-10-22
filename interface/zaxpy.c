@@ -41,9 +41,9 @@
 #ifdef FUNCTION_PROFILE
 #include "functable.h"
 #endif
-#if  defined(Z13)
+#གལ་ཏེ  defined(Z13)
 #define MULTI_THREAD_MINIMAL  200000
-#else
+#དེ་མིན
 #define MULTI_THREAD_MINIMAL  10000
 #endif
 
@@ -57,13 +57,13 @@ void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
+#དེ་མིན
 #ifdef COMPLEX
 void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy){
 FLOAT *ALPHA = (FLOAT*) VALPHA;
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
+#དེ་མིན
 void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 #endif
 #endif
@@ -72,31 +72,31 @@ void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint in
   FLOAT alpha_i = *(ALPHA + 1);
 
 #ifdef SMP
-  int mode, nthreads;
+  ཧྲིལ mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#དེ་མིན
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (n <= 0) return;
+  གལ་ཏེ (n <= 0) ཕྱིར;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  གལ་ཏེ ((alpha_r == ZERO) && (alpha_i == ZERO)) ཕྱིར;
 
-  if (incx == 0 && incy == 0) {
+  གལ་ཏེ (incx == 0 && incy == 0) {
   *y += n * (alpha_r * (*x) - alpha_i* (*(x+1)) );
   *(y+1) += n * (alpha_i * (*x) + alpha_r * (*(x +1)) );
-  return;
+  ཕྱིར;
   }
   
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  གལ་ཏེ (incx < 0) x -= (n - 1) * incx * 2;
+  གལ་ཏེ (incy < 0) y -= (n - 1) * incy * 2;
 
 #ifdef SMP
   //disable multi-thread when incx==0 or incy==0
@@ -104,36 +104,36 @@ void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint in
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  གལ་ཏེ (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
 	  nthreads = 1;
-  else
+  དེ་མིན
 	  nthreads = num_cpu_avail(1);
 
-  if (nthreads == 1) {
+  གལ་ཏེ (nthreads == 1) {
 #endif
 
 #ifndef CONJ
     AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#else
+#དེ་མིན
     AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
 #endif
 
 #ifdef SMP
-  } else {
+  } དེ་མིན {
 
 #ifdef XDOUBLE
     mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
     mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#དེ་མིན
     mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 
     blas_level1_thread(mode, n, 0, 0, ALPHA, x, incx, y, incy, NULL, 0,
 #ifndef CONJ
-                       (int (*)(void))AXPYU_K,
-#else
-                       (int (*)(void))AXPYC_K,
+                       (ཧྲིལ (*)(void))AXPYU_K,
+#དེ་མིན
+                       (ཧྲིལ (*)(void))AXPYC_K,
 #endif
 		       nthreads);
   }
@@ -143,6 +143,6 @@ void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint in
 
   IDEBUG_END;
 
-  return;
+  ཕྱིར;
 
 }

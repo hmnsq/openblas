@@ -47,11 +47,11 @@
 #define ERROR_NAME "XTRSV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTRSV "
-#else
+#དེ་མིན
 #define ERROR_NAME "CTRSV "
 #endif
 
-static int (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static ཧྲིལ (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xtrsv_NUU, xtrsv_NUN, xtrsv_NLU, xtrsv_NLN,
   xtrsv_TUU, xtrsv_TUN, xtrsv_TLU, xtrsv_TLN,
@@ -62,7 +62,7 @@ static int (*trsv[])(BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
   ztrsv_TUU, ztrsv_TUN, ztrsv_TLU, ztrsv_TLN,
   ztrsv_RUU, ztrsv_RUN, ztrsv_RLU, ztrsv_RLN,
   ztrsv_CUU, ztrsv_CUN, ztrsv_CLU, ztrsv_CLN,
-#else
+#དེ་མིན
   ctrsv_NUU, ctrsv_NUN, ctrsv_NLU, ctrsv_NLN,
   ctrsv_TUU, ctrsv_TUN, ctrsv_TLU, ctrsv_TLN,
   ctrsv_RUU, ctrsv_RUN, ctrsv_RLU, ctrsv_RLN,
@@ -74,21 +74,21 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+void NAME(var_na *UPLO, var_na *TRANS, var_na *DIAG,
 	   blasint *N, FLOAT *a, blasint *LDA, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  var_na uplo_arg  = *UPLO;
+  var_na trans_arg = *TRANS;
+  var_na diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  ཧྲིལ uplo;
+  ཧྲིལ unit;
+  ཧྲིལ trans;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -101,43 +101,43 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  གལ་ཏེ (trans_arg == 'N') trans = 0;
+  གལ་ཏེ (trans_arg == 'T') trans = 1;
+  གལ་ཏེ (trans_arg == 'R') trans = 2;
+  གལ་ཏེ (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  གལ་ཏེ (diag_arg  == 'U') unit  = 0;
+  གལ་ཏེ (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  གལ་ཏེ (uplo_arg  == 'U') uplo  = 0;
+  གལ་ཏེ (uplo_arg  == 'L') uplo  = 1;
 
 
   info = 0;
 
-  if (incx == 0)          info =  8;
-  if (lda  < MAX(1, n))   info =  6;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  གལ་ཏེ (incx == 0)          info =  8;
+  གལ་ཏེ (lda  < MAX(1, n))   info =  6;
+  གལ་ཏེ (n < 0)              info =  4;
+  གལ་ཏེ (unit  < 0)          info =  3;
+  གལ་ཏེ (trans < 0)          info =  2;
+  གལ་ཏེ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  གལ་ཏེ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ཕྱིར;
   }
 
 
-#else
+#དེ་མིན
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_DIAG Diag,
 	   blasint n, void  *va, blasint lda, void  *vx, blasint incx) {
 
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit;
+  ཧྲིལ trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 
@@ -148,70 +148,70 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  གལ་ཏེ (order == CblasColMajor) {
+    གལ་ཏེ (Uplo == CblasUpper)         uplo  = 0;
+    གལ་ཏེ (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    གལ་ཏེ (TransA == CblasNoTrans)     trans = 0;
+    གལ་ཏེ (TransA == CblasTrans)       trans = 1;
+    གལ་ཏེ (TransA == CblasConjNoTrans) trans = 2;
+    གལ་ཏེ (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    གལ་ཏེ (Diag == CblasUnit)          unit  = 0;
+    གལ་ཏེ (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  8;
-    if (lda  < MAX(1, n))   info =  6;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    གལ་ཏེ (incx == 0)          info =  8;
+    གལ་ཏེ (lda  < MAX(1, n))   info =  6;
+    གལ་ཏེ (n < 0)              info =  4;
+    གལ་ཏེ (unit  < 0)          info =  3;
+    གལ་ཏེ (trans < 0)          info =  2;
+    གལ་ཏེ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  གལ་ཏེ (order == CblasRowMajor) {
+    གལ་ཏེ (Uplo == CblasUpper)         uplo  = 1;
+    གལ་ཏེ (Uplo == CblasLower)         uplo  = 0;
+
+    གལ་ཏེ (TransA == CblasNoTrans)     trans = 1;
+    གལ་ཏེ (TransA == CblasTrans)       trans = 0;
+    གལ་ཏེ (TransA == CblasConjNoTrans) trans = 3;
+    གལ་ཏེ (TransA == CblasConjTrans)   trans = 2;
+
+    གལ་ཏེ (Diag == CblasUnit)          unit  = 0;
+    གལ་ཏེ (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    གལ་ཏེ (incx == 0)          info =  8;
+    གལ་ཏེ (lda  < MAX(1, n))   info =  6;
+    གལ་ཏེ (n < 0)              info =  4;
+    གལ་ཏེ (unit  < 0)          info =  3;
+    གལ་ཏེ (trans < 0)          info =  2;
+    གལ་ཏེ (uplo  < 0)          info =  1;
+  }
+
+  གལ་ཏེ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ཕྱིར;
   }
 
 #endif
 
-  if (n == 0) return;
+  གལ་ཏེ (n == 0) ཕྱིར;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  གལ་ཏེ (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  གལ་ཏེ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ཕྱིར;
   }
 
   (trsv[(trans<<2) | (uplo<<1) | unit])(n, a, lda, x, incx, buffer);
@@ -222,5 +222,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  ཕྱིར;
 }
