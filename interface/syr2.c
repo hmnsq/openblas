@@ -47,27 +47,27 @@
 #define ERROR_NAME "QSYR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYR2 "
-#else
+#否则
 #define ERROR_NAME "SSYR2 "
 #endif
 
-static int (*syr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static 整数 (*syr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   qsyr2_U, qsyr2_L,
 #elif defined(DOUBLE)
   dsyr2_U, dsyr2_L,
-#else
+#否则
   ssyr2_U, ssyr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*syr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static 整数 (*syr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, 整数) = {
 #ifdef XDOUBLE
   qsyr2_thread_U, qsyr2_thread_L,
 #elif defined(DOUBLE)
   dsyr2_thread_U, dsyr2_thread_L,
-#else
+#否则
   ssyr2_thread_U, ssyr2_thread_L,
 #endif
 };
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  整数 uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,31 +99,31 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  如果 (uplo_arg  == 'U') uplo  = 0;
+  如果 (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  如果 (lda  < MAX(1, n))   info =  9;
+  如果 (incy == 0)          info =  7;
+  如果 (incx == 0)          info =  5;
+  如果 (n < 0)              info =  2;
+  如果 (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  如果 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
-#else
+#否则
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT *a, blasint lda) {
 
   FLOAT *buffer;
-  int uplo;
+  整数 uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -131,91 +131,91 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  如果 (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    如果 (Uplo == CblasUpper) uplo  = 0;
+    如果 (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    如果 (lda  < MAX(1, n))   info =  9;
+    如果 (incy == 0)          info =  7;
+    如果 (incx == 0)          info =  5;
+    如果 (n < 0)              info =  2;
+    如果 (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  如果 (order == CblasRowMajor) {
+
+    如果 (Uplo == CblasUpper) uplo  = 1;
+    如果 (Uplo == CblasLower) uplo  = 0;
+
+    info = -1;
+
+    如果 (lda  < MAX(1, n))   info =  9;
+    如果 (incy == 0)          info =  7;
+    如果 (incx == 0)          info =  5;
+    如果 (n < 0)              info =  2;
+    如果 (uplo  < 0)          info =  1;
+  }
+
+  如果 (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
 #endif
 
-  if (n == 0) return;
+  如果 (n == 0) 返回;
 
-  if (alpha == ZERO) return;
+  如果 (alpha == ZERO) 返回;
 
   IDEBUG_START;
 
-  if (incx == 1 && incy == 1 && n < 100) {
+  如果 (incx == 1 && incy == 1 && n < 100) {
     blasint i;
-    if (!uplo) {
-      for (i = 0; i < n; i++){
+    如果 (!uplo) {
+      为 (i = 0; i < n; i++){
         AXPYU_K(i + 1, 0, 0, alpha * x[i], y,     1, a, 1, NULL, 0);
         AXPYU_K(i + 1, 0, 0, alpha * y[i], x,     1, a, 1, NULL, 0);
         a += lda;
       }
-    } else {
-      for (i = 0; i < n; i++){
+    } 否则 {
+      为 (i = 0; i < n; i++){
         AXPYU_K(n - i, 0, 0, alpha * x[i], y + i, 1, a, 1, NULL, 0);
         AXPYU_K(n - i, 0, 0, alpha * y[i], x + i, 1, a, 1, NULL, 0);
         a += 1 + lda;
       }
     }
-    return;
+    返回;
   }
 
 	  
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  如果 (incx < 0 ) x -= (n - 1) * incx;
+  如果 (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  如果 (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  如果 (n < 50) nthreads = 1;
+  如果 (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  如果 (nthreads == 1) {
 #endif
 
     (syr2[uplo])(n, alpha, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } 否则 {
 
     (syr2_thread[uplo])(n, alpha, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -228,5 +228,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha,
 
   IDEBUG_END;
 
-  return;
+  返回;
 }

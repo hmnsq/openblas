@@ -53,13 +53,13 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   PRINT_DEBUG_NAME;
 
-#else
+#否则
 
 #ifdef COMPLEX
 void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
+#否则
 void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 #endif
 
@@ -67,14 +67,14 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
 #endif
 
-  if (n <= 0) return;
+  如果 (n <= 0) 返回;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0) y -= (n - 1) * incy * COMPSIZE;
+  如果 (incx < 0) x -= (n - 1) * incx * COMPSIZE;
+  如果 (incy < 0) y -= (n - 1) * incy * COMPSIZE;
 
   COPY_K(n, x, incx, y, incy);
 
@@ -82,6 +82,6 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
   IDEBUG_END;
 
-  return;
+  返回;
 
 }

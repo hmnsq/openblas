@@ -56,7 +56,7 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	整数 transa, transb, uplo;
 	blasint info;
 
 	char transA, transB, Uplo;
@@ -89,59 +89,59 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	如果 (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	如果 (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	如果 (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	如果 (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	如果 (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	如果 (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	如果 (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	如果 (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	如果 (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	如果 (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	如果 (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	如果 (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	如果 (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	如果 (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	如果 (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	如果 (k < 0)
 		info = 5;
-	if (m < 0)
+	如果 (m < 0)
 		info = 4;
-	if (transb < 0)
+	如果 (transb < 0)
 		info = 3;
-	if (transa < 0)
+	如果 (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	如果 (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
+	如果 (info != 0) {
 		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		返回;
 	}
-#else
+#否则
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	整数 transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,28 +166,28 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	如果 (order == CblasColMajor) {
+		如果 (Uplo == CblasUpper) uplo = 0;
+		如果 (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		如果 (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		如果 (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		如果 (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		如果 (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		如果 (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		如果 (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		如果 (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		如果 (TransB == CblasConjTrans)
 			transb = 1;
 
 		a = (void *)A;
@@ -200,29 +200,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		如果 (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		如果 (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		如果 (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		如果 (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		如果 (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		如果 (k < 0)
 			info = 5;
-		if (m < 0)
+		如果 (m < 0)
 			info = 4;
-		if (transb < 0)
+		如果 (transb < 0)
 			info = 3;
-		if (transa < 0)
+		如果 (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		如果 (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	如果 (order == CblasRowMajor) {
 
 		a = (void *)B;
 		b = (void *)A;
@@ -230,27 +230,27 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		如果 (Uplo == CblasUpper) uplo = 0;
+		如果 (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		如果 (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		如果 (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		如果 (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		如果 (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		如果 (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		如果 (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		如果 (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		如果 (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,82 +259,82 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		如果 (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		如果 (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		如果 (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		如果 (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		如果 (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		如果 (k < 0)
 			info = 5;
-		if (m < 0)
+		如果 (m < 0)
 			info = 4;
-		if (transb < 0)
+		如果 (transb < 0)
 			info = 2;
-		if (transa < 0)
+		如果 (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		如果 (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
+	如果 (info >= 0) {
 		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		返回;
 	}
 
 #endif
-	int buffer_size;
+	整数 buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	整数 nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	static 整数 (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, 整数) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	整数 (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	如果 (m == 0)
+		返回;
 
 	IDEBUG_START;
 
 	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
-		for (i = 0; i < m; i++) {
+	如果 (uplo == 1) {
+		为 (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			如果 (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			如果 (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
+#如果 0
+			如果 (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			如果 (alpha == ZERO)
 				continue;
 #endif
 
@@ -350,29 +350,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			如果 (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			否则
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			如果 (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				如果 (!(transa & 1))
+				(gemv[(整数)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				否则
+				(gemv[(整数)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} 否则 {
+				如果 (!(transa & 1))
+				(gemv_thread[(整数)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				否则
+				(gemv_thread[(整数)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
@@ -381,22 +381,22 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 			STACK_FREE(buffer);
 		}
-	} else {
+	} 否则 {
 
-		for (i = 0; i < m; i++) {
+		为 (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			如果 (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
+#如果 0
+			如果 (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			如果 (alpha == ZERO)
 				continue;
 #endif
 			IDEBUG_START;
@@ -411,29 +411,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			如果 (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			否则
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			如果 (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				如果 (!(transa & 1))
+				(gemv[(整数)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				否则
+				(gemv[(整数)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} 否则 {
+				如果 (!(transa & 1))
+				(gemv_thread[(整数)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				否则
+				(gemv_thread[(整数)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
@@ -445,5 +445,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	返回;
 }

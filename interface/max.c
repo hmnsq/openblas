@@ -46,9 +46,9 @@
 
 #ifdef USE_ABS
 
-#if defined(DOUBLE)
+#如果 defined(DOUBLE)
 #define ABS fabs
-#else
+#否则
 #define ABS fabsf
 #endif
 
@@ -60,20 +60,20 @@
 #define MAX_K	QAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMAX_K
-#else
+#否则
 #define MAX_K	SAMAX_K
 #endif
-#else
+#否则
 #ifdef XDOUBLE
 #define MAX_K	XAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMAX_K
-#else
+#否则
 #define MAX_K	CAMAX_K
 #endif
 #endif
 
-#else
+#否则
 
 /* ABS & MIN */
 #ifndef COMPLEX
@@ -81,22 +81,22 @@
 #define MAX_K	QAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMIN_K
-#else
+#否则
 #define MAX_K	SAMIN_K
 #endif
-#else
+#否则
 #ifdef XDOUBLE
 #define MAX_K	XAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMIN_K
-#else
+#否则
 #define MAX_K	CAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#否则
 
 #define ABS
 
@@ -107,18 +107,18 @@
 #define MAX_K	QMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DMAX_K
-#else
+#否则
 #define MAX_K	SMAX_K
 #endif
 
-#else
+#否则
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	QMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DMIN_K
-#else
+#否则
 #define MAX_K	SMIN_K
 #endif
 
@@ -138,12 +138,12 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  如果 (n <= 0) 返回 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  如果 (incx == 0) 返回 (ABS(*x));
+#否则
+  如果 (incx == 0) 返回 (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -156,15 +156,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  返回 ret;
 }
 
-#else
+#否则
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#否则
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
   
@@ -172,12 +172,12 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  如果 (n <= 0) 返回 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  如果 (incx == 0) 返回 (ABS(*x));
+#否则
+  如果 (incx == 0) 返回 (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -190,7 +190,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  返回 ret;
 }
 
 #endif

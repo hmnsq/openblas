@@ -54,14 +54,14 @@ double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  如果 (n <= 0) 返回 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  如果 (incx < 0) x -= (n - 1) * incx;
+  如果 (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
@@ -69,11 +69,11 @@ double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
 
   IDEBUG_END;
 
-  return ret;
+  返回 ret;
 
 }
 
-#else
+#否则
 
 double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
 
@@ -81,14 +81,14 @@ double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  如果 (n <= 0) 返回 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  如果 (incx < 0) x -= (n - 1) * incx;
+  如果 (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
@@ -96,7 +96,7 @@ double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
 
   IDEBUG_END;
 
-  return ret;
+  返回 ret;
 
 }
 

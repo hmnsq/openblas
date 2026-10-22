@@ -11,7 +11,7 @@ OPENBLAS_EXPORT
 
 void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
+#否则
 
 void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
@@ -19,11 +19,11 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
 #ifdef DOUBLE
   long double safmin = DBL_MIN;
-#else
+#否则
   long double safmin = FLT_MIN;
 #endif
 
-#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
+#如果 defined(__i386__) || defined(__x86_64__) || defined(__ia64__) || defined(_M_X64) || defined(_M_IX86)
 
   long double da = *DA;
   long double db = *DB;
@@ -41,25 +41,25 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#否则
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (adb == ZERO) {
+  如果 (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } 否则 如果 (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } 否则 {
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
-    if (ada > adb)
+    如果 (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    否则
 	sigma = copysign(1.,db);
     dascal = da / scale;
     dbscal = db / scale;
@@ -67,8 +67,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    如果 (ada > adb) z = s;
+    如果 ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -76,7 +76,7 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     *DB = z;
   }
 
-#else
+#否则
   FLOAT da = *DA;
   FLOAT db = *DB;
   FLOAT c  = *C;
@@ -93,28 +93,28 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   safmax = 1./safmin;
   scale = MIN(MAX(safmin,maxab), safmax);
 
-  if (ada > adb)
+  如果 (ada > adb)
 	sigma = copysign(1.,da);
-    else
+    否则
 	sigma = copysign(1.,db);
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#否则
   PRINT_DEBUG_CNAME;
 #endif
 
 
-  if (adb == ZERO) {
+  如果 (adb == ZERO) {
     *C = ONE;
     *S = ZERO;
     *DB = ZERO;
-  } else if (ada == ZERO) {
+  } 否则 如果 (ada == ZERO) {
     *C = ZERO;
     *S = ONE;
     *DA = *DB;
     *DB = ONE;
-  } else {
+  } 否则 {
     FLOAT aa = da / scale;
     FLOAT bb = db / scale;
 
@@ -122,8 +122,8 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
     c = da / r;
     s = db / r;
     z = ONE;
-    if (ada > adb) z = s;
-    if ((ada <= adb) && (c != ZERO)) z = ONE / c;
+    如果 (ada > adb) z = s;
+    如果 ((ada <= adb) && (c != ZERO)) z = ONE / c;
 
     *C = c;
     *S = s;
@@ -132,5 +132,5 @@ void CNAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
   }
 #endif
 
-  return;
+  返回;
 }

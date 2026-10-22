@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHPR  "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHPR  "
-#else
+#否则
 #define ERROR_NAME "CHPR  "
 #endif
 
-static int (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static 整数 (*hpr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xhpr_U, xhpr_L, xhpr_V, xhpr_M,
 #elif defined(DOUBLE)
   zhpr_U, zhpr_L, zhpr_V, zhpr_M,
-#else
+#否则
   chpr_U, chpr_L, chpr_V, chpr_M,
 #endif
 };
 
 #ifdef SMP
-static int (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static 整数 (*hpr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, 整数) = {
 #ifdef XDOUBLE
   xhpr_thread_U, xhpr_thread_L, xhpr_thread_V, xhpr_thread_M,
 #elif defined(DOUBLE)
   zhpr_thread_U, zhpr_thread_L, zhpr_thread_V, zhpr_thread_M,
-#else
+#否则
   chpr_thread_U, chpr_thread_L, chpr_thread_V, chpr_thread_M,
 #endif
 };
@@ -86,10 +86,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  整数 uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,21 +97,21 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  如果 (uplo_arg  == 'U') uplo  = 0;
+  如果 (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  如果 (incx == 0)          info =  5;
+  如果 (n < 0)              info =  2;
+  如果 (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  如果 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
-#else
+#否则
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_UPLO Uplo,
@@ -124,10 +124,10 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT* a = (FLOAT*) va;
 
   FLOAT *buffer;
-  int uplo;
+  整数 uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  整数 nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -135,66 +135,66 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  如果 (order == CblasColMajor) {
+    如果 (Uplo == CblasUpper)         uplo  = 0;
+    如果 (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    如果 (incx == 0)          info =  5;
+    如果 (n < 0)              info =  2;
+    如果 (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 3;
-    if (Uplo == CblasLower)         uplo  = 2;
+  如果 (order == CblasRowMajor) {
+    如果 (Uplo == CblasUpper)         uplo  = 3;
+    如果 (Uplo == CblasLower)         uplo  = 2;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    如果 (incx == 0)          info =  5;
+    如果 (n < 0)              info =  2;
+    如果 (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  如果 (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
 #endif
 
-  if (n == 0) return;
+  如果 (n == 0) 返回;
 
-  if (alpha == ZERO) return;
+  如果 (alpha == ZERO) 返回;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  如果 (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  如果 (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
 #ifdef SMP
-  if (n < 100)
+  如果 (n < 100)
     nthreads = 1;
-  else
+  否则
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  如果 (nthreads == 1) {
 #endif
 
   (hpr[uplo])(n, alpha, x, incx, a, buffer);
 
 #ifdef SMP
 
-  } else {
+  } 否则 {
 
     (hpr_thread[uplo])(n, alpha, x, incx, a, buffer, nthreads);
 
@@ -207,5 +207,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  返回;
 }

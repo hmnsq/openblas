@@ -47,15 +47,15 @@
 #define ERROR_NAME "QGESV"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGESV"
-#else
+#否则
 #define ERROR_NAME "SGESV"
 #endif
-#else
+#否则
 #ifdef XDOUBLE
 #define ERROR_NAME "XGESV"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGESV"
-#else
+#否则
 #define ERROR_NAME "CGESV"
 #endif
 #endif
@@ -84,15 +84,15 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
   args.c    = (void *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  如果 (args.ldb < MAX(1,args.m)) info = 7;
+  如果 (args.lda < MAX(1,args.m)) info = 4;
+  如果 (args.n   < 0)             info = 2;
+  如果 (args.m   < 0)             info = 1;
 
-  if (info) {
+  如果 (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    返回;
   }
 
   args.alpha = NULL;
@@ -100,7 +100,7 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  如果 (args.m == 0) 返回;
 
   IDEBUG_START;
 
@@ -116,46 +116,46 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 #ifdef SMP
   args.common = NULL;
 
-#if defined(_WIN64) && defined(_M_ARM64)
+#如果 defined(_WIN64) && defined(_M_ARM64)
   #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
+    如果 (args.m * args.m <= 300) 
+  #否则
+    如果 (args.m * args.m <= 500) 
   #endif
       args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
+  否则 如果 (args.m * args.m <= 1000)
     args.nthreads = 4;
-  else
+  否则
     args.nthreads = num_cpu_avail(4);
-#else
+#否则
   #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
+    如果 (args.m * args.m < 40000)
+  #否则
+    如果 (args.m * args.m < 10000)
   #endif
       args.nthreads = 1;
-    else
+    否则
       args.nthreads = num_cpu_avail(4);
 #endif
 
-  if (args.nthreads == 1) {
+  如果 (args.nthreads == 1) {
 #endif
 
     args.n    = *N;
     info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
+    如果 (info == 0 && *NRHS >0){
       args.n    = *NRHS;
       GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
     }
 
 #ifdef SMP
-  } else {
+  } 否则 {
 
     args.n    = *N;
     info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
+    如果 (info == 0 && *NRHS > 0){
       args.n    = *NRHS;
       GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
     }
@@ -172,5 +172,5 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   IDEBUG_END;
 
-  return;
+  返回;
 }

@@ -37,9 +37,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#如果 defined(DOUBLE)
 #define ERROR_NAME "DIMATCOPY"
-#else
+#否则
 #define ERROR_NAME "SIMATCOPY"
 #endif
 
@@ -61,7 +61,7 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 {
 
 	char Order, Trans;
-	int order=-1,trans=-1;
+	整数 order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
@@ -72,26 +72,26 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
+	如果 ( Order == 'C' ) order = BlasColMajor;
+	如果 ( Order == 'R' ) order = BlasRowMajor;
+	如果 ( Trans == 'N' ) trans = BlasNoTrans;
+	如果 ( Trans == 'R' ) trans = BlasNoTrans;
+	如果 ( Trans == 'T' ) trans = BlasTrans;
+	如果 ( Trans == 'C' ) trans = BlasTrans;
+#否则 
 void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, blasint cldb)
 {
-	int order=-1,trans=-1;
+	整数 order=-1,trans=-1;
 	blasint info = -1;
 	FLOAT *b;
 	size_t msize;
 	blasint *lda, *ldb, *rows, *cols; 
 	FLOAT *alpha; 
 
-	if ( CORDER == CblasColMajor) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor) order = BlasRowMajor; 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
+	如果 ( CORDER == CblasColMajor) order = BlasColMajor; 
+	如果 ( CORDER == CblasRowMajor) order = BlasRowMajor; 
+	如果 ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans) trans = BlasNoTrans; 
+	如果 ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans  ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -100,95 +100,95 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	ldb = &cldb; 	
 #endif 
 
-	if ( order == BlasColMajor)
+	如果 ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
+        	如果 ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 8;
+        	如果 ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 8;
 	}
-	if ( order == BlasRowMajor)
+	如果 ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
+        	如果 ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 8;
+        	如果 ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 8;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	如果 ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	如果 ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	如果 ( *cols < 0 ) info = 4;
+	如果 ( *rows < 0 ) info = 3;
+	如果 ( trans < 0 ) info = 2;
+	如果 ( order < 0 ) info = 1;
 
-	if (info >= 0) {
+	如果 (info >= 0) {
     		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+    		返回;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	如果 ((*rows == 0) || (*cols == 0)) 返回;
 
 #ifdef NEW_IMATCOPY
-    if ( *lda == *ldb ) {
-        if ( order == BlasColMajor )
+    如果 ( *lda == *ldb ) {
+        如果 ( order == BlasColMajor )
         {
-            if ( trans == BlasNoTrans )
+            如果 ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda );
-                return;
+                返回;
             }
-            else if ( *rows == *cols )
+            否则 如果 ( *rows == *cols )
             {
                 IMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda );
-                return;
+                返回;
             }
         }
-        else
+        否则
         {
-            if ( trans == BlasNoTrans )
+            如果 ( trans == BlasNoTrans )
             {
                 IMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda );
-                return;
+                返回;
             }
-            else if ( *rows == *cols )
+            否则 如果 ( *rows == *cols )
             {
                 IMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda );
-                return;
+                返回;
             }
         }
     }
 #endif
 
-	if ( *rows >  *cols )
+	如果 ( *rows >  *cols )
             msize = (size_t)(*rows) * (*ldb)  * sizeof(FLOAT);
-    else
+    否则
             msize = (size_t)(*cols) * (*ldb)  * sizeof(FLOAT);
 
 	b = malloc(msize);
-	if ( b == NULL )
+	如果 ( b == NULL )
 	{
 		printf("Memory alloc failed in imatcopy\n");
 		exit(1);
 	}
 
-	if ( order == BlasColMajor )
+	如果 ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		如果 ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_CN(*rows, *cols, (FLOAT) 1.0 , b, *rows, a, *ldb );
 		}
-		else
+		否则
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_CN(*cols, *rows, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
 	}
-	else
+	否则
 	{
-		if ( trans == BlasNoTrans )
+		如果 ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *cols );
 			OMATCOPY_K_RN(*rows, *cols, (FLOAT) 1.0, b, *cols, a, *ldb );
 		}
-		else
+		否则
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *rows );
 			OMATCOPY_K_RN(*cols, *rows, (FLOAT) 1.0, b, *rows, a, *ldb );
@@ -196,7 +196,7 @@ void CNAME( enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows,
 	}
 
 	free(b);
-	return;
+	返回;
 
 }
 

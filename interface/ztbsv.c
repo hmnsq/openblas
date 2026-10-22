@@ -47,11 +47,11 @@
 #define ERROR_NAME "XTBSV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTBSV "
-#else
+#否则
 #define ERROR_NAME "CTBSV "
 #endif
 
-static int (*tbsv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static 整数 (*tbsv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xtbsv_NUU, xtbsv_NUN, xtbsv_NLU, xtbsv_NLN,
   xtbsv_TUU, xtbsv_TUN, xtbsv_TLU, xtbsv_TLN,
@@ -62,7 +62,7 @@ static int (*tbsv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, v
   ztbsv_TUU, ztbsv_TUN, ztbsv_TLU, ztbsv_TLN,
   ztbsv_RUU, ztbsv_RUN, ztbsv_RLU, ztbsv_RLN,
   ztbsv_CUU, ztbsv_CUN, ztbsv_CLU, ztbsv_CLN,
-#else
+#否则
   ctbsv_NUU, ctbsv_NUN, ctbsv_NLU, ctbsv_NLN,
   ctbsv_TUU, ctbsv_TUN, ctbsv_TLU, ctbsv_TLN,
   ctbsv_RUU, ctbsv_RUN, ctbsv_RLU, ctbsv_RLN,
@@ -88,9 +88,9 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  整数 uplo;
+  整数 unit;
+  整数 trans;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -103,33 +103,33 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  如果 (trans_arg == 'N') trans = 0;
+  如果 (trans_arg == 'T') trans = 1;
+  如果 (trans_arg == 'R') trans = 2;
+  如果 (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  如果 (diag_arg  == 'U') unit  = 0;
+  如果 (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  如果 (uplo_arg  == 'U') uplo  = 0;
+  如果 (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  9;
-  if (lda < k + 1)        info =  7;
-  if (k < 0)              info =  5;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  如果 (incx == 0)          info =  9;
+  如果 (lda < k + 1)        info =  7;
+  如果 (k < 0)              info =  5;
+  如果 (n < 0)              info =  4;
+  如果 (unit  < 0)          info =  3;
+  如果 (trans < 0)          info =  2;
+  如果 (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  如果 (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
-#else
+#否则
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
@@ -138,7 +138,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit;
+  整数 trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 
@@ -149,72 +149,72 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  如果 (order == CblasColMajor) {
+    如果 (Uplo == CblasUpper)         uplo  = 0;
+    如果 (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    如果 (TransA == CblasNoTrans)     trans = 0;
+    如果 (TransA == CblasTrans)       trans = 1;
+    如果 (TransA == CblasConjNoTrans) trans = 2;
+    如果 (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  9;
-    if (lda < k + 1)        info =  7;
-    if (k < 0)              info =  5;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    如果 (Diag == CblasUnit)          unit  = 0;
+    如果 (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  9;
-    if (lda < k + 1)        info =  7;
-    if (k < 0)              info =  5;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    如果 (incx == 0)          info =  9;
+    如果 (lda < k + 1)        info =  7;
+    如果 (k < 0)              info =  5;
+    如果 (n < 0)              info =  4;
+    如果 (unit  < 0)          info =  3;
+    如果 (trans < 0)          info =  2;
+    如果 (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  如果 (order == CblasRowMajor) {
+    如果 (Uplo == CblasUpper)         uplo  = 1;
+    如果 (Uplo == CblasLower)         uplo  = 0;
+
+    如果 (TransA == CblasNoTrans)     trans = 1;
+    如果 (TransA == CblasTrans)       trans = 0;
+    如果 (TransA == CblasConjNoTrans) trans = 3;
+    如果 (TransA == CblasConjTrans)   trans = 2;
+
+    如果 (Diag == CblasUnit)          unit  = 0;
+    如果 (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    如果 (incx == 0)          info =  9;
+    如果 (lda < k + 1)        info =  7;
+    如果 (k < 0)              info =  5;
+    如果 (n < 0)              info =  4;
+    如果 (unit  < 0)          info =  3;
+    如果 (trans < 0)          info =  2;
+    如果 (uplo  < 0)          info =  1;
+  }
+
+  如果 (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
 #endif
 
-  if (n == 0) return;
+  如果 (n == 0) 返回;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  如果 (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  如果 (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    返回;
   }
 
   (tbsv[(trans<<2) | (uplo<<1) | unit])(n, k, a, lda, x, incx, buffer);
@@ -225,5 +225,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  返回;
 }

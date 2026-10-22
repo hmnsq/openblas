@@ -45,36 +45,36 @@
 #define ERROR_NAME "DGEMMTR"
 #elif defined(BFLOAT16)
 #define ERROR_NAME "SBGEMMTR"
-#else
+#否则
 #define ERROR_NAME "SGEMMTR"
 #endif
-#else
+#否则
 #ifdef XDOUBLE
 #define ERROR_NAME "QGEMMT "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGEMMT "
 #elif defined(BFLOAT16)
 #define ERROR_NAME "SBGEMMT "
-#else
+#否则
 #define ERROR_NAME "SGEMMT "
 #endif
 #endif
-#else
+#否则
 #define SMP_THRESHOLD_MIN 8192.0
 #ifdef RNAME
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMMTR"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMMTR"
-#else
+#否则
 #define ERROR_NAME "CGEMMTR"
 #endif
-#else
+#否则
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMMT "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMMT "
-#else
+#否则
 #define ERROR_NAME "CGEMMT "
 #endif
 #endif
@@ -97,12 +97,12 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	整数 transa, transb, uplo;
 	blasint info;
 
 	char transA, transB, Uplo;
 	blasint nrowa, nrowb;
-#if !defined(COMPLEX)
+#如果 !defined(COMPLEX)
 	FLOAT alpha, beta;
 #endif
 
@@ -111,10 +111,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	m = *M;
 	k = *K;
 
-#if defined(COMPLEX)
+#如果 defined(COMPLEX)
 	FLOAT *alpha = Alpha;
 	FLOAT *beta = Beta;
-#else
+#否则
 	alpha = *Alpha;
 	beta = *Beta;
 #endif
@@ -134,72 +134,72 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	如果 (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	如果 (transA == 'T')
 		transa = 1;
 #ifndef COMPLEX
-	if (transA == 'R')
+	如果 (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	如果 (transA == 'C')
 		transa = 1;
-#else
-	if (transA == 'R')
+#否则
+	如果 (transA == 'R')
 		transa = 2;
-	if (transA == 'C')
+	如果 (transA == 'C')
 		transa = 3;
 #endif
 
-	if (transB == 'N')
+	如果 (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	如果 (transB == 'T')
 		transb = 1;
 #ifndef COMPLEX
-	if (transB == 'R')
+	如果 (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	如果 (transB == 'C')
 		transb = 1;
-#else
-	if (transB == 'R')
+#否则
+	如果 (transB == 'R')
 		transb = 2;
-	if (transB == 'C')
+	如果 (transB == 'C')
 		transb = 3;
 #endif
 
-	if (Uplo == 'U')
+	如果 (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	如果 (Uplo == 'L')
 		uplo = 1;
 	
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	如果 (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	如果 (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	如果 (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	如果 (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	如果 (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	如果 (k < 0)
 		info = 5;
-	if (m < 0)
+	如果 (m < 0)
 		info = 4;
-	if (transb < 0)
+	如果 (transb < 0)
 		info = 3;
-	if (transa < 0)
+	如果 (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	如果 (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
+	如果 (info != 0) {
 		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		返回;
 	}
-#else
+#否则
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
@@ -209,7 +209,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	   IFLOAT * A, blasint LDA,
 	   IFLOAT * B, blasint LDB, FLOAT beta, FLOAT * c, blasint ldc)
 {
-#else
+#否则
 	   void *valpha,
 	   void *va, blasint LDA,
 	   void *vb, blasint LDB, void *vbeta, void *vc, blasint ldc)
@@ -220,7 +220,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	FLOAT *B = (FLOAT *) vb;
 	FLOAT *c = (FLOAT *) vc;
 #endif
-	int transa, transb, uplo;
+	整数 transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	FLOAT *a, *b;
@@ -232,38 +232,38 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	如果 (order == CblasColMajor) {
+		如果 (Uplo == CblasUpper) uplo = 0;
+		如果 (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		如果 (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		如果 (TransA == CblasTrans)
 			transa = 1;
 #ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+		如果 (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		如果 (TransA == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#否则
+		如果 (TransA == CblasConjNoTrans)
 			transa = 2;
-		if (TransA == CblasConjTrans)
+		如果 (TransA == CblasConjTrans)
 			transa = 3;
 #endif
-		if (TransB == CblasNoTrans)
+		如果 (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		如果 (TransB == CblasTrans)
 			transb = 1;
 #ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+		如果 (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		如果 (TransB == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#否则
+		如果 (TransB == CblasConjNoTrans)
 			transb = 2;
-		if (TransB == CblasConjTrans)
+		如果 (TransB == CblasConjTrans)
 			transb = 3;
 #endif
 
@@ -277,29 +277,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa, nrowb;
 
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		如果 (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1) nrowb = m;
+		如果 (transb & 1) nrowb = m;
 
-		if (ldc < MAX(1, m))
+		如果 (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		如果 (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		如果 (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		如果 (k < 0)
 			info = 5;
-		if (m < 0)
+		如果 (m < 0)
 			info = 4;
-		if (transb < 0)
+		如果 (transb < 0)
 			info = 3;
-		if (transa < 0)
+		如果 (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		如果 (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	如果 (order == CblasRowMajor) {
 
 		a = (void *)B;
 		b = (void *)A;
@@ -307,37 +307,37 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 1;
-		if (Uplo == CblasLower) uplo = 0;
+		如果 (Uplo == CblasUpper) uplo = 1;
+		如果 (Uplo == CblasLower) uplo = 0;
 
-		if (TransB == CblasNoTrans)
+		如果 (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		如果 (TransB == CblasTrans)
 			transa = 1;
 #ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+		如果 (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		如果 (TransB == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#否则
+		如果 (TransB == CblasConjNoTrans)
 			transa = 2;
-		if (TransB == CblasConjTrans)
+		如果 (TransB == CblasConjTrans)
 			transa = 3;
 #endif
-		if (TransA == CblasNoTrans)
+		如果 (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		如果 (TransA == CblasTrans)
 			transb = 1;
 #ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+		如果 (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		如果 (TransA == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#否则
+		如果 (TransA == CblasConjNoTrans)
 			transb = 2;
-		if (TransA == CblasConjTrans)
+		如果 (TransA == CblasConjTrans)
 			transb = 3;
 #endif
 
@@ -346,36 +346,36 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncola, ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		如果 (transa & 1) ncola = k;
 		ncolb = k;
-		if (transb & 1) ncolb = m;
+		如果 (transb & 1) ncolb = m;
 
-		if (ldc < MAX(1,m))
+		如果 (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		如果 (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		如果 (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		如果 (k < 0)
 			info = 5;
-		if (m < 0)
+		如果 (m < 0)
 			info = 4;
-		if (transb < 0)
+		如果 (transb < 0)
 			info = 2;
-		if (transa < 0)
+		如果 (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		如果 (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
+	如果 (info >= 0) {
 		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		返回;
 	}
 #endif
 #ifndef COMPLEX
 #define GEMMT_TABLE_INDEX ((uplo << 2) | (transb << 1) | transa)
-#else
+#否则
 #define GEMMT_TABLE_INDEX ((uplo << 4) | (transb << 2) | transa)
 #endif
 
@@ -386,31 +386,31 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	double MMK;
 #ifndef COMPLEX
 #ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_REAL;
+	整数 mode = BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_REAL;
-#else
-	int mode = BLAS_SINGLE  | BLAS_REAL;
+	整数 mode = BLAS_DOUBLE  | BLAS_REAL;
+#否则
+	整数 mode = BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#否则
 #ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_COMPLEX;
+	整数 mode = BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-	int mode = BLAS_SINGLE  | BLAS_COMPLEX;
+	整数 mode = BLAS_DOUBLE  | BLAS_COMPLEX;
+#否则
+	整数 mode = BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 
 	/* [uplo][op(B)][op(A)], as in interface/gemm.c */
-	static int (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+	static 整数 (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef COMPLEX
 		GEMMT_UNN, GEMMT_UTN,
 		GEMMT_UNT, GEMMT_UTT,
 		GEMMT_LNN, GEMMT_LTN,
 		GEMMT_LNT, GEMMT_LTT,
-#else
+#否则
 		GEMMT_UNN, GEMMT_UTN, GEMMT_URN, GEMMT_UCN,
 		GEMMT_UNT, GEMMT_UTT, GEMMT_URT, GEMMT_UCT,
 		GEMMT_UNR, GEMMT_UTR, GEMMT_URR, GEMMT_UCR,
@@ -422,8 +422,8 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #endif
 	};
 
-	if (m == 0)
-		return;
+	如果 (m == 0)
+		返回;
 
 	IDEBUG_START;
 
@@ -441,10 +441,10 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	args.ldb = ldb;
 	args.ldc = ldc;
 
-#if defined(COMPLEX)
+#如果 defined(COMPLEX)
 	args.alpha = (void *)alpha;
 	args.beta  = (void *)beta;
-#else
+#否则
 	args.alpha = (void *)&alpha;
 	args.beta  = (void *)&beta;
 #endif
@@ -455,10 +455,10 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #endif
 
 	buffer = (FLOAT *)blas_memory_alloc(0);
-	if (!buffer) {
+	如果 (!buffer) {
 		info = -999;
 		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		返回;
 	}
 
 	sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
@@ -466,19 +466,19 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 	MMK = (double)(m + 1) * (double)m * (double)k;
-	if (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
+	如果 (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
 		args.nthreads = 1;
-	} else {
+	} 否则 {
 		args.nthreads = num_cpu_avail(3);
 	}
 
-	if (args.nthreads == 1) {
+	如果 (args.nthreads == 1) {
 #endif
 
 		(gemmt[GEMMT_TABLE_INDEX])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-	} else {
+	} 否则 {
 
 		/* Split the triangle into column ranges of equal area; every
 		   thread then runs the single-threaded driver on its own range
@@ -496,5 +496,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	返回;
 }
