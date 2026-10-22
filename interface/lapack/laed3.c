@@ -33,9 +33,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include "common.h"
 
-#if defined(DOUBLE)
+#གལ་སྲིད defined(DOUBLE)
 #define ERROR_NAME "DLAED3"
-#else
+#དེ་མིན
 #define ERROR_NAME "SLAED3"
 #endif
 
@@ -54,36 +54,36 @@ void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d,
 
 /*   Test the input parameters. */
   info = 0;
-  if (kval < 0) {
+  གལ་སྲིད (kval < 0) {
     info = 1;
-  } else if (nval < kval) {
+  } དེ་མིན གལ་སྲིད (nval < kval) {
     info = 2;
-  } else if (qdim < nval || qdim < 1) {
+  } དེ་མིན གལ་སྲིད (qdim < nval || qdim < 1) {
     info = 6;
   }
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  གལ་སྲིད (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ལོག;
   }
 
 /*   Quick return if possible */
 
   *Info = 0;
-  if (kval == 0) return;
+  གལ་སྲིད (kval == 0) ལོག;
 
 #ifdef SMP
-  int nthreads = 1;
-  if (nval >= 64) nthreads = num_cpu_avail(4);
+  ཧྲིལ nthreads = 1;
+  གལ་སྲིད (nval >= 64) nthreads = num_cpu_avail(4);
 
-  if (nthreads == 1) {
+  གལ་སྲིད (nthreads == 1) {
 #endif
     LAED3_SINGLE(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
 #ifdef SMP
-  } else {
+  } དེ་མིན {
     LAED3_PARALLEL(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
   }
 #endif
 
-  return;
+  ལོག;
 }

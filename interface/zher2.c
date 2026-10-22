@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHER2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHER2 "
-#else
+#དེ་མིན
 #define ERROR_NAME "CHER2 "
 #endif
 
-static int (*her2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static ཧྲིལ (*her2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   xher2_U, xher2_L, xher2_V, xher2_M,
 #elif defined(DOUBLE)
   zher2_U, zher2_L, zher2_V, zher2_M,
-#else
+#དེ་མིན
   cher2_U, cher2_L, cher2_V, cher2_M,
 #endif
 };
 
 #ifdef SMP
-static int (*her2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ཧྲིལ (*her2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ཧྲིལ) = {
 #ifdef XDOUBLE
   xher2_thread_U, xher2_thread_L, xher2_thread_V, xher2_thread_M,
 #elif defined(DOUBLE)
   zher2_thread_U, zher2_thread_L, zher2_thread_V, zher2_thread_M,
-#else
+#དེ་མིན
   cher2_thread_U, cher2_thread_L, cher2_thread_V, cher2_thread_M,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -89,10 +89,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int  uplo;
+  ཧྲིལ  uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ཧྲིལ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -100,25 +100,25 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  གལ་སྲིད (uplo_arg  == 'U') uplo  = 0;
+  གལ་སྲིད (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  གལ་སྲིད (lda  < MAX(1, n))   info =  9;
+  གལ་སྲིད (incy == 0)          info =  7;
+  གལ་སྲིད (incx == 0)          info =  5;
+  གལ་སྲིད (n < 0)              info =  2;
+  གལ་སྲིད (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  གལ་སྲིད (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ལོག;
   }
 
-#else
+#དེ་མིན
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy, void *va, blasint lda) {
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo, blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy, void *va, blasint lda) {
 
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* a = (FLOAT*) va;
@@ -128,10 +128,10 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   FLOAT *buffer;
-  int uplo;
+  ཧྲིལ uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  ཧྲིལ nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -139,72 +139,72 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  གལ་སྲིད (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 3;
-    if (Uplo == CblasLower) uplo  = 2;
+    གལ་སྲིད (Uplo == CblasUpper) uplo  = 0;
+    གལ་སྲིད (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  9;
-    if (incx == 0)          info =  7;
-    if (incy == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    གལ་སྲིད (lda  < MAX(1, n))   info =  9;
+    གལ་སྲིད (incy == 0)          info =  7;
+    གལ་སྲིད (incx == 0)          info =  5;
+    གལ་སྲིད (n < 0)              info =  2;
+    གལ་སྲིད (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  གལ་སྲིད (order == CblasRowMajor) {
+
+    གལ་སྲིད (Uplo == CblasUpper) uplo  = 3;
+    གལ་སྲིད (Uplo == CblasLower) uplo  = 2;
+
+    info = -1;
+
+    གལ་སྲིད (lda  < MAX(1, n))   info =  9;
+    གལ་སྲིད (incx == 0)          info =  7;
+    གལ་སྲིད (incy == 0)          info =  5;
+    གལ་སྲིད (n < 0)              info =  2;
+    གལ་སྲིད (uplo  < 0)          info =  1;
+  }
+
+  གལ་སྲིད (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ལོག;
   }
 
 #endif
 
-  if (n == 0) return;
+  གལ་སྲིད (n == 0) ལོག;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  གལ་སྲིད ((alpha_r == ZERO) && (alpha_i == ZERO)) ལོག;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  གལ་སྲིད (incx < 0 ) x -= (n - 1) * incx * 2;
+  གལ་སྲིད (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  གལ་སྲིད (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ལོག;
   }
 
 #ifdef SMP
-  if (n < 100)
+  གལ་སྲིད (n < 100)
 	nthreads = 1;
-  else
+  དེ་མིན
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  གལ་སྲིད (nthreads == 1) {
 #endif
 
     (her2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } དེ་མིན {
 
     (her2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -217,5 +217,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
 
   IDEBUG_END;
 
-  return;
+  ལོག;
 }
