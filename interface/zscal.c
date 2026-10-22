@@ -36,36 +36,36 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+ശൂന്യം NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
 
 #ifndef SSCAL
   FLOAT *alpha=ALPHA;
-#else
+#അല്ലെങ്കിൽ
   FLOAT alpha[2] = {ALPHA[0], ZERO};
 #endif
 
-#else
+#അല്ലെങ്കിൽ
 
 #ifndef SSCAL
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx){
+ശൂന്യം CNAME(blasint n, ശൂന്യം *VALPHA, ശൂന്യം *vx, blasint incx){
 
   FLOAT *x = (FLOAT*) vx;
   FLOAT *alpha=(FLOAT*)VALPHA;
-#else
-void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
+#അല്ലെങ്കിൽ
+ശൂന്യം CNAME(blasint n, FLOAT alpha_r, ശൂന്യം *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
 
   FLOAT alpha[2] = {alpha_r, ZERO};
@@ -73,44 +73,44 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
 #endif
 
 #ifdef SMP
-  int mode;
-  int nthreads;
+  പൂർണ്ണസംഖ്യ mode;
+  പൂർണ്ണസംഖ്യ nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#അല്ലെങ്കിൽ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  എങ്കിൽ (incx <= 0 || n <= 0) തിരികെ;
 
-  if ((alpha[0] == ONE) && (alpha[1] == ZERO)) return;
+  എങ്കിൽ ((alpha[0] == ONE) && (alpha[1] == ZERO)) തിരികെ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
 #ifdef SMP
-  if ( n <= 1048576 )
+  എങ്കിൽ ( n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  അല്ലെങ്കിൽ
+	nthreads = അക്കം_cpu_avail(1);
 
-  if (nthreads == 1) {
+  എങ്കിൽ (nthreads == 1) {
 #endif
 
-  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, ശൂന്യ, 0, ശൂന്യ, 1);
 
 #ifdef SMP
-  } else {
+  } അല്ലെങ്കിൽ {
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_COMPLEX;
-#else
+#അല്ലെങ്കിൽ
     mode  =  BLAS_SINGLE | BLAS_COMPLEX;
 #endif
 
-    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (int (*)(void))SCAL_K, nthreads);
+    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, ശൂന്യ, 0, ശൂന്യ, 1, (പൂർണ്ണസംഖ്യ (*)(ശൂന്യം))SCAL_K, nthreads);
 
   }
 #endif
@@ -119,6 +119,6 @@ void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  തിരികെ;
 
 }

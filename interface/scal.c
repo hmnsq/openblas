@@ -37,48 +37,48 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+ശൂന്യം NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#അല്ലെങ്കിൽ
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+ശൂന്യം CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  പൂർണ്ണസംഖ്യ mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#അല്ലെങ്കിൽ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  എങ്കിൽ (incx <= 0 || n <= 0) തിരികെ;
 
 #ifdef BGEMM
-  float alpha_float;
+  ദശാംശം alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#അല്ലെങ്കിൽ
   FLOAT alpha_float = alpha;
 #endif
 
-  if (alpha_float == ONE) return;
+  എങ്കിൽ (alpha_float == ONE) തിരികെ;
 
   IDEBUG_START;
 
@@ -86,33 +86,33 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 
 #ifdef SMP
-  if (n <= 1048576 )
+  എങ്കിൽ (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  അല്ലെങ്കിൽ
+	nthreads = അക്കം_cpu_avail(1);
 
 
-  if (nthreads == 1) {
+  എങ്കിൽ (nthreads == 1) {
 #endif
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, ശൂന്യ, 0, ശൂന്യ, 1);
 
 #ifdef SMP
-  } else {
+  } അല്ലെങ്കിൽ {
 
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#അല്ലെങ്കിൽ
     mode  =  BLAS_SINGLE | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0,
 #ifndef CBLAS
 		       ALPHA,
-#else
+#അല്ലെങ്കിൽ
 		       &alpha,
 #endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+		       x, incx, ശൂന്യ, 0, ശൂന്യ, 1,  (പൂർണ്ണസംഖ്യ (*)(ശൂന്യം))SCAL_K, nthreads);
 
   }
 #endif
@@ -121,6 +121,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  തിരികെ;
 
 }

@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 #undef MAX_K
@@ -52,65 +52,65 @@
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define MAX_K	IQAMAX_K
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define MAX_K	IDAMAX_K
-#else
+#അല്ലെങ്കിൽ
 #define MAX_K	ISAMAX_K
 #endif
-#else
+#അല്ലെങ്കിൽ
 #ifdef XDOUBLE
 #define MAX_K	IXAMAX_K
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define MAX_K	IZAMAX_K
-#else
+#അല്ലെങ്കിൽ
 #define MAX_K	ICAMAX_K
 #endif
 #endif
 
-#else
+#അല്ലെങ്കിൽ
 
 /* ABS & MIN */
 #ifndef COMPLEX
 #ifdef XDOUBLE
 #define MAX_K	IQAMIN_K
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define MAX_K	IDAMIN_K
-#else
+#അല്ലെങ്കിൽ
 #define MAX_K	ISAMIN_K
 #endif
-#else
+#അല്ലെങ്കിൽ
 #ifdef XDOUBLE
 #define MAX_K	IXAMIN_K
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define MAX_K	IZAMIN_K
-#else
+#അല്ലെങ്കിൽ
 #define MAX_K	ICAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#അല്ലെങ്കിൽ
 
 #ifndef USE_MIN
 
 /* MAX */
 #ifdef XDOUBLE
 #define MAX_K	IQMAX_K
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define MAX_K	IDMAX_K
-#else
+#അല്ലെങ്കിൽ
 #define MAX_K	ISMAX_K
 #endif
 
-#else
+#അല്ലെങ്കിൽ
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	IQMIN_K
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define MAX_K	IDMIN_K
-#else
+#അല്ലെങ്കിൽ
 #define MAX_K	ISMIN_K
 #endif
 
@@ -130,7 +130,7 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  എങ്കിൽ (n <= 0) തിരികെ 0;
 
   IDEBUG_START;
 
@@ -138,20 +138,20 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  എങ്കിൽ(ret > n) ret=n;
 
   FUNCTION_PROFILE_END(COMPSIZE, n, 0);
 
   IDEBUG_END;
 
-  return ret;
+  തിരികെ ret;
 }
 
-#else
+#അല്ലെങ്കിൽ
 #ifdef COMPLEX
-CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
+CBLAS_INDEX CNAME(blasint n, ശൂന്യം *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#അല്ലെങ്കിൽ
 CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -159,7 +159,7 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  എങ്കിൽ (n <= 0) തിരികെ 0;
 
   IDEBUG_START;
 
@@ -167,15 +167,15 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  എങ്കിൽ (ret > n) ret=n;
 
-  if (ret) ret --;
+  എങ്കിൽ (ret) ret --;
 
   FUNCTION_PROFILE_END(COMPSIZE, n, 0);
 
   IDEBUG_END;
 
-  return ret;
+  തിരികെ ret;
 }
 
 #endif

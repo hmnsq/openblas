@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
-#if defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
+#എങ്കിൽ defined(THUNDERX2T99) || defined(VULCAN) || defined(ARMV8) || defined(THUNDERX3T110)
 // Multithreaded swap gives performance benefits in ThunderX2T99
-#else
+#അല്ലെങ്കിൽ
 // Disable multi-threading as it does not show any performance
 // benefits. Keep the multi-threading code for the record.
 #undef SMP
@@ -54,66 +54,66 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+ശൂന്യം NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   blasint n    = *N;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
+#അല്ലെങ്കിൽ
 
-void CNAME(blasint n, void *vx, blasint incx, void *vy, blasint incy){
+ശൂന്യം CNAME(blasint n, ശൂന്യം *vx, blasint incx, ശൂന്യം *vy, blasint incy){
 FLOAT *x = (FLOAT*)vx;
 FLOAT *y = (FLOAT*)vy;
 #endif
 
 #ifdef SMP
-  int mode;
+  പൂർണ്ണസംഖ്യ mode;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-  int nthreads;
+  പൂർണ്ണസംഖ്യ nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#അല്ലെങ്കിൽ
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (n <= 0) return;
+  എങ്കിൽ (n <= 0) തിരികെ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  എങ്കിൽ (incx < 0) x -= (n - 1) * incx * 2;
+  എങ്കിൽ (incy < 0) y -= (n - 1) * incy * 2;
 
 #ifdef SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
-  if (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / sizeof(FLOAT))
+  എങ്കിൽ (incx == 0 || incy == 0 || n < 1048576 * GEMM_MULTITHREAD_THRESHOLD / വലുപ്പം(FLOAT))
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  അല്ലെങ്കിൽ
+	  nthreads = അക്കം_cpu_avail(1);
 
-  if (nthreads == 1) {
+  എങ്കിൽ (nthreads == 1) {
 #endif
 
-  SWAP_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, NULL, 0);
+  SWAP_K(n, 0, 0, ZERO, ZERO, x, incx, y, incy, ശൂന്യ, 0);
 
 #ifdef SMP
-  } else {
+  } അല്ലെങ്കിൽ {
 
 #ifdef XDOUBLE
     mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
     mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#അല്ലെങ്കിൽ
     mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 
     blas_level1_thread(mode, n, 0, 0, dummyalpha,
-		       x, incx, y, incy, NULL, 0, (void *)SWAP_K, nthreads);
+		       x, incx, y, incy, ശൂന്യ, 0, (ശൂന്യം *)SWAP_K, nthreads);
 
   }
 #endif
@@ -122,6 +122,6 @@ FLOAT *y = (FLOAT*)vy;
 
   IDEBUG_END;
 
-  return;
+  തിരികെ;
 
 }

@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 OPENBLAS_EXPORT
@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  എങ്കിൽ (n <= 0) തിരികെ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  എങ്കിൽ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    തിരികെ fabs(x[0]);
+#അല്ലെങ്കിൽ
+    തിരികെ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  എങ്കിൽ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  തിരികെ (sqrt((ഇരട്ട)n)*fabs(x[0]));
+#അല്ലെങ്കിൽ
+  തിരികെ (sqrt((ദശാംശം)n)*fabsf(x[0]));
 #endif
-#else
+#അല്ലെങ്കിൽ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ഇരട്ട fr=fabs(x[0]);
+  ഇരട്ട fi=fabs(x[1]);
+  ഇരട്ട fmin=MIN(fr,fi);
+  ഇരട്ട fmax=MAX(fr,fi);
+  എങ്കിൽ (fmax==0.) തിരികെ(fmax);
+  എങ്കിൽ (fmax==fmin) തിരികെ(sqrt((ഇരട്ട)n)*sqrt(2.)*fmax);
+  തിരികെ (sqrt((ഇരട്ട)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#അല്ലെങ്കിൽ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ദശാംശം fr=fabs(x[0]);
+  ദശാംശം fi=fabs(x[1]);
+  ദശാംശം fmin=MIN(fr,fi);
+  ദശാംശം fmax=MAX(fr,fi);
+  എങ്കിൽ (fmax==0.) തിരികെ(fmax);
+  എങ്കിൽ (fmax==fmin) തിരികെ(sqrt((ദശാംശം)n)*sqrt(2.)*fmax);
+  തിരികെ (sqrt((ദശാംശം)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  എങ്കിൽ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#അല്ലെങ്കിൽ
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  തിരികെ ret;
 }
 
-#else
+#അല്ലെങ്കിൽ
 
 #ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+FLOAT CNAME(blasint n, ശൂന്യം *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#അല്ലെങ്കിൽ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  എങ്കിൽ (n <= 0) തിരികെ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  എങ്കിൽ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    തിരികെ fabs(x[0]);
+#അല്ലെങ്കിൽ
+    തിരികെ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  എങ്കിൽ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  തിരികെ (sqrt((ഇരട്ട)n)*fabs(x[0]));
+#അല്ലെങ്കിൽ
+  തിരികെ (sqrt((ദശാംശം)n)*fabsf(x[0]));
 #endif
-#else
+#അല്ലെങ്കിൽ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ഇരട്ട fr=fabs(x[0]);
+  ഇരട്ട fi=fabs(x[1]);
+  ഇരട്ട fmin=MIN(fr,fi);
+  ഇരട്ട fmax=MAX(fr,fi);
+  എങ്കിൽ (fmax==0.) തിരികെ(fmax);
+  എങ്കിൽ (fmax==fmin) തിരികെ(sqrt((ഇരട്ട)n)*sqrt(2.)*fmax);
+  തിരികെ (sqrt((ഇരട്ട)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#അല്ലെങ്കിൽ
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ദശാംശം fr=fabs(x[0]);
+  ദശാംശം fi=fabs(x[1]);
+  ദശാംശം fmin=MIN(fr,fi);
+  ദശാംശം fmax=MAX(fr,fi);
+  എങ്കിൽ (fmax==0.) തിരികെ(fmax);
+  എങ്കിൽ (fmax==fmin) തിരികെ(sqrt((ദശാംശം)n)*sqrt(2.)*fmax);
+  തിരികെ (sqrt((ദശാംശം)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  എങ്കിൽ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#അല്ലെങ്കിൽ
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  തിരികെ ret;
 }
 
 #endif

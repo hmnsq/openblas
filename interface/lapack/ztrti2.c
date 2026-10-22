@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XTRTI2"
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define ERROR_NAME "ZTRTI2"
-#else
+#അല്ലെങ്കിൽ
 #define ERROR_NAME "CTRTI2"
 #endif
 
-static blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+സ്ഥിതം blasint (*trti2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifdef XDOUBLE
   xtrti2_UU, xtrti2_UN, xtrti2_LU, xtrti2_LN,
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
   ztrti2_UU, ztrti2_UN, ztrti2_LU, ztrti2_LN,
-#else
+#അല്ലെങ്കിൽ
   ctrti2_UU, ctrti2_UN, ctrti2_LU, ctrti2_LN,
 #endif
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+ശൂന്യം NAME(അക്ഷരം *UPLO, അക്ഷരം *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -71,40 +71,40 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  ബാഹ്യ
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (ശൂന്യം *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  എങ്കിൽ (uplo_arg == 'U') uplo = 0;
+  എങ്കിൽ (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  എങ്കിൽ (diag_arg == 'U') diag = 0;
+  എങ്കിൽ (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  എങ്കിൽ (args.lda  < MAX(1,args.n)) info = 5;
+  എങ്കിൽ (args.n    < 0)             info = 3;
+  എങ്കിൽ (diag < 0)                  info = 2;
+  എങ്കിൽ (uplo < 0)                  info = 1;
+  എങ്കിൽ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    തിരികെ;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  എങ്കിൽ (args.n <= 0) തിരികെ;
 
   IDEBUG_START;
 
@@ -117,7 +117,7 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = (trti2[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+  info = (trti2[(uplo << 1) | diag])(&args, ശൂന്യ, ശൂന്യ, sa, sb, 0);
 
   *Info = info;
 
@@ -131,5 +131,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  തിരികെ;
 }

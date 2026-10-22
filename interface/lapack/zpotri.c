@@ -36,40 +36,40 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XPOTRI"
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define ERROR_NAME "ZPOTRI"
-#else
+#അല്ലെങ്കിൽ
 #define ERROR_NAME "CPOTRI"
 #endif
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+സ്ഥിതം blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_SINGLE, TRTRI_LN_SINGLE,
 };
 
-static blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+സ്ഥിതം blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_SINGLE, LAUUM_L_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+സ്ഥിതം blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_PARALLEL, TRTRI_LN_PARALLEL,
 };
 
-static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+സ്ഥിതം blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_PARALLEL, LAUUM_L_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+ശൂന്യം NAME(അക്ഷരം *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -78,36 +78,36 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  ബാഹ്യ
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (ശൂന്യം *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  എങ്കിൽ (uplo_arg == 'U') uplo = 0;
+  എങ്കിൽ (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 4;
-  if (args.n    < 0)             info = 2;
-  if (uplo < 0)                  info = 1;
+  എങ്കിൽ (args.lda  < MAX(1,args.n)) info = 4;
+  എങ്കിൽ (args.n    < 0)             info = 2;
+  എങ്കിൽ (uplo < 0)                  info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  എങ്കിൽ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    തിരികെ;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  എങ്കിൽ (args.n == 0) തിരികെ;
 
   IDEBUG_START;
 
@@ -121,34 +121,34 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 #endif
 
 #ifdef SMP
-  args.nthreads = num_cpu_avail(4);
+  args.nthreads = അക്കം_cpu_avail(4);
 #ifndef DOUBLE
-  if (args.n < 200)
-#else
-  if (args.n < 150)
+  എങ്കിൽ (args.n < 200)
+#അല്ലെങ്കിൽ
+  എങ്കിൽ (args.n < 150)
 #endif
 	  args.nthreads=1;
-  else
+  അല്ലെങ്കിൽ
 #endif
-  args.nthreads = num_cpu_avail(4);
+  args.nthreads = അക്കം_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  എങ്കിൽ (args.nthreads == 1) {
 #endif
 
-  info = (trtri_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (trtri_single[uplo])(&args, ശൂന്യ, ശൂന്യ, sa, sb, 0);
 
-  if (!info) {
-    info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  എങ്കിൽ (!info) {
+    info = (lauum_single[uplo])(&args, ശൂന്യ, ശൂന്യ, sa, sb, 0);
   }
 
   *Info = info;
 
 #ifdef SMP
-  } else {
-    info = (trtri_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+  } അല്ലെങ്കിൽ {
+    info = (trtri_parallel[uplo])(&args, ശൂന്യ, ശൂന്യ, sa, sb, 0);
 
-    if (!info) {
-      info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    എങ്കിൽ (!info) {
+      info = (lauum_parallel[uplo])(&args, ശൂന്യ, ശൂന്യ, sa, sb, 0);
     }
 
     *Info = info;
@@ -166,5 +166,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  തിരികെ;
 }

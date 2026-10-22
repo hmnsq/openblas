@@ -36,33 +36,33 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ <ctype.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XTPSV "
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define ERROR_NAME "ZTPSV "
-#else
+#അല്ലെങ്കിൽ
 #define ERROR_NAME "CTPSV "
 #endif
 
-static int (*tpsv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, void *) = {
+സ്ഥിതം പൂർണ്ണസംഖ്യ (*tpsv[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, ശൂന്യം *) = {
 #ifdef XDOUBLE
   xtpsv_NUU, xtpsv_NUN, xtpsv_NLU, xtpsv_NLN,
   xtpsv_TUU, xtpsv_TUN, xtpsv_TLU, xtpsv_TLN,
   xtpsv_RUU, xtpsv_RUN, xtpsv_RLU, xtpsv_RLN,
   xtpsv_CUU, xtpsv_CUN, xtpsv_CLU, xtpsv_CLN,
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
   ztpsv_NUU, ztpsv_NUN, ztpsv_NLU, ztpsv_NLN,
   ztpsv_TUU, ztpsv_TUN, ztpsv_TLU, ztpsv_TLN,
   ztpsv_RUU, ztpsv_RUN, ztpsv_RLU, ztpsv_RLN,
   ztpsv_CUU, ztpsv_CUN, ztpsv_CLU, ztpsv_CLN,
-#else
+#അല്ലെങ്കിൽ
   ctpsv_NUU, ctpsv_NUN, ctpsv_NLU, ctpsv_NLN,
   ctpsv_TUU, ctpsv_TUN, ctpsv_TLU, ctpsv_TLN,
   ctpsv_RUU, ctpsv_RUN, ctpsv_RLU, ctpsv_RLN,
@@ -74,20 +74,20 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+ശൂന്യം NAME(അക്ഷരം *UPLO, അക്ഷരം *TRANS, അക്ഷരം *DIAG,
 	   blasint *N, FLOAT *a, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  അക്ഷരം uplo_arg  = *UPLO;
+  അക്ഷരം trans_arg = *TRANS;
+  അക്ഷരം diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  പൂർണ്ണസംഖ്യ uplo;
+  പൂർണ്ണസംഖ്യ unit;
+  പൂർണ്ണസംഖ്യ trans;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -100,40 +100,40 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  എങ്കിൽ (trans_arg == 'N') trans = 0;
+  എങ്കിൽ (trans_arg == 'T') trans = 1;
+  എങ്കിൽ (trans_arg == 'R') trans = 2;
+  എങ്കിൽ (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  എങ്കിൽ (diag_arg  == 'U') unit  = 0;
+  എങ്കിൽ (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  എങ്കിൽ (uplo_arg  == 'U') uplo  = 0;
+  എങ്കിൽ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  7;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  എങ്കിൽ (incx == 0)          info =  7;
+  എങ്കിൽ (n < 0)              info =  4;
+  എങ്കിൽ (unit  < 0)          info =  3;
+  എങ്കിൽ (trans < 0)          info =  2;
+  എങ്കിൽ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  എങ്കിൽ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME));
+    തിരികെ;
   }
 
-#else
+#അല്ലെങ്കിൽ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
-	   blasint n, void  *va, void  *vx, blasint incx) {
+ശൂന്യം CNAME(എണ്ണൽ CBLAS_ORDER order, എണ്ണൽ CBLAS_UPLO Uplo,
+	   എണ്ണൽ CBLAS_TRANSPOSE TransA, എണ്ണൽ CBLAS_DIAG Diag,
+	   blasint n, ശൂന്യം  *va, ശൂന്യം  *vx, blasint incx) {
 
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
   
-  int trans, uplo, unit;
+  പൂർണ്ണസംഖ്യ trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 
@@ -144,68 +144,68 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  എങ്കിൽ (order == CblasColMajor) {
+    എങ്കിൽ (Uplo == CblasUpper)         uplo  = 0;
+    എങ്കിൽ (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    എങ്കിൽ (TransA == CblasNoTrans)     trans = 0;
+    എങ്കിൽ (TransA == CblasTrans)       trans = 1;
+    എങ്കിൽ (TransA == CblasConjNoTrans) trans = 2;
+    എങ്കിൽ (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  7;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    എങ്കിൽ (Diag == CblasUnit)          unit  = 0;
+    എങ്കിൽ (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  7;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    എങ്കിൽ (incx == 0)          info =  7;
+    എങ്കിൽ (n < 0)              info =  4;
+    എങ്കിൽ (unit  < 0)          info =  3;
+    എങ്കിൽ (trans < 0)          info =  2;
+    എങ്കിൽ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  എങ്കിൽ (order == CblasRowMajor) {
+    എങ്കിൽ (Uplo == CblasUpper)         uplo  = 1;
+    എങ്കിൽ (Uplo == CblasLower)         uplo  = 0;
+
+    എങ്കിൽ (TransA == CblasNoTrans)     trans = 1;
+    എങ്കിൽ (TransA == CblasTrans)       trans = 0;
+    എങ്കിൽ (TransA == CblasConjNoTrans) trans = 3;
+    എങ്കിൽ (TransA == CblasConjTrans)   trans = 2;
+
+    എങ്കിൽ (Diag == CblasUnit)          unit  = 0;
+    എങ്കിൽ (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    എങ്കിൽ (incx == 0)          info =  7;
+    എങ്കിൽ (n < 0)              info =  4;
+    എങ്കിൽ (unit  < 0)          info =  3;
+    എങ്കിൽ (trans < 0)          info =  2;
+    എങ്കിൽ (uplo  < 0)          info =  1;
+  }
+
+  എങ്കിൽ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME));
+    തിരികെ;
   }
 
 #endif
 
-  if (n == 0) return;
+  എങ്കിൽ (n == 0) തിരികെ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  എങ്കിൽ (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  എങ്കിൽ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME));
+    തിരികെ;
   }
 
   (tpsv[(trans<<2) | (uplo<<1) | unit])(n, a, x, incx, buffer);
@@ -216,5 +216,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  തിരികെ;
 }

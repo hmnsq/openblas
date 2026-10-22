@@ -36,38 +36,38 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ <ctype.h>
+#അന്തര്ഭാവ "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#അന്തര്ഭാവ "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QSPR  "
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
 #define ERROR_NAME "DSPR  "
-#else
+#അല്ലെങ്കിൽ
 #define ERROR_NAME "SSPR  "
 #endif
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+സ്ഥിതം പൂർണ്ണസംഖ്യ (*spr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   qspr_U, qspr_L,
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
   dspr_U, dspr_L,
-#else
+#അല്ലെങ്കിൽ
   sspr_U, sspr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+സ്ഥിതം പൂർണ്ണസംഖ്യ (*spr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, പൂർണ്ണസംഖ്യ) = {
 #ifdef XDOUBLE
   qspr_thread_U, qspr_thread_L,
-#elif defined(DOUBLE)
+#അല്ലെങ്കിലെങ്കിൽ defined(DOUBLE)
   dspr_thread_U, dspr_thread_L,
-#else
+#അല്ലെങ്കിൽ
   sspr_thread_U, sspr_thread_L,
 #endif
 };
@@ -77,19 +77,19 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+ശൂന്യം NAME(അക്ഷരം *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  അക്ഷരം uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  പൂർണ്ണസംഖ്യ uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  പൂർണ്ണസംഖ്യ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,34 +97,34 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  എങ്കിൽ (uplo_arg  == 'U') uplo  = 0;
+  എങ്കിൽ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  എങ്കിൽ (incx == 0)          info =  5;
+  എങ്കിൽ (n < 0)              info =  2;
+  എങ്കിൽ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  എങ്കിൽ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME));
+    തിരികെ;
   }
 
-#else
+#അല്ലെങ്കിൽ
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+ശൂന്യം CNAME(എണ്ണൽ CBLAS_ORDER order,
+	   എണ്ണൽ CBLAS_UPLO Uplo,
 	   blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
 	   FLOAT  *a) {
 
   FLOAT *buffer;
-  int uplo;
+  പൂർണ്ണസംഖ്യ uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  പൂർണ്ണസംഖ്യ nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -132,85 +132,85 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  എങ്കിൽ (order == CblasColMajor) {
+    എങ്കിൽ (Uplo == CblasUpper)         uplo  = 0;
+    എങ്കിൽ (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    എങ്കിൽ (incx == 0)          info =  5;
+    എങ്കിൽ (n < 0)              info =  2;
+    എങ്കിൽ (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  എങ്കിൽ (order == CblasRowMajor) {
+    എങ്കിൽ (Uplo == CblasUpper)         uplo  = 1;
+    എങ്കിൽ (Uplo == CblasLower)         uplo  = 0;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    എങ്കിൽ (incx == 0)          info =  5;
+    എങ്കിൽ (n < 0)              info =  2;
+    എങ്കിൽ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  എങ്കിൽ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME));
+    തിരികെ;
   }
 
 #endif
 
-  if (n == 0) return;
+  എങ്കിൽ (n == 0) തിരികെ;
 
-  if (alpha == ZERO) return;
+  എങ്കിൽ (alpha == ZERO) തിരികെ;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx == 1 && n <100) {
+  എങ്കിൽ (incx == 1 && n <100) {
     blasint i;
-    if (uplo==0) {
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
-          AXPYU_K(i + 1, 0, 0, alpha * x[i], x,     1, a, 1, NULL, 0);
+    എങ്കിൽ (uplo==0) {
+      വേണ്ടി (i = 0; i < n; i++){
+        എങ്കിൽ (x[i] != ZERO) {
+          AXPYU_K(i + 1, 0, 0, alpha * x[i], x,     1, a, 1, ശൂന്യ, 0);
         }
         a += i + 1;
       }
-    } else { 
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
-          AXPYU_K(n - i, 0, 0, alpha * x[i], x + i, 1, a, 1, NULL, 0);
+    } അല്ലെങ്കിൽ { 
+      വേണ്ടി (i = 0; i < n; i++){
+        എങ്കിൽ (x[i] != ZERO) {
+          AXPYU_K(n - i, 0, 0, alpha * x[i], x + i, 1, a, 1, ശൂന്യ, 0);
         }
         a += n - i;
       }
     }
-    return;
+    തിരികെ;
   }
 
-  if (incx < 0 ) x -= (n - 1) * incx;
+  എങ്കിൽ (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  എങ്കിൽ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, വലുപ്പം(ERROR_NAME));
+    തിരികെ;
   }
 
 #ifdef SMP
-  nthreads = num_cpu_avail(2);
+  nthreads = അക്കം_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  എങ്കിൽ (n < 50) nthreads = 1;
+  എങ്കിൽ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  എങ്കിൽ (nthreads == 1) {
 #endif
 
   (spr[uplo])(n, alpha, x, incx, a, buffer);
 
 #ifdef SMP
-  } else {
+  } അല്ലെങ്കിൽ {
 
     (spr_thread[uplo])(n, alpha, x, incx, a, buffer, nthreads);
 
@@ -223,5 +223,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  തിരികെ;
 }
