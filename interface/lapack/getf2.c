@@ -36,29 +36,29 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETF2"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "DGETF2"
-#else
+#وإلا
 #define ERROR_NAME "SGETF2"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+فراغ NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
@@ -66,22 +66,22 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (فراغ *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (فراغ *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (args.lda < MAX(1,args.m)) info = 4;
+  إذا (args.n   < 0)             info = 2;
+  إذا (args.m   < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  إذا (args.m == 0 || args.n == 0) أرجع;
 
   IDEBUG_START;
 
@@ -94,7 +94,7 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = GETF2(&args, NULL, NULL, sa, sb, 0);
+  info = GETF2(&args, عدم, عدم, sa, sb, 0);
 
   *Info = info;
 
@@ -106,5 +106,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  أرجع;
 }
