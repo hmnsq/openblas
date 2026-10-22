@@ -36,52 +36,52 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QGETF2"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "DGETF2"
-#else
+#وإلا
 #define ERROR_NAME "SGETF2"
 #endif
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+فراغ NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t حجوجي;
 
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  بغ_DEBUG_NAME;
 
-  args.m    = *M;
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  حجوجي.m    = *M;
+  حجوجي.n    = *N;
+  حجوجي.a    = (فراغ *)a;
+  حجوجي.lda  = *ldA;
+  حجوجي.c    = (فراغ *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (حجوجي.lda < MAX(1,حجوجي.m)) info = 4;
+  إذا (حجوجي.n   < 0)             info = 2;
+  إذا (حجوجي.m   < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  إذا (حجوجي.m == 0 || حجوجي.n == 0) أرجع;
 
   IDEBUG_START;
 
@@ -94,7 +94,7 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = GETF2(&args, NULL, NULL, sa, sb, 0);
+  info = GETF2(&حجوجي, عدم, عدم, sa, sb, 0);
 
   *Info = info;
 
@@ -102,9 +102,9 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n,  2. / 3. * args.m * args.n * args.n);
+  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, حجوجي.m * حجوجي.n,  2. / 3. * حجوجي.m * حجوجي.n * حجوجي.n);
 
   IDEBUG_END;
 
-  return;
+  أرجع;
 }

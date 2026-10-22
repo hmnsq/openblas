@@ -36,34 +36,34 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XTRTRI"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "ZTRTRI"
-#else
+#وإلا
 #define ERROR_NAME "CTRTRI"
 #endif
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ساكن blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_SINGLE, TRTRI_UN_SINGLE, TRTRI_LU_SINGLE, TRTRI_LN_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+ساكن blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_PARALLEL, TRTRI_UN_PARALLEL, TRTRI_LU_PARALLEL, TRTRI_LN_PARALLEL,
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, حرف *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t حجوجي;
 
   blasint uplo_arg = *UPLO;
   blasint diag_arg = *DIAG;
@@ -71,45 +71,45 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  بغ_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  حجوجي.n    = *N;
+  حجوجي.a    = (فراغ *)a;
+  حجوجي.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  إذا (diag_arg == 'U') diag = 0;
+  إذا (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (حجوجي.lda  < MAX(1,حجوجي.n)) info = 5;
+  إذا (حجوجي.n    < 0)             info = 3;
+  إذا (diag < 0)                  info = 2;
+  إذا (uplo < 0)                  info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  إذا (حجوجي.n == 0) أرجع;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
-      *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+  إذا (diag) {
+    إذا (AMIN_K(حجوجي.n, حجوجي.a, حجوجي.lda + 1) == ZERO) {
+      *Info = IAMIN_K(حجوجي.n, حجوجي.a, حجوجي.lda + 1);
+      أرجع;
     }
   }
 
@@ -125,22 +125,22 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 #endif
 
 #ifdef SMP
-  args.common = NULL;
-  if (args.n < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  حجوجي.common = عدم;
+  إذا (حجوجي.n < 64) {
+    حجوجي.nthreads = 1;
+  } وإلا {
+    حجوجي.nthreads = لمب_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  إذا (حجوجي.nthreads == 1) {
 #endif
 
-    *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_single[(uplo << 1) | diag])(&حجوجي, عدم, عدم, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } وإلا {
 
-    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_parallel[(uplo << 1) | diag])(&حجوجي, عدم, عدم, sa, sb, 0);
 
   }
 #endif
@@ -149,11 +149,11 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		          2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_END(1, .5 * حجوجي.n * حجوجي.n,
+		          2. * حجوجي.n * (1./3. + حجوجي.n * ( 1./2. + حجوجي.n * 1./6.))
+		       +  6. * حجوجي.n * (1./3. + حجوجي.n * (-1./2. + حجوجي.n * 1./6.)));
 
   IDEBUG_END;
 
-  return;
+  أرجع;
 }

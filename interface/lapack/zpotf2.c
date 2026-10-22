@@ -36,70 +36,70 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#ضمن <stdio.h>
+#ضمن "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#ضمن "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XPOTF2"
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
 #define ERROR_NAME "ZPOTF2"
-#else
+#وإلا
 #define ERROR_NAME "CPOTF2"
 #endif
 
-static blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+ساكن blasint (*potf2[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 
 #ifdef XDOUBLE
   xpotf2_U, xpotf2_L,
-#elif defined(DOUBLE)
+#وإلاإذا defined(DOUBLE)
   zpotf2_U, zpotf2_L,
-#else
+#وإلا
   cpotf2_U, cpotf2_L,
 #endif
   };
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+فراغ NAME(حرف *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t حجوجي;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  خارجي
 #endif
   FLOAT *sa, *sb;
 
-  PRINT_DEBUG_NAME;
+  بغ_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  حجوجي.n    = *N;
+  حجوجي.a    = (فراغ *)a;
+  حجوجي.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  إذا (uplo_arg == 'U') uplo = 0;
+  إذا (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  إذا (حجوجي.lda < MAX(1,حجوجي.n)) info = 4;
+  إذا (حجوجي.n   < 0)             info = 2;
+  إذا (uplo     < 0)             info = 1;
+  إذا (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, حجم(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    أرجع;
   }
 
   *Info = 0;
 
-  if (args.n <= 0) return;
+  إذا (حجوجي.n <= 0) أرجع;
 
   IDEBUG_START;
 
@@ -112,7 +112,7 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 #endif
 
-  info = (potf2[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (potf2[uplo])(&حجوجي, عدم, عدم, sa, sb, 0);
 
   *Info = info;
 
@@ -120,11 +120,11 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   blas_memory_free(buffer);
 #endif
 
-  FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
-		       2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  6. * 1./6. * args.n * (args.n * args.n - 1));
+  FUNCTION_PROFILE_END(1, .5 * حجوجي.n * حجوجي.n,
+		       2. * حجوجي.n * (1./3. + حجوجي.n * ( 1./2. + حجوجي.n * 1./6.))
+		       +  6. * 1./6. * حجوجي.n * (حجوجي.n * حجوجي.n - 1));
 
   IDEBUG_END;
 
-  return;
+  أرجع;
 }
