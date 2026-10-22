@@ -4,11 +4,11 @@
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
+#ᱡᱩᱫᱤ defined(DOUBLE_PREC)
+#define FLOAT_TYPE dviguu_na
 #elif defined(SINGLE_PREC)
 #define FLOAT_TYPE float
-#else
+#ᱵᱟᱝ
 #endif
 
 OPENBLAS_EXPORT
@@ -21,37 +21,37 @@ void NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *I
 
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return;
+   ᱡᱩᱫᱤ (n <= 0) ᱨᱩᱣᱟᱹᱲ;
 
    IDEBUG_START;
    FUNCTION_PROFILE_START();
 
-   if (inc_in < 0)   in -= (n - 1) * inc_in;
-   if (inc_out < 0) out -= (n - 1) * inc_out;
+   ᱡᱩᱫᱤ (inc_in < 0)   in -= (n - 1) * inc_in;
+   ᱡᱩᱫᱤ (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#ᱡᱩᱫᱤ defined(DOUBLE_PREC)
    D_TO_BF16_K(n, in, inc_in, out, inc_out);
 #elif defined(SINGLE_PREC)
    S_TO_BF16_K(n, in, inc_in, out, inc_out);
-#else
+#ᱵᱟᱝ
 #endif
 
    FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
    IDEBUG_END;
 }
-#else
+#ᱵᱟᱝ
 void CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  ᱡᱩᱫᱤ (n <= 0) ᱨᱩᱣᱟᱹᱲ;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  ᱡᱩᱫᱤ (inc_in < 0)   in -= (n - 1) * inc_in;
+  ᱡᱩᱫᱤ (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#ᱡᱩᱫᱤ defined(DOUBLE_PREC)
   D_TO_BF16_K(n, in, inc_in, out, inc_out);
 #elif defined(SINGLE_PREC)
   S_TO_BF16_K(n, in, inc_in, out, inc_out);

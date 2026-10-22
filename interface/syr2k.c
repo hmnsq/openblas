@@ -48,33 +48,33 @@
 #define ERROR_NAME "QSYR2K"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSYR2K"
-#else
+#ᱵᱟᱝ
 #define ERROR_NAME "SSYR2K"
 #endif
-#else
+#ᱵᱟᱝ
 #ifndef HEMM
 #ifdef XDOUBLE
 #define ERROR_NAME "XSYR2K"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSYR2K"
-#else
+#ᱵᱟᱝ
 #define ERROR_NAME "CSYR2K"
 #endif
-#else
+#ᱵᱟᱝ
 #ifdef XDOUBLE
 #define ERROR_NAME "XHER2K"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHER2K"
-#else
+#ᱵᱟᱝ
 #define ERROR_NAME "CHER2K"
 #endif
 #endif
 #endif
 
-static int (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+static puur_naa_nka (*syr2k[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef HEMM
   SYR2K_UN, SYR2K_UC, SYR2K_LN, SYR2K_LC,
-#else
+#ᱵᱟᱝ
   HER2K_UN, HER2K_UC, HER2K_LN, HER2K_LC,
 #endif
 };
@@ -83,14 +83,14 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS,
+void NAME(var_na *UPLO, var_na *TRANS,
          blasint *N, blasint *K,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
 	               FLOAT *b, blasint *ldB,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
+  var_na uplo_arg  = *UPLO;
+  var_na trans_arg = *TRANS;
 
   blas_arg_t args;
 
@@ -100,27 +100,27 @@ void NAME(char *UPLO, char *TRANS,
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#ᱵᱟᱝ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#ᱵᱟᱝ
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ᱵᱟᱝ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 
   blasint info;
-  int uplo;
-  int trans;
-  int nrowa;
+  puur_naa_nka uplo;
+  puur_naa_nka trans;
+  puur_naa_nka nrowa;
 
   PRINT_DEBUG_NAME;
 
@@ -144,71 +144,71 @@ void NAME(char *UPLO, char *TRANS,
   uplo  = -1;
   trans = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ᱡᱩᱫᱤ (uplo_arg  == 'U') uplo  = 0;
+  ᱡᱩᱫᱤ (uplo_arg  == 'L') uplo  = 1;
 
 #ifndef COMPLEX
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'C') trans = 1;
-#else
+  ᱡᱩᱫᱤ (trans_arg == 'N') trans = 0;
+  ᱡᱩᱫᱤ (trans_arg == 'T') trans = 1;
+  ᱡᱩᱫᱤ (trans_arg == 'C') trans = 1;
+#ᱵᱟᱝ
 #ifdef HEMM
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'C') trans = 1;
-#else
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
+  ᱡᱩᱫᱤ (trans_arg == 'N') trans = 0;
+  ᱡᱩᱫᱤ (trans_arg == 'C') trans = 1;
+#ᱵᱟᱝ
+  ᱡᱩᱫᱤ (trans_arg == 'N') trans = 0;
+  ᱡᱩᱫᱤ (trans_arg == 'T') trans = 1;
 #endif
 
 #endif
 
 
   nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  ᱡᱩᱫᱤ (trans & 1) nrowa = args.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 12;
-  if (args.ldb < MAX(1,nrowa))  info =  9;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
-  if (trans < 0)                info =  2;
-  if (uplo  < 0)                info =  1;
+  ᱡᱩᱫᱤ (args.ldc < MAX(1,args.n)) info = 12;
+  ᱡᱩᱫᱤ (args.ldb < MAX(1,nrowa))  info =  9;
+  ᱡᱩᱫᱤ (args.lda < MAX(1,nrowa))  info =  7;
+  ᱡᱩᱫᱤ (args.k < 0)               info =  4;
+  ᱡᱩᱫᱤ (args.n < 0)               info =  3;
+  ᱡᱩᱫᱤ (trans < 0)                info =  2;
+  ᱡᱩᱫᱤ (uplo  < 0)                info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᱡᱩᱫᱤ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᱨᱩᱣᱟᱹᱲ;
   }
 
-#else
+#ᱵᱟᱝ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Trans,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo, ga_nanaa CBLAS_TRANSPOSE Trans,
 	   blasint n, blasint k,
 #ifndef COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb,
-#else
+#ᱵᱟᱝ
 	   void *valpha,
 	   void *va, blasint lda,
 	   void *vb, blasint ldb,
 #endif
-#if !defined(COMPLEX) || defined(HEMM)
+#ᱡᱩᱫᱤ !defined(COMPLEX) || defined(HEMM)
 	   FLOAT beta,
-#else
+#ᱵᱟᱝ
 	   void *vbeta,
 #endif
 #ifndef COMPLEX
 	   FLOAT *c,
-#else
+#ᱵᱟᱝ
 	   void *vc,
 #endif
            blasint ldc) {
 
 #ifdef COMPLEX
   FLOAT* alpha = (FLOAT*) valpha;
-#if !defined(HEMM)
+#ᱡᱩᱫᱤ !defined(HEMM)
   FLOAT* beta = (FLOAT*) vbeta;
 #endif
   FLOAT* a = (FLOAT*) va;
@@ -217,7 +217,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 #endif
 
   blas_arg_t args;
-  int uplo, trans;
+  puur_naa_nka uplo, trans;
   blasint info, nrowa;
 
   FLOAT *buffer;
@@ -230,19 +230,19 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 #ifdef SMP
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#ᱵᱟᱝ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#ᱵᱟᱝ
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ᱵᱟᱝ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
@@ -262,13 +262,13 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
 
 #ifndef COMPLEX
   args.alpha = (void *)&alpha;
-#else
+#ᱵᱟᱝ
   args.alpha = (void *)alpha;
 #endif
 
-#if !defined(COMPLEX) || defined(HEMM)
+#ᱡᱩᱫᱤ !defined(COMPLEX) || defined(HEMM)
   args.beta  = (void *)&beta;
-#else
+#ᱵᱟᱝ
   args.beta  = (void *)beta;
 #endif
 
@@ -276,36 +276,36 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+  ᱡᱩᱫᱤ (order == CblasColMajor) {
+    ᱡᱩᱫᱤ (Uplo == CblasUpper) uplo  = 0;
+    ᱡᱩᱫᱤ (Uplo == CblasLower) uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
+    ᱡᱩᱫᱤ (Trans == CblasNoTrans)     trans = 0;
 #ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 1;
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
+    ᱡᱩᱫᱤ (Trans == CblasTrans)       trans = 1;
+    ᱡᱩᱫᱤ (Trans == CblasConjNoTrans) trans = 0;
+    ᱡᱩᱫᱤ (Trans == CblasConjTrans)   trans = 1;
 #elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 1;
-#else
-    if (Trans == CblasConjTrans)   trans = 1;
+    ᱡᱩᱫᱤ (Trans == CblasTrans)       trans = 1;
+#ᱵᱟᱝ
+    ᱡᱩᱫᱤ (Trans == CblasConjTrans)   trans = 1;
 #endif
 
     info = -1;
 
     nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    ᱡᱩᱫᱤ (trans & 1) nrowa = args.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    ᱡᱩᱫᱤ (args.ldc < MAX(1,args.n)) info = 12;
+    ᱡᱩᱫᱤ (args.ldb < MAX(1,nrowa))  info =  9;
+    ᱡᱩᱫᱤ (args.lda < MAX(1,nrowa))  info =  7;
+    ᱡᱩᱫᱤ (args.k < 0)               info =  4;
+    ᱡᱩᱫᱤ (args.n < 0)               info =  3;
+    ᱡᱩᱫᱤ (trans < 0)                info =  2;
+    ᱡᱩᱫᱤ (uplo  < 0)                info =  1;
   }
 
-  if (order == CblasRowMajor) {
+  ᱡᱩᱫᱤ (order == CblasRowMajor) {
 
 #ifdef HEMM
     CAlpha[0] =  alpha[0];
@@ -314,71 +314,71 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Tr
     args.alpha = (void *)CAlpha;
 #endif
 
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    ᱡᱩᱫᱤ (Uplo == CblasUpper) uplo  = 1;
+    ᱡᱩᱫᱤ (Uplo == CblasLower) uplo  = 0;
 
-    if (Trans == CblasNoTrans)     trans = 1;
+    ᱡᱩᱫᱤ (Trans == CblasNoTrans)     trans = 1;
 #ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 0;
-    if (Trans == CblasConjNoTrans) trans = 1;
-    if (Trans == CblasConjTrans)   trans = 0;
+    ᱡᱩᱫᱤ (Trans == CblasTrans)       trans = 0;
+    ᱡᱩᱫᱤ (Trans == CblasConjNoTrans) trans = 1;
+    ᱡᱩᱫᱤ (Trans == CblasConjTrans)   trans = 0;
 #elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 0;
-#else
-    if (Trans == CblasConjTrans)   trans = 0;
+    ᱡᱩᱫᱤ (Trans == CblasTrans)       trans = 0;
+#ᱵᱟᱝ
+    ᱡᱩᱫᱤ (Trans == CblasConjTrans)   trans = 0;
 #endif
 
     info = -1;
 
     nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    ᱡᱩᱫᱤ (trans & 1) nrowa = args.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 12;
-    if (args.ldb < MAX(1,nrowa))  info =  9;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    ᱡᱩᱫᱤ (args.ldc < MAX(1,args.n)) info = 12;
+    ᱡᱩᱫᱤ (args.ldb < MAX(1,nrowa))  info =  9;
+    ᱡᱩᱫᱤ (args.lda < MAX(1,nrowa))  info =  7;
+    ᱡᱩᱫᱤ (args.k < 0)               info =  4;
+    ᱡᱩᱫᱤ (args.n < 0)               info =  3;
+    ᱡᱩᱫᱤ (trans < 0)                info =  2;
+    ᱡᱩᱫᱤ (uplo  < 0)                info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ᱡᱩᱫᱤ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᱨᱩᱣᱟᱹᱲ;
   }
 
-  if (args.n == 0) return;
+  ᱡᱩᱫᱤ (args.n == 0) ᱨᱩᱣᱟᱹᱲ;
 
 #ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);
+extern var_na* gotoblas_corename(void);
 #endif
 
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYR2K_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#ᱡᱩᱫᱤ !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#ᱡᱩᱫᱤ defined(ARCH_ARM64) && (defined(USE_SSYR2K_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#ᱡᱩᱫᱤ defined(DYNAMIC_ARCH)
+ᱡᱩᱫᱤ (strcmp(gotoblas_corename(), "armv9sme") == 0
+#ᱡᱩᱫᱤ defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
 #endif
 )
 #endif
-   if (order == CblasRowMajor && n == ldc) {
-     if (Trans == CblasNoTrans && k == lda && k == ldb) {
-      if (Uplo == CblasUpper) {
+   ᱡᱩᱫᱤ (order == CblasRowMajor && n == ldc) {
+     ᱡᱩᱫᱤ (Trans == CblasNoTrans && k == lda && k == ldb) {
+      ᱡᱩᱫᱤ (Uplo == CblasUpper) {
         SSYR2K_DIRECT_ALPHA_BETA_UN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
+        ᱨᱩᱣᱟᱹᱲ;
+      }ᱵᱟᱝ ᱡᱩᱫᱤ (Uplo == CblasLower) {
         SSYR2K_DIRECT_ALPHA_BETA_LN(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+        ᱨᱩᱣᱟᱹᱲ;
       }
      }
-     else if (Trans == CblasTrans && n == lda && n ==ldb) {
-      if (Uplo == CblasUpper) {
+     ᱵᱟᱝ ᱡᱩᱫᱤ (Trans == CblasTrans && n == lda && n ==ldb) {
+      ᱡᱩᱫᱤ (Uplo == CblasUpper) {
         SSYR2K_DIRECT_ALPHA_BETA_UT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
-      }else if (Uplo == CblasLower) {
+        ᱨᱩᱣᱟᱹᱲ;
+      }ᱵᱟᱝ ᱡᱩᱫᱤ (Uplo == CblasLower) {
         SSYR2K_DIRECT_ALPHA_BETA_LT(n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+        ᱨᱩᱣᱟᱹᱲ;
       }
      }
    }
@@ -393,38 +393,38 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
   FUNCTION_PROFILE_START();
 
   buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  ᱡᱩᱫᱤ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ᱨᱩᱣᱟᱹᱲ;
   }
 
   sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
   sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 
 #ifdef SMP
-  if (!trans){
+  ᱡᱩᱫᱤ (!trans){
     mode |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
-  } else {
+  } ᱵᱟᱝ {
     mode |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
   }
 
   mode |= (uplo  << BLAS_UPLO_SHIFT);
 
   args.common = NULL;
-  if (args.n*args.k <1000)
+  ᱡᱩᱫᱤ (args.n*args.k <1000)
 	  args.nthreads =1 ;
-  else
+  ᱵᱟᱝ
   args.nthreads = num_cpu_avail(3);
 
-  if (args.nthreads == 1) {
+  ᱡᱩᱫᱤ (args.nthreads == 1) {
 #endif
 
     (syr2k[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
 
-  } else {
+  } ᱵᱟᱝ {
 
     syrk_thread(mode, &args, NULL, NULL, syr2k[(uplo << 1) | trans ], sa, sb, args.nthreads);
 
@@ -437,5 +437,5 @@ if (strcmp(gotoblas_corename(), "armv9sme") == 0
 
   IDEBUG_END;
 
-  return;
+  ᱨᱩᱣᱟᱹᱲ;
 }
