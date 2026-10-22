@@ -36,75 +36,75 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGETF2"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGETF2"
-#else
-#define ERROR_NAME "SGETF2"
-#endif
+#अगर_घोषित XDOUBLE
+#घोषणा ERROR_NAME "QGETF2"
+#या_अगर defined(DOUBLE)
+#घोषणा ERROR_NAME "DGETF2"
+#अन्यथा
+#घोषणा ERROR_NAME "SGETF2"
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
-void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
+व्योम NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint *Info){
 
   blas_arg_t args;
 
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *बफर;
+#अगर_घोषित PPC440
+  बाह्य
+#पूर्ण_अगर
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.m    = *M;
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (व्योम *)a;
   args.lda  = *ldA;
-  args.c    = (void *)ipiv;
+  args.c    = (व्योम *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  अगर (args.lda < MAX(1,args.m)) info = 4;
+  अगर (args.n   < 0)             info = 2;
+  अगर (args.m   < 0)             info = 1;
+  अगर (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    वापस;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  अगर (args.m == 0 || args.n == 0) वापस;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#अगर_अघोषित PPC440
+  बफर = (FLOAT *)blas_memory_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_OFFSET_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+#पूर्ण_अगर
 
-  info = GETF2(&args, NULL, NULL, sa, sb, 0);
+  info = GETF2(&args, शून्य, शून्य, sa, sb, 0);
 
   *Info = info;
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#अगर_अघोषित PPC440
+  blas_memory_free(बफर);
+#पूर्ण_अगर
 
   FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n,  2. / 3. * args.m * args.n * args.n);
 
   IDEBUG_END;
 
-  return;
+  वापस;
 }

@@ -36,48 +36,48 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश <ctype.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XSPR2 "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSPR2 "
-#else
-#define ERROR_NAME "CSPR2 "
-#endif
+#अगर_घोषित XDOUBLE
+#घोषणा ERROR_NAME "XSPR2 "
+#या_अगर defined(DOUBLE)
+#घोषणा ERROR_NAME "ZSPR2 "
+#अन्यथा
+#घोषणा ERROR_NAME "CSPR2 "
+#पूर्ण_अगर
 
-static int (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
-#ifdef XDOUBLE
+अटल पूर्णांक (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+#अगर_घोषित XDOUBLE
   xspr2_U, xspr2_L,
-#elif defined(DOUBLE)
+#या_अगर defined(DOUBLE)
   zspr2_U, zspr2_L,
-#else
+#अन्यथा
   cspr2_U, cspr2_L,
-#endif
+#पूर्ण_अगर
 };
 
-#ifdef SMP
-static int (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
-#ifdef XDOUBLE
+#अगर_घोषित SMP
+अटल पूर्णांक (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, पूर्णांक) = {
+#अगर_घोषित XDOUBLE
   xspr2_thread_U, xspr2_thread_L,
-#elif defined(DOUBLE)
+#या_अगर defined(DOUBLE)
   zspr2_thread_U, zspr2_thread_L,
-#else
+#अन्यथा
   cspr2_thread_U, cspr2_thread_L,
-#endif
+#पूर्ण_अगर
 };
-#endif
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+व्योम NAME(अक्षर *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  अक्षर uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -85,74 +85,74 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  पूर्णांक uplo;
+  FLOAT *बफर;
+#अगर_घोषित SMP
+  पूर्णांक nthreads;
+#पूर्ण_अगर
 
   PRINT_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  अगर (uplo_arg  == 'U') uplo  = 0;
+  अगर (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  अगर (incy == 0)          info =  7;
+  अगर (incx == 0)          info =  5;
+  अगर (n < 0)              info =  2;
+  अगर (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  अगर (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME));
+    वापस;
   }
 
-  if (n == 0) return;
+  अगर (n == 0) वापस;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  अगर ((alpha_r == ZERO) && (alpha_i == ZERO)) वापस;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
+  अगर (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  अगर (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  बफर = (FLOAT *)blas_memory_alloc(1);
+  अगर (!बफर) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME));
+    वापस;
   }
 
-#ifdef SMP
-  nthreads = num_cpu_avail(2);
+#अगर_घोषित SMP
+  nthreads = अंक_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  अगर (n < 50) nthreads = 1;
+  अगर (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
-#endif
+  अगर (nthreads == 1) {
+#पूर्ण_अगर
 
-    (spr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
+    (spr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, बफर);
 
-#ifdef SMP
-  } else {
+#अगर_घोषित SMP
+  } अन्यथा {
 
-    (spr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
+    (spr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, बफर, nthreads);
 
   }
-#endif
+#पूर्ण_अगर
 
-  blas_memory_free(buffer);
+  blas_memory_free(बफर);
 
   FUNCTION_PROFILE_END(4, n * n / 2 + 2 * n, 2 * n * n);
 
   IDEBUG_END;
 
-  return;
+  वापस;
 }

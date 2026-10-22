@@ -36,177 +36,177 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश <ctype.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XHER  "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHER  "
-#else
-#define ERROR_NAME "CHER  "
-#endif
+#अगर_घोषित XDOUBLE
+#घोषणा ERROR_NAME "XHER  "
+#या_अगर defined(DOUBLE)
+#घोषणा ERROR_NAME "ZHER  "
+#अन्यथा
+#घोषणा ERROR_NAME "CHER  "
+#पूर्ण_अगर
 
-static int (*her[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
-#ifdef XDOUBLE
+अटल पूर्णांक (*her[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+#अगर_घोषित XDOUBLE
   xher_U, xher_L, xher_V, xher_M,
-#elif defined(DOUBLE)
+#या_अगर defined(DOUBLE)
   zher_U, zher_L, zher_V, zher_M,
-#else
+#अन्यथा
   cher_U, cher_L, cher_V, cher_M,
-#endif
+#पूर्ण_अगर
 };
 
-#ifdef SMP
-static int (*her_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#अगर_घोषित SMP
+अटल पूर्णांक (*her_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, पूर्णांक) = {
+#अगर_घोषित XDOUBLE
   xher_thread_U, xher_thread_L, xher_thread_V, xher_thread_M,
-#elif defined(DOUBLE)
+#या_अगर defined(DOUBLE)
   zher_thread_U, zher_thread_L, zher_thread_V, zher_thread_M,
-#else
+#अन्यथा
   cher_thread_U, cher_thread_L, cher_thread_V, cher_thread_M,
-#endif
+#पूर्ण_अगर
 };
-#endif
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#अगर_अघोषित CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+व्योम NAME(अक्षर *UPLO, blasint *N, FLOAT  *ALPHA,
 	  FLOAT  *x, blasint *INCX, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  अक्षर uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint lda	= *LDA;
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  पूर्णांक uplo;
+  FLOAT *बफर;
+#अगर_घोषित SMP
+  पूर्णांक nthreads;
+#पूर्ण_अगर
 
   PRINT_DEBUG_NAME;
 
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  अगर (uplo_arg  == 'U') uplo  = 0;
+  अगर (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  अगर (lda  < MAX(1, n))   info =  7;
+  अगर (incx == 0)          info =  5;
+  अगर (n < 0)              info =  2;
+  अगर (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  अगर (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME));
+    वापस;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, FLOAT alpha, void *vx, blasint incx, void *va, blasint lda) {
+व्योम CNAME(क्रमागत CBLAS_ORDER order, क्रमागत CBLAS_UPLO Uplo, blasint n, FLOAT alpha, व्योम *vx, blasint incx, व्योम *va, blasint lda) {
 
   FLOAT* a = (FLOAT*) va;
   FLOAT* x = (FLOAT*) vx;
 
-  FLOAT *buffer;
-  int uplo;
+  FLOAT *बफर;
+  पूर्णांक uplo;
   blasint info;
-#ifdef SMP
-  int nthreads;
-#endif
+#अगर_घोषित SMP
+  पूर्णांक nthreads;
+#पूर्ण_अगर
 
   PRINT_DEBUG_CNAME;
 
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  अगर (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 3;
-    if (Uplo == CblasLower) uplo  = 2;
+    अगर (Uplo == CblasUpper) uplo  = 0;
+    अगर (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    अगर (lda  < MAX(1, n))   info =  7;
+    अगर (incx == 0)          info =  5;
+    अगर (n < 0)              info =  2;
+    अगर (uplo  < 0)          info =  1;
+
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  अगर (order == CblasRowMajor) {
+
+    अगर (Uplo == CblasUpper) uplo  = 3;
+    अगर (Uplo == CblasLower) uplo  = 2;
+
+    info = -1;
+
+    अगर (lda  < MAX(1, n))   info =  7;
+    अगर (incx == 0)          info =  5;
+    अगर (n < 0)              info =  2;
+    अगर (uplo  < 0)          info =  1;
   }
 
-#endif
+  अगर (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME));
+    वापस;
+  }
 
-  if (n == 0) return;
+#पूर्ण_अगर
 
-  if (alpha == ZERO) return;
+  अगर (n == 0) वापस;
+
+  अगर (alpha == ZERO) वापस;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  अगर (incx < 0 ) x -= (n - 1) * incx * 2;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  बफर = (FLOAT *)blas_memory_alloc(1);
+  अगर (!बफर) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME));
+    वापस;
   }
 
-#ifdef SMP
-  if (n < 100)
+#अगर_घोषित SMP
+  अगर (n < 100)
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  अन्यथा
+    nthreads = अंक_cpu_avail(2);
 
-  if (nthreads == 1) {
-#endif
+  अगर (nthreads == 1) {
+#पूर्ण_अगर
 
-  (her[uplo])(n, alpha, x, incx, a, lda, buffer);
+  (her[uplo])(n, alpha, x, incx, a, lda, बफर);
 
-#ifdef SMP
-  } else {
+#अगर_घोषित SMP
+  } अन्यथा {
 
-    (her_thread[uplo])(n, alpha, x, incx, a, lda, buffer, nthreads);
+    (her_thread[uplo])(n, alpha, x, incx, a, lda, बफर, nthreads);
 
   }
-#endif
+#पूर्ण_अगर
 
-  blas_memory_free(buffer);
+  blas_memory_free(बफर);
 
   FUNCTION_PROFILE_END(4, n * n / 2 + n, n * n);
 
   IDEBUG_END;
 
-  return;
+  वापस;
 }

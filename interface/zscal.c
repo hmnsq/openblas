@@ -36,89 +36,89 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#अगर_अघोषित CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+व्योम NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
 
-#ifndef SSCAL
+#अगर_अघोषित SSCAL
   FLOAT *alpha=ALPHA;
-#else
+#अन्यथा
   FLOAT alpha[2] = {ALPHA[0], ZERO};
-#endif
+#पूर्ण_अगर
 
-#else
+#अन्यथा
 
-#ifndef SSCAL
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx){
+#अगर_अघोषित SSCAL
+व्योम CNAME(blasint n, व्योम *VALPHA, व्योम *vx, blasint incx){
 
   FLOAT *x = (FLOAT*) vx;
   FLOAT *alpha=(FLOAT*)VALPHA;
-#else
-void CNAME(blasint n, FLOAT alpha_r, void *vx, blasint incx){
+#अन्यथा
+व्योम CNAME(blasint n, FLOAT alpha_r, व्योम *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
 
   FLOAT alpha[2] = {alpha_r, ZERO};
-#endif
-#endif
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifdef SMP
-  int mode;
-  int nthreads;
-#endif
+#अगर_घोषित SMP
+  पूर्णांक mode;
+  पूर्णांक nthreads;
+#पूर्ण_अगर
 
-#ifndef CBLAS
+#अगर_अघोषित CBLAS
   PRINT_DEBUG_NAME;
-#else
+#अन्यथा
   PRINT_DEBUG_CNAME;
-#endif
+#पूर्ण_अगर
 
-  if (incx <= 0 || n <= 0) return;
+  अगर (incx <= 0 || n <= 0) वापस;
 
-  if ((alpha[0] == ONE) && (alpha[1] == ZERO)) return;
+  अगर ((alpha[0] == ONE) && (alpha[1] == ZERO)) वापस;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-#ifdef SMP
-  if ( n <= 1048576 )
+#अगर_घोषित SMP
+  अगर ( n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  अन्यथा
+	nthreads = अंक_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  अगर (nthreads == 1) {
+#पूर्ण_अगर
 
-  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha[0], alpha[1], x, incx, शून्य, 0, शून्य, 1);
 
-#ifdef SMP
-  } else {
-#ifdef DOUBLE
+#अगर_घोषित SMP
+  } अन्यथा {
+#अगर_घोषित DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_COMPLEX;
-#else
+#अन्यथा
     mode  =  BLAS_SINGLE | BLAS_COMPLEX;
-#endif
+#पूर्ण_अगर
 
-    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, NULL, 0, NULL, 1, (int (*)(void))SCAL_K, nthreads);
+    blas_level1_thread(mode, n, 0, 0,  alpha, x, incx, शून्य, 0, शून्य, 1, (पूर्णांक (*)(व्योम))SCAL_K, nthreads);
 
   }
-#endif
+#पूर्ण_अगर
 
   FUNCTION_PROFILE_END(4, n, n);
 
   IDEBUG_END;
 
-  return;
+  वापस;
 
 }

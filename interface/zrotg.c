@@ -1,29 +1,29 @@
-#include <math.h>
-#include <float.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <math.h>
+#समावेश <float.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
-void NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
+#अगर_अघोषित CBLAS
+व्योम NAME(FLOAT *DA, FLOAT *DB, FLOAT *C, FLOAT *S){
 
-#else
-void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
+#अन्यथा
+व्योम CNAME(व्योम *VDA, व्योम *VDB, FLOAT *C, व्योम *VS) {
     FLOAT *DA = (FLOAT*) VDA;
     FLOAT *DB = (FLOAT*) VDB;
     FLOAT *S  = (FLOAT*) VS;
-#endif /* CBLAS */
+#पूर्ण_अगर /* CBLAS */
 
-#ifdef DOUBLE
-  long double safmin = DBL_MIN;
-  long double rtmin = sqrt(DBL_MIN/DBL_EPSILON);
-#else
-  long double safmin = FLT_MIN;
-  long double rtmin = sqrt(FLT_MIN/FLT_EPSILON);
-#endif
+#अगर_घोषित DOUBLE
+  दीर्घ द्विगुन safmin = द्विग_न्यून;
+  दीर्घ द्विगुन rtmin = वर्ग_मूल(द्विग_न्यून/द्विग_अंतर);
+#अन्यथा
+  दीर्घ द्विगुन safmin = भग्न_न्यून;
+  दीर्घ द्विगुन rtmin = वर्ग_मूल(भग्न_न्यून/भग्न_अंतर);
+#पूर्ण_अगर
 
 
   FLOAT da_r = *(DA+0);
@@ -33,7 +33,7 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   //long double r;
   FLOAT S1[2];
   FLOAT R[2];
-  long double d;
+  दीर्घ द्विगुन d;
 
   FLOAT ada =  da_r * da_r + da_i * da_i; 
   FLOAT adb =  db_r * db_r + db_i * db_i; 
@@ -43,86 +43,86 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
-  long double safmax = 1./safmin;
+  दीर्घ द्विगुन safmax = 1./safmin;
   safmax *= 2.;
-  do {
-	if (db_r == ZERO && db_i == ZERO) {
+  करो {
+	अगर (db_r == ZERO && db_i == ZERO) {
 		*C        = ONE;
 		*(S  + 0) = ZERO;
 		*(S  + 1) = ZERO;
-		break;
+		अवरोध;
 	}
 
-#if defined DOUBLE
-	long double rtmax = safmax /DBL_EPSILON;
-#else
-	long double rtmax = safmax /FLT_EPSILON;
-#endif
+#अगर defined DOUBLE
+	दीर्घ द्विगुन rtmax = safmax /द्विग_अंतर;
+#अन्यथा
+	दीर्घ द्विगुन rtmax = safmax /भग्न_अंतर;
+#पूर्ण_अगर
 
 	*(S1 + 0) = *(DB + 0);
 	*(S1 + 1) = *(DB + 1) *-1;
 
-	if (da_r == ZERO && da_i == ZERO) {
+	अगर (da_r == ZERO && da_i == ZERO) {
 		*C = ZERO;
-		if (db_r == ZERO) {
+		अगर (db_r == ZERO) {
 			(*DA) = fabsl(db_i);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
-			break;
-		} else if ( db_i == ZERO) {
+			अवरोध;
+		} अन्यथा अगर ( db_i == ZERO) {
 			*DA = fabsl(db_r);
 			*S = *S1 /(*DA);
 			*(S+1) = *(S1+1) /(*DA);
-			break;
-		} else {
-			long double g1 = MAX( fabsl(db_r), fabsl(db_i));
-			rtmax =sqrt(safmax/2.);
-			if (g1 > rtmin && g1 < rtmax) { // unscaled
-				d = sqrt(adb);
+			अवरोध;
+		} अन्यथा {
+			दीर्घ द्विगुन g1 = MAX( fabsl(db_r), fabsl(db_i));
+			rtmax =वर्ग_मूल(safmax/2.);
+			अगर (g1 > rtmin && g1 < rtmax) { // unscaled
+				d = वर्ग_मूल(adb);
 				*S = *S1 /d;
 				*(S+1) = *(S1+1) /d;
 				*DA = d ;
 				*(DA+1) = ZERO;
-				break;
-			} else { // scaled algorithm
-				long double u = MIN ( safmax, MAX ( safmin, g1));
+				अवरोध;
+			} अन्यथा { // scaled algorithm
+				दीर्घ द्विगुन u = MIN ( safmax, MAX ( safmin, g1));
 				FLOAT gs_r = db_r/u;
 				FLOAT gs_i = db_i/u;
-				d = sqrt ( gs_r*gs_r + gs_i*gs_i);
+				d = वर्ग_मूल ( gs_r*gs_r + gs_i*gs_i);
 				*S = gs_r / d;
 				*(S + 1) = (gs_i * -1) / d;
 				*DA = d * u;
 				*(DA+1) = ZERO;
-				break;
+				अवरोध;
 			}
 		}
 
-	} else {
+	} अन्यथा {
 
 		FLOAT f1 = MAX ( fabsl(da_r), fabsl(da_i));
 		FLOAT g1 = MAX ( fabsl(db_r), fabsl(db_i));
-		rtmax = sqrt(safmax / 4.);
-		if ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
-			long double h = ada + adb;
-			double adahsq = sqrt(ada * h);
-			if (ada >= h *safmin) {
-				*C = sqrt(ada/h);
+		rtmax = वर्ग_मूल(safmax / 4.);
+		अगर ( f1 > rtmin && f1 < rtmax && g1 > rtmin && g1 < rtmax) { //unscaled
+			दीर्घ द्विगुन h = ada + adb;
+			द्विगुन adahsq = वर्ग_मूल(ada * h);
+			अगर (ada >= h *safmin) {
+				*C = वर्ग_मूल(ada/h);
 				*R = *DA / *C;
 				*(R+1) = *(DA+1) / *C;
 				rtmax *= 2.;
-				if ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
+				अगर ( ada > rtmin && h < rtmax) { // no risk of intermediate overflow
 					*S = *S1 * (*DA / adahsq) - *(S1+1)* (*(DA+1)/adahsq);
 					*(S+1) = *S1 * (*(DA+1) / adahsq) + *(S1+1) * (*DA/adahsq);
-				} else {
+				} अन्यथा {
 					*S = *S1 * (*R/h) - *(S1+1) * (*(R+1)/h);
 					*(S+1) = *S1 * (*(R+1)/h) + *(S1+1) * (*(R)/h);
 				}
-			} else {
+			} अन्यथा {
 				*C = ada / adahsq;
-				if (*C >= safmin) {
+				अगर (*C >= safmin) {
 					*R = *DA / *C;
 					*(R+1) = *(DA+1) / *C;
-				} else {
+				} अन्यथा {
 					*R = *DA * (h / adahsq);
 					*(R+1) = *(DA+1) * (h / adahsq);
 				}
@@ -131,48 +131,48 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			}
 			*DA=*R;
 			*(DA+1)=*(R+1);
-			break;
-		} else {	// scaled
+			अवरोध;
+		} अन्यथा {	// scaled
 			FLOAT fs_r, fs_i, gs_r, gs_i;
-			long double v,w,f2,g2,h;
-			long double u = MIN ( safmax, MAX ( safmin, MAX(f1,g1)));
+			दीर्घ द्विगुन v,w,f2,g2,h;
+			दीर्घ द्विगुन u = MIN ( safmax, MAX ( safmin, MAX(f1,g1)));
 			gs_r = db_r/u;
 			gs_i = db_i/u;
 			g2 = gs_r*gs_r + gs_i*gs_i;
-			if (f1 /u < rtmin) {
+			अगर (f1 /u < rtmin) {
 				v = MIN (safmax, MAX (safmin, f1));
 				w = v / u;
 				fs_r = *DA/ v;
 				fs_i = *(DA+1) / v;
 				f2 = fs_r*fs_r + fs_i*fs_i;
 				h = f2 * w * w + g2;		
-			} else { // use same scaling for both
+			} अन्यथा { // use same scaling for both
 				w = 1.;
 				fs_r = *DA/ u;
 				fs_i = *(DA+1) / u;
 				f2 =  fs_r*fs_r + fs_i*fs_i;
 				h = f2 + g2;
 			}
-			if ( f2 >= h * safmin) {
-				*C = sqrt ( f2 / h );
+			अगर ( f2 >= h * safmin) {
+				*C = वर्ग_मूल ( f2 / h );
 				*DA = fs_r / *C;
 				*(DA+1) = fs_i / *C;
 				rtmax *= 2;
-				if ( f2 > rtmin && h < rtmax) {
-					FLOAT f2h=sqrt(f2*h);
+				अगर ( f2 > rtmin && h < rtmax) {
+					FLOAT f2h=वर्ग_मूल(f2*h);
 					*S = gs_r * (fs_r /f2h) + gs_i * (fs_i / f2h);
 					*(S+1) = gs_r * (fs_i /f2h) - gs_i * -1. * (fs_r / f2h);
-				} else {
+				} अन्यथा {
 					*S = gs_r * (*DA/h) - gs_i * (*(DA+1) / h);
 					*(S+1) = gs_r * (*(DA+1) /h) + gs_i * -1. * (*DA / h);
 				}
-			} else { // intermediates might overflow
-				d = sqrt ( f2 * h);
+			} अन्यथा { // intermediates might overflow
+				d = वर्ग_मूल ( f2 * h);
 				*C = f2 /d;
-				if (*C >= safmin) {
+				अगर (*C >= safmin) {
 					*DA = fs_r / *C;
 					*(DA+1) = fs_i / *C;
-				} else {
+				} अन्यथा {
 					*DA = fs_r * (h / d);
 					*(DA+1) = fs_i / (h / d);
 				}
@@ -182,10 +182,10 @@ void CNAME(void *VDA, void *VDB, FLOAT *C, void *VS) {
 			*C *= w;
 			*DA *= u;
 			*(DA+1) *= u;
-			break;
+			अवरोध;
 		}
 	}
-    } while (0);
+    } जबतक (0);
 
 	FUNCTION_PROFILE_END(4, 4, 4);
 	IDEBUG_END;

@@ -37,90 +37,90 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#अगर_अघोषित CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+व्योम NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#अन्यथा
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+व्योम CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
-#endif
+#पूर्ण_अगर
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#अगर_घोषित SMP
+  पूर्णांक mode, nthreads;
+#पूर्ण_अगर
 
-#ifndef CBLAS
+#अगर_अघोषित CBLAS
   PRINT_DEBUG_NAME;
-#else
+#अन्यथा
   PRINT_DEBUG_CNAME;
-#endif
+#पूर्ण_अगर
 
-  if (incx <= 0 || n <= 0) return;
+  अगर (incx <= 0 || n <= 0) वापस;
 
-#ifdef BGEMM
-  float alpha_float;
+#अगर_घोषित BGEMM
+  भग्न alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#अन्यथा
   FLOAT alpha_float = alpha;
-#endif
+#पूर्ण_अगर
 
-  if (alpha_float == ONE) return;
+  अगर (alpha_float == ONE) वापस;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
 
-#ifdef SMP
-  if (n <= 1048576 )
+#अगर_घोषित SMP
+  अगर (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  अन्यथा
+	nthreads = अंक_cpu_avail(1);
 
 
-  if (nthreads == 1) {
-#endif
+  अगर (nthreads == 1) {
+#पूर्ण_अगर
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, शून्य, 0, शून्य, 1);
 
-#ifdef SMP
-  } else {
+#अगर_घोषित SMP
+  } अन्यथा {
 
-#ifdef DOUBLE
+#अगर_घोषित DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#अन्यथा
     mode  =  BLAS_SINGLE | BLAS_REAL;
-#endif
+#पूर्ण_अगर
 
     blas_level1_thread(mode, n, 0, 0,
-#ifndef CBLAS
+#अगर_अघोषित CBLAS
 		       ALPHA,
-#else
+#अन्यथा
 		       &alpha,
-#endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+#पूर्ण_अगर
+		       x, incx, शून्य, 0, शून्य, 1,  (पूर्णांक (*)(व्योम))SCAL_K, nthreads);
 
   }
-#endif
+#पूर्ण_अगर
 
   FUNCTION_PROFILE_END(1, n, n);
 
   IDEBUG_END;
 
-  return;
+  वापस;
 
 }

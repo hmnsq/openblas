@@ -36,32 +36,32 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRTRI"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRTRI"
-#else
-#define ERROR_NAME "CTRTRI"
-#endif
+#अगर_घोषित XDOUBLE
+#घोषणा ERROR_NAME "XTRTRI"
+#या_अगर defined(DOUBLE)
+#घोषणा ERROR_NAME "ZTRTRI"
+#अन्यथा
+#घोषणा ERROR_NAME "CTRTRI"
+#पूर्ण_अगर
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+अटल blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_SINGLE, TRTRI_UN_SINGLE, TRTRI_LU_SINGLE, TRTRI_LN_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+#अगर_घोषित SMP
+अटल blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_PARALLEL, TRTRI_UN_PARALLEL, TRTRI_LU_PARALLEL, TRTRI_LN_PARALLEL,
 };
-#endif
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+व्योम NAME(अक्षर *UPLO, अक्षर *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -69,47 +69,47 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   blasint diag_arg = *DIAG;
   blasint uplo, diag;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *बफर;
+#अगर_घोषित PPC440
+  बाह्य
+#पूर्ण_अगर
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (व्योम *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
   TOUPPER(diag_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  अगर (uplo_arg == 'U') uplo = 0;
+  अगर (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  अगर (diag_arg == 'U') diag = 0;
+  अगर (diag_arg == 'N') diag = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  अगर (args.lda  < MAX(1,args.n)) info = 5;
+  अगर (args.n    < 0)             info = 3;
+  अगर (diag < 0)                  info = 2;
+  अगर (uplo < 0)                  info = 1;
+  अगर (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    वापस;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  अगर (args.n == 0) वापस;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
+  अगर (diag) {
+    अगर (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+      वापस;
     }
   }
 
@@ -117,37 +117,37 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   FUNCTION_PROFILE_START();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#अगर_अघोषित PPC440
+  बफर = (FLOAT *)blas_memory_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_OFFSET_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+#पूर्ण_अगर
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.n < 64) {
+#अगर_घोषित SMP
+  args.common = शून्य;
+  अगर (args.n < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } अन्यथा {
+    args.nthreads = अंक_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  अगर (args.nthreads == 1) {
+#पूर्ण_अगर
 
-    *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_single[(uplo << 1) | diag])(&args, शून्य, शून्य, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#अगर_घोषित SMP
+  } अन्यथा {
 
-    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, शून्य, शून्य, sa, sb, 0);
 
   }
-#endif
+#पूर्ण_अगर
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#अगर_अघोषित PPC440
+  blas_memory_free(बफर);
+#पूर्ण_अगर
 
   FUNCTION_PROFILE_END(1, .5 * args.n * args.n,
 		          2. * args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
@@ -155,5 +155,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  वापस;
 }

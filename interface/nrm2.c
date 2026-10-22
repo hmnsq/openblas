@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#अगर_अघोषित CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -54,54 +54,54 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  अगर (n <= 0) वापस 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#अगर_अघोषित COMPLEX
+  अगर (n == 1)
+#अगर_घोषित DOUBLE
+    वापस भ_असल(x[0]);
+#अन्यथा
+    वापस fabsf(x[0]);
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  अगर (incx == 0)
+#अगर_अघोषित COMPLEX
+#अगर_घोषित DOUBLE
+  वापस (वर्ग_मूल((द्विगुन)n)*भ_असल(x[0]));
+#अन्यथा
+  वापस (वर्ग_मूल((भग्न)n)*fabsf(x[0]));
+#पूर्ण_अगर
+#अन्यथा
+#अगर_घोषित DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  द्विगुन fr=भ_असल(x[0]);
+  द्विगुन fi=भ_असल(x[1]);
+  द्विगुन fmin=MIN(fr,fi);
+  द्विगुन fmax=MAX(fr,fi);
+  अगर (fmax==0.) वापस(fmax);
+  अगर (fmax==fmin) वापस(वर्ग_मूल((द्विगुन)n)*वर्ग_मूल(2.)*fmax);
+  वापस (वर्ग_मूल((द्विगुन)n) * fmax * वर्ग_मूल (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#अन्यथा
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  भग्न fr=भ_असल(x[0]);
+  भग्न fi=भ_असल(x[1]);
+  भग्न fmin=MIN(fr,fi);
+  भग्न fmax=MAX(fr,fi);
+  अगर (fmax==0.) वापस(fmax);
+  अगर (fmax==fmin) वापस(वर्ग_मूल((भग्न)n)*वर्ग_मूल(2.)*fmax);
+  वापस (वर्ग_मूल((भग्न)n) * fmax * वर्ग_मूल (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  अगर (incx < 0) 
+#अगर_घोषित COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#अन्यथा
     x -= (n - 1) * incx;
-#endif
+#पूर्ण_अगर
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
@@ -112,70 +112,70 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  वापस ret;
 }
 
-#else
+#अन्यथा
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#अगर_घोषित COMPLEX
+FLOAT CNAME(blasint n, व्योम *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#अन्यथा
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#पूर्ण_अगर
 
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  अगर (n <= 0) वापस 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#अगर_अघोषित COMPLEX
+  अगर (n == 1)
+#अगर_घोषित DOUBLE
+    वापस भ_असल(x[0]);
+#अन्यथा
+    वापस fabsf(x[0]);
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  अगर (incx == 0)
+#अगर_अघोषित COMPLEX
+#अगर_घोषित DOUBLE
+  वापस (वर्ग_मूल((द्विगुन)n)*भ_असल(x[0]));
+#अन्यथा
+  वापस (वर्ग_मूल((भग्न)n)*fabsf(x[0]));
+#पूर्ण_अगर
+#अन्यथा
+#अगर_घोषित DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  द्विगुन fr=भ_असल(x[0]);
+  द्विगुन fi=भ_असल(x[1]);
+  द्विगुन fmin=MIN(fr,fi);
+  द्विगुन fmax=MAX(fr,fi);
+  अगर (fmax==0.) वापस(fmax);
+  अगर (fmax==fmin) वापस(वर्ग_मूल((द्विगुन)n)*वर्ग_मूल(2.)*fmax);
+  वापस (वर्ग_मूल((द्विगुन)n) * fmax * वर्ग_मूल (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#अन्यथा
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  भग्न fr=भ_असल(x[0]);
+  भग्न fi=भ_असल(x[1]);
+  भग्न fmin=MIN(fr,fi);
+  भग्न fmax=MAX(fr,fi);
+  अगर (fmax==0.) वापस(fmax);
+  अगर (fmax==fmin) वापस(वर्ग_मूल((भग्न)n)*वर्ग_मूल(2.)*fmax);
+  वापस (वर्ग_मूल((भग्न)n) * fmax * वर्ग_मूल (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  अगर (incx < 0) 
+#अगर_घोषित COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#अन्यथा
     x -= (n - 1) * incx;
-#endif
+#पूर्ण_अगर
   
   IDEBUG_START;
 
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  वापस ret;
 }
 
-#endif
+#पूर्ण_अगर

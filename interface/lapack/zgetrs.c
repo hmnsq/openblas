@@ -36,123 +36,123 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#समावेश <stdio.h>
+#समावेश "common.h"
+#अगर_घोषित FUNCTION_PROFILE
+#समावेश "functable.h"
+#पूर्ण_अगर
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XGETRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZGETRS"
-#else
-#define ERROR_NAME "CGETRS"
-#endif
+#अगर_घोषित XDOUBLE
+#घोषणा ERROR_NAME "XGETRS"
+#या_अगर defined(DOUBLE)
+#घोषणा ERROR_NAME "ZGETRS"
+#अन्यथा
+#घोषणा ERROR_NAME "CGETRS"
+#पूर्ण_अगर
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+अटल blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   GETRS_N_SINGLE, GETRS_T_SINGLE, GETRS_R_SINGLE, GETRS_C_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+#अगर_घोषित SMP
+अटल blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   GETRS_N_PARALLEL, GETRS_T_PARALLEL, GETRS_R_PARALLEL, GETRS_C_PARALLEL,
 };
-#endif
+#पूर्ण_अगर
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+व्योम NAME(अक्षर *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
 	    blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  अक्षर trans_arg = *TRANS;
 
   blas_arg_t args;
 
   blasint info;
-  int trans;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  पूर्णांक trans;
+  FLOAT *बफर;
+#अगर_घोषित PPC440
+  बाह्य
+#पूर्ण_अगर
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.m    = *N;
   args.n    = *NRHS;
-  args.a    = (void *)a;
+  args.a    = (व्योम *)a;
   args.lda  = *ldA;
-  args.b    = (void *)b;
+  args.b    = (व्योम *)b;
   args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  args.c    = (व्योम *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  अगर (trans_arg == 'N') trans = 0;
+  अगर (trans_arg == 'T') trans = 1;
+  अगर (trans_arg == 'R') trans = 2;
+  अगर (trans_arg == 'C') trans = 3;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  अगर (args.ldb  < MAX(1, args.m)) info = 8;
+  अगर (args.lda  < MAX(1, args.m)) info = 5;
+  अगर (args.n    < 0) info = 3;
+  अगर (args.m    < 0) info = 2;
+  अगर (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  अगर (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME) - 1);
+    वापस;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  args.alpha = शून्य;
+  args.beta  = शून्य;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  अगर (args.m == 0 || args.n == 0) वापस;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#अगर_अघोषित PPC440
+  बफर = (FLOAT *)blas_memory_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_OFFSET_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+#पूर्ण_अगर
 
-#ifdef SMP
-  if (args.m < 64) {
+#अगर_घोषित SMP
+  अगर (args.m < 64) {
     args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+  } अन्यथा {
+    args.nthreads = अंक_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  अगर (args.nthreads == 1) {
+#पूर्ण_अगर
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&args, शून्य, शून्य, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#अगर_घोषित SMP
+  } अन्यथा {
 
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_parallel[trans])(&args, शून्य, शून्य, sa, sb, 0);
 
   }
-#endif
+#पूर्ण_अगर
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#अगर_अघोषित PPC440
+  blas_memory_free(बफर);
+#पूर्ण_अगर
 
   FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
 
   IDEBUG_END;
 
-  return;
+  वापस;
 
 }

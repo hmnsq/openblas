@@ -30,18 +30,18 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#समावेश <stdio.h>
+#समावेश "common.h"
 
-#if defined(DOUBLE)
-#define ERROR_NAME "DLAED3"
-#else
-#define ERROR_NAME "SLAED3"
-#endif
+#अगर defined(DOUBLE)
+#घोषणा ERROR_NAME "DLAED3"
+#अन्यथा
+#घोषणा ERROR_NAME "SLAED3"
+#पूर्ण_अगर
 
 /* ===================================================================== */
 OPENBLAS_EXPORT
-void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
+व्योम NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d, 
         FLOAT *q, blasint *ldq, FLOAT *rho, FLOAT *dlamda,
         FLOAT *q2, blasint *indx, blasint *ctot, FLOAT *w, 
         FLOAT *s, blasint *Info)
@@ -54,36 +54,36 @@ void NAME(blasint *k, blasint *n, blasint *n1, FLOAT *d,
 
 /*   Test the input parameters. */
   info = 0;
-  if (kval < 0) {
+  अगर (kval < 0) {
     info = 1;
-  } else if (nval < kval) {
+  } अन्यथा अगर (nval < kval) {
     info = 2;
-  } else if (qdim < nval || qdim < 1) {
+  } अन्यथा अगर (qdim < nval || qdim < 1) {
     info = 6;
   }
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  अगर (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, माप(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    वापस;
   }
 
 /*   Quick return if possible */
 
   *Info = 0;
-  if (kval == 0) return;
+  अगर (kval == 0) वापस;
 
-#ifdef SMP
-  int nthreads = 1;
-  if (nval >= 64) nthreads = num_cpu_avail(4);
+#अगर_घोषित SMP
+  पूर्णांक nthreads = 1;
+  अगर (nval >= 64) nthreads = अंक_cpu_avail(4);
 
-  if (nthreads == 1) {
-#endif
+  अगर (nthreads == 1) {
+#पूर्ण_अगर
     LAED3_SINGLE(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
-#ifdef SMP
-  } else {
+#अगर_घोषित SMP
+  } अन्यथा {
     LAED3_PARALLEL(k, n, n1, d, q, ldq, rho, dlamda, q2, indx, ctot, w, s, Info);
   }
-#endif
+#पूर्ण_अगर
 
-  return;
+  वापस;
 }
