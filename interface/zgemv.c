@@ -36,27 +36,27 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMV "
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "ZGEMV "
-#else
+#अञ्ञथा
 #define ERROR_NAME "CGEMV "
 #endif
 
 #ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+स्थिर पूर्णाङ्क (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, पूर्णाङ्क) = {
 #ifdef XDOUBLE
   xgemv_thread_n, xgemv_thread_t, xgemv_thread_r, xgemv_thread_c, xgemv_thread_o, xgemv_thread_u, xgemv_thread_s, xgemv_thread_d,
-#elif defined DOUBLE
+#नोचेद्यदि defined DOUBLE
   zgemv_thread_n, zgemv_thread_t, zgemv_thread_r, zgemv_thread_c, zgemv_thread_o, zgemv_thread_u, zgemv_thread_s, zgemv_thread_d,
-#else
+#अञ्ञथा
   cgemv_thread_n, cgemv_thread_t, cgemv_thread_r, cgemv_thread_c, cgemv_thread_o, cgemv_thread_u, cgemv_thread_s, cgemv_thread_d,
 #endif
 };
@@ -66,12 +66,12 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+शून्य NAME(वर्ण *TRANS, blasint *M, blasint *N,
 	 FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	 FLOAT *x, blasint *INCX,
 	 FLOAT *BETA,  FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  वर्ण trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint lda = *LDA;
@@ -79,12 +79,12 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint incy = *INCY;
 
   FLOAT *buffer;
-  int buffer_size;
+  पूर्णाङ्क buffer_size;
 #ifdef SMP
-  int nthreads;
+  पूर्णाङ्क nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
+  पूर्णाङ्क (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
 		FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 		  GEMV_N, GEMV_T, GEMV_R, GEMV_C,
 		  GEMV_O, GEMV_U, GEMV_S, GEMV_D,
@@ -108,39 +108,39 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i    = -1;
 
-  if (trans == 'N')  i = 0;
-  if (trans == 'T')  i = 1;
-  if (trans == 'R')  i = 2;
-  if (trans == 'C')  i = 3;
-  if (trans == 'O')  i = 4;
-  if (trans == 'U')  i = 5;
-  if (trans == 'S')  i = 6;
-  if (trans == 'D')  i = 7;
+  सचे (trans == 'N')  i = 0;
+  सचे (trans == 'T')  i = 1;
+  सचे (trans == 'R')  i = 2;
+  सचे (trans == 'C')  i = 3;
+  सचे (trans == 'O')  i = 4;
+  सचे (trans == 'U')  i = 5;
+  सचे (trans == 'S')  i = 6;
+  सचे (trans == 'D')  i = 7;
 
-  if (incy == 0)      info = 11;
-  if (incx == 0)      info = 8;
-  if (lda < MAX(1,m)) info = 6;
-  if (n < 0) 	      info = 3;
-  if (m < 0) 	      info = 2;
-  if (i < 0)          info = 1;
+  सचे (incy == 0)      info = 11;
+  सचे (incx == 0)      info = 8;
+  सचे (lda < MAX(1,m)) info = 6;
+  सचे (n < 0) 	      info = 3;
+  सचे (m < 0) 	      info = 2;
+  सचे (i < 0)          info = 1;
 
   trans = i;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  सचे (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    पटिनिवत्त;
   }
 
-#else
+#अञ्ञथा
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+शून्य CNAME(गणना CBLAS_ORDER order,
+	   गणना CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
-	   void *VALPHA,
-	   void  *va, blasint lda,
-	   void  *vx, blasint incx,
-	   void *VBETA,
-	   void  *vy, blasint incy){
+	   शून्य *VALPHA,
+	   शून्य  *va, blasint lda,
+	   शून्य  *vx, blasint incx,
+	   शून्य *VBETA,
+	   शून्य  *vy, blasint incy){
 
   FLOAT *ALPHA = (FLOAT*) VALPHA;
   FLOAT *a = (FLOAT*) va;
@@ -149,13 +149,13 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *y = (FLOAT*) vy;
   FLOAT *buffer;
   blasint    lenx, leny;
-  int trans, buffer_size;
+  पूर्णाङ्क trans, buffer_size;
   blasint info, t;
 #ifdef SMP
-  int nthreads;
+  पूर्णाङ्क nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
+  पूर्णाङ्क (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
 	    FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 	      GEMV_N, GEMV_T, GEMV_R, GEMV_C,
 	      GEMV_O, GEMV_U, GEMV_S, GEMV_D,
@@ -172,28 +172,28 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+  सचे (order == CblasColMajor) {
+    सचे (TransA == CblasNoTrans)     trans = 0;
+    सचे (TransA == CblasTrans)       trans = 1;
+    सचे (TransA == CblasConjNoTrans) trans = 2;
+    सचे (TransA == CblasConjTrans)   trans = 3;
 
     info = -1;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    सचे (incy == 0)	  info = 11;
+    सचे (incx == 0)	  info = 8;
+    सचे (lda < MAX(1, m))  info = 6;
+    सचे (n < 0)		  info = 3;
+    सचे (m < 0)		  info = 2;
+    सचे (trans < 0)        info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
+  सचे (order == CblasRowMajor) {
+    सचे (TransA == CblasNoTrans)     trans = 1;
+    सचे (TransA == CblasTrans)       trans = 0;
+    सचे (TransA == CblasConjNoTrans) trans = 3;
+    सचे (TransA == CblasConjTrans)   trans = 2;
 
     info = -1;
 
@@ -201,88 +201,88 @@ void CNAME(enum CBLAS_ORDER order,
     n = m;
     m = t;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    सचे (incy == 0)	  info = 11;
+    सचे (incx == 0)	  info = 8;
+    सचे (lda < MAX(1, m))  info = 6;
+    सचे (n < 0)		  info = 3;
+    सचे (m < 0)		  info = 2;
+    सचे (trans < 0)        info = 1;
 
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  सचे (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    पटिनिवत्त;
   }
 
 #endif
 
   /*  Quick return if possible. */
 
-  if (m == 0 || n == 0) return;
+  सचे (m == 0 || n == 0) पटिनिवत्त;
 
   lenx = n;
   leny = m;
 
-  if (trans & 1) lenx = m;
-  if (trans & 1) leny = n;
+  सचे (trans & 1) lenx = m;
+  सचे (trans & 1) leny = n;
 
-  if (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  सचे (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), रिक्त, 0, रिक्त, 0);
 
-  if (alpha_r == ZERO && alpha_i == ZERO) return;
+  सचे (alpha_r == ZERO && alpha_i == ZERO) पटिनिवत्त;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx - 1) * incx * 2;
-  if (incy < 0) y -= (leny - 1) * incy * 2;
+  सचे (incx < 0) x -= (lenx - 1) * incx * 2;
+  सचे (incy < 0) y -= (leny - 1) * incy * 2;
 
-  buffer_size = 2 * (m + n) + 128 / sizeof(FLOAT);
+  buffer_size = 2 * (m + n) + 128 / परिमाण(FLOAT);
 #ifdef WINDOWS_ABI
-  buffer_size += 160 / sizeof(FLOAT) ;
+  buffer_size += 160 / परिमाण(FLOAT) ;
 #endif
   // for alignment
   buffer_size = (buffer_size + 3) & ~3;
-  STACK_ALLOC(buffer_size, FLOAT, buffer);
+  राशिः_ALLOC(buffer_size, FLOAT, buffer);
 
-#if defined(ARCH_X86_64) && defined(MAX_STACK_ALLOC) && MAX_STACK_ALLOC > 0
+#सचे defined(ARCH_X86_64) && defined(MAX_राशिः_ALLOC) && MAX_राशिः_ALLOC > 0
   // cgemv_t.S return NaN if there are NaN or Inf in the buffer (see bug #746)
-  if(trans && stack_alloc_size)
-    memset(buffer, 0, MIN(BUFFER_SIZE, sizeof(FLOAT) * buffer_size));
+  सचे(trans && राशिः_alloc_size)
+    memset(buffer, 0, MIN(BUFFER_SIZE, परिमाण(FLOAT) * buffer_size));
 #endif
 
 #ifdef SMP
 
-#if defined(_WIN64) && defined(_M_ARM64)
-  if (m*n > 25000000L) 
-    nthreads = num_cpu_avail(4);
-  else
+#सचे defined(_WIN64) && defined(_M_ARM64)
+  सचे (m*n > 25000000L) 
+    nthreads = अङ्कः_cpu_avail(4);
+  अञ्ञथा
     nthreads = 1;
-#else
-  if (1L * m * n < 1024L * GEMM_MULTITHREAD_THRESHOLD)
+#अञ्ञथा
+  सचे (1L * m * n < 1024L * GEMM_MULTITHREAD_THRESHOLD)
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  अञ्ञथा
+    nthreads = अङ्कः_cpu_avail(2);
 #endif  
 
-  if (nthreads == 1) {
+  सचे (nthreads == 1) {
 #endif  
 
-    (gemv[(int)trans])(m, n, 0, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
+    (gemv[(पूर्णाङ्क)trans])(m, n, 0, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
-    (gemv_thread[(int)trans])(m, n, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
+  } अञ्ञथा {
+    (gemv_thread[(पूर्णाङ्क)trans])(m, n, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
   }
 #endif
 
 
-  STACK_FREE(buffer);
+  राशिः_FREE(buffer);
 
   FUNCTION_PROFILE_END(4, m * n + m + n,  2 * m * n);
 
   IDEBUG_END;
 
-  return;
+  पटिनिवत्त;
 }

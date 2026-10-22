@@ -36,33 +36,33 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef XDOUBLE
 #define ERROR_NAME "QTRTRI"
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "DTRTRI"
-#else
+#अञ्ञथा
 #define ERROR_NAME "STRTRI"
 #endif
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_SINGLE, TRTRI_UN_SINGLE, TRTRI_LU_SINGLE, TRTRI_LN_SINGLE,
 };
 
 #ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UU_PARALLEL, TRTRI_UN_PARALLEL, TRTRI_LU_PARALLEL, TRTRI_LN_PARALLEL,
 };
 #endif
 
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+शून्य NAME(वर्ण *UPLO, वर्ण *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -72,14 +72,14 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
   blasint info;
   FLOAT *buffer;
 #ifdef PPC440
-  extern
+  बाह्य
 #endif
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
   args.n    = *N;
-  args.a    = (void *)a;
+  args.a    = (शून्य *)a;
   args.lda  = *ldA;
 
   TOUPPER(uplo_arg);
@@ -87,32 +87,32 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  सचे (uplo_arg == 'U') uplo = 0;
+  सचे (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  सचे (diag_arg == 'U') diag = 0;
+  सचे (diag_arg == 'N') diag = 1;
 
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  सचे (args.lda  < MAX(1,args.n)) info = 5;
+  सचे (args.n    < 0)             info = 3;
+  सचे (diag < 0)                  info = 2;
+  सचे (uplo < 0)                  info = 1;
+  सचे (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    पटिनिवत्त;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  सचे (args.n == 0) पटिनिवत्त;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
+  सचे (diag) {
+    सचे (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+      पटिनिवत्त;
     }
   }
 
@@ -128,20 +128,20 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 #endif
 
 #ifdef SMP
-  if (args.n <= 150)
+  सचे (args.n <= 150)
     args.nthreads = 1;
-  else
-    args.nthreads = num_cpu_avail(4);
+  अञ्ञथा
+    args.nthreads = अङ्कः_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  सचे (args.nthreads == 1) {
 #endif
 
-    *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_single[(uplo << 1) | diag])(&args, रिक्त, रिक्त, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } अञ्ञथा {
 
-    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+    *Info = (trtri_parallel[(uplo << 1) | diag])(&args, रिक्त, रिक्त, sa, sb, 0);
 
   }
 #endif
@@ -156,5 +156,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  पटिनिवत्त;
 }

@@ -32,49 +32,49 @@
 /*                                                                   */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <stdlib.h>
+#अन्तर्भाव "common.h"
 
 #ifndef COMPLEX
 #define SMP_THRESHOLD_MIN 65536.0
 #ifdef RNAME
 #ifdef XDOUBLE
 #define ERROR_NAME "QGEMMTR"
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "DGEMMTR"
-#elif defined(BFLOAT16)
+#नोचेद्यदि defined(BFLOAT16)
 #define ERROR_NAME "SBGEMMTR"
-#else
+#अञ्ञथा
 #define ERROR_NAME "SGEMMTR"
 #endif
-#else
+#अञ्ञथा
 #ifdef XDOUBLE
 #define ERROR_NAME "QGEMMT "
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "DGEMMT "
-#elif defined(BFLOAT16)
+#नोचेद्यदि defined(BFLOAT16)
 #define ERROR_NAME "SBGEMMT "
-#else
+#अञ्ञथा
 #define ERROR_NAME "SGEMMT "
 #endif
 #endif
-#else
+#अञ्ञथा
 #define SMP_THRESHOLD_MIN 8192.0
 #ifdef RNAME
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMMTR"
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "ZGEMMTR"
-#else
+#अञ्ञथा
 #define ERROR_NAME "CGEMMTR"
 #endif
-#else
+#अञ्ञथा
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMMT "
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
 #define ERROR_NAME "ZGEMMT "
-#else
+#अञ्ञथा
 #define ERROR_NAME "CGEMMT "
 #endif
 #endif
@@ -88,7 +88,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+शून्य NAME(वर्ण *UPLO, वर्ण *TRANSA, वर्ण *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -97,12 +97,12 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	पूर्णाङ्क transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	वर्ण transA, transB, Uplo;
 	blasint nrowa, nrowb;
-#if !defined(COMPLEX)
+#सचे !defined(COMPLEX)
 	FLOAT alpha, beta;
 #endif
 
@@ -111,10 +111,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	m = *M;
 	k = *K;
 
-#if defined(COMPLEX)
+#सचे defined(COMPLEX)
 	FLOAT *alpha = Alpha;
 	FLOAT *beta = Beta;
-#else
+#अञ्ञथा
 	alpha = *Alpha;
 	beta = *Beta;
 #endif
@@ -134,85 +134,85 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	सचे (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	सचे (transA == 'T')
 		transa = 1;
 #ifndef COMPLEX
-	if (transA == 'R')
+	सचे (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	सचे (transA == 'C')
 		transa = 1;
-#else
-	if (transA == 'R')
+#अञ्ञथा
+	सचे (transA == 'R')
 		transa = 2;
-	if (transA == 'C')
+	सचे (transA == 'C')
 		transa = 3;
 #endif
 
-	if (transB == 'N')
+	सचे (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	सचे (transB == 'T')
 		transb = 1;
 #ifndef COMPLEX
-	if (transB == 'R')
+	सचे (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	सचे (transB == 'C')
 		transb = 1;
-#else
-	if (transB == 'R')
+#अञ्ञथा
+	सचे (transB == 'R')
 		transb = 2;
-	if (transB == 'C')
+	सचे (transB == 'C')
 		transb = 3;
 #endif
 
-	if (Uplo == 'U')
+	सचे (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	सचे (Uplo == 'L')
 		uplo = 1;
 	
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	सचे (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	सचे (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	सचे (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	सचे (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	सचे (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	सचे (k < 0)
 		info = 5;
-	if (m < 0)
+	सचे (m < 0)
 		info = 4;
-	if (transb < 0)
+	सचे (transb < 0)
 		info = 3;
-	if (transa < 0)
+	सचे (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	सचे (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	सचे (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, परिमाण(ERROR_NAME));
+		पटिनिवत्त;
 	}
-#else
+#अञ्ञथा
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+शून्य CNAME(गणना CBLAS_ORDER order, गणना CBLAS_UPLO Uplo,
+	   गणना CBLAS_TRANSPOSE TransA, गणना CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 #ifndef COMPLEX
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
 	   IFLOAT * B, blasint LDB, FLOAT beta, FLOAT * c, blasint ldc)
 {
-#else
-	   void *valpha,
-	   void *va, blasint LDA,
-	   void *vb, blasint LDB, void *vbeta, void *vc, blasint ldc)
+#अञ्ञथा
+	   शून्य *valpha,
+	   शून्य *va, blasint LDA,
+	   शून्य *vb, blasint LDB, शून्य *vbeta, शून्य *vc, blasint ldc)
 {
 	FLOAT *alpha = (FLOAT *) valpha;
 	FLOAT *beta = (FLOAT *) vbeta;
@@ -220,7 +220,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	FLOAT *B = (FLOAT *) vb;
 	FLOAT *c = (FLOAT *) vc;
 #endif
-	int transa, transb, uplo;
+	पूर्णाङ्क transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	FLOAT *a, *b;
@@ -232,43 +232,43 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	सचे (order == CblasColMajor) {
+		सचे (Uplo == CblasUpper) uplo = 0;
+		सचे (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		सचे (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		सचे (TransA == CblasTrans)
 			transa = 1;
 #ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+		सचे (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		सचे (TransA == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#अञ्ञथा
+		सचे (TransA == CblasConjNoTrans)
 			transa = 2;
-		if (TransA == CblasConjTrans)
+		सचे (TransA == CblasConjTrans)
 			transa = 3;
 #endif
-		if (TransB == CblasNoTrans)
+		सचे (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		सचे (TransB == CblasTrans)
 			transb = 1;
 #ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+		सचे (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		सचे (TransB == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#अञ्ञथा
+		सचे (TransB == CblasConjNoTrans)
 			transb = 2;
-		if (TransB == CblasConjTrans)
+		सचे (TransB == CblasConjTrans)
 			transb = 3;
 #endif
 
-		a = (void *)A;
-		b = (void *)B;
+		a = (शून्य *)A;
+		b = (शून्य *)B;
 		lda = LDA;
 		ldb = LDB;
 
@@ -277,67 +277,67 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa, nrowb;
 
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		सचे (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1) nrowb = m;
+		सचे (transb & 1) nrowb = m;
 
-		if (ldc < MAX(1, m))
+		सचे (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		सचे (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		सचे (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		सचे (k < 0)
 			info = 5;
-		if (m < 0)
+		सचे (m < 0)
 			info = 4;
-		if (transb < 0)
+		सचे (transb < 0)
 			info = 3;
-		if (transa < 0)
+		सचे (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		सचे (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	सचे (order == CblasRowMajor) {
 
-		a = (void *)B;
-		b = (void *)A;
+		a = (शून्य *)B;
+		b = (शून्य *)A;
 
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 1;
-		if (Uplo == CblasLower) uplo = 0;
+		सचे (Uplo == CblasUpper) uplo = 1;
+		सचे (Uplo == CblasLower) uplo = 0;
 
-		if (TransB == CblasNoTrans)
+		सचे (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		सचे (TransB == CblasTrans)
 			transa = 1;
 #ifndef COMPLEX
-		if (TransB == CblasConjNoTrans)
+		सचे (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		सचे (TransB == CblasConjTrans)
 			transa = 1;
-#else
-		if (TransB == CblasConjNoTrans)
+#अञ्ञथा
+		सचे (TransB == CblasConjNoTrans)
 			transa = 2;
-		if (TransB == CblasConjTrans)
+		सचे (TransB == CblasConjTrans)
 			transa = 3;
 #endif
-		if (TransA == CblasNoTrans)
+		सचे (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		सचे (TransA == CblasTrans)
 			transb = 1;
 #ifndef COMPLEX
-		if (TransA == CblasConjNoTrans)
+		सचे (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		सचे (TransA == CblasConjTrans)
 			transb = 1;
-#else
-		if (TransA == CblasConjNoTrans)
+#अञ्ञथा
+		सचे (TransA == CblasConjNoTrans)
 			transb = 2;
-		if (TransA == CblasConjTrans)
+		सचे (TransA == CblasConjTrans)
 			transb = 3;
 #endif
 
@@ -346,36 +346,36 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncola, ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		सचे (transa & 1) ncola = k;
 		ncolb = k;
-		if (transb & 1) ncolb = m;
+		सचे (transb & 1) ncolb = m;
 
-		if (ldc < MAX(1,m))
+		सचे (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		सचे (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		सचे (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		सचे (k < 0)
 			info = 5;
-		if (m < 0)
+		सचे (m < 0)
 			info = 4;
-		if (transb < 0)
+		सचे (transb < 0)
 			info = 2;
-		if (transa < 0)
+		सचे (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		सचे (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	सचे (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, परिमाण(ERROR_NAME));
+		पटिनिवत्त;
 	}
 #endif
 #ifndef COMPLEX
 #define GEMMT_TABLE_INDEX ((uplo << 2) | (transb << 1) | transa)
-#else
+#अञ्ञथा
 #define GEMMT_TABLE_INDEX ((uplo << 4) | (transb << 2) | transa)
 #endif
 
@@ -383,34 +383,34 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	FLOAT *buffer, *sa, *sb;
 
 #ifdef SMP
-	double MMK;
+	द्विगुण MMK;
 #ifndef COMPLEX
 #ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_REAL;
-#else
-	int mode = BLAS_SINGLE  | BLAS_REAL;
+	पूर्णाङ्क mode = BLAS_XDOUBLE | BLAS_REAL;
+#नोचेद्यदि defined(DOUBLE)
+	पूर्णाङ्क mode = BLAS_DOUBLE  | BLAS_REAL;
+#अञ्ञथा
+	पूर्णाङ्क mode = BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#अञ्ञथा
 #ifdef XDOUBLE
-	int mode = BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-	int mode = BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-	int mode = BLAS_SINGLE  | BLAS_COMPLEX;
+	पूर्णाङ्क mode = BLAS_XDOUBLE | BLAS_COMPLEX;
+#नोचेद्यदि defined(DOUBLE)
+	पूर्णाङ्क mode = BLAS_DOUBLE  | BLAS_COMPLEX;
+#अञ्ञथा
+	पूर्णाङ्क mode = BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 
 	/* [uplo][op(B)][op(A)], as in interface/gemm.c */
-	static int (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+	स्थिर पूर्णाङ्क (*gemmt[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
 #ifndef COMPLEX
 		GEMMT_UNN, GEMMT_UTN,
 		GEMMT_UNT, GEMMT_UTT,
 		GEMMT_LNN, GEMMT_LTN,
 		GEMMT_LNT, GEMMT_LTT,
-#else
+#अञ्ञथा
 		GEMMT_UNN, GEMMT_UTN, GEMMT_URN, GEMMT_UCN,
 		GEMMT_UNT, GEMMT_UTT, GEMMT_URT, GEMMT_UCT,
 		GEMMT_UNR, GEMMT_UTR, GEMMT_URR, GEMMT_UCR,
@@ -422,8 +422,8 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 #endif
 	};
 
-	if (m == 0)
-		return;
+	सचे (m == 0)
+		पटिनिवत्त;
 
 	IDEBUG_START;
 
@@ -433,59 +433,59 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	args.n = m;
 	args.k = k;
 
-	args.a = (void *)a;
-	args.b = (void *)b;
-	args.c = (void *)c;
+	args.a = (शून्य *)a;
+	args.b = (शून्य *)b;
+	args.c = (शून्य *)c;
 
 	args.lda = lda;
 	args.ldb = ldb;
 	args.ldc = ldc;
 
-#if defined(COMPLEX)
-	args.alpha = (void *)alpha;
-	args.beta  = (void *)beta;
-#else
-	args.alpha = (void *)&alpha;
-	args.beta  = (void *)&beta;
+#सचे defined(COMPLEX)
+	args.alpha = (शून्य *)alpha;
+	args.beta  = (शून्य *)beta;
+#अञ्ञथा
+	args.alpha = (शून्य *)&alpha;
+	args.beta  = (शून्य *)&beta;
 #endif
 
 #ifdef SMP
-	args.common   = NULL;
+	args.common   = रिक्त;
 	args.nthreads = 1;
 #endif
 
 	buffer = (FLOAT *)blas_memory_alloc(0);
-	if (!buffer) {
+	सचे (!buffer) {
 		info = -999;
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+		BLASFUNC(xerbla) (ERROR_NAME, &info, परिमाण(ERROR_NAME));
+		पटिनिवत्त;
 	}
 
 	sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
 	sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 
 #ifdef SMP
-	MMK = (double)(m + 1) * (double)m * (double)k;
-	if (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
+	MMK = (द्विगुण)(m + 1) * (द्विगुण)m * (द्विगुण)k;
+	सचे (MMK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
 		args.nthreads = 1;
-	} else {
-		args.nthreads = num_cpu_avail(3);
+	} अञ्ञथा {
+		args.nthreads = अङ्कः_cpu_avail(3);
 	}
 
-	if (args.nthreads == 1) {
+	सचे (args.nthreads == 1) {
 #endif
 
-		(gemmt[GEMMT_TABLE_INDEX])(&args, NULL, NULL, sa, sb, 0);
+		(gemmt[GEMMT_TABLE_INDEX])(&args, रिक्त, रिक्त, sa, sb, 0);
 
 #ifdef SMP
-	} else {
+	} अञ्ञथा {
 
 		/* Split the triangle into column ranges of equal area; every
 		   thread then runs the single-threaded driver on its own range
 		   and writes a disjoint set of columns of C. */
 		mode |= (uplo << BLAS_UPLO_SHIFT);
 
-		syrk_thread(mode, &args, NULL, NULL, gemmt[GEMMT_TABLE_INDEX], sa, sb, args.nthreads);
+		syrk_thread(mode, &args, रिक्त, रिक्त, gemmt[GEMMT_TABLE_INDEX], sa, sb, args.nthreads);
 	}
 #endif
 
@@ -496,5 +496,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	पटिनिवत्त;
 }

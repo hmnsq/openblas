@@ -37,48 +37,48 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+शून्य NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#अञ्ञथा
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+शून्य CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 #endif
 
 #ifdef SMP
-  int mode, nthreads;
+  पूर्णाङ्क mode, nthreads;
 #endif
 
 #ifndef CBLAS
   PRINT_DEBUG_NAME;
-#else
+#अञ्ञथा
   PRINT_DEBUG_CNAME;
 #endif
 
-  if (incx <= 0 || n <= 0) return;
+  सचे (incx <= 0 || n <= 0) पटिनिवत्त;
 
 #ifdef BGEMM
-  float alpha_float;
+  भिन्न alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#अञ्ञथा
   FLOAT alpha_float = alpha;
 #endif
 
-  if (alpha_float == ONE) return;
+  सचे (alpha_float == ONE) पटिनिवत्त;
 
   IDEBUG_START;
 
@@ -86,33 +86,33 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
 
 #ifdef SMP
-  if (n <= 1048576 )
+  सचे (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  अञ्ञथा
+	nthreads = अङ्कः_cpu_avail(1);
 
 
-  if (nthreads == 1) {
+  सचे (nthreads == 1) {
 #endif
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, रिक्त, 0, रिक्त, 1);
 
 #ifdef SMP
-  } else {
+  } अञ्ञथा {
 
 #ifdef DOUBLE
     mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
+#अञ्ञथा
     mode  =  BLAS_SINGLE | BLAS_REAL;
 #endif
 
     blas_level1_thread(mode, n, 0, 0,
 #ifndef CBLAS
 		       ALPHA,
-#else
+#अञ्ञथा
 		       &alpha,
 #endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+		       x, incx, रिक्त, 0, रिक्त, 1,  (पूर्णाङ्क (*)(शून्य))SCAL_K, nthreads);
 
   }
 #endif
@@ -121,6 +121,6 @@ void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return;
+  पटिनिवत्त;
 
 }

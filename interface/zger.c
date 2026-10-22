@@ -36,10 +36,10 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
 #ifdef FUNCTION_PROFILE
-#include "functable.h"
+#अन्तर्भाव "functable.h"
 #endif
 
 #ifdef SMP
@@ -52,48 +52,48 @@
 #ifdef XDOUBLE
 #ifndef CONJ
 #define ERROR_NAME "XGERU  "
-#else
+#अञ्ञथा
 #define ERROR_NAME "XGERC  "
 #endif
-#elif defined DOUBLE
+#नोचेद्यदि defined DOUBLE
 #ifndef CONJ
 #define ERROR_NAME "ZGERU  "
-#else
+#अञ्ञथा
 #define ERROR_NAME "ZGERC  "
 #endif
-#else
+#अञ्ञथा
 #ifndef CONJ
 #define ERROR_NAME "CGERU  "
-#else
+#अञ्ञथा
 #define ERROR_NAME "CGERC "
 #endif
 #endif
 
-#if   defined XDOUBLE
+#सचे   defined XDOUBLE
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	xger_thread_U
-#else
+#अञ्ञथा
 #define GER		GERC_K
 #define GER_THREAD	xger_thread_C
 #define GERV		GERV_K
 #define GERV_THREAD	xger_thread_V
 #endif
-#elif defined DOUBLE
+#नोचेद्यदि defined DOUBLE
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	zger_thread_U
-#else
+#अञ्ञथा
 #define GER		GERC_K
 #define GER_THREAD	zger_thread_C
 #define GERV		GERV_K
 #define GERV_THREAD	zger_thread_V
 #endif
-#else
+#अञ्ञथा
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	cger_thread_U
-#else
+#अञ्ञथा
 #define GER		GERC_K
 #define GER_THREAD	cger_thread_C
 #define GERV		GERV_K
@@ -105,7 +105,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(blasint *M, blasint *N, FLOAT *Alpha,
+शून्य NAME(blasint *M, blasint *N, FLOAT *Alpha,
 	  FLOAT *x, blasint *INCX,
 	  FLOAT *y, blasint *INCY,
 	  FLOAT *a, blasint *LDA){
@@ -119,7 +119,7 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    lda   = *LDA;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  पूर्णाङ्क nthreads;
 #endif
 
   blasint info;
@@ -128,25 +128,25 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  सचे (lda < MAX(1,m)) info = 9;
+  सचे (incy == 0)      info = 7;
+  सचे (incx == 0)      info = 5;
+  सचे (n < 0)          info = 2;
+  सचे (m < 0)          info = 1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  सचे (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    पटिनिवत्त;
   }
 
-#else
+#अञ्ञथा
 
-void CNAME(enum CBLAS_ORDER order,
+शून्य CNAME(गणना CBLAS_ORDER order,
 	   blasint m, blasint n,
-	   void *VAlpha,
-	   void  *vx, blasint incx,
-	   void  *vy, blasint incy,
-	   void  *va, blasint lda) {
+	   शून्य *VAlpha,
+	   शून्य  *vx, blasint incx,
+	   शून्य  *vy, blasint incy,
+	   शून्य  *va, blasint lda) {
 
   FLOAT* Alpha = (FLOAT*) VAlpha;
   FLOAT* a = (FLOAT*) va;
@@ -159,24 +159,24 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *buffer;
   blasint info, t;
 #ifdef SMPTEST
-  int nthreads;
+  पूर्णाङ्क nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  सचे (order == CblasColMajor) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    सचे (lda < MAX(1,m)) info = 9;
+    सचे (incy == 0)      info = 7;
+    सचे (incx == 0)      info = 5;
+    सचे (n < 0)          info = 2;
+    सचे (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  सचे (order == CblasRowMajor) {
     info = -1;
 
     t = n;
@@ -191,64 +191,64 @@ void CNAME(enum CBLAS_ORDER order,
     x = y;
     y = buffer;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    सचे (lda < MAX(1,m)) info = 9;
+    सचे (incy == 0)      info = 7;
+    सचे (incx == 0)      info = 5;
+    सचे (n < 0)          info = 2;
+    सचे (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  सचे (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    पटिनिवत्त;
   }
 
 #endif
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
+  सचे (m == 0 || n == 0) पटिनिवत्त;
 
-  if ((alpha_r == 0.) && (alpha_i == 0.)) return;
+  सचे ((alpha_r == 0.) && (alpha_i == 0.)) पटिनिवत्त;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incy < 0) y -= (n - 1) * incy * 2;
-  if (incx < 0) x -= (m - 1) * incx * 2;
+  सचे (incy < 0) y -= (n - 1) * incy * 2;
+  सचे (incx < 0) x -= (m - 1) * incx * 2;
 
-  STACK_ALLOC(2 * m, FLOAT, buffer);
+  राशिः_ALLOC(2 * m, FLOAT, buffer);
 
 #ifdef SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
-    nthreads = num_cpu_avail(2);
-  else
+  सचे(1L * m * n > 36L * परिमाण(FLOAT) * परिमाण(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
+    nthreads = अङ्कः_cpu_avail(2);
+  अञ्ञथा
     nthreads = 1;
 
-  if (nthreads == 1) {
+  सचे (nthreads == 1) {
 #endif
 
-#if !defined(CBLAS) || !defined(CONJ)
+#सचे !defined(CBLAS) || !defined(CONJ)
   GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-#else
-  if (order == CblasColMajor) {
+#अञ्ञथा
+  सचे (order == CblasColMajor) {
     GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-  } else {
+  } अञ्ञथा {
     GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
   }
 #endif
 
 #ifdef SMPTEST
 
-  } else {
+  } अञ्ञथा {
 
-#if !defined(CBLAS) || !defined(CONJ)
+#सचे !defined(CBLAS) || !defined(CONJ)
       GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-#else
-      if (order == CblasColMajor) {
+#अञ्ञथा
+      सचे (order == CblasColMajor) {
 	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-      } else {
+      } अञ्ञथा {
 	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
       }
 #endif
@@ -256,12 +256,12 @@ void CNAME(enum CBLAS_ORDER order,
   }
 #endif
 
-  STACK_FREE(buffer);
+  राशिः_FREE(buffer);
 
   FUNCTION_PROFILE_END(4, m * n + m + n, 2 * m * n);
 
   IDEBUG_END;
 
-  return;
+  पटिनिवत्त;
 
 }
