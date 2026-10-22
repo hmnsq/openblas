@@ -46,9 +46,9 @@
 
 #ifdef USE_ABS
 
-#if defined(DOUBLE)
+#ប្រសិនបើ defined(DOUBLE)
 #define ABS fabs
-#else
+#បើមិនដូច្នេះ
 #define ABS fabsf
 #endif
 
@@ -60,20 +60,20 @@
 #define MAX_K	QAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMAX_K
-#else
+#បើមិនដូច្នេះ
 #define MAX_K	SAMAX_K
 #endif
-#else
+#បើមិនដូច្នេះ
 #ifdef XDOUBLE
 #define MAX_K	XAMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMAX_K
-#else
+#បើមិនដូច្នេះ
 #define MAX_K	CAMAX_K
 #endif
 #endif
 
-#else
+#បើមិនដូច្នេះ
 
 /* ABS & MIN */
 #ifndef COMPLEX
@@ -81,22 +81,22 @@
 #define MAX_K	QAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DAMIN_K
-#else
+#បើមិនដូច្នេះ
 #define MAX_K	SAMIN_K
 #endif
-#else
+#បើមិនដូច្នេះ
 #ifdef XDOUBLE
 #define MAX_K	XAMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	ZAMIN_K
-#else
+#បើមិនដូច្នេះ
 #define MAX_K	CAMIN_K
 #endif
 #endif
 
 #endif
 
-#else
+#បើមិនដូច្នេះ
 
 #define ABS
 
@@ -107,18 +107,18 @@
 #define MAX_K	QMAX_K
 #elif defined(DOUBLE)
 #define MAX_K	DMAX_K
-#else
+#បើមិនដូច្នេះ
 #define MAX_K	SMAX_K
 #endif
 
-#else
+#បើមិនដូច្នេះ
 
 /* MIN */
 #ifdef XDOUBLE
 #define MAX_K	QMIN_K
 #elif defined(DOUBLE)
 #define MAX_K	DMIN_K
-#else
+#បើមិនដូច្នេះ
 #define MAX_K	SMIN_K
 #endif
 
@@ -138,12 +138,12 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  ប្រសិនបើ (n <= 0) ត្រឡប់ 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ប្រសិនបើ (incx == 0) ត្រឡប់ (ABS(*x));
+#បើមិនដូច្នេះ
+  ប្រសិនបើ (incx == 0) ត្រឡប់ (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -156,15 +156,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ត្រឡប់ ret;
 }
 
-#else
+#បើមិនដូច្នេះ
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#បើមិនដូច្នេះ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
   
@@ -172,12 +172,12 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  ប្រសិនបើ (n <= 0) ត្រឡប់ 0;
 
 #ifndef COMPLEX
-  if (incx == 0) return (ABS(*x));
-#else
-  if (incx == 0) return (ABS(*x) + ABS(*(x+1)));
+  ប្រសិនបើ (incx == 0) ត្រឡប់ (ABS(*x));
+#បើមិនដូច្នេះ
+  ប្រសិនបើ (incx == 0) ត្រឡប់ (ABS(*x) + ABS(*(x+1)));
 #endif
 
   IDEBUG_START;
@@ -190,7 +190,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ត្រឡប់ ret;
 }
 
 #endif

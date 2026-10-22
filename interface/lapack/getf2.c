@@ -46,7 +46,7 @@
 #define ERROR_NAME "QGETF2"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGETF2"
-#else
+#បើមិនដូច្នេះ
 #define ERROR_NAME "SGETF2"
 #endif
 
@@ -71,17 +71,17 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   args.c    = (void *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ប្រសិនបើ (args.lda < MAX(1,args.m)) info = 4;
+  ប្រសិនបើ (args.n   < 0)             info = 2;
+  ប្រសិនបើ (args.m   < 0)             info = 1;
+  ប្រសិនបើ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ត្រឡប់;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  ប្រសិនបើ (args.m == 0 || args.n == 0) ត្រឡប់;
 
   IDEBUG_START;
 
@@ -106,5 +106,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  ត្រឡប់;
 }

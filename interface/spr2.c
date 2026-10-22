@@ -47,27 +47,27 @@
 #define ERROR_NAME "QSPR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSPR2 "
-#else
+#បើមិនដូច្នេះ
 #define ERROR_NAME "SSPR2 "
 #endif
 
-static int (*spr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static ចំនួនគត់ (*spr2[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   qspr2_U, qspr2_L,
 #elif defined(DOUBLE)
   dspr2_U, dspr2_L,
-#else
+#បើមិនដូច្នេះ
   sspr2_U, sspr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static ចំនួនគត់ (*spr2_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, ចំនួនគត់) = {
 #ifdef XDOUBLE
   qspr2_thread_U, qspr2_thread_L,
 #elif defined(DOUBLE)
   dspr2_thread_U, dspr2_thread_L,
-#else
+#បើមិនដូច្នេះ
   sspr2_thread_U, sspr2_thread_L,
 #endif
 };
@@ -77,20 +77,20 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha	= *ALPHA;
   blasint incx	= *INCX;
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  ចំនួនគត់ uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ចំនួនគត់ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -98,25 +98,25 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ប្រសិនបើ (uplo_arg  == 'U') uplo  = 0;
+  ប្រសិនបើ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ប្រសិនបើ (incy == 0)          info =  7;
+  ប្រសិនបើ (incx == 0)          info =  5;
+  ប្រសិនបើ (n < 0)              info =  2;
+  ប្រសិនបើ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ប្រសិនបើ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ត្រឡប់;
   }
 
-#else
+#បើមិនដូច្នេះ
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_UPLO Uplo,
+void CNAME(ga_nanaa CBLAS_ORDER order,
+	   ga_nanaa CBLAS_UPLO Uplo,
 	   blasint n,
 	   FLOAT alpha,
 	   FLOAT  *x, blasint incx,
@@ -124,10 +124,10 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT  *a) {
 
   FLOAT *buffer;
-  int uplo;
+  ចំនួនគត់ uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  ចំនួនគត់ nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -135,86 +135,86 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ប្រសិនបើ (order == CblasColMajor) {
+    ប្រសិនបើ (Uplo == CblasUpper)         uplo  = 0;
+    ប្រសិនបើ (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ប្រសិនបើ (incy == 0)          info =  7;
+    ប្រសិនបើ (incx == 0)          info =  5;
+    ប្រសិនបើ (n < 0)              info =  2;
+    ប្រសិនបើ (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  ប្រសិនបើ (order == CblasRowMajor) {
+    ប្រសិនបើ (Uplo == CblasUpper)         uplo  = 1;
+    ប្រសិនបើ (Uplo == CblasLower)         uplo  = 0;
 
     info = -1;
 
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ប្រសិនបើ (incy == 0)          info =  7;
+    ប្រសិនបើ (incx == 0)          info =  5;
+    ប្រសិនបើ (n < 0)              info =  2;
+    ប្រសិនបើ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ប្រសិនបើ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ត្រឡប់;
   }
 
 #endif
 
-  if (n == 0) return;
+  ប្រសិនបើ (n == 0) ត្រឡប់;
 
-  if (alpha == ZERO) return;
+  ប្រសិនបើ (alpha == ZERO) ត្រឡប់;
 
-  if (incx == 1 && incy == 1 && n < 50) {
+  ប្រសិនបើ (incx == 1 && incy == 1 && n < 50) {
     blasint i;
-    if (!uplo) {
-      for (i = 0; i < n; i++){
+    ប្រសិនបើ (!uplo) {
+      សម្រាប់ (i = 0; i < n; i++){
         AXPYU_K(i + 1, 0, 0, alpha * x[i], y,     1, a, 1, NULL, 0);
         AXPYU_K(i + 1, 0, 0, alpha * y[i], x,     1, a, 1, NULL, 0);
         a += i + 1;
       }
-    } else {
-      for (i = 0; i < n; i++){
+    } បើមិនដូច្នេះ {
+      សម្រាប់ (i = 0; i < n; i++){
 	AXPYU_K(n - i, 0, 0, alpha * x[i], y + i, 1, a, 1, NULL, 0);
         AXPYU_K(n - i, 0, 0, alpha * y[i], x + i, 1, a, 1, NULL, 0);
         a += n - i;
       }
     }
-    return;
+    ត្រឡប់;
   }
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx;
-  if (incy < 0 ) y -= (n - 1) * incy;
+  ប្រសិនបើ (incx < 0 ) x -= (n - 1) * incx;
+  ប្រសិនបើ (incy < 0 ) y -= (n - 1) * incy;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ប្រសិនបើ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ត្រឡប់;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ប្រសិនបើ (n < 50) nthreads = 1;
+  ប្រសិនបើ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ប្រសិនបើ (nthreads == 1) {
 #endif
 
   (spr2[uplo])(n, alpha, x, incx, y, incy, a, buffer);
 
 #ifdef SMP
-  } else {
+  } បើមិនដូច្នេះ {
 
     (spr2_thread[uplo])(n, alpha, x, incx, y, incy, a, buffer, nthreads);
 
@@ -227,5 +227,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  ត្រឡប់;
 }

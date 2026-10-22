@@ -47,11 +47,11 @@
 #define ERROR_NAME "XTBMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTBMV "
-#else
+#បើមិនដូច្នេះ
 #define ERROR_NAME "CTBMV "
 #endif
 
-static int (*tbmv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static ចំនួនគត់ (*tbmv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xtbmv_NUU, xtbmv_NUN, xtbmv_NLU, xtbmv_NLN,
   xtbmv_TUU, xtbmv_TUN, xtbmv_TLU, xtbmv_TLN,
@@ -62,7 +62,7 @@ static int (*tbmv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, v
   ztbmv_TUU, ztbmv_TUN, ztbmv_TLU, ztbmv_TLN,
   ztbmv_RUU, ztbmv_RUN, ztbmv_RLU, ztbmv_RLN,
   ztbmv_CUU, ztbmv_CUN, ztbmv_CLU, ztbmv_CLN,
-#else
+#បើមិនដូច្នេះ
   ctbmv_NUU, ctbmv_NUN, ctbmv_NLU, ctbmv_NLN,
   ctbmv_TUU, ctbmv_TUN, ctbmv_TLU, ctbmv_TLN,
   ctbmv_RUU, ctbmv_RUN, ctbmv_RLU, ctbmv_RLN,
@@ -71,7 +71,7 @@ static int (*tbmv[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, v
 };
 
 #ifdef SMP
-static int (*tbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static ចំនួនគត់ (*tbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, ចំនួនគត់) = {
 #ifdef XDOUBLE
   xtbmv_thread_NUU, xtbmv_thread_NUN, xtbmv_thread_NLU, xtbmv_thread_NLN,
   xtbmv_thread_TUU, xtbmv_thread_TUN, xtbmv_thread_TLU, xtbmv_thread_TLN,
@@ -82,7 +82,7 @@ static int (*tbmv_thread[])(BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLAS
   ztbmv_thread_TUU, ztbmv_thread_TUN, ztbmv_thread_TLU, ztbmv_thread_TLN,
   ztbmv_thread_RUU, ztbmv_thread_RUN, ztbmv_thread_RLU, ztbmv_thread_RLN,
   ztbmv_thread_CUU, ztbmv_thread_CUN, ztbmv_thread_CLU, ztbmv_thread_CLN,
-#else
+#បើមិនដូច្នេះ
   ctbmv_thread_NUU, ctbmv_thread_NUN, ctbmv_thread_NLU, ctbmv_thread_NLN,
   ctbmv_thread_TUU, ctbmv_thread_TUN, ctbmv_thread_TLU, ctbmv_thread_TLN,
   ctbmv_thread_RUU, ctbmv_thread_RUN, ctbmv_thread_RLU, ctbmv_thread_RLN,
@@ -95,13 +95,13 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANS, char *DIAG,
+void NAME(var_na *UPLO, var_na *TRANS, var_na *DIAG,
 	 blasint *N, blasint *K,
 	 FLOAT *a, blasint *LDA, FLOAT *x, blasint *INCX){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
-  char diag_arg  = *DIAG;
+  var_na uplo_arg  = *UPLO;
+  var_na trans_arg = *TRANS;
+  var_na diag_arg  = *DIAG;
 
   blasint n    = *N;
   blasint k    = *K;
@@ -109,12 +109,12 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   blasint incx = *INCX;
 
   blasint info;
-  int uplo;
-  int unit;
-  int trans;
+  ចំនួនគត់ uplo;
+  ចំនួនគត់ unit;
+  ចំនួនគត់ trans;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ចំនួនគត់ nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -127,46 +127,46 @@ void NAME(char *UPLO, char *TRANS, char *DIAG,
   unit  = -1;
   uplo  = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  ប្រសិនបើ (trans_arg == 'N') trans = 0;
+  ប្រសិនបើ (trans_arg == 'T') trans = 1;
+  ប្រសិនបើ (trans_arg == 'R') trans = 2;
+  ប្រសិនបើ (trans_arg == 'C') trans = 3;
 
-  if (diag_arg  == 'U') unit  = 0;
-  if (diag_arg  == 'N') unit  = 1;
+  ប្រសិនបើ (diag_arg  == 'U') unit  = 0;
+  ប្រសិនបើ (diag_arg  == 'N') unit  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ប្រសិនបើ (uplo_arg  == 'U') uplo  = 0;
+  ប្រសិនបើ (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  9;
-  if (lda < k + 1)        info =  7;
-  if (k < 0)              info =  5;
-  if (n < 0)              info =  4;
-  if (unit  < 0)          info =  3;
-  if (trans < 0)          info =  2;
-  if (uplo  < 0)          info =  1;
+  ប្រសិនបើ (incx == 0)          info =  9;
+  ប្រសិនបើ (lda < k + 1)        info =  7;
+  ប្រសិនបើ (k < 0)              info =  5;
+  ប្រសិនបើ (n < 0)              info =  4;
+  ប្រសិនបើ (unit  < 0)          info =  3;
+  ប្រសិនបើ (trans < 0)          info =  2;
+  ប្រសិនបើ (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ប្រសិនបើ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ត្រឡប់;
   }
 
-#else
+#បើមិនដូច្នេះ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_DIAG Diag,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_DIAG Diag,
 	   blasint n, blasint k, void  *va, blasint lda, void  *vx, blasint incx) {
 
   FLOAT *a = (FLOAT*) va;
   FLOAT *x = (FLOAT*) vx;
 
-  int trans, uplo, unit;
+  ចំនួនគត់ trans, uplo, unit;
   blasint info;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  ចំនួនគត់ nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -176,87 +176,87 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  ប្រសិនបើ (order == CblasColMajor) {
+    ប្រសិនបើ (Uplo == CblasUpper)         uplo  = 0;
+    ប្រសិនបើ (Uplo == CblasLower)         uplo  = 1;
 
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+    ប្រសិនបើ (TransA == CblasNoTrans)     trans = 0;
+    ប្រសិនបើ (TransA == CblasTrans)       trans = 1;
+    ប្រសិនបើ (TransA == CblasConjNoTrans) trans = 2;
+    ប្រសិនបើ (TransA == CblasConjTrans)   trans = 3;
 
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
-
-    info = -1;
-
-    if (incx == 0)          info =  9;
-    if (lda < k + 1)        info =  7;
-    if (k < 0)              info =  5;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
-
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
-
-    if (Diag == CblasUnit)          unit  = 0;
-    if (Diag == CblasNonUnit)       unit  = 1;
+    ប្រសិនបើ (Diag == CblasUnit)          unit  = 0;
+    ប្រសិនបើ (Diag == CblasNonUnit)       unit  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  9;
-    if (lda < k + 1)        info =  7;
-    if (k < 0)              info =  5;
-    if (n < 0)              info =  4;
-    if (unit  < 0)          info =  3;
-    if (trans < 0)          info =  2;
-    if (uplo  < 0)          info =  1;
+    ប្រសិនបើ (incx == 0)          info =  9;
+    ប្រសិនបើ (lda < k + 1)        info =  7;
+    ប្រសិនបើ (k < 0)              info =  5;
+    ប្រសិនបើ (n < 0)              info =  4;
+    ប្រសិនបើ (unit  < 0)          info =  3;
+    ប្រសិនបើ (trans < 0)          info =  2;
+    ប្រសិនបើ (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ប្រសិនបើ (order == CblasRowMajor) {
+    ប្រសិនបើ (Uplo == CblasUpper)         uplo  = 1;
+    ប្រសិនបើ (Uplo == CblasLower)         uplo  = 0;
+
+    ប្រសិនបើ (TransA == CblasNoTrans)     trans = 1;
+    ប្រសិនបើ (TransA == CblasTrans)       trans = 0;
+    ប្រសិនបើ (TransA == CblasConjNoTrans) trans = 3;
+    ប្រសិនបើ (TransA == CblasConjTrans)   trans = 2;
+
+    ប្រសិនបើ (Diag == CblasUnit)          unit  = 0;
+    ប្រសិនបើ (Diag == CblasNonUnit)       unit  = 1;
+
+    info = -1;
+
+    ប្រសិនបើ (incx == 0)          info =  9;
+    ប្រសិនបើ (lda < k + 1)        info =  7;
+    ប្រសិនបើ (k < 0)              info =  5;
+    ប្រសិនបើ (n < 0)              info =  4;
+    ប្រសិនបើ (unit  < 0)          info =  3;
+    ប្រសិនបើ (trans < 0)          info =  2;
+    ប្រសិនបើ (uplo  < 0)          info =  1;
+  }
+
+  ប្រសិនបើ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ត្រឡប់;
   }
 
 #endif
 
-  if (n == 0) return;
+  ប្រសិនបើ (n == 0) ត្រឡប់;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
+  ប្រសិនបើ (incx < 0 ) x -= (n - 1) * incx * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ប្រសិនបើ (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ត្រឡប់;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ប្រសិនបើ (n < 50) nthreads = 1;
+  ប្រសិនបើ (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ប្រសិនបើ (nthreads == 1) {
 #endif
 
   (tbmv[(trans<<2) | (uplo<<1) | unit])(n, k, a, lda, x, incx, buffer);
 
 #ifdef SMP
-  } else {
+  } បើមិនដូច្នេះ {
 
     (tbmv_thread[(trans<<2) | (uplo<<1) | unit])(n, k, a, lda, x, incx, buffer, nthreads);
 
@@ -269,5 +269,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
   IDEBUG_END;
 
-  return;
+  ត្រឡប់;
 }

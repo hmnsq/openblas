@@ -42,12 +42,12 @@
 #include "functable.h"
 #endif
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+static ចំនួនគត់ (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
 #ifdef XDOUBLE
   qlaswp_plus, qlaswp_minus,
 #elif defined(DOUBLE)
   dlaswp_plus, dlaswp_minus,
-#else
+#បើមិនដូច្នេះ
   slaswp_plus, slaswp_minus,
 #endif
 };
@@ -60,16 +60,16 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  ចំនួនគត់ flag;
 
 #ifdef SMP
-  int mode, nthreads;
+  ចំនួនគត់ mode, nthreads;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
 #endif
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  ប្រសិនបើ (incx == 0 || n <= 0) ត្រឡប់;
 
   IDEBUG_START;
 
@@ -78,31 +78,31 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
   flag = (incx < 0);
 
 #ifdef SMP
-  if (n < 64) {
+  ប្រសិនបើ (n < 64) {
     nthreads = 1;
-  } else {
+  } បើមិនដូច្នេះ {
     nthreads = num_cpu_avail(1);
   }
 
-  if (nthreads == 1) {
+  ប្រសិនបើ (nthreads == 1) {
 #endif
 
   (laswp[flag])(n, k1, k2, ZERO, a, lda, NULL, 0, ipiv, incx);
 
 #ifdef SMP
-  } else {
+  } បើមិនដូច្នេះ {
 
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#បើមិនដូច្នេះ
   mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
 
   blas_level1_thread(mode, n, k1, k2, dummyalpha,
 		     a, lda, NULL, 0, ipiv, incx,
-		     (int(*)(void))laswp[flag], nthreads);
+		     (ចំនួនគត់(*)(void))laswp[flag], nthreads);
   }
 #endif
 
@@ -110,6 +110,6 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
 
   IDEBUG_END;
 
-  return;
+  ត្រឡប់;
 
 }

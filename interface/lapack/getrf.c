@@ -46,7 +46,7 @@
 #define ERROR_NAME "QGETRF"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGETRF"
-#else
+#បើមិនដូច្នេះ
 #define ERROR_NAME "SGETRF"
 #endif
 
@@ -71,17 +71,17 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   args.c    = (void *)ipiv;
 
   info  =    0;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ប្រសិនបើ (args.lda < MAX(1,args.m)) info = 4;
+  ប្រសិនបើ (args.n   < 0)             info = 2;
+  ប្រសិនបើ (args.m   < 0)             info = 1;
+  ប្រសិនបើ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ត្រឡប់;
   }
 
   *Info = 0;
-  if (args.m == 0 || args.n == 0) return;
+  ប្រសិនបើ (args.m == 0 || args.n == 0) ត្រឡប់;
 
   IDEBUG_START;
 
@@ -98,25 +98,25 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
   args.common = NULL;
 
 #ifndef DOUBLE
-  int nmax = 40000;
-#else 
-  int nmax = 10000;
+  ចំនួនគត់ nmax = 40000;
+#បើមិនដូច្នេះ 
+  ចំនួនគត់ nmax = 10000;
 #endif
-  if (args.m*args.n <nmax) {
+  ប្រសិនបើ (args.m*args.n <nmax) {
     args.nthreads = 1;
-  } else {
+  } បើមិនដូច្នេះ {
     args.nthreads = num_cpu_avail(4);
-    if ((args.m*args.n)/args.nthreads <nmax)
+    ប្រសិនបើ ((args.m*args.n)/args.nthreads <nmax)
 	    args.nthreads = (args.m*args.n)/nmax;
   }
 
-  if (args.nthreads == 1) {
+  ប្រសិនបើ (args.nthreads == 1) {
 #endif
 
   *Info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } បើមិនដូច្នេះ {
 
     *Info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
   }
@@ -130,5 +130,5 @@ void NAME(blasint *M, blasint *N, FLOAT *a, blasint *ldA, blasint *ipiv, blasint
 
   IDEBUG_END;
 
-  return;
+  ត្រឡប់;
 }

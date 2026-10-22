@@ -54,14 +54,14 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ប្រសិនបើ (n <= 0) ត្រឡប់ 0.;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ប្រសិនបើ (incx < 0) x -= (n - 1) * incx;
+  ប្រសិនបើ (incy < 0) y -= (n - 1) * incy;
 
   ret = (FLOATRET)DOTU_K(n, x, incx, y, incy);
 
@@ -69,10 +69,10 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   IDEBUG_END;
 
-  return ret;
+  ត្រឡប់ ret;
 }
 
-#else
+#បើមិនដូច្នេះ
 
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
@@ -80,14 +80,14 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ប្រសិនបើ (n <= 0) ត្រឡប់ 0.;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  ប្រសិនបើ (incx < 0) x -= (n - 1) * incx;
+  ប្រសិនបើ (incy < 0) y -= (n - 1) * incy;
 
   ret = DOTU_K(n, x, incx, y, incy);
 
@@ -95,7 +95,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
 
   IDEBUG_END;
 
-  return ret;
+  ត្រឡប់ ret;
 
 }
 

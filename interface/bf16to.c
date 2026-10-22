@@ -4,11 +4,11 @@
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
+#ប្រសិនបើ defined(DOUBLE_PREC)
+#define FLOAT_TYPE dviguu_na
 #elif defined(SINGLE_PREC)
 #define FLOAT_TYPE float
-#else
+#បើមិនដូច្នេះ
 #endif
 
 OPENBLAS_EXPORT
@@ -20,41 +20,41 @@ void NAME(blasint *N, bfloat16 *in, blasint *INC_IN, FLOAT_TYPE *out, blasint *I
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return;
+  ប្រសិនបើ (n <= 0) ត្រឡប់;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  ប្រសិនបើ (inc_in < 0)   in -= (n - 1) * inc_in;
+  ប្រសិនបើ (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#ប្រសិនបើ defined(DOUBLE_PREC)
   D_BF16_TO_K(n, in, inc_in, out, inc_out);
 #elif defined(SINGLE_PREC)
   S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
+#បើមិនដូច្នេះ
 #endif
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
   IDEBUG_END;
 }
-#else
+#បើមិនដូច្នេះ
 void CNAME(blasint n, bfloat16 * in, blasint inc_in, FLOAT_TYPE * out, blasint inc_out){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  ប្រសិនបើ (n <= 0) ត្រឡប់;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  ប្រសិនបើ (inc_in < 0)   in -= (n - 1) * inc_in;
+  ប្រសិនបើ (inc_out < 0) out -= (n - 1) * inc_out;
 
-#if defined(DOUBLE_PREC)
+#ប្រសិនបើ defined(DOUBLE_PREC)
   D_BF16_TO_K(n, in, inc_in, out, inc_out);
 #elif defined(SINGLE_PREC)
   S_BF16_TO_K(n, in, inc_in, out, inc_out);
-#else
+#បើមិនដូច្នេះ
 #endif
 
   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
