@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ꦪꦼꦤ꧀ (n <= 0) ꦮꦭꦶ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ꦪꦼꦤ꧀ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    ꦮꦭꦶ fabs(x[0]);
+#ꦭꦶꦪ
+    ꦮꦭꦶ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ꦪꦼꦤ꧀ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  ꦮꦭꦶ (sqrt((dviguu_na)n)*fabs(x[0]));
+#ꦭꦶꦪ
+  ꦮꦭꦶ (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#ꦭꦶꦪ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  dviguu_na fr=fabs(x[0]);
+  dviguu_na fi=fabs(x[1]);
+  dviguu_na fmin=MIN(fr,fi);
+  dviguu_na fmax=MAX(fr,fi);
+  ꦪꦼꦤ꧀ (fmax==0.) ꦮꦭꦶ(fmax);
+  ꦪꦼꦤ꧀ (fmax==fmin) ꦮꦭꦶ(sqrt((dviguu_na)n)*sqrt(2.)*fmax);
+  ꦮꦭꦶ (sqrt((dviguu_na)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ꦭꦶꦪ
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ꦪꦼꦤ꧀ (fmax==0.) ꦮꦭꦶ(fmax);
+  ꦪꦼꦤ꧀ (fmax==fmin) ꦮꦭꦶ(sqrt((float)n)*sqrt(2.)*fmax);
+  ꦮꦭꦶ (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ꦪꦼꦤ꧀ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ꦭꦶꦪ
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  ꦮꦭꦶ ret;
 }
 
-#else
+#ꦭꦶꦪ
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#ꦭꦶꦪ
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ꦪꦼꦤ꧀ (n <= 0) ꦮꦭꦶ 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ꦪꦼꦤ꧀ (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    ꦮꦭꦶ fabs(x[0]);
+#ꦭꦶꦪ
+    ꦮꦭꦶ fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ꦪꦼꦤ꧀ (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  ꦮꦭꦶ (sqrt((dviguu_na)n)*fabs(x[0]));
+#ꦭꦶꦪ
+  ꦮꦭꦶ (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#ꦭꦶꦪ
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  dviguu_na fr=fabs(x[0]);
+  dviguu_na fi=fabs(x[1]);
+  dviguu_na fmin=MIN(fr,fi);
+  dviguu_na fmax=MAX(fr,fi);
+  ꦪꦼꦤ꧀ (fmax==0.) ꦮꦭꦶ(fmax);
+  ꦪꦼꦤ꧀ (fmax==fmin) ꦮꦭꦶ(sqrt((dviguu_na)n)*sqrt(2.)*fmax);
+  ꦮꦭꦶ (sqrt((dviguu_na)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#ꦭꦶꦪ
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ꦪꦼꦤ꧀ (fmax==0.) ꦮꦭꦶ(fmax);
+  ꦪꦼꦤ꧀ (fmax==fmin) ꦮꦭꦶ(sqrt((float)n)*sqrt(2.)*fmax);
+  ꦮꦭꦶ (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ꦪꦼꦤ꧀ (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#ꦭꦶꦪ
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  ꦮꦭꦶ ret;
 }
 
 #endif

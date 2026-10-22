@@ -36,9 +36,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ꦪꦼꦤ꧀ defined(DOUBLE)
 #define ERROR_NAME "ZOMATCOPY"
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "COMATCOPY"
 #endif
 
@@ -52,11 +52,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+void NAME( var_na* ORDER, var_na* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	var_na Order, Trans;
+	puur_naa_nka order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -65,114 +65,114 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTransConj;
-	if ( Trans == 'R' ) trans = BlasConj;
+	ꦪꦼꦤ꧀ ( Order == 'C' ) order = BlasColMajor;
+	ꦪꦼꦤ꧀ ( Order == 'R' ) order = BlasRowMajor;
+	ꦪꦼꦤ꧀ ( Trans == 'N' ) trans = BlasNoTrans;
+	ꦪꦼꦤ꧀ ( Trans == 'T' ) trans = BlasTrans;
+	ꦪꦼꦤ꧀ ( Trans == 'C' ) trans = BlasTransConj;
+	ꦪꦼꦤ꧀ ( Trans == 'R' ) trans = BlasConj;
 
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
+#ꦭꦶꦪ 
+void CNAME(ga_nanaa CBLAS_ORDER CORDER, ga_nanaa CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
-	int order=-1,trans=-1;
+	puur_naa_nka order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	ꦪꦼꦤ꧀ ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	ꦪꦼꦤ꧀ ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
-	if ( CTRANS == CblasTrans) trans = BlasTrans; 
-	if ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
+	ꦪꦼꦤ꧀ ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
+	ꦪꦼꦤ꧀ ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
+	ꦪꦼꦤ꧀ ( CTRANS == CblasTrans) trans = BlasTrans; 
+	ꦪꦼꦤ꧀ ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
 
 	rows = &crows; 
 	cols = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
 #endif
-	if ( order == BlasColMajor)
+	ꦪꦼꦤ꧀ ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	ꦪꦼꦤ꧀ ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ꦪꦼꦤ꧀ ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ꦪꦼꦤ꧀ ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	ꦪꦼꦤ꧀ ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	ꦪꦼꦤ꧀ ( *cols < 0 ) info = 4;
+	ꦪꦼꦤ꧀ ( *rows < 0 ) info = 3;
+	ꦪꦼꦤ꧀ ( trans < 0 ) info = 2;
+	ꦪꦼꦤ꧀ ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ꦪꦼꦤ꧀ (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    		ꦮꦭꦶ;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ꦪꦼꦤ꧀ ((*rows == 0) || (*cols == 0)) ꦮꦭꦶ;
 
-	if ( order == BlasColMajor )
+	ꦪꦼꦤ꧀ ( order == BlasColMajor )
 	{
 
-		if ( trans == BlasNoTrans )
+		ꦪꦼꦤ꧀ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
-		if ( trans == BlasConj )
+		ꦪꦼꦤ꧀ ( trans == BlasConj )
 		{
 			OMATCOPY_K_CNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
-		if ( trans == BlasTrans )
+		ꦪꦼꦤ꧀ ( trans == BlasTrans )
 		{
 			OMATCOPY_K_CT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
-		if ( trans == BlasTransConj )
+		ꦪꦼꦤ꧀ ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_CTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
 
 	}
-	else
+	ꦭꦶꦪ
 	{
 
-		if ( trans == BlasNoTrans )
+		ꦪꦼꦤ꧀ ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
-		if ( trans == BlasConj )
+		ꦪꦼꦤ꧀ ( trans == BlasConj )
 		{
 			OMATCOPY_K_RNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
-		if ( trans == BlasTrans )
+		ꦪꦼꦤ꧀ ( trans == BlasTrans )
 		{
 			OMATCOPY_K_RT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
-		if ( trans == BlasTransConj )
+		ꦪꦼꦤ꧀ ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_RTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			ꦮꦭꦶ;
 		}
 
 	}
 
-	return;
+	ꦮꦭꦶ;
 
 }
 

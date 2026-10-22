@@ -47,15 +47,15 @@
 #define ERROR_NAME "QGESV"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGESV"
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "SGESV"
 #endif
-#else
+#ꦭꦶꦪ
 #ifdef XDOUBLE
 #define ERROR_NAME "XGESV"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGESV"
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "CGESV"
 #endif
 #endif
@@ -84,15 +84,15 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
   args.c    = (void *)ipiv;
 
   info  = 0;
-  if (args.ldb < MAX(1,args.m)) info = 7;
-  if (args.lda < MAX(1,args.m)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (args.m   < 0)             info = 1;
+  ꦪꦼꦤ꧀ (args.ldb < MAX(1,args.m)) info = 7;
+  ꦪꦼꦤ꧀ (args.lda < MAX(1,args.m)) info = 4;
+  ꦪꦼꦤ꧀ (args.n   < 0)             info = 2;
+  ꦪꦼꦤ꧀ (args.m   < 0)             info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ꦪꦼꦤ꧀ (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ꦮꦭꦶ;
   }
 
   args.alpha = NULL;
@@ -100,7 +100,7 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  ꦪꦼꦤ꧀ (args.m == 0) ꦮꦭꦶ;
 
   IDEBUG_START;
 
@@ -116,46 +116,46 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 #ifdef SMP
   args.common = NULL;
 
-#if defined(_WIN64) && defined(_M_ARM64)
+#ꦪꦼꦤ꧀ defined(_WIN64) && defined(_M_ARM64)
   #ifdef COMPLEX
-    if (args.m * args.m <= 300) 
-  #else
-    if (args.m * args.m <= 500) 
+    ꦪꦼꦤ꧀ (args.m * args.m <= 300) 
+  #ꦭꦶꦪ
+    ꦪꦼꦤ꧀ (args.m * args.m <= 500) 
   #endif
       args.nthreads = 1;
-  else if (args.m * args.m <= 1000)
+  ꦭꦶꦪ ꦪꦼꦤ꧀ (args.m * args.m <= 1000)
     args.nthreads = 4;
-  else
+  ꦭꦶꦪ
     args.nthreads = num_cpu_avail(4);
-#else
+#ꦭꦶꦪ
   #ifndef DOUBLE
-    if (args.m * args.m < 40000)
-  #else
-    if (args.m * args.m < 10000)
+    ꦪꦼꦤ꧀ (args.m * args.m < 40000)
+  #ꦭꦶꦪ
+    ꦪꦼꦤ꧀ (args.m * args.m < 10000)
   #endif
       args.nthreads = 1;
-    else
+    ꦭꦶꦪ
       args.nthreads = num_cpu_avail(4);
 #endif
 
-  if (args.nthreads == 1) {
+  ꦪꦼꦤ꧀ (args.nthreads == 1) {
 #endif
 
     args.n    = *N;
     info = GETRF_SINGLE(&args, NULL, NULL, sa, sb, 0);
 
-    if (info == 0 && *NRHS >0){
+    ꦪꦼꦤ꧀ (info == 0 && *NRHS >0){
       args.n    = *NRHS;
       GETRS_N_SINGLE(&args, NULL, NULL, sa, sb, 0);
     }
 
 #ifdef SMP
-  } else {
+  } ꦭꦶꦪ {
 
     args.n    = *N;
     info = GETRF_PARALLEL(&args, NULL, NULL, sa, sb, 0);
 
-    if (info == 0 && *NRHS > 0){
+    ꦪꦼꦤ꧀ (info == 0 && *NRHS > 0){
       args.n    = *NRHS;
       GETRS_N_PARALLEL(&args, NULL, NULL, sa, sb, 0);
     }
@@ -172,5 +172,5 @@ void NAME(blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA, blasint *ipiv,
 
   IDEBUG_END;
 
-  return;
+  ꦮꦭꦶ;
 }

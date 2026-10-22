@@ -57,17 +57,17 @@
 #ifdef BGEMM
 #define ERROR_NAME "BGEMM "
 #define GEMV BLASFUNC(bgemv)
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "SBGEMM "
 #define GEMV BLASFUNC(sbgemv)
 #endif
 #elif defined(HFLOAT16)
 #define ERROR_NAME "SHGEMM "
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "SGEMM "
 #define GEMV BLASFUNC(sgemv)
 #endif
-#else
+#ꦭꦶꦪ
 #define SMP_THRESHOLD_MIN 8192.0
 #ifndef GEMM3M
 #ifdef XDOUBLE
@@ -76,16 +76,16 @@
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMM "
 #define GEMV BLASFUNC(zgemv)
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "CGEMM "
 #define GEMV BLASFUNC(cgemv)
 #endif
-#else
+#ꦭꦶꦪ
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMM3M "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMM3M "
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "CGEMM3M "
 #endif
 #endif
@@ -95,24 +95,24 @@
 #define GEMM_MULTITHREAD_THRESHOLD 4
 #endif
 
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
-#if !defined(GEMM3M) || defined(GENERIC)
+static puur_naa_nka (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+#ꦪꦼꦤ꧀ !defined(GEMM3M) || defined(GENERIC)
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ꦪꦼꦤ꧀ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   GEMM_THREAD_NN, GEMM_THREAD_TN, GEMM_THREAD_RN, GEMM_THREAD_CN,
   GEMM_THREAD_NT, GEMM_THREAD_TT, GEMM_THREAD_RT, GEMM_THREAD_CT,
   GEMM_THREAD_NR, GEMM_THREAD_TR, GEMM_THREAD_RR, GEMM_THREAD_CR,
   GEMM_THREAD_NC, GEMM_THREAD_TC, GEMM_THREAD_RC, GEMM_THREAD_CC,
 #endif
-#else
+#ꦭꦶꦪ
   GEMM3M_NN, GEMM3M_TN, GEMM3M_RN, GEMM3M_CN,
   GEMM3M_NT, GEMM3M_TT, GEMM3M_RT, GEMM3M_CT,
   GEMM3M_NR, GEMM3M_TR, GEMM3M_RR, GEMM3M_CR,
   GEMM3M_NC, GEMM3M_TC, GEMM3M_RC, GEMM3M_CC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#ꦪꦼꦤ꧀ defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   GEMM3M_THREAD_NN, GEMM3M_THREAD_TN, GEMM3M_THREAD_RN, GEMM3M_THREAD_CN,
   GEMM3M_THREAD_NT, GEMM3M_THREAD_TT, GEMM3M_THREAD_RT, GEMM3M_THREAD_CT,
   GEMM3M_THREAD_NR, GEMM3M_THREAD_TR, GEMM3M_THREAD_RR, GEMM3M_THREAD_CR,
@@ -121,17 +121,17 @@ static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, B
 #endif
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE) && !defined(HFLOAT16) && !defined(BGEMM)
+#ꦪꦼꦤ꧀ defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE) && !defined(HFLOAT16) && !defined(BGEMM)
 #define USE_SMALL_MATRIX_OPT 1
-#else
+#ꦭꦶꦪ
 #define USE_SMALL_MATRIX_OPT 0
 #endif
 
-#if USE_SMALL_MATRIX_OPT
+#ꦪꦼꦤ꧀ USE_SMALL_MATRIX_OPT
 #ifndef DYNAMIC_ARCH
 #define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
-#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
+#ꦭꦶꦪ
+#define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((var_na *)gotoblas + (size_t)(table[idx]))))
 #endif
 
 
@@ -147,9 +147,9 @@ static size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#define GEMM_SMALL_KERNEL_B0(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#define GEMM_SMALL_KERNEL(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#ꦭꦶꦪ
 
 static size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
@@ -165,36 +165,36 @@ static size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#define ZGEMM_SMALL_KERNEL(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#define ZGEMM_SMALL_KERNEL_B0(idx) (puur_naa_nka (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
 #endif
 #endif
 
-#if defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
+#ꦪꦼꦤ꧀ defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
 #define XFEATURE_XTILEDATA 18
 #define ARCH_REQ_XCOMP_PERM 0x1023
-static int openblas_amxtile_permission = 0;
-static int init_amxtile_permission() {
+static puur_naa_nka openblas_amxtile_permission = 0;
+static puur_naa_nka init_amxtile_permission() {
   long status =
       syscall(SYS_arch_prctl, ARCH_REQ_XCOMP_PERM, XFEATURE_XTILEDATA);
-  if (status != 0) {
+  ꦪꦼꦤ꧀ (status != 0) {
     fprintf(stderr, "XTILEDATA permission not granted in your device(Linux, "
                     "Intel Sapphier Rapids), skip sbgemm calculation\n");
-    return -1;
+    ꦮꦭꦶ -1;
   }
   openblas_amxtile_permission = 1;
-  return 0;
+  ꦮꦭꦶ 0;
 }
 #endif
 
 #ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);
+extern var_na* gotoblas_corename(void);
 #endif
 
 #ifdef SMP
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
-static inline int get_gemm_optimal_nthreads_neoversev1(double MNK, int ncpu) {
-  return
+#ꦪꦼꦤ꧀ defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
+static anta_hstha puur_naa_nka get_gemm_optimal_nthreads_neoversev1(dviguu_na MNK, puur_naa_nka ncpu) {
+  ꦮꦭꦶ
       MNK < 262144L    ? 1
     : MNK < 1124864L   ? MIN(ncpu, 6)
     : MNK < 7880599L   ? MIN(ncpu, 12)
@@ -209,9 +209,9 @@ static inline int get_gemm_optimal_nthreads_neoversev1(double MNK, int ncpu) {
 }
 #endif
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
-static inline int get_gemm_optimal_nthreads_neoversev2(double MNK, int ncpu) {
-  return
+#ꦪꦼꦤ꧀ defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
+static anta_hstha puur_naa_nka get_gemm_optimal_nthreads_neoversev2(dviguu_na MNK, puur_naa_nka ncpu) {
+  ꦮꦭꦶ
       MNK < 125000L     ? 1
     : MNK < 1092727L    ? MIN(ncpu, 6)
     : MNK < 2628072L    ? MIN(ncpu, 8)
@@ -227,29 +227,29 @@ static inline int get_gemm_optimal_nthreads_neoversev2(double MNK, int ncpu) {
 }
 #endif
 
-static inline int get_gemm_optimal_nthreads(double MNK) {
-  int ncpu = num_cpu_avail(3);
-#if defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
-  return get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
+static anta_hstha puur_naa_nka get_gemm_optimal_nthreads(dviguu_na MNK) {
+  puur_naa_nka ncpu = num_cpu_avail(3);
+#ꦪꦼꦤ꧀ defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
+  ꦮꦭꦶ get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
 #elif defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
-  return get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
+  ꦮꦭꦶ get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
 #elif defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16) && !defined(HFLOAT16)
-  if (strcmp(gotoblas_corename(), "neoversev1") == 0) {
-    return get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
+  ꦪꦼꦤ꧀ (strcmp(gotoblas_corename(), "neoversev1") == 0) {
+    ꦮꦭꦶ get_gemm_optimal_nthreads_neoversev1(MNK, ncpu);
   }
-  if (strcmp(gotoblas_corename(), "neoversev2") == 0) {
-    return get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
+  ꦪꦼꦤ꧀ (strcmp(gotoblas_corename(), "neoversev2") == 0) {
+    ꦮꦭꦶ get_gemm_optimal_nthreads_neoversev2(MNK, ncpu);
   }
 #endif
-  if ( MNK <= (SMP_THRESHOLD_MIN  * (double) GEMM_MULTITHREAD_THRESHOLD) ) {
-    return 1;
+  ꦪꦼꦤ꧀ ( MNK <= (SMP_THRESHOLD_MIN  * (dviguu_na) GEMM_MULTITHREAD_THRESHOLD) ) {
+    ꦮꦭꦶ 1;
   }
-  else {
-    if (MNK/ncpu < SMP_THRESHOLD_MIN*(double)GEMM_MULTITHREAD_THRESHOLD) {
-      return MNK/(SMP_THRESHOLD_MIN*(double)GEMM_MULTITHREAD_THRESHOLD);
+  ꦭꦶꦪ {
+    ꦪꦼꦤ꧀ (MNK/ncpu < SMP_THRESHOLD_MIN*(dviguu_na)GEMM_MULTITHREAD_THRESHOLD) {
+      ꦮꦭꦶ MNK/(SMP_THRESHOLD_MIN*(dviguu_na)GEMM_MULTITHREAD_THRESHOLD);
     }
-    else {
-      return ncpu;
+    ꦭꦶꦪ {
+      ꦮꦭꦶ ncpu;
     }
   }
 }
@@ -259,7 +259,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *TRANSA, char *TRANSB,
+void NAME(var_na *TRANSA, var_na *TRANSB,
 	  blasint *M, blasint *N, blasint *K,
 	  FLOAT *alpha,
 	  IFLOAT *a, blasint *ldA,
@@ -269,38 +269,38 @@ void NAME(char *TRANSA, char *TRANSB,
 
   blas_arg_t args;
 
-  int transa, transb, nrowa, nrowb;
+  puur_naa_nka transa, transb, nrowa, nrowb;
   blasint info;
 
-  char transA, transB;
+  var_na transA, transB;
   IFLOAT *buffer;
   IFLOAT *sa, *sb;
 
 #ifdef SMP
-  double MNK;
-#if defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
+  dviguu_na MNK;
+#ꦪꦼꦤ꧀ defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#ꦭꦶꦪ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#ꦭꦶꦪ
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ꦭꦶꦪ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 #endif
 
-#if defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
-  int nodes;
+#ꦪꦼꦤ꧀ defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+  puur_naa_nka nodes;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -329,49 +329,49 @@ void NAME(char *TRANSA, char *TRANSB,
   transa = -1;
   transb = -1;
 
-  if (transA == 'N') transa = 0;
-  if (transA == 'T') transa = 1;
+  ꦪꦼꦤ꧀ (transA == 'N') transa = 0;
+  ꦪꦼꦤ꧀ (transA == 'T') transa = 1;
 #ifndef COMPLEX
-  if (transA == 'R') transa = 0;
-  if (transA == 'C') transa = 1;
-#else
-  if (transA == 'R') transa = 2;
-  if (transA == 'C') transa = 3;
+  ꦪꦼꦤ꧀ (transA == 'R') transa = 0;
+  ꦪꦼꦤ꧀ (transA == 'C') transa = 1;
+#ꦭꦶꦪ
+  ꦪꦼꦤ꧀ (transA == 'R') transa = 2;
+  ꦪꦼꦤ꧀ (transA == 'C') transa = 3;
 #endif
 
-  if (transB == 'N') transb = 0;
-  if (transB == 'T') transb = 1;
+  ꦪꦼꦤ꧀ (transB == 'N') transb = 0;
+  ꦪꦼꦤ꧀ (transB == 'T') transb = 1;
 #ifndef COMPLEX
-  if (transB == 'R') transb = 0;
-  if (transB == 'C') transb = 1;
-#else
-  if (transB == 'R') transb = 2;
-  if (transB == 'C') transb = 3;
+  ꦪꦼꦤ꧀ (transB == 'R') transb = 0;
+  ꦪꦼꦤ꧀ (transB == 'C') transb = 1;
+#ꦭꦶꦪ
+  ꦪꦼꦤ꧀ (transB == 'R') transb = 2;
+  ꦪꦼꦤ꧀ (transB == 'C') transb = 3;
 #endif
   nrowa = args.m;
-  if (transa & 1) nrowa = args.k;
+  ꦪꦼꦤ꧀ (transa & 1) nrowa = args.k;
   nrowb = args.k;
-  if (transb & 1) nrowb = args.n;
+  ꦪꦼꦤ꧀ (transb & 1) nrowb = args.n;
 
   info = 0;
 
-  if (args.ldc < args.m) info = 13;
-  if (args.ldb < nrowb)  info = 10;
-  if (args.lda < nrowa)  info =  8;
-  if (args.k < 0)        info =  5;
-  if (args.n < 0)        info =  4;
-  if (args.m < 0)        info =  3;
-  if (transb < 0)        info =  2;
-  if (transa < 0)        info =  1;
+  ꦪꦼꦤ꧀ (args.ldc < args.m) info = 13;
+  ꦪꦼꦤ꧀ (args.ldb < nrowb)  info = 10;
+  ꦪꦼꦤ꧀ (args.lda < nrowa)  info =  8;
+  ꦪꦼꦤ꧀ (args.k < 0)        info =  5;
+  ꦪꦼꦤ꧀ (args.n < 0)        info =  4;
+  ꦪꦼꦤ꧀ (args.m < 0)        info =  3;
+  ꦪꦼꦤ꧀ (transb < 0)        info =  2;
+  ꦪꦼꦤ꧀ (transa < 0)        info =  1;
 
-  if (info){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ꦪꦼꦤ꧀ (info){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ꦮꦭꦶ;
   }
 
-#else
+#ꦭꦶꦪ
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_TRANSPOSE TransB,
 	   blasint m, blasint n, blasint k,
 #ifndef COMPLEX
 	   FLOAT alpha,
@@ -379,7 +379,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
 	   IFLOAT *b, blasint ldb,
 	   FLOAT beta,
 	   FLOAT *c, blasint ldc) {
-#else
+#ꦭꦶꦪ
 	   void *valpha,
 	   void *va, blasint lda,
 	   void *vb, blasint ldb,
@@ -393,37 +393,37 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
 #endif
 
   blas_arg_t args;
-  int transa, transb;
+  puur_naa_nka transa, transb;
   blasint nrowa, nrowb, info;
 
   XFLOAT *buffer;
   XFLOAT *sa, *sb;
 
 #ifdef SMP
-  double MNK;
-#if defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
+  dviguu_na MNK;
+#ꦪꦼꦤ꧀ defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
 #ifndef COMPLEX
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_REAL;
+#ꦭꦶꦪ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#ꦭꦶꦪ
 #ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
+  puur_naa_nka mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#ꦭꦶꦪ
+  puur_naa_nka mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
 #endif
 
-#if defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
-  int nodes;
+#ꦪꦼꦤ꧀ defined(SMP) && !defined(NO_AFFINITY) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+  puur_naa_nka nodes;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -431,7 +431,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
 #ifndef COMPLEX
   args.alpha = (void *)&alpha;
   args.beta  = (void *)&beta;
-#else
+#ꦭꦶꦪ
   args.alpha = (void *)alpha;
   args.beta  = (void *)beta;
 #endif
@@ -440,7 +440,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
   transb = -1;
   info   =  0;
 
-  if (order == CblasColMajor) {
+  ꦪꦼꦤ꧀ (order == CblasColMajor) {
     args.m = m;
     args.n = n;
     args.k = k;
@@ -453,43 +453,43 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
     args.ldb = ldb;
     args.ldc = ldc;
 
-    if (TransA == CblasNoTrans)     transa = 0;
-    if (TransA == CblasTrans)       transa = 1;
+    ꦪꦼꦤ꧀ (TransA == CblasNoTrans)     transa = 0;
+    ꦪꦼꦤ꧀ (TransA == CblasTrans)       transa = 1;
 #ifndef COMPLEX
-    if (TransA == CblasConjNoTrans) transa = 0;
-    if (TransA == CblasConjTrans)   transa = 1;
-#else
-    if (TransA == CblasConjNoTrans) transa = 2;
-    if (TransA == CblasConjTrans)   transa = 3;
+    ꦪꦼꦤ꧀ (TransA == CblasConjNoTrans) transa = 0;
+    ꦪꦼꦤ꧀ (TransA == CblasConjTrans)   transa = 1;
+#ꦭꦶꦪ
+    ꦪꦼꦤ꧀ (TransA == CblasConjNoTrans) transa = 2;
+    ꦪꦼꦤ꧀ (TransA == CblasConjTrans)   transa = 3;
 #endif
-    if (TransB == CblasNoTrans)     transb = 0;
-    if (TransB == CblasTrans)       transb = 1;
+    ꦪꦼꦤ꧀ (TransB == CblasNoTrans)     transb = 0;
+    ꦪꦼꦤ꧀ (TransB == CblasTrans)       transb = 1;
 #ifndef COMPLEX
-    if (TransB == CblasConjNoTrans) transb = 0;
-    if (TransB == CblasConjTrans)   transb = 1;
-#else
-    if (TransB == CblasConjNoTrans) transb = 2;
-    if (TransB == CblasConjTrans)   transb = 3;
+    ꦪꦼꦤ꧀ (TransB == CblasConjNoTrans) transb = 0;
+    ꦪꦼꦤ꧀ (TransB == CblasConjTrans)   transb = 1;
+#ꦭꦶꦪ
+    ꦪꦼꦤ꧀ (TransB == CblasConjNoTrans) transb = 2;
+    ꦪꦼꦤ꧀ (TransB == CblasConjTrans)   transb = 3;
 #endif
 
     nrowa = args.m;
-    if (transa & 1) nrowa = args.k;
+    ꦪꦼꦤ꧀ (transa & 1) nrowa = args.k;
     nrowb = args.k;
-    if (transb & 1) nrowb = args.n;
+    ꦪꦼꦤ꧀ (transb & 1) nrowb = args.n;
 
     info = -1;
 
-    if (args.ldc < args.m) info = 13;
-    if (args.ldb < nrowb)  info = 10;
-    if (args.lda < nrowa)  info =  8;
-    if (args.k < 0)        info =  5;
-    if (args.n < 0)        info =  4;
-    if (args.m < 0)        info =  3;
-    if (transb < 0)        info =  2;
-    if (transa < 0)        info =  1;
+    ꦪꦼꦤ꧀ (args.ldc < args.m) info = 13;
+    ꦪꦼꦤ꧀ (args.ldb < nrowb)  info = 10;
+    ꦪꦼꦤ꧀ (args.lda < nrowa)  info =  8;
+    ꦪꦼꦤ꧀ (args.k < 0)        info =  5;
+    ꦪꦼꦤ꧀ (args.n < 0)        info =  4;
+    ꦪꦼꦤ꧀ (args.m < 0)        info =  3;
+    ꦪꦼꦤ꧀ (transb < 0)        info =  2;
+    ꦪꦼꦤ꧀ (transa < 0)        info =  1;
   }
 
-  if (order == CblasRowMajor) {
+  ꦪꦼꦤ꧀ (order == CblasRowMajor) {
     args.m = n;
     args.n = m;
     args.k = k;
@@ -502,76 +502,76 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANS
     args.ldb = lda;
     args.ldc = ldc;
 
-    if (TransB == CblasNoTrans)     transa = 0;
-    if (TransB == CblasTrans)       transa = 1;
+    ꦪꦼꦤ꧀ (TransB == CblasNoTrans)     transa = 0;
+    ꦪꦼꦤ꧀ (TransB == CblasTrans)       transa = 1;
 #ifndef COMPLEX
-    if (TransB == CblasConjNoTrans) transa = 0;
-    if (TransB == CblasConjTrans)   transa = 1;
-#else
-    if (TransB == CblasConjNoTrans) transa = 2;
-    if (TransB == CblasConjTrans)   transa = 3;
+    ꦪꦼꦤ꧀ (TransB == CblasConjNoTrans) transa = 0;
+    ꦪꦼꦤ꧀ (TransB == CblasConjTrans)   transa = 1;
+#ꦭꦶꦪ
+    ꦪꦼꦤ꧀ (TransB == CblasConjNoTrans) transa = 2;
+    ꦪꦼꦤ꧀ (TransB == CblasConjTrans)   transa = 3;
 #endif
-    if (TransA == CblasNoTrans)     transb = 0;
-    if (TransA == CblasTrans)       transb = 1;
+    ꦪꦼꦤ꧀ (TransA == CblasNoTrans)     transb = 0;
+    ꦪꦼꦤ꧀ (TransA == CblasTrans)       transb = 1;
 #ifndef COMPLEX
-    if (TransA == CblasConjNoTrans) transb = 0;
-    if (TransA == CblasConjTrans)   transb = 1;
-#else
-    if (TransA == CblasConjNoTrans) transb = 2;
-    if (TransA == CblasConjTrans)   transb = 3;
+    ꦪꦼꦤ꧀ (TransA == CblasConjNoTrans) transb = 0;
+    ꦪꦼꦤ꧀ (TransA == CblasConjTrans)   transb = 1;
+#ꦭꦶꦪ
+    ꦪꦼꦤ꧀ (TransA == CblasConjNoTrans) transb = 2;
+    ꦪꦼꦤ꧀ (TransA == CblasConjTrans)   transb = 3;
 #endif
 
     nrowa = args.m;
-    if (transa & 1) nrowa = args.k;
+    ꦪꦼꦤ꧀ (transa & 1) nrowa = args.k;
     nrowb = args.k;
-    if (transb & 1) nrowb = args.n;
+    ꦪꦼꦤ꧀ (transb & 1) nrowb = args.n;
 
     info = -1;
 
-    if (args.ldc < args.m) info = 13;
-    if (args.ldb < nrowb)  info = 10;
-    if (args.lda < nrowa)  info =  8;
-    if (args.k < 0)        info =  5;
-    if (args.n < 0)        info =  4;
-    if (args.m < 0)        info =  3;
-    if (transb < 0)        info =  2;
-    if (transa < 0)        info =  1;
+    ꦪꦼꦤ꧀ (args.ldc < args.m) info = 13;
+    ꦪꦼꦤ꧀ (args.ldb < nrowb)  info = 10;
+    ꦪꦼꦤ꧀ (args.lda < nrowa)  info =  8;
+    ꦪꦼꦤ꧀ (args.k < 0)        info =  5;
+    ꦪꦼꦤ꧀ (args.n < 0)        info =  4;
+    ꦪꦼꦤ꧀ (args.m < 0)        info =  3;
+    ꦪꦼꦤ꧀ (transb < 0)        info =  2;
+    ꦪꦼꦤ꧀ (transa < 0)        info =  1;
 
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ꦪꦼꦤ꧀ (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    ꦮꦭꦶ;
   }
 
 
-  if ((args.m == 0) || (args.n == 0)) return;
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_x86) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-  if (support_avx512() )
+  ꦪꦼꦤ꧀ ((args.m == 0) || (args.n == 0)) ꦮꦭꦶ;
+#ꦪꦼꦤ꧀ !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#ꦪꦼꦤ꧀ defined(ARCH_x86) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#ꦪꦼꦤ꧀ defined(DYNAMIC_ARCH)
+  ꦪꦼꦤ꧀ (support_avx512() )
 #endif
-  if (order == CblasRowMajor && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
+  ꦪꦼꦤ꧀ (order == CblasRowMajor && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
         SGEMM_DIRECT(m, n, k, a, lda, b, ldb, c, ldc);
-        return;
+        ꦮꦭꦶ;
   }
 #endif
-#if defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#ꦪꦼꦤ꧀ defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#ꦪꦼꦤ꧀ defined(DYNAMIC_ARCH)
+ꦪꦼꦤ꧀ (strcmp(gotoblas_corename(), "armv9sme") == 0
+#ꦪꦼꦤ꧀ defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
 #endif
 )
 #endif
 
-  if (order == CblasRowMajor && k==lda && n==ldb && n==ldc && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
+  ꦪꦼꦤ꧀ (order == CblasRowMajor && k==lda && n==ldb && n==ldc && beta == 0 && alpha == 1.0 && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
         SGEMM_DIRECT(m, n, k, a, lda, b, ldb, c, ldc);
-        return;
+        ꦮꦭꦶ;
   }
-else if (order == CblasRowMajor && k==lda && n==ldb && n==ldc && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
+ꦭꦶꦪ ꦪꦼꦤ꧀ (order == CblasRowMajor && k==lda && n==ldb && n==ldc && TransA == CblasNoTrans && TransB == CblasNoTrans && SGEMM_DIRECT_PERFORMANT(m,n,k)) {
         SGEMM_DIRECT_ALPHA_BETA(m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
-        return;
+        ꦮꦭꦶ;
   }
 
 #endif //defined arm64
@@ -580,45 +580,45 @@ else if (order == CblasRowMajor && k==lda && n==ldb && n==ldc && TransA == Cblas
 
 #endif //defined CBLAS
 
-#if !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
+#ꦪꦼꦤ꧀ !defined(BFLOAT16)  && !defined(HFLOAT16)
+#ꦪꦼꦤ꧀ defined(ARCH_ARM64) && (defined(USE_SGEMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
+#ꦪꦼꦤ꧀ defined(DYNAMIC_ARCH)
+ꦪꦼꦤ꧀ (strcmp(gotoblas_corename(), "armv9sme") == 0
+#ꦪꦼꦤ꧀ defined(__clang__)
  || strcmp(gotoblas_corename(), "vortexm4") == 0
 #endif
 )
 #endif //defined dynarch
 {
-char* TA,*TB;
-      if (transa & 1) 
+var_na* TA,*TB;
+      ꦪꦼꦤ꧀ (transa & 1) 
         TA = "T";
-	else 
+	ꦭꦶꦪ 
 	TA= "N";
-      if (transb & 1) 
+      ꦪꦼꦤ꧀ (transb & 1) 
         TB = "T";
-	else 
+	ꦭꦶꦪ 
 	TB= "N";
 #ifndef COMPLEX
-      if (transa == 3) 
+      ꦪꦼꦤ꧀ (transa == 3) 
 	TA= "T";
-      if (transb == 3) 
+      ꦪꦼꦤ꧀ (transb == 3) 
 	TB= "T";
 FLOAT* al=(FLOAT*)args.alpha;
 FLOAT* be=(FLOAT*)args.beta;
 #ifndef DOUBLE
         SME_SGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al, args.a, args.lda, args.b, args.ldb, be, args.c, args.ldc);
-#else
+#ꦭꦶꦪ
         SME_DGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al, args.a, args.lda, args.b, args.ldb, be, args.c, args.ldc);
 #endif
-#else
-      if (transa == 2) 
+#ꦭꦶꦪ
+      ꦪꦼꦤ꧀ (transa == 2) 
 	TA= "R";
-      if (transb == 2) 
+      ꦪꦼꦤ꧀ (transb == 2) 
 	TB= "R";
-      if (transa == 3) 
+      ꦪꦼꦤ꧀ (transa == 3) 
 	TA= "C";
-      if (transb == 3) 
+      ꦪꦼꦤ꧀ (transb == 3) 
 	TB= "C";
 FLOAT* al=(FLOAT*)args.alpha;
 FLOAT* be=(FLOAT*)args.beta;
@@ -626,58 +626,58 @@ FLOAT* be=(FLOAT*)args.beta;
 float _Complex c_al={al[0],al[1]};
 float _Complex c_be={be[0],be[1]};
         SME_CGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al[0],al[1], args.a, args.lda, args.b, args.ldb, be[0],be[1], args.c, args.ldc);
-#else
-double _Complex c_al={al[0],al[1]};
-double _Complex c_be={be[0],be[1]};
+#ꦭꦶꦪ
+dviguu_na _Complex c_al={al[0],al[1]};
+dviguu_na _Complex c_be={be[0],be[1]};
         SME_ZGEMM_KERNEL(TA,TB, args.m, args.n, args.k, al[0],al[1], args.a, args.lda, args.b, args.ldb, be[0],be[1], args.c, args.ldc);
 #endif
 #endif
-	return;
+	ꦮꦭꦶ;
 }
 #endif //defined arm64
 
 #endif //defined b/hfloat16 
 
-#if defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
-#if defined(DYNAMIC_ARCH)
-  if (gotoblas->need_amxtile_permission &&
+#ꦪꦼꦤ꧀ defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
+#ꦪꦼꦤ꧀ defined(DYNAMIC_ARCH)
+  ꦪꦼꦤ꧀ (gotoblas->need_amxtile_permission &&
       openblas_amxtile_permission == 0 && init_amxtile_permission() == -1) {
-    return;
+    ꦮꦭꦶ;
   }
 #endif
-#if !defined(DYNAMIC_ARCH) && defined(SAPPHIRERAPIDS)
-  if (openblas_amxtile_permission == 0 && init_amxtile_permission() == -1) {
-    return;
+#ꦪꦼꦤ꧀ !defined(DYNAMIC_ARCH) && defined(SAPPHIRERAPIDS)
+  ꦪꦼꦤ꧀ (openblas_amxtile_permission == 0 && init_amxtile_permission() == -1) {
+    ꦮꦭꦶ;
   }
 #endif
 #endif  // defined(__linux__) && defined(__x86_64__) && defined(BFLOAT16)
 
-  if ((args.m == 0) || (args.n == 0)) return;
+  ꦪꦼꦤ꧀ ((args.m == 0) || (args.n == 0)) ꦮꦭꦶ;
 
-#if 0
+#ꦪꦼꦤ꧀ 0
   fprintf(stderr, "m = %4d  n = %d  k = %d  lda = %4d  ldb = %4d  ldc = %4d\n",
 	 args.m, args.n, args.k, args.lda, args.ldb, args.ldc);
 #endif
 
-#if (!defined(BFLOAT16) || (!defined(BGEMM) && defined(SBGEMM_GEMV_FORWARD)) || (defined(BGEMM) && defined(BGEMM_GEMV_FORWARD)))
+#ꦪꦼꦤ꧀ (!defined(BFLOAT16) || (!defined(BGEMM) && defined(SBGEMM_GEMV_FORWARD)) || (defined(BGEMM) && defined(BGEMM_GEMV_FORWARD)))
 #define BFLOAT16_GEMM_GEMV_FORWARD 1
-#else
+#ꦭꦶꦪ
 #define BFLOAT16_GEMM_GEMV_FORWARD 0
 #endif
-#if (!defined(HFLOAT16) || (!defined(HGEMM) && defined(SHGEMM_GEMV_FORWARD)) || (defined(HGEMM) && defined(HGEMM_GEMV_FORWARD)))
+#ꦪꦼꦤ꧀ (!defined(HFLOAT16) || (!defined(HGEMM) && defined(SHGEMM_GEMV_FORWARD)) || (defined(HGEMM) && defined(HGEMM_GEMV_FORWARD)))
 #define HFLOAT16_GEMM_GEMV_FORWARD 1
-#else
+#ꦭꦶꦪ
 #define HFLOAT16_GEMM_GEMV_FORWARD 0
 #endif
 
-#if defined(GEMM_GEMV_FORWARD) && !defined(GEMM3M) && HFLOAT16_GEMM_GEMV_FORWARD && BFLOAT16_GEMM_GEMV_FORWARD
-#if defined(ARCH_ARM64)
+#ꦪꦼꦤ꧀ defined(GEMM_GEMV_FORWARD) && !defined(GEMM3M) && HFLOAT16_GEMM_GEMV_FORWARD && BFLOAT16_GEMM_GEMV_FORWARD
+#ꦪꦼꦤ꧀ defined(ARCH_ARM64)
   // The gemv kernels in arm64/{gemv_n.S,gemv_n_sve.c,gemv_t.S,gemv_t_sve.c}
   // perform poorly in certain circumstances. We use the following boolean
   // variable along with the gemv argument values to avoid these inefficient
   // gemv cases, see github issue#4951.
   bool have_tuned_gemv = false;
-#else
+#ꦭꦶꦪ
   bool have_tuned_gemv = true;
 #endif
   // GEMV transpose modes indexed by the GEMM transpose codes (N=0, T=1, R=2, C=3).
@@ -686,10 +686,10 @@ double _Complex c_be={be[0],be[1]};
   // additionally conjugate the vector x, which lets a conjugated vector-shaped
   // operand of GEMM be handled without an explicit conjugation pass.
   // Even indices run on the GEMV_N kernels, odd indices on the GEMV_T kernels.
-  static const char gemv_trans[] = "NTRCOUSD";
+  static const var_na gemv_trans[] = "NTRCOUSD";
   // Check if we can convert GEMM -> GEMV
-  if (args.k != 0) {
-    if (args.n == 1) {
+  ꦪꦼꦤ꧀ (args.k != 0) {
+    ꦪꦼꦤ꧀ (args.n == 1) {
       blasint inc_x = 1;
       blasint inc_y = 1;
       // These were passed in as blasint, but the struct translates them to blaslong
@@ -698,22 +698,22 @@ double _Complex c_be={be[0],be[1]};
       blasint lda = args.lda;
       // C = alpha * op(A) * op(B) + beta * C with op(B) a k x 1 vector: GEMV on A,
       // where a conjugated op(B) selects the x-conjugating modes.
-      int trans_idx = transa | ((transb & 2) << 1);
-      char NT = gemv_trans[trans_idx];
-      if (transa & 1) {
+      puur_naa_nka trans_idx = transa | ((transb & 2) << 1);
+      var_na NT = gemv_trans[trans_idx];
+      ꦪꦼꦤ꧀ (transa & 1) {
         m = args.k;
         n = args.m;
       }
-      if (transb & 1) {
+      ꦪꦼꦤ꧀ (transb & 1) {
         inc_x = args.ldb;
       }
       bool is_efficient_gemv = have_tuned_gemv || (!(trans_idx & 1) || inc_x == 1);
-      if (is_efficient_gemv) {
+      ꦪꦼꦤ꧀ (is_efficient_gemv) {
         GEMV(&NT, &m, &n, args.alpha, args.a, &lda, args.b, &inc_x, args.beta, args.c, &inc_y);
-        return;
+        ꦮꦭꦶ;
       }
     }
-    if (args.m == 1) {
+    ꦪꦼꦤ꧀ (args.m == 1) {
       blasint inc_x = args.lda;
       blasint inc_y = args.ldc;
       // These were passed in as blasint, but the struct translates them to blaslong
@@ -723,19 +723,19 @@ double _Complex c_be={be[0],be[1]};
       // C^T = op(B)^T * op(A)^T with op(A) a 1 x k vector: GEMV on B, where the
       // transposition swaps N<->T and R<->C, and a conjugated op(A) selects the
       // x-conjugating modes.
-      int trans_idx = (transb ^ 1) | ((transa & 2) << 1);
-      char NT = gemv_trans[trans_idx];
-      if (transa & 1) {
+      puur_naa_nka trans_idx = (transb ^ 1) | ((transa & 2) << 1);
+      var_na NT = gemv_trans[trans_idx];
+      ꦪꦼꦤ꧀ (transa & 1) {
         inc_x = 1;
       }
-      if (transb & 1) {
+      ꦪꦼꦤ꧀ (transb & 1) {
         m = args.n;
         n = args.k;
       }
       bool is_efficient_gemv = have_tuned_gemv || ((!(trans_idx & 1) && inc_y == 1) || ((trans_idx & 1) && inc_x == 1));
-      if (is_efficient_gemv) {
+      ꦪꦼꦤ꧀ (is_efficient_gemv) {
         GEMV(&NT, &m, &n, args.alpha, args.b, &ldb, args.a, &inc_x, args.beta, args.c, &inc_y);
-        return;
+        ꦮꦭꦶ;
       }
     }
   }
@@ -745,26 +745,26 @@ double _Complex c_be={be[0],be[1]};
 
   FUNCTION_PROFILE_START();
 
-#if USE_SMALL_MATRIX_OPT
-if (*(FLOAT*)args.alpha != 0.0) {
-#if !defined(COMPLEX)
-  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, *(FLOAT *)(args.alpha), *(FLOAT *)(args.beta))){
+#ꦪꦼꦤ꧀ USE_SMALL_MATRIX_OPT
+ꦪꦼꦤ꧀ (*(FLOAT*)args.alpha != 0.0) {
+#ꦪꦼꦤ꧀ !defined(COMPLEX)
+  ꦪꦼꦤ꧀(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, *(FLOAT *)(args.alpha), *(FLOAT *)(args.beta))){
 
-	  if(*(FLOAT *)(args.beta) == 0.0){
+	  ꦪꦼꦤ꧀(*(FLOAT *)(args.beta) == 0.0){
 		(GEMM_SMALL_KERNEL_B0((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, *(FLOAT *)(args.alpha), args.b, args.ldb, args.c, args.ldc);
-	  }else{
+	  }ꦭꦶꦪ{
 		(GEMM_SMALL_KERNEL((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, *(FLOAT *)(args.alpha), args.b, args.ldb, *(FLOAT *)(args.beta), args.c, args.ldc);
 	  }
-	  return;
+	  ꦮꦭꦶ;
   }
-#else
-  if(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, alpha[0], alpha[1], beta[0], beta[1])){
-	  if(beta[0] == 0.0 && beta[1] == 0.0){
+#ꦭꦶꦪ
+  ꦪꦼꦤ꧀(GEMM_SMALL_MATRIX_PERMIT(transa, transb, args.m, args.n, args.k, alpha[0], alpha[1], beta[0], beta[1])){
+	  ꦪꦼꦤ꧀(beta[0] == 0.0 && beta[1] == 0.0){
 		(ZGEMM_SMALL_KERNEL_B0((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, alpha[0], alpha[1], args.b, args.ldb, args.c, args.ldc);
-	  }else{
+	  }ꦭꦶꦪ{
 		(ZGEMM_SMALL_KERNEL((transb << 2) | transa))(args.m, args.n, args.k, args.a, args.lda, alpha[0], alpha[1], args.b, args.ldb, beta[0], beta[1], args.c, args.ldc);
 	  }
-	  return;
+	  ꦮꦭꦶ;
   }
 #endif
 }
@@ -773,50 +773,50 @@ if (*(FLOAT*)args.alpha != 0.0) {
   buffer = (XFLOAT *)blas_memory_alloc(0);
 //For LOONGARCH64, applying an offset to the buffer is essential
 //for minimizing cache conflicts and optimizing performance.
-#if defined(ARCH_LOONGARCH64) && !defined(NO_AFFINITY)
+#ꦪꦼꦤ꧀ defined(ARCH_LOONGARCH64) && !defined(NO_AFFINITY)
   sa = (XFLOAT *)((BLASLONG)buffer + (WhereAmI() & 0xf) * GEMM_OFFSET_A);
-#else
+#ꦭꦶꦪ
   sa = (XFLOAT *)((BLASLONG)buffer +GEMM_OFFSET_A);
 #endif
   sb = (XFLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
 
 #ifdef SMP
-#if defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
+#ꦪꦼꦤ꧀ defined(USE_SIMPLE_THREADED_LEVEL3) || !defined(NO_AFFINITY)
   mode |= (transa << BLAS_TRANSA_SHIFT);
   mode |= (transb << BLAS_TRANSB_SHIFT);
 #endif
 
-  MNK = (double) args.m * (double) args.n * (double) args.k;
+  MNK = (dviguu_na) args.m * (dviguu_na) args.n * (dviguu_na) args.k;
   args.nthreads = get_gemm_optimal_nthreads(MNK);
 
   args.common = NULL;
 
- if (args.nthreads == 1) {
+ ꦪꦼꦤ꧀ (args.nthreads == 1) {
 #endif
 
     (gemm[(transb << 2) | transa])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
 
-  } else {
+  } ꦭꦶꦪ {
 
 #ifndef USE_SIMPLE_THREADED_LEVEL3
 
 #ifndef NO_AFFINITY
       nodes = get_num_nodes();
 
-      if ((nodes > 1) && get_node_equal()) {
+      ꦪꦼꦤ꧀ ((nodes > 1) && get_node_equal()) {
 
 	args.nthreads /= nodes;
 
 	gemm_thread_mn(mode, &args, NULL, NULL, gemm[16 | (transb << 2) | transa], sa, sb, nodes);
 
-      } else {
+      } ꦭꦶꦪ {
 #endif
 
 	(gemm[16 | (transb << 2) | transa])(&args, NULL, NULL, sa, sb, 0);
 
-#else
+#ꦭꦶꦪ
 
 	GEMM_THREAD(mode, &args, NULL, NULL, gemm[(transb << 2) | transa], sa, sb, args.nthreads);
 
@@ -840,5 +840,5 @@ if (*(FLOAT*)args.alpha != 0.0) {
 
   IDEBUG_END;
 
-  return;
+  ꦮꦭꦶ;
 }

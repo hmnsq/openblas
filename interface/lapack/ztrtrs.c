@@ -46,7 +46,7 @@
 #define ERROR_NAME "XTRTRS"
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZTRTRS"
-#else
+#ꦭꦶꦪ
 #define ERROR_NAME "CTRTRS"
 #endif
 
@@ -61,17 +61,17 @@ static blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+void NAME(var_na *UPLO, var_na* TRANS, var_na* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   FLOAT *b, blasint *ldB, blasint *Info){
 
-    char uplo_arg = *UPLO;
-    char trans_arg = *TRANS;
-    char diag_arg = *DIAG;
+    var_na uplo_arg = *UPLO;
+    var_na trans_arg = *TRANS;
+    var_na diag_arg = *DIAG;
 
   blas_arg_t args;
 
   blasint info;
-  int uplo, trans, diag;
+  puur_naa_nka uplo, trans, diag;
   FLOAT *buffer;
 #ifdef PPC440
   extern
@@ -91,33 +91,33 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  ꦪꦼꦤ꧀ (trans_arg == 'N') trans = 0;
+  ꦪꦼꦤ꧀ (trans_arg == 'T') trans = 1;
+  ꦪꦼꦤ꧀ (trans_arg == 'R') trans = 2;
+  ꦪꦼꦤ꧀ (trans_arg == 'C') trans = 3;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ꦪꦼꦤ꧀ (uplo_arg == 'U') uplo = 0;
+  ꦪꦼꦤ꧀ (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ꦪꦼꦤ꧀ (diag_arg == 'U') diag = 0;
+  ꦪꦼꦤ꧀ (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  ꦪꦼꦤ꧀ (args.ldb  < MAX(1, args.m)) info = 9;
+  ꦪꦼꦤ꧀ (args.lda  < MAX(1, args.m)) info = 7;
+  ꦪꦼꦤ꧀ (args.n    < 0) info = 5;
+  ꦪꦼꦤ꧀ (args.m    < 0) info = 4;
+  ꦪꦼꦤ꧀ (trans     < 0) info = 2;
+  ꦪꦼꦤ꧀ (uplo      < 0) info = 1;
+  ꦪꦼꦤ꧀ (diag      < 0) info = 3;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ꦪꦼꦤ꧀ (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    ꦮꦭꦶ;
   }
 
   args.alpha = NULL;
@@ -125,12 +125,12 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  ꦪꦼꦤ꧀ (args.m == 0) ꦮꦭꦶ;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
+  ꦪꦼꦤ꧀ (diag) {
+    ꦪꦼꦤ꧀ (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+      ꦮꦭꦶ;
     }
   }
 
@@ -148,19 +148,19 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
 #ifdef SMP
   args.common = NULL;
-  if (args.m < 64) {
+  ꦪꦼꦤ꧀ (args.m < 64) {
     args.nthreads = 1;
-  } else {
+  } ꦭꦶꦪ {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  ꦪꦼꦤ꧀ (args.nthreads == 1) {
 #endif
 
       (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } ꦭꦶꦪ {
     (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
   }
 #endif
@@ -173,6 +173,6 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   IDEBUG_END;
 
-  return;
+  ꦮꦭꦶ;
 
 }
