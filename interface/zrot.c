@@ -36,45 +36,45 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C, FLOAT *S){
+#यदि_अपरिभाषितम् CBLAS
+शून्य NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C, FLOAT *S){
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
   FLOAT c = *C;
   FLOAT s = *S;
 
-#else
-void CNAME(blasint n, void *VX, blasint incx, void *VY, blasint incy, FLOAT c, FLOAT s) {
+#अन्यथा
+शून्य CNAME(blasint n, शून्य *VX, blasint incx, शून्य *VY, blasint incy, FLOAT c, FLOAT s) {
     FLOAT *x = (FLOAT*) VX;
     FLOAT *y = (FLOAT*) VY;
-#endif /* CBLAS */
+#यदि_अन्तः /* CBLAS */
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return;
+  यदि (n <= 0) प्रत्यागम;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * 2 * incx;
-  if (incy < 0) y -= (n - 1) * 2 * incy;
+  यदि (incx < 0) x -= (n - 1) * 2 * incx;
+  यदि (incy < 0) y -= (n - 1) * 2 * incy;
 
   ROT_K(n, x, incx, y, incy, c, s);
 
-  FUNCTION_PROFILE_END(4, n, n);
+  FUNCTION_PROFILE_अन्तः(4, n, n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 
 }

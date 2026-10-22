@@ -36,68 +36,68 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
-double NAME(blasint *N, float *x, blasint *INCX, float *y, blasint *INCY){
+द्विगुण NAME(blasint *N, भिन्न *x, blasint *INCX, भिन्न *y, blasint *INCY){
 
   BLASLONG n    = *N;
   BLASLONG incx = *INCX;
   BLASLONG incy = *INCY;
-  double ret = 0.0;
+  द्विगुण ret = 0.0;
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  यदि (n <= 0) प्रत्यागम 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  यदि (incx < 0) x -= (n - 1) * incx;
+  यदि (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_अन्तः(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return ret;
+  प्रत्यागम ret;
 
 }
 
-#else
+#अन्यथा
 
-double CNAME(blasint n, float *x, blasint incx, float *y, blasint incy){
+द्विगुण CNAME(blasint n, भिन्न *x, blasint incx, भिन्न *y, blasint incy){
 
-  double ret = 0.0;
+  द्विगुण ret = 0.0;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  यदि (n <= 0) प्रत्यागम 0;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  यदि (incx < 0) x -= (n - 1) * incx;
+  यदि (incy < 0) y -= (n - 1) * incy;
 
   ret=DSDOT_K(n, x, incx, y, incy);
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_अन्तः(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return ret;
+  प्रत्यागम ret;
 
 }
 
-#endif
+#यदि_अन्तः

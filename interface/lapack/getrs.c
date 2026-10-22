@@ -36,122 +36,122 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGETRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGETRS"
-#else
-#define ERROR_NAME "SGETRS"
-#endif
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "QGETRS"
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "DGETRS"
+#अन्यथा
+#परिभाषय ERROR_NAME "SGETRS"
+#यदि_अन्तः
 
-static blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+स्थिर blasint (*getrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_SINGLE, GETRS_T_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#यदि_परिभाषितम् SMP
+स्थिर blasint (*getrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
   GETRS_N_PARALLEL, GETRS_T_PARALLEL,
 };
-#endif
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
-void NAME(char *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+शून्य NAME(वर्ण *TRANS, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   blasint *ipiv, FLOAT *b, blasint *ldB, blasint *Info){
 
-  char trans_arg = *TRANS;
+  वर्ण trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t तर्काः;
 
   blasint info;
-  int trans;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  पूर्णाङ्क trans;
+  FLOAT *बफर;
+#यदि_परिभाषितम् PPC440
+  बाह्य
+#यदि_अन्तः
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
-  args.c    = (void *)ipiv;
+  तर्काः.m    = *N;
+  तर्काः.n    = *NRHS;
+  तर्काः.a    = (शून्य *)a;
+  तर्काः.lda  = *ldA;
+  तर्काः.b    = (शून्य *)b;
+  तर्काः.ldb  = *ldB;
+  तर्काः.c    = (शून्य *)ipiv;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
 
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 0;
-  if (trans_arg == 'C') trans = 1;
+  यदि (trans_arg == 'N') trans = 0;
+  यदि (trans_arg == 'T') trans = 1;
+  यदि (trans_arg == 'R') trans = 0;
+  यदि (trans_arg == 'C') trans = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 8;
-  if (args.lda  < MAX(1, args.m)) info = 5;
-  if (args.n    < 0) info = 3;
-  if (args.m    < 0) info = 2;
-  if (trans     < 0) info = 1;
+  यदि (तर्काः.ldb  < MAX(1, तर्काः.m)) info = 8;
+  यदि (तर्काः.lda  < MAX(1, तर्काः.m)) info = 5;
+  यदि (तर्काः.n    < 0) info = 3;
+  यदि (तर्काः.m    < 0) info = 2;
+  यदि (trans     < 0) info = 1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
-    return;
+  यदि (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME) - 1);
+    प्रत्यागम;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  तर्काः.alpha = रिक्त;
+  तर्काः.beta  = रिक्त;
 
   *Info = info;
 
-  if (args.m == 0 || args.n == 0) return;
+  यदि (तर्काः.m == 0 || तर्काः.n == 0) प्रत्यागम;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#यदि_अपरिभाषितम् PPC440
+  बफर = (FLOAT *)blas_स्मृतिः_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_विस्थापनम्_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_विस्थापनम्_B);
+#यदि_अन्तः
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#यदि_परिभाषितम् SMP
+  तर्काः.common = रिक्त;
+  यदि (तर्काः.m < 64) {
+    तर्काः.nthreads = 1;
+  } अन्यथा {
+    तर्काः.nthreads = अङ्कः_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  यदि (तर्काः.nthreads == 1) {
+#यदि_अन्तः
 
-    (getrs_single[trans])(&args, NULL, NULL, sa, sb, 0);
+    (getrs_single[trans])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    (getrs_parallel[trans])(&args, NULL, NULL, sa, sb, 0);
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
+    (getrs_parallel[trans])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
   }
-#endif
+#यदि_अन्तः
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#यदि_अपरिभाषितम् PPC440
+  blas_स्मृतिः_free(बफर);
+#यदि_अन्तः
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE * COMPSIZE, तर्काः.m * तर्काः.n, 2 * तर्काः.m * तर्काः.m * तर्काः.n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 
 }

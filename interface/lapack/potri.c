@@ -36,129 +36,129 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QPOTRI"
-#elif defined(DOUBLE)
-#define ERROR_NAME "DPOTRI"
-#else
-#define ERROR_NAME "SPOTRI"
-#endif
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "QPOTRI"
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "DPOTRI"
+#अन्यथा
+#परिभाषय ERROR_NAME "SPOTRI"
+#यदि_अन्तः
 
-static blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*trtri_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_SINGLE, TRTRI_LN_SINGLE,
 };
 
-static blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*lauum_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_SINGLE, LAUUM_L_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+#यदि_परिभाषितम् SMP
+स्थिर blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   TRTRI_UN_PARALLEL, TRTRI_LN_PARALLEL,
 };
 
-static blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
+स्थिर blasint (*lauum_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) ={
   LAUUM_U_PARALLEL, LAUUM_L_PARALLEL,
 };
-#endif
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+शून्य NAME(वर्ण *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
-  blas_arg_t args;
+  blas_arg_t तर्काः;
 
   blasint uplo_arg = *UPLO;
   blasint uplo;
   blasint info;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  FLOAT *बफर;
+#यदि_परिभाषितम् PPC440
+  बाह्य
+#यदि_अन्तः
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.n    = *N;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
+  तर्काः.n    = *N;
+  तर्काः.a    = (शून्य *)a;
+  तर्काः.lda  = *ldA;
 
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  यदि (uplo_arg == 'U') uplo = 0;
+  यदि (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 4;
-  if (args.n    < 0)             info = 2;
-  if (uplo < 0)                  info = 1;
+  यदि (तर्काः.lda  < MAX(1,तर्काः.n)) info = 4;
+  यदि (तर्काः.n    < 0)             info = 2;
+  यदि (uplo < 0)                  info = 1;
 
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  यदि (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    प्रत्यागम;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  यदि (तर्काः.n == 0) प्रत्यागम;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#यदि_अपरिभाषितम् PPC440
+  बफर = (FLOAT *)blas_स्मृतिः_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_विस्थापनम्_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_विस्थापनम्_B);
+#यदि_अन्तः
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.n < 180)
-    args.nthreads = 1;
-  else
-  args.nthreads = num_cpu_avail(4);
+#यदि_परिभाषितम् SMP
+  तर्काः.common = रिक्त;
+  यदि (तर्काः.n < 180)
+    तर्काः.nthreads = 1;
+  अन्यथा
+  तर्काः.nthreads = अङ्कः_cpu_avail(4);
 
-  if (args.nthreads == 1) {
-#endif
+  यदि (तर्काः.nthreads == 1) {
+#यदि_अन्तः
 
-  info = (trtri_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  info = (trtri_single[uplo])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-  if (!info) {
-    info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
+  यदि (!info) {
+    info = (lauum_single[uplo])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
   }
 
   *Info = info;
 
-#ifdef SMP
-  } else {
-    info = (trtri_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
+    info = (trtri_parallel[uplo])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-    if (!info) {
-      info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
+    यदि (!info) {
+      info = (lauum_parallel[uplo])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
     }
 
     *Info = info;
   }
-#endif
+#यदि_अन्तः
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#यदि_अपरिभाषितम् PPC440
+  blas_स्मृतिः_free(बफर);
+#यदि_अन्तः
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, .5 * args.n * args.n,
-		          args.n * (1./3. + args.n * ( 1./2. + args.n * 1./6.))
-		       +  args.n * (1./3. + args.n * (-1./2. + args.n * 1./6.)));
+  FUNCTION_PROFILE_अन्तः(COMPSIZE * COMPSIZE, .5 * तर्काः.n * तर्काः.n,
+		          तर्काः.n * (1./3. + तर्काः.n * ( 1./2. + तर्काः.n * 1./6.))
+		       +  तर्काः.n * (1./3. + तर्काः.n * (-1./2. + तर्काः.n * 1./6.)));
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 }

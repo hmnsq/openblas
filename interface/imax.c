@@ -36,91 +36,91 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#undef MAX_K
+#अपरिभाषय MAX_K
 
-#ifdef USE_ABS
+#यदि_परिभाषितम् USE_ABS
 
-#ifndef USE_MIN
+#यदि_अपरिभाषितम् USE_MIN
 
 /* ABS & MAX */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMAX_K
-#else
-#define MAX_K	ISAMAX_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMAX_K
-#else
-#define MAX_K	ICAMAX_K
-#endif
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय MAX_K	IQAMAX_K
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय MAX_K	IDAMAX_K
+#अन्यथा
+#परिभाषय MAX_K	ISAMAX_K
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय MAX_K	IXAMAX_K
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय MAX_K	IZAMAX_K
+#अन्यथा
+#परिभाषय MAX_K	ICAMAX_K
+#यदि_अन्तः
+#यदि_अन्तः
 
-#else
+#अन्यथा
 
 /* ABS & MIN */
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MAX_K	IQAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDAMIN_K
-#else
-#define MAX_K	ISAMIN_K
-#endif
-#else
-#ifdef XDOUBLE
-#define MAX_K	IXAMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IZAMIN_K
-#else
-#define MAX_K	ICAMIN_K
-#endif
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय MAX_K	IQAMIN_K
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय MAX_K	IDAMIN_K
+#अन्यथा
+#परिभाषय MAX_K	ISAMIN_K
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय MAX_K	IXAMIN_K
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय MAX_K	IZAMIN_K
+#अन्यथा
+#परिभाषय MAX_K	ICAMIN_K
+#यदि_अन्तः
+#यदि_अन्तः
 
-#endif
+#यदि_अन्तः
 
-#else
+#अन्यथा
 
-#ifndef USE_MIN
+#यदि_अपरिभाषितम् USE_MIN
 
 /* MAX */
-#ifdef XDOUBLE
-#define MAX_K	IQMAX_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMAX_K
-#else
-#define MAX_K	ISMAX_K
-#endif
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय MAX_K	IQMAX_K
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय MAX_K	IDMAX_K
+#अन्यथा
+#परिभाषय MAX_K	ISMAX_K
+#यदि_अन्तः
 
-#else
+#अन्यथा
 
 /* MIN */
-#ifdef XDOUBLE
-#define MAX_K	IQMIN_K
-#elif defined(DOUBLE)
-#define MAX_K	IDMIN_K
-#else
-#define MAX_K	ISMIN_K
-#endif
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय MAX_K	IQMIN_K
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय MAX_K	IDMIN_K
+#अन्यथा
+#परिभाषय MAX_K	ISMIN_K
+#यदि_अन्तः
 
-#endif
+#यदि_अन्तः
 
-#endif
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
 blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -130,7 +130,7 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0;
+  यदि (n <= 0) प्रत्यागम 0;
 
   IDEBUG_START;
 
@@ -138,28 +138,28 @@ blasint NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   ret = (blasint)MAX_K(n, x, incx);
 
-  if(ret > n) ret=n;
+  यदि(ret > n) ret=n;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return ret;
+  प्रत्यागम ret;
 }
 
-#else
-#ifdef COMPLEX
-CBLAS_INDEX CNAME(blasint n, void *vx, blasint incx){
+#अन्यथा
+#यदि_परिभाषितम् COMPLEX
+CBLAS_सूचकांक CNAME(blasint n, शून्य *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
-CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#अन्यथा
+CBLAS_सूचकांक CNAME(blasint n, FLOAT *x, blasint incx){
+#यदि_अन्तः
 
-  CBLAS_INDEX ret;
+  CBLAS_सूचकांक ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0;
+  यदि (n <= 0) प्रत्यागम 0;
 
   IDEBUG_START;
 
@@ -167,15 +167,15 @@ CBLAS_INDEX CNAME(blasint n, FLOAT *x, blasint incx){
 
   ret = MAX_K(n, x, incx);
 
-  if (ret > n) ret=n;
+  यदि (ret > n) ret=n;
 
-  if (ret) ret --;
+  यदि (ret) ret --;
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 0);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE, n, 0);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return ret;
+  प्रत्यागम ret;
 }
 
-#endif
+#यदि_अन्तः

@@ -36,101 +36,101 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#ifdef XDOUBLE
-#define ERROR_NAME "XTRTRS"
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZTRTRS"
-#else
-#define ERROR_NAME "CTRTRS"
-#endif
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "XTRTRS"
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZTRTRS"
+#अन्यथा
+#परिभाषय ERROR_NAME "CTRTRS"
+#यदि_अन्तः
 
-static blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+स्थिर blasint (*trtrs_single[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_SINGLE, TRTRS_UNN_SINGLE, TRTRS_UTU_SINGLE, TRTRS_UTN_SINGLE, TRTRS_URU_SINGLE, TRTRS_URN_SINGLE, TRTRS_UCU_SINGLE, TRTRS_UCN_SINGLE, TRTRS_LNU_SINGLE, TRTRS_LNN_SINGLE, TRTRS_LTU_SINGLE, TRTRS_LTN_SINGLE, TRTRS_LRU_SINGLE, TRTRS_LRN_SINGLE, TRTRS_LCU_SINGLE, TRTRS_LCN_SINGLE,
 };
 
-#ifdef SMP
-static blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#यदि_परिभाषितम् SMP
+स्थिर blasint (*trtrs_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
     TRTRS_UNU_PARALLEL, TRTRS_UNN_PARALLEL, TRTRS_UTU_PARALLEL, TRTRS_UTN_PARALLEL, TRTRS_URU_PARALLEL, TRTRS_URN_PARALLEL, TRTRS_UCU_PARALLEL, TRTRS_UCN_PARALLEL, TRTRS_LNU_PARALLEL, TRTRS_LNN_PARALLEL, TRTRS_LTU_PARALLEL, TRTRS_LTN_PARALLEL, TRTRS_LRU_PARALLEL, TRTRS_LRN_PARALLEL, TRTRS_LCU_PARALLEL, TRTRS_LCN_PARALLEL,
 };
-#endif
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
+शून्य NAME(वर्ण *UPLO, वर्ण* TRANS, वर्ण* DIAG, blasint *N, blasint *NRHS, FLOAT *a, blasint *ldA,
   FLOAT *b, blasint *ldB, blasint *Info){
 
-    char uplo_arg = *UPLO;
-    char trans_arg = *TRANS;
-    char diag_arg = *DIAG;
+    वर्ण uplo_arg = *UPLO;
+    वर्ण trans_arg = *TRANS;
+    वर्ण diag_arg = *DIAG;
 
-  blas_arg_t args;
+  blas_arg_t तर्काः;
 
   blasint info;
-  int uplo, trans, diag;
-  FLOAT *buffer;
-#ifdef PPC440
-  extern
-#endif
+  पूर्णाङ्क uplo, trans, diag;
+  FLOAT *बफर;
+#यदि_परिभाषितम् PPC440
+  बाह्य
+#यदि_अन्तः
   FLOAT *sa, *sb;
 
   PRINT_DEBUG_NAME;
 
-  args.m    = *N;
-  args.n    = *NRHS;
-  args.a    = (void *)a;
-  args.lda  = *ldA;
-  args.b    = (void *)b;
-  args.ldb  = *ldB;
+  तर्काः.m    = *N;
+  तर्काः.n    = *NRHS;
+  तर्काः.a    = (शून्य *)a;
+  तर्काः.lda  = *ldA;
+  तर्काः.b    = (शून्य *)b;
+  तर्काः.ldb  = *ldB;
 
   info = 0;
 
   TOUPPER(trans_arg);
   trans = -1;
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'R') trans = 2;
-  if (trans_arg == 'C') trans = 3;
+  यदि (trans_arg == 'N') trans = 0;
+  यदि (trans_arg == 'T') trans = 1;
+  यदि (trans_arg == 'R') trans = 2;
+  यदि (trans_arg == 'C') trans = 3;
 
   TOUPPER(uplo_arg);
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  यदि (uplo_arg == 'U') uplo = 0;
+  यदि (uplo_arg == 'L') uplo = 1;
 
   TOUPPER(diag_arg);
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  यदि (diag_arg == 'U') diag = 0;
+  यदि (diag_arg == 'N') diag = 1;
 
-  if (args.ldb  < MAX(1, args.m)) info = 9;
-  if (args.lda  < MAX(1, args.m)) info = 7;
-  if (args.n    < 0) info = 5;
-  if (args.m    < 0) info = 4;
-  if (trans     < 0) info = 2;
-  if (uplo      < 0) info = 1;
-  if (diag      < 0) info = 3;
+  यदि (तर्काः.ldb  < MAX(1, तर्काः.m)) info = 9;
+  यदि (तर्काः.lda  < MAX(1, तर्काः.m)) info = 7;
+  यदि (तर्काः.n    < 0) info = 5;
+  यदि (तर्काः.m    < 0) info = 4;
+  यदि (trans     < 0) info = 2;
+  यदि (uplo      < 0) info = 1;
+  यदि (diag      < 0) info = 3;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  यदि (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    प्रत्यागम;
   }
 
-  args.alpha = NULL;
-  args.beta  = NULL;
+  तर्काः.alpha = रिक्त;
+  तर्काः.beta  = रिक्त;
 
   *Info = 0;
 
-  if (args.m == 0) return;
+  यदि (तर्काः.m == 0) प्रत्यागम;
 
-  if (diag) {
-    if (AMIN_K(args.m, args.a, args.lda + 1) == ZERO) {
-      *Info = IAMIN_K(args.m, args.a, args.lda + 1);
-      return;
+  यदि (diag) {
+    यदि (AMIN_K(तर्काः.m, तर्काः.a, तर्काः.lda + 1) == ZERO) {
+      *Info = IAMIN_K(तर्काः.m, तर्काः.a, तर्काः.lda + 1);
+      प्रत्यागम;
     }
   }
 
@@ -139,40 +139,40 @@ void NAME(char *UPLO, char* TRANS, char* DIAG, blasint *N, blasint *NRHS, FLOAT 
 
   FUNCTION_PROFILE_START();
 
-#ifndef PPC440
-  buffer = (FLOAT *)blas_memory_alloc(1);
+#यदि_अपरिभाषितम् PPC440
+  बफर = (FLOAT *)blas_स्मृतिः_alloc(1);
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
-#endif
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_विस्थापनम्_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_विस्थापनम्_B);
+#यदि_अन्तः
 
-#ifdef SMP
-  args.common = NULL;
-  if (args.m < 64) {
-    args.nthreads = 1;
-  } else {
-    args.nthreads = num_cpu_avail(4);
+#यदि_परिभाषितम् SMP
+  तर्काः.common = रिक्त;
+  यदि (तर्काः.m < 64) {
+    तर्काः.nthreads = 1;
+  } अन्यथा {
+    तर्काः.nthreads = अङ्कः_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  यदि (तर्काः.nthreads == 1) {
+#यदि_अन्तः
 
-      (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+      (trtrs_single[(uplo << 3) | (trans << 1) | diag])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-#ifdef SMP
-  } else {
-    (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
+    (trtrs_parallel[(uplo << 3) | (trans << 1) | diag])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
   }
-#endif
+#यदि_अन्तः
 
-#ifndef PPC440
-  blas_memory_free(buffer);
-#endif
+#यदि_अपरिभाषितम् PPC440
+  blas_स्मृतिः_free(बफर);
+#यदि_अन्तः
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.m * args.n, 2 * args.m * args.m * args.n);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE * COMPSIZE, तर्काः.m * तर्काः.n, 2 * तर्काः.m * तर्काः.m * तर्काः.n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 
 }

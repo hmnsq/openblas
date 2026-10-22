@@ -29,150 +29,150 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 2014/06/09 Saar
 ***********************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <stdlib.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#if defined(DOUBLE)
-#define ERROR_NAME "ZOMATCOPY"
-#else
-#define ERROR_NAME "COMATCOPY"
-#endif
+#यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZOMATCOPY"
+#अन्यथा
+#परिभाषय ERROR_NAME "COMATCOPY"
+#यदि_अन्तः
 
-#define BlasRowMajor     0
-#define BlasColMajor     1
-#define BlasNoTrans      0
-#define BlasTrans        1
-#define BlasTransConj    2
-#define BlasConj         3
+#परिभाषय BlasRowMajor     0
+#परिभाषय BlasColMajor     1
+#परिभाषय BlasNoTrans      0
+#परिभाषय BlasTrans        1
+#परिभाषय BlasTransConj    2
+#परिभाषय BlasConj         3
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+#यदि_अपरिभाषितम् CBLAS
+शून्य NAME( वर्ण* क्रमः_2, वर्ण* TRANS, blasint *पङ्क्तिकाः, blasint *स्तम्भसङ्ख्या, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	वर्ण क्रमः_3, Trans;
+	पूर्णाङ्क क्रमः=-1,trans=-1;
 	blasint info = -1;
 
-	Order = *ORDER;
+	क्रमः_3 = *क्रमः_2;
 	Trans = *TRANS;
 
-	TOUPPER(Order);
+	TOUPPER(क्रमः_3);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTransConj;
-	if ( Trans == 'R' ) trans = BlasConj;
+	यदि ( क्रमः_3 == 'C' ) क्रमः = BlasColMajor;
+	यदि ( क्रमः_3 == 'R' ) क्रमः = BlasRowMajor;
+	यदि ( Trans == 'N' ) trans = BlasNoTrans;
+	यदि ( Trans == 'T' ) trans = BlasTrans;
+	यदि ( Trans == 'C' ) trans = BlasTransConj;
+	यदि ( Trans == 'R' ) trans = BlasConj;
 
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
+#अन्यथा 
+शून्य CNAME(गणना CBLAS_क्रमः CORDER, गणना CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
 {
-	blasint *rows, *cols, *lda, *ldb; 
-	int order=-1,trans=-1;
+	blasint *पङ्क्तिकाः, *स्तम्भसङ्ख्या, *lda, *ldb; 
+	पूर्णाङ्क क्रमः=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	यदि ( CORDER == CblasColMajor ) क्रमः = BlasColMajor; 
+	यदि ( CORDER == CblasRowMajor ) क्रमः = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
-	if ( CTRANS == CblasTrans) trans = BlasTrans; 
-	if ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
+	यदि ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
+	यदि ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
+	यदि ( CTRANS == CblasTrans) trans = BlasTrans; 
+	यदि ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
 
-	rows = &crows; 
-	cols = &ccols; 
+	पङ्क्तिकाः = &crows; 
+	स्तम्भसङ्ख्या = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
-#endif
-	if ( order == BlasColMajor)
+#यदि_अन्तः
+	यदि ( क्रमः == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	यदि ( trans == BlasNoTrans      &&  *ldb < MAX(1,*पङ्क्तिकाः) ) info = 9;
+        	यदि ( trans == BlasConj         &&  *ldb < MAX(1,*पङ्क्तिकाः) ) info = 9;
+        	यदि ( trans == BlasTrans        &&  *ldb < MAX(1,*स्तम्भसङ्ख्या) ) info = 9;
+        	यदि ( trans == BlasTransConj    &&  *ldb < MAX(1,*स्तम्भसङ्ख्या) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	यदि ( क्रमः == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	यदि ( trans == BlasNoTrans    &&  *ldb < MAX(1,*स्तम्भसङ्ख्या) ) info = 9;
+        	यदि ( trans == BlasConj       &&  *ldb < MAX(1,*स्तम्भसङ्ख्या) ) info = 9;
+        	यदि ( trans == BlasTrans      &&  *ldb < MAX(1,*पङ्क्तिकाः) ) info = 9;
+        	यदि ( trans == BlasTransConj  &&  *ldb < MAX(1,*पङ्क्तिकाः) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	यदि ( क्रमः == BlasColMajor &&  *lda < MAX(1,*पङ्क्तिकाः) ) info = 7;
+	यदि ( क्रमः == BlasRowMajor &&  *lda < MAX(1,*स्तम्भसङ्ख्या) ) info = 7;
+	यदि ( *स्तम्भसङ्ख्या < 0 ) info = 4;
+	यदि ( *पङ्क्तिकाः < 0 ) info = 3;
+	यदि ( trans < 0 ) info = 2;
+	यदि ( क्रमः < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	यदि (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    		प्रत्यागम;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	यदि ((*पङ्क्तिकाः == 0) || (*स्तम्भसङ्ख्या == 0)) प्रत्यागम;
 
-	if ( order == BlasColMajor )
+	यदि ( क्रमः == BlasColMajor )
 	{
 
-		if ( trans == BlasNoTrans )
+		यदि ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_CN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CN(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
-		if ( trans == BlasConj )
+		यदि ( trans == BlasConj )
 		{
-			OMATCOPY_K_CNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CNC(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
-		if ( trans == BlasTrans )
+		यदि ( trans == BlasTrans )
 		{
-			OMATCOPY_K_CT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CT(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
-		if ( trans == BlasTransConj )
+		यदि ( trans == BlasTransConj )
 		{
-			OMATCOPY_K_CTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_CTC(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
 
 	}
-	else
+	अन्यथा
 	{
 
-		if ( trans == BlasNoTrans )
+		यदि ( trans == BlasNoTrans )
 		{
-			OMATCOPY_K_RN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RN(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
-		if ( trans == BlasConj )
+		यदि ( trans == BlasConj )
 		{
-			OMATCOPY_K_RNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RNC(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
-		if ( trans == BlasTrans )
+		यदि ( trans == BlasTrans )
 		{
-			OMATCOPY_K_RT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RT(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
-		if ( trans == BlasTransConj )
+		यदि ( trans == BlasTransConj )
 		{
-			OMATCOPY_K_RTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			OMATCOPY_K_RTC(*पङ्क्तिकाः, *स्तम्भसङ्ख्या, alpha[0], alpha[1], a, *lda, b, *ldb );
+			प्रत्यागम;
 		}
 
 	}
 
-	return;
+	प्रत्यागम;
 
 }
 

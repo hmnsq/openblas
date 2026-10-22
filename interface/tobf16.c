@@ -1,63 +1,63 @@
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#if defined(DOUBLE_PREC)
-#define FLOAT_TYPE double
-#elif defined(SINGLE_PREC)
-#define FLOAT_TYPE float
-#else
-#endif
+#यदि defined(DOUBLE_PREC)
+#परिभाषय FLOAT_TYPE द्विगुण
+#नोचेद्यदि defined(SINGLE_PREC)
+#परिभाषय FLOAT_TYPE भिन्न
+#अन्यथा
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
-void NAME(blasint *N, FLOAT_TYPE *in, blasint *INC_IN, bfloat16 *out, blasint *INC_OUT){
+#यदि_अपरिभाषितम् CBLAS
+शून्य NAME(blasint *N, FLOAT_TYPE *अन्तर्, blasint *INC_अन्तर्, bfloat16 *बहिर्गमनम्, blasint *INC_बहिर्गमनम्){
    BLASLONG n    = *N;
-   BLASLONG inc_in = *INC_IN;
-   BLASLONG inc_out = *INC_OUT;
+   BLASLONG inc_अन्तर् = *INC_अन्तर्;
+   BLASLONG inc_बहिर्गमनम् = *INC_बहिर्गमनम्;
 
    PRINT_DEBUG_NAME;
 
-   if (n <= 0) return;
+   यदि (n <= 0) प्रत्यागम;
 
    IDEBUG_START;
    FUNCTION_PROFILE_START();
 
-   if (inc_in < 0)   in -= (n - 1) * inc_in;
-   if (inc_out < 0) out -= (n - 1) * inc_out;
+   यदि (inc_अन्तर् < 0)   अन्तर् -= (n - 1) * inc_अन्तर्;
+   यदि (inc_बहिर्गमनम् < 0) बहिर्गमनम् -= (n - 1) * inc_बहिर्गमनम्;
 
-#if defined(DOUBLE_PREC)
-   D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-   S_TO_BF16_K(n, in, inc_in, out, inc_out);
-#else
-#endif
+#यदि defined(DOUBLE_PREC)
+   D_गन्तव्यम्_BF16_K(n, अन्तर्, inc_अन्तर्, बहिर्गमनम्, inc_बहिर्गमनम्);
+#नोचेद्यदि defined(SINGLE_PREC)
+   S_गन्तव्यम्_BF16_K(n, अन्तर्, inc_अन्तर्, बहिर्गमनम्, inc_बहिर्गमनम्);
+#अन्यथा
+#यदि_अन्तः
 
-   FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-   IDEBUG_END;
+   FUNCTION_PROFILE_अन्तः(1, 2 * n, 2 * n);
+   IDEBUG_अन्तः;
 }
-#else
-void CNAME(blasint n, FLOAT_TYPE *in, blasint inc_in, bfloat16 *out, blasint inc_out){
+#अन्यथा
+शून्य CNAME(blasint n, FLOAT_TYPE *अन्तर्, blasint inc_अन्तर्, bfloat16 *बहिर्गमनम्, blasint inc_बहिर्गमनम्){
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return;
+  यदि (n <= 0) प्रत्यागम;
 
   IDEBUG_START;
   FUNCTION_PROFILE_START();
 
-  if (inc_in < 0)   in -= (n - 1) * inc_in;
-  if (inc_out < 0) out -= (n - 1) * inc_out;
+  यदि (inc_अन्तर् < 0)   अन्तर् -= (n - 1) * inc_अन्तर्;
+  यदि (inc_बहिर्गमनम् < 0) बहिर्गमनम् -= (n - 1) * inc_बहिर्गमनम्;
 
-#if defined(DOUBLE_PREC)
-  D_TO_BF16_K(n, in, inc_in, out, inc_out);
-#elif defined(SINGLE_PREC)
-  S_TO_BF16_K(n, in, inc_in, out, inc_out);
-#endif
+#यदि defined(DOUBLE_PREC)
+  D_गन्तव्यम्_BF16_K(n, अन्तर्, inc_अन्तर्, बहिर्गमनम्, inc_बहिर्गमनम्);
+#नोचेद्यदि defined(SINGLE_PREC)
+  S_गन्तव्यम्_BF16_K(n, अन्तर्, inc_अन्तर्, बहिर्गमनम्, inc_बहिर्गमनम्);
+#यदि_अन्तः
 
-  FUNCTION_PROFILE_END(1, 2 * n, 2 * n);
-  IDEBUG_END;
+  FUNCTION_PROFILE_अन्तः(1, 2 * n, 2 * n);
+  IDEBUG_अन्तः;
 }
-#endif
+#यदि_अन्तः

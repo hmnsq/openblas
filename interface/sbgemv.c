@@ -37,40 +37,40 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#include "l1param.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#अन्तर्भाव "l1param.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#ifdef BGEMM
-#define GEMV_THREAD_N bgemv_thread_n
-#define GEMV_THREAD_T bgemv_thread_t
-#define ERROR_NAME "BGEMV "
-#elif defined(HFLOAT16)
-#define GEMV_THREAD_N shgemv_thread_n
-#define GEMV_THREAD_T shgemv_thread_t
-#define ERROR_NAME "SHGEMV "
-#else
-#define GEMV_THREAD_N sbgemv_thread_n
-#define GEMV_THREAD_T sbgemv_thread_t
-#define ERROR_NAME "SBGEMV "
-#endif 
+#यदि_परिभाषितम् BGEMM
+#परिभाषय GEMV_THREAD_N bgemv_thread_n
+#परिभाषय GEMV_THREAD_T bgemv_thread_t
+#परिभाषय ERROR_NAME "BGEMV "
+#नोचेद्यदि defined(HFLOAT16)
+#परिभाषय GEMV_THREAD_N shgemv_thread_n
+#परिभाषय GEMV_THREAD_T shgemv_thread_t
+#परिभाषय ERROR_NAME "SHGEMV "
+#अन्यथा
+#परिभाषय GEMV_THREAD_N sbgemv_thread_n
+#परिभाषय GEMV_THREAD_T sbgemv_thread_t
+#परिभाषय ERROR_NAME "SBGEMV "
+#यदि_अन्तः 
 
-#ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, int) = {
+#यदि_परिभाषितम् SMP
+स्थिर पूर्णाङ्क (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, पूर्णाङ्क) = {
     GEMV_THREAD_N, GEMV_THREAD_T,
 };
-#endif
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint *LDA, IFLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
+शून्य NAME(वर्ण *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint *LDA, IFLOAT *x, blasint *INCX, FLOAT *BETA, FLOAT *y, blasint *INCY)
 {
-    char trans = *TRANS;
+    वर्ण trans = *TRANS;
     blasint m = *M;
     blasint n = *N;
     blasint lda = *LDA;
@@ -78,11 +78,11 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
     blasint incy = *INCY;
     FLOAT alpha = *ALPHA;
     FLOAT beta  = *BETA;
-#ifdef SMP
-    int nthreads;
-#endif
+#यदि_परिभाषितम् SMP
+    पूर्णाङ्क nthreads;
+#यदि_अन्तः
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    पूर्णाङ्क (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -98,37 +98,37 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
 
     i = -1;
 
-    if (trans == 'N') {i = 0;}
-    if (trans == 'T') {i = 1;}
-    if (trans == 'R') {i = 0;}
-    if (trans == 'C') {i = 1;}
+    यदि (trans == 'N') {i = 0;}
+    यदि (trans == 'T') {i = 1;}
+    यदि (trans == 'R') {i = 0;}
+    यदि (trans == 'C') {i = 1;}
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (i < 0)           {info = 1;}
+    यदि (incy == 0)       {info = 11;}
+    यदि (incx == 0)       {info = 8;}
+    यदि (lda < MAX(1, m)) {info = 6;}
+    यदि (n < 0)           {info = 3;}
+    यदि (m < 0)           {info = 2;}
+    यदि (i < 0)           {info = 1;}
 
     trans = i;
 
-    if (info != 0) {
-        BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+    यदि (info != 0) {
+        BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+        प्रत्यागम;
     }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasint n, FLOAT alpha, IFLOAT *a, blasint lda, IFLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
+शून्य CNAME(गणना CBLAS_क्रमः क्रमः, गणना CBLAS_TRANSPOSE TransA, blasint m, blasint n, FLOAT alpha, IFLOAT *a, blasint lda, IFLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
 {
     blasint lenx,  leny;
-    int     trans;
+    पूर्णाङ्क     trans;
     blasint info,  t;
-#ifdef SMP
-    int     nthreads;
-#endif
+#यदि_परिभाषितम् SMP
+    पूर्णाङ्क     nthreads;
+#यदि_अन्तः
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    पूर्णाङ्क (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -137,16 +137,16 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
     trans = -1;
     info  =  0;
 
-    if (order == CblasColMajor) {   // Column Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    यदि (क्रमः == CblasColMajor) {   // Column Major
+        यदि (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 0;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } अन्यथा यदि (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 1;
         }
-    } else {                        // Row Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    } अन्यथा {                        // Row Major
+        यदि (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 1;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } अन्यथा यदि (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 0;
         }
 
@@ -157,67 +157,67 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
 
     info = -1;
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (trans < 0)       {info = 1;}
+    यदि (incy == 0)       {info = 11;}
+    यदि (incx == 0)       {info = 8;}
+    यदि (lda < MAX(1, m)) {info = 6;}
+    यदि (n < 0)           {info = 3;}
+    यदि (m < 0)           {info = 2;}
+    यदि (trans < 0)       {info = 1;}
 
-    if (info >= 0) {
-        BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+    यदि (info >= 0) {
+        BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+        प्रत्यागम;
     }
 
-#endif
+#यदि_अन्तः
 
-    if ((m==0) || (n==0)) return;
+    यदि ((m==0) || (n==0)) प्रत्यागम;
 
-    if (trans) {
+    यदि (trans) {
         lenx = m;
         leny = n;
-    } else {
+    } अन्यथा {
         lenx = n;
         leny = m;
     }
 
-#ifdef BGEMM
-  float alpha_float, beta_float;
+#यदि_परिभाषितम् BGEMM
+  भिन्न alpha_float, beta_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
   SBF16TOS_K(1, &beta, 1, &beta_float, 1);
-#else
-  float alpha_float = alpha;
-  float beta_float = beta;
-#endif
+#अन्यथा
+  भिन्न alpha_float = alpha;
+  भिन्न beta_float = beta;
+#यदि_अन्तः
 
-    if (alpha_float == ZERO) {
-        if (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
-        return;
+    यदि (alpha_float == ZERO) {
+        यदि (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), रिक्त, 0, रिक्त, 0);
+        प्रत्यागम;
     }
 
     IDEBUG_START;
     FUNCTION_PROFILE_START();
 
-    if (incx < 0) {x -= (lenx - 1) * incx;}
-    if (incy < 0) {y -= (leny - 1) * incy;}
+    यदि (incx < 0) {x -= (lenx - 1) * incx;}
+    यदि (incy < 0) {y -= (leny - 1) * incy;}
 
-#ifdef SMP
-    if ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
+#यदि_परिभाषितम् SMP
+    यदि ( 1L * m * n < 115200L * GEMM_MULTITHREAD_देहली )
       nthreads = 1;
-    else
-      nthreads = num_cpu_avail(2);
+    अन्यथा
+      nthreads = अङ्कः_cpu_avail(2);
 
-    if (nthreads == 1) {
-#endif
-        (gemv[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
-#ifdef SMP
-    } else {
-        (gemv_thread[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
+    यदि (nthreads == 1) {
+#यदि_अन्तः
+        (gemv[(पूर्णाङ्क)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
+#यदि_परिभाषितम् SMP
+    } अन्यथा {
+        (gemv_thread[(पूर्णाङ्क)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
     }
-#endif
+#यदि_अन्तः
 
-    FUNCTION_PROFILE_END(1, m * n + m + n,  2 * m * n);
-    IDEBUG_END;
+    FUNCTION_PROFILE_अन्तः(1, m * n + m + n,  2 * m * n);
+    IDEBUG_अन्तः;
 
-    return;
+    प्रत्यागम;
 }

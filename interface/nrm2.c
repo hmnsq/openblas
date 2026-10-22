@@ -36,15 +36,15 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
 FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
@@ -54,128 +54,128 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  यदि (n <= 0) प्रत्यागम 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+  यदि (n == 1)
+#यदि_परिभाषितम् DOUBLE
+    प्रत्यागम fabs(x[0]);
+#अन्यथा
+    प्रत्यागम fabsf(x[0]);
+#यदि_अन्तः
+#यदि_अन्तः
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  यदि (incx == 0)
+#यदि_अपरिभाषितम् COMPLEX
+#यदि_परिभाषितम् DOUBLE
+  प्रत्यागम (वर्गमूलम्((द्विगुण)n)*fabs(x[0]));
+#अन्यथा
+  प्रत्यागम (वर्गमूलम्((भिन्न)n)*fabsf(x[0]));
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  द्विगुण fr=fabs(x[0]);
+  द्विगुण fi=fabs(x[1]);
+  द्विगुण fmin=MIN(fr,fi);
+  द्विगुण fmax=MAX(fr,fi);
+  यदि (fmax==0.) प्रत्यागम(fmax);
+  यदि (fmax==fmin) प्रत्यागम(वर्गमूलम्((द्विगुण)n)*वर्गमूलम्(2.)*fmax);
+  प्रत्यागम (वर्गमूलम्((द्विगुण)n) * fmax * वर्गमूलम् (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#अन्यथा
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  भिन्न fr=fabs(x[0]);
+  भिन्न fi=fabs(x[1]);
+  भिन्न fmin=MIN(fr,fi);
+  भिन्न fmax=MAX(fr,fi);
+  यदि (fmax==0.) प्रत्यागम(fmax);
+  यदि (fmax==fmin) प्रत्यागम(वर्गमूलम्((भिन्न)n)*वर्गमूलम्(2.)*fmax);
+  प्रत्यागम (वर्गमूलम्((भिन्न)n) * fmax * वर्गमूलम् (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#यदि_अन्तः
+#यदि_अन्तः
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  यदि (incx < 0) 
+#यदि_परिभाषितम् COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#अन्यथा
     x -= (n - 1) * incx;
-#endif
+#यदि_अन्तः
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
   ret = (FLOATRET)NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return ret;
+  प्रत्यागम ret;
 }
 
-#else
+#अन्यथा
 
-#ifdef COMPLEX
-FLOAT CNAME(blasint n, void *vx, blasint incx){
+#यदि_परिभाषितम् COMPLEX
+FLOAT CNAME(blasint n, शून्य *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#अन्यथा
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
-#endif
+#यदि_अन्तः
 
   FLOAT ret;
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  यदि (n <= 0) प्रत्यागम 0.;
 
-#ifndef COMPLEX
-  if (n == 1)
-#ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
-#endif
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+  यदि (n == 1)
+#यदि_परिभाषितम् DOUBLE
+    प्रत्यागम fabs(x[0]);
+#अन्यथा
+    प्रत्यागम fabsf(x[0]);
+#यदि_अन्तः
+#यदि_अन्तः
 
-  if (incx == 0)
-#ifndef COMPLEX
-#ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
-#endif
-#else
-#ifdef DOUBLE
+  यदि (incx == 0)
+#यदि_अपरिभाषितम् COMPLEX
+#यदि_परिभाषितम् DOUBLE
+  प्रत्यागम (वर्गमूलम्((द्विगुण)n)*fabs(x[0]));
+#अन्यथा
+  प्रत्यागम (वर्गमूलम्((भिन्न)n)*fabsf(x[0]));
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  द्विगुण fr=fabs(x[0]);
+  द्विगुण fi=fabs(x[1]);
+  द्विगुण fmin=MIN(fr,fi);
+  द्विगुण fmax=MAX(fr,fi);
+  यदि (fmax==0.) प्रत्यागम(fmax);
+  यदि (fmax==fmin) प्रत्यागम(वर्गमूलम्((द्विगुण)n)*वर्गमूलम्(2.)*fmax);
+  प्रत्यागम (वर्गमूलम्((द्विगुण)n) * fmax * वर्गमूलम् (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#अन्यथा
   {
-  float fr=fabs(x[0]);
-  float fi=fabs(x[1]);
-  float fmin=MIN(fr,fi);
-  float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  भिन्न fr=fabs(x[0]);
+  भिन्न fi=fabs(x[1]);
+  भिन्न fmin=MIN(fr,fi);
+  भिन्न fmax=MAX(fr,fi);
+  यदि (fmax==0.) प्रत्यागम(fmax);
+  यदि (fmax==fmin) प्रत्यागम(वर्गमूलम्((भिन्न)n)*वर्गमूलम्(2.)*fmax);
+  प्रत्यागम (वर्गमूलम्((भिन्न)n) * fmax * वर्गमूलम् (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#endif
-#endif
+#यदि_अन्तः
+#यदि_अन्तः
 
-  if (incx < 0) 
-#ifdef COMPLEX    
+  यदि (incx < 0) 
+#यदि_परिभाषितम् COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#अन्यथा
     x -= (n - 1) * incx;
-#endif
+#यदि_अन्तः
   
   IDEBUG_START;
 
@@ -183,11 +183,11 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   ret = NRM2_K(n, x, incx);
 
-  FUNCTION_PROFILE_END(COMPSIZE, n, 2 * n);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE, n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return ret;
+  प्रत्यागम ret;
 }
 
-#endif
+#यदि_अन्तः

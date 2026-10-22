@@ -36,113 +36,113 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
-#if  defined(Z13)
-#define MULTI_THREAD_MINIMAL  200000
-#else
-#define MULTI_THREAD_MINIMAL  10000
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
+#यदि  defined(Z13)
+#परिभाषय MULTI_THREAD_अल्पिष्ठम्  200000
+#अन्यथा
+#परिभाषय MULTI_THREAD_अल्पिष्ठम्  10000
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
+शून्य NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY){
 
   blasint n    = *N;
   blasint incx = *INCX;
   blasint incy = *INCY;
 
-#else
-#ifdef COMPLEX
-void CNAME(blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy){
+#अन्यथा
+#यदि_परिभाषितम् COMPLEX
+शून्य CNAME(blasint n, शून्य *VALPHA, शून्य *vx, blasint incx, शून्य *vy, blasint incy){
 FLOAT *ALPHA = (FLOAT*) VALPHA;
 FLOAT *x = (FLOAT*) vx;
 FLOAT *y = (FLOAT*) vy;
-#else
-void CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
-#endif
-#endif
+#अन्यथा
+शून्य CNAME(blasint n, FLOAT *ALPHA, FLOAT *x, blasint incx, FLOAT *y, blasint incy){
+#यदि_अन्तः
+#यदि_अन्तः
 
   FLOAT alpha_r = *(ALPHA + 0);
   FLOAT alpha_i = *(ALPHA + 1);
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#यदि_परिभाषितम् SMP
+  पूर्णाङ्क बहुलकम्, nthreads;
+#यदि_अन्तः
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
   PRINT_DEBUG_NAME;
-#else
+#अन्यथा
   PRINT_DEBUG_CNAME;
-#endif
+#यदि_अन्तः
 
-  if (n <= 0) return;
+  यदि (n <= 0) प्रत्यागम;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  यदि ((alpha_r == ZERO) && (alpha_i == ZERO)) प्रत्यागम;
 
-  if (incx == 0 && incy == 0) {
+  यदि (incx == 0 && incy == 0) {
   *y += n * (alpha_r * (*x) - alpha_i* (*(x+1)) );
   *(y+1) += n * (alpha_i * (*x) + alpha_r * (*(x +1)) );
-  return;
+  प्रत्यागम;
   }
   
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx * 2;
-  if (incy < 0) y -= (n - 1) * incy * 2;
+  यदि (incx < 0) x -= (n - 1) * incx * 2;
+  यदि (incy < 0) y -= (n - 1) * incy * 2;
 
-#ifdef SMP
+#यदि_परिभाषितम् SMP
   //disable multi-thread when incx==0 or incy==0
   //In that case, the threads would be dependent.
   //
   //Temporarily work-around the low performance issue with small input size &
   //multithreads.
-  if (incx == 0 || incy == 0 || n <= MULTI_THREAD_MINIMAL)
+  यदि (incx == 0 || incy == 0 || n <= MULTI_THREAD_अल्पिष्ठम्)
 	  nthreads = 1;
-  else
-	  nthreads = num_cpu_avail(1);
+  अन्यथा
+	  nthreads = अङ्कः_cpu_avail(1);
 
-  if (nthreads == 1) {
-#endif
+  यदि (nthreads == 1) {
+#यदि_अन्तः
 
-#ifndef CONJ
-    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#else
-    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, NULL, 0);
-#endif
+#यदि_अपरिभाषितम् CONJ
+    AXPYU_K (n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, रिक्त, 0);
+#अन्यथा
+    AXPYC_K(n, 0, 0, alpha_r, alpha_i, x, incx, y, incy, रिक्त, 0);
+#यदि_अन्तः
 
-#ifdef SMP
-  } else {
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
 
-#ifdef XDOUBLE
-    mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-    mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-    mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
+#यदि_परिभाषितम् XDOUBLE
+    बहुलकम्  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#नोचेद्यदि defined(DOUBLE)
+    बहुलकम्  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#अन्यथा
+    बहुलकम्  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#यदि_अन्तः
 
-    blas_level1_thread(mode, n, 0, 0, ALPHA, x, incx, y, incy, NULL, 0,
-#ifndef CONJ
-                       (int (*)(void))AXPYU_K,
-#else
-                       (int (*)(void))AXPYC_K,
-#endif
+    blas_level1_thread(बहुलकम्, n, 0, 0, ALPHA, x, incx, y, incy, रिक्त, 0,
+#यदि_अपरिभाषितम् CONJ
+                       (पूर्णाङ्क (*)(शून्य))AXPYU_K,
+#अन्यथा
+                       (पूर्णाङ्क (*)(शून्य))AXPYC_K,
+#यदि_अन्तः
 		       nthreads);
   }
-#endif
+#यदि_अन्तः
 
-  FUNCTION_PROFILE_END(4, 2 * n, 2 * n);
+  FUNCTION_PROFILE_अन्तः(4, 2 * n, 2 * n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 
 }

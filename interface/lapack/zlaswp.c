@@ -36,41 +36,41 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-static int (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
-#ifdef XDOUBLE
+स्थिर पूर्णाङ्क (*laswp[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, blasint *, BLASLONG) = {
+#यदि_परिभाषितम् XDOUBLE
   xlaswp_plus, xlaswp_minus,
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
   zlaswp_plus, zlaswp_minus,
-#else
+#अन्यथा
   claswp_plus, claswp_minus,
-#endif
+#यदि_अन्तः
 };
 
 OPENBLAS_EXPORT
-void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
+शून्य NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint *ipiv, blasint *INCX){
 
   blasint n    = *N;
   blasint lda  = *LDA;
   blasint k1   = *K1;
   blasint k2   = *K2;
   blasint incx = *INCX;
-  int flag;
+  पूर्णाङ्क flag;
 
-#ifdef SMP
-  int mode;
+#यदि_परिभाषितम् SMP
+  पूर्णाङ्क बहुलकम्;
   FLOAT dummyalpha[2] = {ZERO, ZERO};
-  int nthreads;
-#endif
+  पूर्णाङ्क nthreads;
+#यदि_अन्तः
 
   PRINT_DEBUG_NAME;
 
-  if (incx == 0 || n <= 0) return;
+  यदि (incx == 0 || n <= 0) प्रत्यागम;
 
   IDEBUG_START;
 
@@ -78,36 +78,36 @@ void NAME(blasint *N, FLOAT *a, blasint *LDA, blasint *K1, blasint *K2, blasint 
 
   flag = (incx < 0);
 
-#ifdef SMP
-  if (n < 64) {
+#यदि_परिभाषितम् SMP
+  यदि (n < 64) {
     nthreads = 1;
-  } else {
-    nthreads = num_cpu_avail(2);
+  } अन्यथा {
+    nthreads = अङ्कः_cpu_avail(2);
   }
 
-  if (nthreads == 1) {
-#endif
+  यदि (nthreads == 1) {
+#यदि_अन्तः
 
-  (laswp[flag])(n, k1, k2, ZERO, ZERO, a, lda, NULL, 0, ipiv, incx);
+  (laswp[flag])(n, k1, k2, ZERO, ZERO, a, lda, रिक्त, 0, ipiv, incx);
 
-#ifdef SMP
-  } else {
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
 
-#ifdef XDOUBLE
-  mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
+#यदि_परिभाषितम् XDOUBLE
+  बहुलकम्  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#नोचेद्यदि defined(DOUBLE)
+  बहुलकम्  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#अन्यथा
+  बहुलकम्  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#यदि_अन्तः
 
-  blas_level1_thread(mode, n, k1, k2, dummyalpha, a, lda, NULL, 0, ipiv, incx, (int(*)(void))laswp[flag], nthreads);
+  blas_level1_thread(बहुलकम्, n, k1, k2, dummyalpha, a, lda, रिक्त, 0, ipiv, incx, (पूर्णाङ्क(*)(शून्य))laswp[flag], nthreads);
   }
-#endif
+#यदि_अन्तः
 
-  FUNCTION_PROFILE_END(COMPSIZE, n * (k2 - k1), 0);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE, n * (k2 - k1), 0);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 }

@@ -36,54 +36,54 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#ifdef XDOUBLE
-#define ERROR_NAME "QGBMV "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DGBMV "
-#else
-#define ERROR_NAME "SGBMV "
-#endif
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "QGBMV "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "DGBMV "
+#अन्यथा
+#परिभाषय ERROR_NAME "SGBMV "
+#यदि_अन्तः
 
-static void (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
-#ifdef XDOUBLE
+स्थिर शून्य (*gbmv[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, शून्य *) = {
+#यदि_परिभाषितम् XDOUBLE
       qgbmv_n, qgbmv_t,
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
       dgbmv_n, dgbmv_t,
-#else
+#अन्यथा
       sgbmv_n, sgbmv_t,
-#endif
+#यदि_अन्तः
 };
 
-#ifdef SMP
-static int (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
-		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
-#ifdef XDOUBLE
+#यदि_परिभाषितम् SMP
+स्थिर पूर्णाङ्क (*gbmv_thread[])(BLASLONG, BLASLONG, BLASLONG, BLASLONG, FLOAT,
+		      FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, पूर्णाङ्क) = {
+#यदि_परिभाषितम् XDOUBLE
       qgbmv_thread_n, qgbmv_thread_t,
-#elif defined(DOUBLE)
+#नोचेद्यदि defined(DOUBLE)
       dgbmv_thread_n, dgbmv_thread_t,
-#else
+#अन्यथा
       sgbmv_thread_n, sgbmv_thread_t,
-#endif
+#यदि_अन्तः
 };
-#endif
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
-void NAME(char *TRANS, blasint *M, blasint *N,
+शून्य NAME(वर्ण *TRANS, blasint *M, blasint *N,
 	 blasint *KU, blasint *KL,
 	 FLOAT *ALPHA, FLOAT *a, blasint *LDA,
 	 FLOAT *x, blasint *INCX,
 	 FLOAT *BETA, FLOAT *y, blasint *INCY){
 
-  char trans = *TRANS;
+  वर्ण trans = *TRANS;
   blasint m = *M;
   blasint n = *N;
   blasint ku = *KU;
@@ -91,10 +91,10 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint lda = *LDA;
   blasint incx = *INCX;
   blasint incy = *INCY;
-  FLOAT *buffer;
-#ifdef SMP
-  int nthreads;
-#endif
+  FLOAT *बफर;
+#यदि_परिभाषितम् SMP
+  पूर्णाङ्क nthreads;
+#यदि_अन्तः
 
   FLOAT alpha = *ALPHA;
   FLOAT beta  = *BETA;
@@ -111,31 +111,31 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N') i = 0;
-  if (trans == 'T') i = 1;
-  if (trans == 'R') i = 0;
-  if (trans == 'C') i = 1;
+  यदि (trans == 'N') i = 0;
+  यदि (trans == 'T') i = 1;
+  यदि (trans == 'R') i = 0;
+  यदि (trans == 'C') i = 1;
 
-  if (incy == 0)	 info = 13;
-  if (incx == 0)	 info = 10;
-  if (lda < kl + ku + 1) info = 8;
-  if (kl < 0)		 info = 5;
-  if (ku < 0)		 info = 4;
-  if (n < 0)		 info = 3;
-  if (m < 0)		 info = 2;
-  if (i < 0)		 info = 1;
+  यदि (incy == 0)	 info = 13;
+  यदि (incx == 0)	 info = 10;
+  यदि (lda < kl + ku + 1) info = 8;
+  यदि (kl < 0)		 info = 5;
+  यदि (ku < 0)		 info = 4;
+  यदि (n < 0)		 info = 3;
+  यदि (m < 0)		 info = 2;
+  यदि (i < 0)		 info = 1;
 
   trans = i;
 
-  if (info != 0){
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (info != 0){
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order,
-	   enum CBLAS_TRANSPOSE TransA,
+शून्य CNAME(गणना CBLAS_क्रमः क्रमः,
+	   गणना CBLAS_TRANSPOSE TransA,
 	   blasint m, blasint n,
 	   blasint ku, blasint kl,
 	   FLOAT alpha,
@@ -144,41 +144,41 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT beta,
 	   FLOAT  *y, blasint incy){
 
-  FLOAT *buffer;
+  FLOAT *बफर;
   blasint lenx, leny, info, t;
-  int trans;
-#ifdef SMP
-  int nthreads;
-#endif
+  पूर्णाङ्क trans;
+#यदि_परिभाषितम् SMP
+  पूर्णाङ्क nthreads;
+#यदि_अन्तः
 
   PRINT_DEBUG_CNAME;
 
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+  यदि (क्रमः == CblasColMajor) {
+    यदि (TransA == CblasNoTrans)     trans = 0;
+    यदि (TransA == CblasTrans)       trans = 1;
+    यदि (TransA == CblasConjNoTrans) trans = 0;
+    यदि (TransA == CblasConjTrans)   trans = 1;
 
     info = -1;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    यदि (incy == 0)	 info = 13;
+    यदि (incx == 0)	 info = 10;
+    यदि (lda < kl + ku + 1) info = 8;
+    यदि (kl < 0)		 info = 5;
+    यदि (ku < 0)		 info = 4;
+    यदि (n < 0)		 info = 3;
+    यदि (m < 0)		 info = 2;
+    यदि (trans < 0)	 info = 1;
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
+  यदि (क्रमः == CblasRowMajor) {
+    यदि (TransA == CblasNoTrans)     trans = 1;
+    यदि (TransA == CblasTrans)       trans = 0;
+    यदि (TransA == CblasConjNoTrans) trans = 1;
+    यदि (TransA == CblasConjTrans)   trans = 0;
 
     info = -1;
 
@@ -190,72 +190,72 @@ void CNAME(enum CBLAS_ORDER order,
     ku = kl;
     kl = t;
 
-    if (incy == 0)	 info = 13;
-    if (incx == 0)	 info = 10;
-    if (lda < kl + ku + 1) info = 8;
-    if (kl < 0)		 info = 5;
-    if (ku < 0)		 info = 4;
-    if (n < 0)		 info = 3;
-    if (m < 0)		 info = 2;
-    if (trans < 0)	 info = 1;
+    यदि (incy == 0)	 info = 13;
+    यदि (incx == 0)	 info = 10;
+    यदि (lda < kl + ku + 1) info = 8;
+    यदि (kl < 0)		 info = 5;
+    यदि (ku < 0)		 info = 4;
+    यदि (n < 0)		 info = 3;
+    यदि (m < 0)		 info = 2;
+    यदि (trans < 0)	 info = 1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-#endif
+#यदि_अन्तः
 
-  if ((m==0) || (n==0)) return;
+  यदि ((m==0) || (n==0)) प्रत्यागम;
 
   lenx = n;
   leny = m;
-  if (trans) lenx = m;
-  if (trans) leny = n;
+  यदि (trans) lenx = m;
+  यदि (trans) leny = n;
 
-  if (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  यदि (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), रिक्त, 0, रिक्त, 0);
 
-  if (alpha == ZERO) return;
+  यदि (alpha == ZERO) प्रत्यागम;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx-1)*incx;
-  if (incy < 0) y -= (leny-1)*incy;
+  यदि (incx < 0) x -= (lenx-1)*incx;
+  यदि (incy < 0) y -= (leny-1)*incy;
 
-  buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  बफर = (FLOAT *)blas_स्मृतिः_alloc(1);
+  यदि (!बफर) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-#ifdef SMP
-  if (m * n < 250000 || kl+ku < 15 )
+#यदि_परिभाषितम् SMP
+  यदि (m * n < 250000 || kl+ku < 15 )
     nthreads = 1;
-  else
-    nthreads = num_cpu_avail(2);
+  अन्यथा
+    nthreads = अङ्कः_cpu_avail(2);
 
-  if (nthreads == 1) {
-#endif
+  यदि (nthreads == 1) {
+#यदि_अन्तः
 
-  (gbmv[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer);
+  (gbmv[(पूर्णाङ्क)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, बफर);
 
-#ifdef SMP
-  } else {
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
 
-    (gbmv_thread[(int)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gbmv_thread[(पूर्णाङ्क)trans])(m, n, kl, ku, alpha, a, lda, x, incx, y, incy, बफर, nthreads);
 
   }
-#endif
+#यदि_अन्तः
 
-  blas_memory_free(buffer);
+  blas_स्मृतिः_free(बफर);
 
-  FUNCTION_PROFILE_END(1, m * n / 2 + n, m * n);
+  FUNCTION_PROFILE_अन्तः(1, m * n / 2 + n, m * n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 }

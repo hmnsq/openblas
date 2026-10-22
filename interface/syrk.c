@@ -36,119 +36,119 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <ctype.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#ifndef COMPLEX
-#define SMP_THRESHOLD_MIN 109944.
-#ifdef XDOUBLE
-#define ERROR_NAME "QSYRK "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSYRK "
-#else
-#define ERROR_NAME "SSYRK "
-#endif
-#else
-#define SMP_THRESHOLD_MIN 14824.
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYRK "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYRK "
-#else
-#define ERROR_NAME "CSYRK "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHERK "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHERK "
-#else
-#define ERROR_NAME "CHERK "
-#endif
-#endif
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+#परिभाषय SMP_देहली_MIN 109944.
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "QSYRK "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "DSYRK "
+#अन्यथा
+#परिभाषय ERROR_NAME "SSYRK "
+#यदि_अन्तः
+#अन्यथा
+#परिभाषय SMP_देहली_MIN 14824.
+#यदि_अपरिभाषितम् HEMM
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "XSYRK "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZSYRK "
+#अन्यथा
+#परिभाषय ERROR_NAME "CSYRK "
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "XHERK "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZHERK "
+#अन्यथा
+#परिभाषय ERROR_NAME "CHERK "
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#यदि_अपरिभाषितम् GEMM_MULTITHREAD_देहली
+#परिभाषय GEMM_MULTITHREAD_देहली 4
+#यदि_अन्तः
 
-static int (*syrk[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef HEMM
+स्थिर पूर्णाङ्क (*syrk[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#यदि_अपरिभाषितम् HEMM
   SYRK_UN, SYRK_UC, SYRK_LN, SYRK_LC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#यदि defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYRK_THREAD_UN, SYRK_THREAD_UC, SYRK_THREAD_LN, SYRK_THREAD_LC,
-#endif
-#else
+#यदि_अन्तः
+#अन्यथा
   HERK_UN, HERK_UC, HERK_LN, HERK_LC,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#यदि defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HERK_THREAD_UN, HERK_THREAD_UC, HERK_THREAD_LN, HERK_THREAD_LC,
-#endif
-#endif
+#यदि_अन्तः
+#यदि_अन्तः
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
-void NAME(char *UPLO, char *TRANS,
+शून्य NAME(वर्ण *UPLO, वर्ण *TRANS,
          blasint *N, blasint *K,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char uplo_arg  = *UPLO;
-  char trans_arg = *TRANS;
+  वर्ण uplo_arg  = *UPLO;
+  वर्ण trans_arg = *TRANS;
 
-  blas_arg_t args;
+  blas_arg_t तर्काः;
 
-  FLOAT *buffer;
+  FLOAT *बफर;
   FLOAT *sa, *sb;
 
-#ifdef SMP
-  double NNK;
-#ifdef USE_SIMPLE_THREADED_LEVEL3
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
-#endif
+#यदि_परिभाषितम् SMP
+  द्विगुण NNK;
+#यदि_परिभाषितम् USE_SIMPLE_THREADED_LEVEL3
+#यदि_अपरिभाषितम् COMPLEX
+#यदि_परिभाषितम् XDOUBLE
+  पूर्णाङ्क बहुलकम्  =  BLAS_XDOUBLE | BLAS_REAL;
+#नोचेद्यदि defined(DOUBLE)
+  पूर्णाङ्क बहुलकम्  =  BLAS_DOUBLE  | BLAS_REAL;
+#अन्यथा
+  पूर्णाङ्क बहुलकम्  =  BLAS_SINGLE  | BLAS_REAL;
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+  पूर्णाङ्क बहुलकम्  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#नोचेद्यदि defined(DOUBLE)
+  पूर्णाङ्क बहुलकम्  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#अन्यथा
+  पूर्णाङ्क बहुलकम्  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
 
   blasint info;
-  int uplo;
-  int trans;
-  int nrowa;
+  पूर्णाङ्क uplo;
+  पूर्णाङ्क trans;
+  पूर्णाङ्क nrowa;
 
   PRINT_DEBUG_NAME;
 
-  args.n = *N;
-  args.k = *K;
+  तर्काः.n = *N;
+  तर्काः.k = *K;
 
-  args.a = (void *)a;
-  args.c = (void *)c;
+  तर्काः.a = (शून्य *)a;
+  तर्काः.c = (शून्य *)c;
 
-  args.lda = *ldA;
-  args.ldc = *ldC;
+  तर्काः.lda = *ldA;
+  तर्काः.ldc = *ldC;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  तर्काः.alpha = (शून्य *)alpha;
+  तर्काः.beta  = (शून्य *)beta;
 
   TOUPPER(uplo_arg);
   TOUPPER(trans_arg);
@@ -156,280 +156,280 @@ void NAME(char *UPLO, char *TRANS,
   uplo  = -1;
   trans = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  यदि (uplo_arg  == 'U') uplo  = 0;
+  यदि (uplo_arg  == 'L') uplo  = 1;
 
 
-#ifndef COMPLEX
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-  if (trans_arg == 'C') trans = 1;
-#else
-#ifdef HEMM
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'C') trans = 1;
-#else
-  if (trans_arg == 'N') trans = 0;
-  if (trans_arg == 'T') trans = 1;
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+  यदि (trans_arg == 'N') trans = 0;
+  यदि (trans_arg == 'T') trans = 1;
+  यदि (trans_arg == 'C') trans = 1;
+#अन्यथा
+#यदि_परिभाषितम् HEMM
+  यदि (trans_arg == 'N') trans = 0;
+  यदि (trans_arg == 'C') trans = 1;
+#अन्यथा
+  यदि (trans_arg == 'N') trans = 0;
+  यदि (trans_arg == 'T') trans = 1;
+#यदि_अन्तः
 
-#endif
+#यदि_अन्तः
 
-  nrowa = args.n;
-  if (trans & 1) nrowa = args.k;
+  nrowa = तर्काः.n;
+  यदि (trans & 1) nrowa = तर्काः.k;
 
   info = 0;
 
-  if (args.ldc < MAX(1,args.n)) info = 10;
-  if (args.lda < MAX(1,nrowa))  info =  7;
-  if (args.k < 0)               info =  4;
-  if (args.n < 0)               info =  3;
-  if (trans < 0)                info =  2;
-  if (uplo  < 0)                info =  1;
+  यदि (तर्काः.ldc < MAX(1,तर्काः.n)) info = 10;
+  यदि (तर्काः.lda < MAX(1,nrowa))  info =  7;
+  यदि (तर्काः.k < 0)               info =  4;
+  यदि (तर्काः.n < 0)               info =  3;
+  यदि (trans < 0)                info =  2;
+  यदि (uplo  < 0)                info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, enum CBLAS_TRANSPOSE Trans,
+शून्य CNAME(गणना CBLAS_क्रमः क्रमः, गणना CBLAS_UPLO Uplo, गणना CBLAS_TRANSPOSE Trans,
 	   blasint n, blasint k,
-#if !defined(COMPLEX) || defined(HEMM)
+#यदि !defined(COMPLEX) || defined(HEMM)
 	   FLOAT alpha,
-#else
-	   void *valpha,
-#endif
-#if !defined(COMPLEX)
+#अन्यथा
+	   शून्य *valpha,
+#यदि_अन्तः
+#यदि !defined(COMPLEX)
 	   FLOAT *a, blasint lda,
-#else
-	   void *va, blasint lda,
-#endif
-#if !defined(COMPLEX) || defined(HEMM)
+#अन्यथा
+	   शून्य *va, blasint lda,
+#यदि_अन्तः
+#यदि !defined(COMPLEX) || defined(HEMM)
 	   FLOAT beta,
-#else
-	   void *vbeta,
-#endif
-#if !defined(COMPLEX)
+#अन्यथा
+	   शून्य *vbeta,
+#यदि_अन्तः
+#यदि !defined(COMPLEX)
 	   FLOAT *c, blasint ldc) {
-#else
-	   void *vc, blasint ldc) {
-#endif
+#अन्यथा
+	   शून्य *vc, blasint ldc) {
+#यदि_अन्तः
 
-#ifdef COMPLEX
-#if !defined(HEMM)
+#यदि_परिभाषितम् COMPLEX
+#यदि !defined(HEMM)
   FLOAT* alpha = (FLOAT*) valpha;
   FLOAT* beta = (FLOAT*) vbeta;
-#endif
+#यदि_अन्तः
   FLOAT* a = (FLOAT*) va;
   FLOAT* c = (FLOAT*) vc;
-#endif
+#यदि_अन्तः
 
-  blas_arg_t args;
-  int uplo, trans;
+  blas_arg_t तर्काः;
+  पूर्णाङ्क uplo, trans;
   blasint info, nrowa;
 
-  FLOAT *buffer;
+  FLOAT *बफर;
   FLOAT *sa, *sb;
 
-#ifdef SMP
-double NNK;
+#यदि_परिभाषितम् SMP
+द्विगुण NNK;
 
-#ifdef USE_SIMPLE_THREADED_LEVEL3
-#ifndef COMPLEX
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_REAL;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_REAL;
-#endif
-#else
-#ifdef XDOUBLE
-  int mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
-#elif defined(DOUBLE)
-  int mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
-  int mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
-#endif
-#endif
-#endif
-#endif
+#यदि_परिभाषितम् USE_SIMPLE_THREADED_LEVEL3
+#यदि_अपरिभाषितम् COMPLEX
+#यदि_परिभाषितम् XDOUBLE
+  पूर्णाङ्क बहुलकम्  =  BLAS_XDOUBLE | BLAS_REAL;
+#नोचेद्यदि defined(DOUBLE)
+  पूर्णाङ्क बहुलकम्  =  BLAS_DOUBLE  | BLAS_REAL;
+#अन्यथा
+  पूर्णाङ्क बहुलकम्  =  BLAS_SINGLE  | BLAS_REAL;
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+  पूर्णाङ्क बहुलकम्  =  BLAS_XDOUBLE | BLAS_COMPLEX;
+#नोचेद्यदि defined(DOUBLE)
+  पूर्णाङ्क बहुलकम्  =  BLAS_DOUBLE  | BLAS_COMPLEX;
+#अन्यथा
+  पूर्णाङ्क बहुलकम्  =  BLAS_SINGLE  | BLAS_COMPLEX;
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
 
   PRINT_DEBUG_CNAME;
 
-  args.n = n;
-  args.k = k;
+  तर्काः.n = n;
+  तर्काः.k = k;
 
-  args.a = (void *)a;
-  args.c = (void *)c;
+  तर्काः.a = (शून्य *)a;
+  तर्काः.c = (शून्य *)c;
 
-  args.lda = lda;
-  args.ldc = ldc;
+  तर्काः.lda = lda;
+  तर्काः.ldc = ldc;
 
-#if !defined(COMPLEX) || defined(HEMM)
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
-#else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
-#endif
+#यदि !defined(COMPLEX) || defined(HEMM)
+  तर्काः.alpha = (शून्य *)&alpha;
+  तर्काः.beta  = (शून्य *)&beta;
+#अन्यथा
+  तर्काः.alpha = (शून्य *)alpha;
+  तर्काः.beta  = (शून्य *)beta;
+#यदि_अन्तः
 
   trans = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
+  यदि (क्रमः == CblasColMajor) {
+    यदि (Uplo == Cblas_ऊर्ध्वस्थम्) uplo  = 0;
+    यदि (Uplo == Cblas_अधस्तनम्) uplo  = 1;
 
-    if (Trans == CblasNoTrans)     trans = 0;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 1;
-    if (Trans == CblasConjNoTrans) trans = 0;
-    if (Trans == CblasConjTrans)   trans = 1;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 1;
-#else
-    if (Trans == CblasConjTrans)   trans = 1;
-#endif
-
-    info = -1;
-
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
-
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
-
-    if (Trans == CblasNoTrans)     trans = 1;
-#ifndef COMPLEX
-    if (Trans == CblasTrans)       trans = 0;
-    if (Trans == CblasConjNoTrans) trans = 1;
-    if (Trans == CblasConjTrans)   trans = 0;
-#elif !defined(HEMM)
-    if (Trans == CblasTrans)       trans = 0;
-#else
-    if (Trans == CblasConjTrans)   trans = 0;
-#endif
+    यदि (Trans == CblasNoTrans)     trans = 0;
+#यदि_अपरिभाषितम् COMPLEX
+    यदि (Trans == CblasTrans)       trans = 1;
+    यदि (Trans == CblasConjNoTrans) trans = 0;
+    यदि (Trans == CblasConjTrans)   trans = 1;
+#नोचेद्यदि !defined(HEMM)
+    यदि (Trans == CblasTrans)       trans = 1;
+#अन्यथा
+    यदि (Trans == CblasConjTrans)   trans = 1;
+#यदि_अन्तः
 
     info = -1;
 
-    nrowa = args.n;
-    if (trans & 1) nrowa = args.k;
+    nrowa = तर्काः.n;
+    यदि (trans & 1) nrowa = तर्काः.k;
 
-    if (args.ldc < MAX(1,args.n)) info = 10;
-    if (args.lda < MAX(1,nrowa))  info =  7;
-    if (args.k < 0)               info =  4;
-    if (args.n < 0)               info =  3;
-    if (trans < 0)                info =  2;
-    if (uplo  < 0)                info =  1;
+    यदि (तर्काः.ldc < MAX(1,तर्काः.n)) info = 10;
+    यदि (तर्काः.lda < MAX(1,nrowa))  info =  7;
+    यदि (तर्काः.k < 0)               info =  4;
+    यदि (तर्काः.n < 0)               info =  3;
+    यदि (trans < 0)                info =  2;
+    यदि (uplo  < 0)                info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (क्रमः == CblasRowMajor) {
+    यदि (Uplo == Cblas_ऊर्ध्वस्थम्) uplo  = 1;
+    यदि (Uplo == Cblas_अधस्तनम्) uplo  = 0;
+
+    यदि (Trans == CblasNoTrans)     trans = 1;
+#यदि_अपरिभाषितम् COMPLEX
+    यदि (Trans == CblasTrans)       trans = 0;
+    यदि (Trans == CblasConjNoTrans) trans = 1;
+    यदि (Trans == CblasConjTrans)   trans = 0;
+#नोचेद्यदि !defined(HEMM)
+    यदि (Trans == CblasTrans)       trans = 0;
+#अन्यथा
+    यदि (Trans == CblasConjTrans)   trans = 0;
+#यदि_अन्तः
+
+    info = -1;
+
+    nrowa = तर्काः.n;
+    यदि (trans & 1) nrowa = तर्काः.k;
+
+    यदि (तर्काः.ldc < MAX(1,तर्काः.n)) info = 10;
+    यदि (तर्काः.lda < MAX(1,nrowa))  info =  7;
+    यदि (तर्काः.k < 0)               info =  4;
+    यदि (तर्काः.n < 0)               info =  3;
+    यदि (trans < 0)                info =  2;
+    यदि (uplo  < 0)                info =  1;
   }
 
-  if (args.n == 0) return;
+  यदि (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
+  }
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);
-#endif
+  यदि (तर्काः.n == 0) प्रत्यागम;
+
+#यदि_परिभाषितम् DYNAMIC_ARCH
+बाह्य वर्ण* gotoblas_corename(शून्य);
+#यदि_अन्तः
 	
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYRK_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
- || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+#यदि !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#यदि defined(ARCH_ARM64) && (defined(USE_SSYRK_KERNEL_प्रत्यक्षम्)||defined(DYNAMIC_ARCH))
+#यदि defined(DYNAMIC_ARCH)
+यदि (वाक्यं_तुलय(gotoblas_corename(), "armv9sme") == 0
+#यदि defined(__clang__)
+ || वाक्यं_तुलय(gotoblas_corename(), "vortexm4") == 0
+#यदि_अन्तः
 )
-#endif
-  if (order == CblasRowMajor && n == ldc) {
-    if (Trans == CblasNoTrans && k == lda) {
-      (Uplo == CblasUpper ? SSYRK_DIRECT_ALPHA_BETA_UN : SSYRK_DIRECT_ALPHA_BETA_LN)(n, k, alpha, a, lda, beta, c, ldc);
-      return;
-    } else if (Trans == CblasTrans && n == lda){
-      (Uplo == CblasUpper ? SSYRK_DIRECT_ALPHA_BETA_UT : SSYRK_DIRECT_ALPHA_BETA_LT)(n, k, alpha, a, lda, beta, c, ldc);
-      return;
+#यदि_अन्तः
+  यदि (क्रमः == CblasRowMajor && n == ldc) {
+    यदि (Trans == CblasNoTrans && k == lda) {
+      (Uplo == Cblas_ऊर्ध्वस्थम् ? SSYRK_प्रत्यक्षम्_ALPHA_BETA_UN : SSYRK_प्रत्यक्षम्_ALPHA_BETA_LN)(n, k, alpha, a, lda, beta, c, ldc);
+      प्रत्यागम;
+    } अन्यथा यदि (Trans == CblasTrans && n == lda){
+      (Uplo == Cblas_ऊर्ध्वस्थम् ? SSYRK_प्रत्यक्षम्_ALPHA_BETA_UT : SSYRK_प्रत्यक्षम्_ALPHA_BETA_LT)(n, k, alpha, a, lda, beta, c, ldc);
+      प्रत्यागम;
     }
   }
-#endif
-#endif
+#यदि_अन्तः
+#यदि_अन्तः
 
-#endif
+#यदि_अन्तः
 
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  बफर = (FLOAT *)blas_स्मृतिः_alloc(0);
+  यदि (!बफर) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_विस्थापनम्_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_विस्थापनम्_B);
 
-#ifdef SMP
-#ifdef USE_SIMPLE_THREADED_LEVEL3
-  if (!trans){
-    mode |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
-  } else {
-    mode |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
+#यदि_परिभाषितम् SMP
+#यदि_परिभाषितम् USE_SIMPLE_THREADED_LEVEL3
+  यदि (!trans){
+    बहुलकम् |= (BLAS_TRANSA_N | BLAS_TRANSB_T);
+  } अन्यथा {
+    बहुलकम् |= (BLAS_TRANSA_T | BLAS_TRANSB_N);
   }
-  mode |= (uplo  << BLAS_UPLO_SHIFT);
-#endif
+  बहुलकम् |= (uplo  << BLAS_UPLO_सरणम्);
+#यदि_अन्तः
 
-  args.common = NULL;
+  तर्काः.common = रिक्त;
 
-  NNK = (double)(args.n+1)*(double)args.n*(double)args.k;
-  if (NNK <= (SMP_THRESHOLD_MIN * GEMM_MULTITHREAD_THRESHOLD)) {
-  args.nthreads = 1;
-  } else {
-  args.nthreads = num_cpu_avail(3);
+  NNK = (द्विगुण)(तर्काः.n+1)*(द्विगुण)तर्काः.n*(द्विगुण)तर्काः.k;
+  यदि (NNK <= (SMP_देहली_MIN * GEMM_MULTITHREAD_देहली)) {
+  तर्काः.nthreads = 1;
+  } अन्यथा {
+  तर्काः.nthreads = अङ्कः_cpu_avail(3);
   }
 
-  if (args.nthreads == 1) {
-#endif
+  यदि (तर्काः.nthreads == 1) {
+#यदि_अन्तः
 
-    (syrk[(uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syrk[(uplo << 1) | trans ])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
 
-#ifndef USE_SIMPLE_THREADED_LEVEL3
+#यदि_अपरिभाषितम् USE_SIMPLE_THREADED_LEVEL3
 
-    (syrk[4 | (uplo << 1) | trans ])(&args, NULL, NULL, sa, sb, 0);
+    (syrk[4 | (uplo << 1) | trans ])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-#else
+#अन्यथा
 
-    syrk_thread(mode, &args, NULL, NULL, syrk[(uplo << 1) | trans ], sa, sb, args.nthreads);
+    syrk_thread(बहुलकम्, &तर्काः, रिक्त, रिक्त, syrk[(uplo << 1) | trans ], sa, sb, तर्काः.nthreads);
 
-#endif
+#यदि_अन्तः
 
   }
-#endif
+#यदि_अन्तः
 
- blas_memory_free(buffer);
+ blas_स्मृतिः_free(बफर);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE, args.n * args.k + args.n * args.n / 2, args.n * args.n * args.k);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE * COMPSIZE, तर्काः.n * तर्काः.k + तर्काः.n * तर्काः.n / 2, तर्काः.n * तर्काः.n * तर्काः.k);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 }

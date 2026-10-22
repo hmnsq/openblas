@@ -37,90 +37,90 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
-void NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
+शून्य NAME(blasint *N, FLOAT *ALPHA, FLOAT *x, blasint *INCX){
 
   blasint n    = *N;
   blasint incx = *INCX;
   FLOAT alpha = *ALPHA;
 
-#else
+#अन्यथा
 
-void CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
+शून्य CNAME(blasint n, FLOAT alpha, FLOAT *x, blasint incx){
 
-#endif
+#यदि_अन्तः
 
-#ifdef SMP
-  int mode, nthreads;
-#endif
+#यदि_परिभाषितम् SMP
+  पूर्णाङ्क बहुलकम्, nthreads;
+#यदि_अन्तः
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
   PRINT_DEBUG_NAME;
-#else
+#अन्यथा
   PRINT_DEBUG_CNAME;
-#endif
+#यदि_अन्तः
 
-  if (incx <= 0 || n <= 0) return;
+  यदि (incx <= 0 || n <= 0) प्रत्यागम;
 
-#ifdef BGEMM
-  float alpha_float;
+#यदि_परिभाषितम् BGEMM
+  भिन्न alpha_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
-#else
+#अन्यथा
   FLOAT alpha_float = alpha;
-#endif
+#यदि_अन्तः
 
-  if (alpha_float == ONE) return;
+  यदि (alpha_float == ONE) प्रत्यागम;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
 
-#ifdef SMP
-  if (n <= 1048576 )
+#यदि_परिभाषितम् SMP
+  यदि (n <= 1048576 )
 	nthreads = 1;
-  else
-	nthreads = num_cpu_avail(1);
+  अन्यथा
+	nthreads = अङ्कः_cpu_avail(1);
 
 
-  if (nthreads == 1) {
-#endif
+  यदि (nthreads == 1) {
+#यदि_अन्तः
 
-  SCAL_K(n, 0, 0, alpha, x, incx, NULL, 0, NULL, 1);
+  SCAL_K(n, 0, 0, alpha, x, incx, रिक्त, 0, रिक्त, 1);
 
-#ifdef SMP
-  } else {
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
 
-#ifdef DOUBLE
-    mode  =  BLAS_DOUBLE | BLAS_REAL;
-#else
-    mode  =  BLAS_SINGLE | BLAS_REAL;
-#endif
+#यदि_परिभाषितम् DOUBLE
+    बहुलकम्  =  BLAS_DOUBLE | BLAS_REAL;
+#अन्यथा
+    बहुलकम्  =  BLAS_SINGLE | BLAS_REAL;
+#यदि_अन्तः
 
-    blas_level1_thread(mode, n, 0, 0,
-#ifndef CBLAS
+    blas_level1_thread(बहुलकम्, n, 0, 0,
+#यदि_अपरिभाषितम् CBLAS
 		       ALPHA,
-#else
+#अन्यथा
 		       &alpha,
-#endif
-		       x, incx, NULL, 0, NULL, 1,  (int (*)(void))SCAL_K, nthreads);
+#यदि_अन्तः
+		       x, incx, रिक्त, 0, रिक्त, 1,  (पूर्णाङ्क (*)(शून्य))SCAL_K, nthreads);
 
   }
-#endif
+#यदि_अन्तः
 
-  FUNCTION_PROFILE_END(1, n, n);
+  FUNCTION_PROFILE_अन्तः(1, n, n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 
 }

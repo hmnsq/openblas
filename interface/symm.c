@@ -36,151 +36,151 @@
 /* or implied, of The University of Texas at Austin.                 */
 /*********************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include "common.h"
-#ifdef FUNCTION_PROFILE
-#include "functable.h"
-#endif
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <ctype.h>
+#अन्तर्भाव "common.h"
+#यदि_परिभाषितम् FUNCTION_PROFILE
+#अन्तर्भाव "functable.h"
+#यदि_अन्तः
 
-#ifndef COMPLEX
-#define SMP_THRESHOLD_MIN 65536.
-#ifdef XDOUBLE
-#define ERROR_NAME "QSYMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "DSYMM "
-#else
-#define ERROR_NAME "SSYMM "
-#endif
-#else
-#define SMP_THRESHOLD_MIN 8192.
-#ifndef GEMM3M
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYMM "
-#else
-#define ERROR_NAME "CSYMM "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHEMM "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHEMM "
-#else
-#define ERROR_NAME "CHEMM "
-#endif
-#endif
-#else
-#ifndef HEMM
-#ifdef XDOUBLE
-#define ERROR_NAME "XSYMM3M "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZSYMM3M "
-#else
-#define ERROR_NAME "CSYMM3M "
-#endif
-#else
-#ifdef XDOUBLE
-#define ERROR_NAME "XHEMM3M "
-#elif defined(DOUBLE)
-#define ERROR_NAME "ZHEMM3M "
-#else
-#define ERROR_NAME "CHEMM3M "
-#endif
-#endif
-#endif
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+#परिभाषय SMP_देहली_MIN 65536.
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "QSYMM "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "DSYMM "
+#अन्यथा
+#परिभाषय ERROR_NAME "SSYMM "
+#यदि_अन्तः
+#अन्यथा
+#परिभाषय SMP_देहली_MIN 8192.
+#यदि_अपरिभाषितम् GEMM3M
+#यदि_अपरिभाषितम् HEMM
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "XSYMM "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZSYMM "
+#अन्यथा
+#परिभाषय ERROR_NAME "CSYMM "
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "XHEMM "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZHEMM "
+#अन्यथा
+#परिभाषय ERROR_NAME "CHEMM "
+#यदि_अन्तः
+#यदि_अन्तः
+#अन्यथा
+#यदि_अपरिभाषितम् HEMM
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "XSYMM3M "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZSYMM3M "
+#अन्यथा
+#परिभाषय ERROR_NAME "CSYMM3M "
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय ERROR_NAME "XHEMM3M "
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय ERROR_NAME "ZHEMM3M "
+#अन्यथा
+#परिभाषय ERROR_NAME "CHEMM3M "
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
 
-#ifndef GEMM_MULTITHREAD_THRESHOLD
-#define GEMM_MULTITHREAD_THRESHOLD 4
-#endif
+#यदि_अपरिभाषितम् GEMM_MULTITHREAD_देहली
+#परिभाषय GEMM_MULTITHREAD_देहली 4
+#यदि_अन्तः
 
-#ifdef DYNAMIC_ARCH
-extern char* gotoblas_corename(void);                                
-#endif                                                               
+#यदि_परिभाषितम् DYNAMIC_ARCH
+बाह्य वर्ण* gotoblas_corename(शून्य);                                
+#यदि_अन्तः                                                               
 
-#ifdef SMP
-#ifndef COMPLEX
-#ifdef XDOUBLE
-#define MODE	(BLAS_XDOUBLE | BLAS_REAL)
-#elif defined(DOUBLE)
-#define MODE	(BLAS_DOUBLE  | BLAS_REAL)
-#else
-#define MODE	(BLAS_SINGLE  | BLAS_REAL)
-#endif
-#else
-#ifdef XDOUBLE
-#define MODE	(BLAS_XDOUBLE | BLAS_COMPLEX)
-#elif defined(DOUBLE)
-#define MODE	(BLAS_DOUBLE  | BLAS_COMPLEX)
-#else
-#define MODE	(BLAS_SINGLE  | BLAS_COMPLEX)
-#endif
-#endif
-#endif
+#यदि_परिभाषितम् SMP
+#यदि_अपरिभाषितम् COMPLEX
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय बहुलकम्_2	(BLAS_XDOUBLE | BLAS_REAL)
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय बहुलकम्_2	(BLAS_DOUBLE  | BLAS_REAL)
+#अन्यथा
+#परिभाषय बहुलकम्_2	(BLAS_SINGLE  | BLAS_REAL)
+#यदि_अन्तः
+#अन्यथा
+#यदि_परिभाषितम् XDOUBLE
+#परिभाषय बहुलकम्_2	(BLAS_XDOUBLE | BLAS_COMPLEX)
+#नोचेद्यदि defined(DOUBLE)
+#परिभाषय बहुलकम्_2	(BLAS_DOUBLE  | BLAS_COMPLEX)
+#अन्यथा
+#परिभाषय बहुलकम्_2	(BLAS_SINGLE  | BLAS_COMPLEX)
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
 
-static int (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
-#ifndef GEMM3M
-#ifndef HEMM
+स्थिर पूर्णाङ्क (*symm[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *, FLOAT *, BLASLONG) = {
+#यदि_अपरिभाषितम् GEMM3M
+#यदि_अपरिभाषितम् HEMM
   SYMM_LU, SYMM_LL, SYMM_RU, SYMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#यदि defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM_THREAD_LU, SYMM_THREAD_LL, SYMM_THREAD_RU, SYMM_THREAD_RL,
-#endif
-#else
+#यदि_अन्तः
+#अन्यथा
   HEMM_LU, HEMM_LL, HEMM_RU, HEMM_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#यदि defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM_THREAD_LU, HEMM_THREAD_LL, HEMM_THREAD_RU, HEMM_THREAD_RL,
-#endif
-#endif
-#else
-#ifndef HEMM
+#यदि_अन्तः
+#यदि_अन्तः
+#अन्यथा
+#यदि_अपरिभाषितम् HEMM
   SYMM3M_LU, SYMM3M_LL, SYMM3M_RU, SYMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#यदि defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   SYMM3M_THREAD_LU, SYMM3M_THREAD_LL, SYMM3M_THREAD_RU, SYMM3M_THREAD_RL,
-#endif
-#else
+#यदि_अन्तः
+#अन्यथा
   HEMM3M_LU, HEMM3M_LL, HEMM3M_RU, HEMM3M_RL,
-#if defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
+#यदि defined(SMP) && !defined(USE_SIMPLE_THREADED_LEVEL3)
   HEMM3M_THREAD_LU, HEMM3M_THREAD_LL, HEMM3M_THREAD_RU, HEMM3M_THREAD_RL,
-#endif
-#endif
-#endif
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अन्तः
 };
 
 OPENBLAS_EXPORT
 
-#ifndef CBLAS
+#यदि_अपरिभाषितम् CBLAS
 
-void NAME(char *SIDE, char *UPLO,
+शून्य NAME(वर्ण *SIDE, वर्ण *UPLO,
          blasint *M, blasint *N,
          FLOAT *alpha, FLOAT *a, blasint *ldA,
          FLOAT *b, blasint *ldB,
          FLOAT *beta,  FLOAT *c, blasint *ldC){
 
-  char side_arg  = *SIDE;
-  char uplo_arg  = *UPLO;
+  वर्ण side_arg  = *SIDE;
+  वर्ण uplo_arg  = *UPLO;
 
-  blas_arg_t args;
+  blas_arg_t तर्काः;
 
-  FLOAT *buffer;
+  FLOAT *बफर;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
-#endif
-# if defined(SMP)
-  double MN;
-#endif
+#यदि defined(SMP) && !defined(NO_AFFINITY)
+  पूर्णाङ्क nodes;
+#यदि_अन्तः
+# यदि defined(SMP)
+  द्विगुण MN;
+#यदि_अन्तः
   blasint info;
-  int side;
-  int uplo;
+  पूर्णाङ्क side;
+  पूर्णाङ्क uplo;
 
   PRINT_DEBUG_NAME;
 
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
+  तर्काः.alpha = (शून्य *)alpha;
+  तर्काः.beta  = (शून्य *)beta;
 
   TOUPPER(side_arg);
   TOUPPER(uplo_arg);
@@ -188,285 +188,285 @@ void NAME(char *SIDE, char *UPLO,
   side  = -1;
   uplo  = -1;
 
-  if (side_arg  == 'L') side  = 0;
-  if (side_arg  == 'R') side  = 1;
+  यदि (side_arg  == 'L') side  = 0;
+  यदि (side_arg  == 'R') side  = 1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  यदि (uplo_arg  == 'U') uplo  = 0;
+  यदि (uplo_arg  == 'L') uplo  = 1;
 
-  args.m = *M;
-  args.n = *N;
+  तर्काः.m = *M;
+  तर्काः.n = *N;
 
-  args.c = (void *)c;
-  args.ldc = *ldC;
+  तर्काः.c = (शून्य *)c;
+  तर्काः.ldc = *ldC;
 
   info = 0;
 
-  if (args.ldc < MAX(1, args.m)) info = 12;
+  यदि (तर्काः.ldc < MAX(1, तर्काः.m)) info = 12;
 
-  if (!side) {
-    args.a = (void *)a;
-    args.b = (void *)b;
+  यदि (!side) {
+    तर्काः.a = (शून्य *)a;
+    तर्काः.b = (शून्य *)b;
 
-    args.lda = *ldA;
-    args.ldb = *ldB;
+    तर्काः.lda = *ldA;
+    तर्काः.ldb = *ldB;
 
-    if (args.ldb < MAX(1, args.m)) info =  9;
-    if (args.lda < MAX(1, args.m)) info =  7;
+    यदि (तर्काः.ldb < MAX(1, तर्काः.m)) info =  9;
+    यदि (तर्काः.lda < MAX(1, तर्काः.m)) info =  7;
 
-  } else {
-    args.a = (void *)b;
-    args.b = (void *)a;
+  } अन्यथा {
+    तर्काः.a = (शून्य *)b;
+    तर्काः.b = (शून्य *)a;
 
-    args.lda = *ldB;
-    args.ldb = *ldA;
+    तर्काः.lda = *ldB;
+    तर्काः.ldb = *ldA;
 
-  if (args.lda < MAX(1, args.m)) info =  9;
-  if (args.ldb < MAX(1, args.n)) info =  7;
+  यदि (तर्काः.lda < MAX(1, तर्काः.m)) info =  9;
+  यदि (तर्काः.ldb < MAX(1, तर्काः.n)) info =  7;
   }
 
-  if (args.n   < 0)              info =  4;
-  if (args.m   < 0)              info =  3;
-  if (uplo     < 0)              info =  2;
-  if (side     < 0)              info =  1;
+  यदि (तर्काः.n   < 0)              info =  4;
+  यदि (तर्काः.m   < 0)              info =  3;
+  यदि (uplo     < 0)              info =  2;
+  यदि (side     < 0)              info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-#else
+#अन्यथा
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_SIDE Side, enum CBLAS_UPLO Uplo,
+शून्य CNAME(गणना CBLAS_क्रमः क्रमः, गणना CBLAS_SIDE Side, गणना CBLAS_UPLO Uplo,
 	   blasint m, blasint n,
-#ifndef COMPLEX
+#यदि_अपरिभाषितम् COMPLEX
 	   FLOAT alpha,
 	   FLOAT *a, blasint lda,
 	   FLOAT *b, blasint ldb,
 	   FLOAT beta,
 	   FLOAT *c, blasint ldc) {
-#else
-	   void *valpha,
-	   void *va, blasint lda,
-	   void *vb, blasint ldb,
-	   void *vbeta,
-	   void *vc, blasint ldc) {
+#अन्यथा
+	   शून्य *valpha,
+	   शून्य *va, blasint lda,
+	   शून्य *vb, blasint ldb,
+	   शून्य *vbeta,
+	   शून्य *vc, blasint ldc) {
   FLOAT *alpha = (FLOAT*) valpha;
   FLOAT *beta  = (FLOAT*) vbeta;
   FLOAT *a = (FLOAT*) va;
   FLOAT *b = (FLOAT*) vb;
   FLOAT *c = (FLOAT*) vc;	   
-#endif
+#यदि_अन्तः
 
-  blas_arg_t args;
-  int side, uplo;
+  blas_arg_t तर्काः;
+  पूर्णाङ्क side, uplo;
   blasint info;
 
-  FLOAT *buffer;
+  FLOAT *बफर;
   FLOAT *sa, *sb;
 
-#if defined(SMP) && !defined(NO_AFFINITY)
-  int nodes;
-#endif
-#if defined(SMP)
-  double MN;
-#endif
+#यदि defined(SMP) && !defined(NO_AFFINITY)
+  पूर्णाङ्क nodes;
+#यदि_अन्तः
+#यदि defined(SMP)
+  द्विगुण MN;
+#यदि_अन्तः
 
   PRINT_DEBUG_CNAME;
 
-#ifndef COMPLEX
-  args.alpha = (void *)&alpha;
-  args.beta  = (void *)&beta;
-#else
-  args.alpha = (void *)alpha;
-  args.beta  = (void *)beta;
-#endif
+#यदि_अपरिभाषितम् COMPLEX
+  तर्काः.alpha = (शून्य *)&alpha;
+  तर्काः.beta  = (शून्य *)&beta;
+#अन्यथा
+  तर्काः.alpha = (शून्य *)alpha;
+  तर्काः.beta  = (शून्य *)beta;
+#यदि_अन्तः
 
-  args.c = (void *)c;
-  args.ldc = ldc;
+  तर्काः.c = (शून्य *)c;
+  तर्काः.ldc = ldc;
 
   side  = -1;
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (Side == CblasLeft)  side = 0;
-    if (Side == CblasRight) side = 1;
+  यदि (क्रमः == CblasColMajor) {
+    यदि (Side == Cblas_वामः)  side = 0;
+    यदि (Side == Cblas_दक्षिणः) side = 1;
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    args.m = m;
-    args.n = n;
-
-    if (args.ldc < MAX(1, args.m)) info = 12;
-
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
-
-      args.lda = lda;
-      args.ldb = ldb;
-
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
-
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
-
-      args.lda = ldb;
-      args.ldb = lda;
-
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
-    }
-
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-    if (Side == CblasLeft)  side = 1;
-    if (Side == CblasRight) side = 0;
-
-    if (Uplo == CblasUpper) uplo  = 1;
-    if (Uplo == CblasLower) uplo  = 0;
+    यदि (Uplo == Cblas_ऊर्ध्वस्थम्) uplo  = 0;
+    यदि (Uplo == Cblas_अधस्तनम्) uplo  = 1;
 
     info = -1;
 
-    args.m = n;
-    args.n = m;
+    तर्काः.m = m;
+    तर्काः.n = n;
 
-    if (args.ldc < MAX(1, args.m)) info = 12;
+    यदि (तर्काः.ldc < MAX(1, तर्काः.m)) info = 12;
 
-    if (!side) {
-      args.a = (void *)a;
-      args.b = (void *)b;
+    यदि (!side) {
+      तर्काः.a = (शून्य *)a;
+      तर्काः.b = (शून्य *)b;
 
-      args.lda = lda;
-      args.ldb = ldb;
+      तर्काः.lda = lda;
+      तर्काः.ldb = ldb;
 
-      if (args.ldb < MAX(1, args.m)) info =  9;
-      if (args.lda < MAX(1, args.m)) info =  7;
+      यदि (तर्काः.ldb < MAX(1, तर्काः.m)) info =  9;
+      यदि (तर्काः.lda < MAX(1, तर्काः.m)) info =  7;
 
-    } else {
-      args.a = (void *)b;
-      args.b = (void *)a;
+    } अन्यथा {
+      तर्काः.a = (शून्य *)b;
+      तर्काः.b = (शून्य *)a;
 
-      args.lda = ldb;
-      args.ldb = lda;
+      तर्काः.lda = ldb;
+      तर्काः.ldb = lda;
 
-      if (args.lda < MAX(1, args.m)) info =  9;
-      if (args.ldb < MAX(1, args.n)) info =  7;
+      यदि (तर्काः.lda < MAX(1, तर्काः.m)) info =  9;
+      यदि (तर्काः.ldb < MAX(1, तर्काः.n)) info =  7;
     }
 
-    if (args.n   < 0)              info =  4;
-    if (args.m   < 0)              info =  3;
-    if (uplo     < 0)              info =  2;
-    if (side     < 0)              info =  1;
+    यदि (तर्काः.n   < 0)              info =  4;
+    यदि (तर्काः.m   < 0)              info =  3;
+    यदि (uplo     < 0)              info =  2;
+    यदि (side     < 0)              info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  यदि (क्रमः == CblasRowMajor) {
+    यदि (Side == Cblas_वामः)  side = 1;
+    यदि (Side == Cblas_दक्षिणः) side = 0;
+
+    यदि (Uplo == Cblas_ऊर्ध्वस्थम्) uplo  = 1;
+    यदि (Uplo == Cblas_अधस्तनम्) uplo  = 0;
+
+    info = -1;
+
+    तर्काः.m = n;
+    तर्काः.n = m;
+
+    यदि (तर्काः.ldc < MAX(1, तर्काः.m)) info = 12;
+
+    यदि (!side) {
+      तर्काः.a = (शून्य *)a;
+      तर्काः.b = (शून्य *)b;
+
+      तर्काः.lda = lda;
+      तर्काः.ldb = ldb;
+
+      यदि (तर्काः.ldb < MAX(1, तर्काः.m)) info =  9;
+      यदि (तर्काः.lda < MAX(1, तर्काः.m)) info =  7;
+
+    } अन्यथा {
+      तर्काः.a = (शून्य *)b;
+      तर्काः.b = (शून्य *)a;
+
+      तर्काः.lda = ldb;
+      तर्काः.ldb = lda;
+
+      यदि (तर्काः.lda < MAX(1, तर्काः.m)) info =  9;
+      यदि (तर्काः.ldb < MAX(1, तर्काः.n)) info =  7;
+    }
+
+    यदि (तर्काः.n   < 0)              info =  4;
+    यदि (तर्काः.m   < 0)              info =  3;
+    यदि (uplo     < 0)              info =  2;
+    यदि (side     < 0)              info =  1;
   }
 
-   if (args.m == 0 || args.n == 0) return;
-#if !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
-#if defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_DIRECT)||defined(DYNAMIC_ARCH))
-#if defined(DYNAMIC_ARCH)
-if (strcmp(gotoblas_corename(), "armv9sme") == 0
-#if defined(__clang__)
- || strcmp(gotoblas_corename(), "vortexm4") == 0
-#endif
+  यदि (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
+  }
+
+   यदि (तर्काः.m == 0 || तर्काः.n == 0) प्रत्यागम;
+#यदि !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)  && !defined(HFLOAT16)
+#यदि defined(ARCH_ARM64) && (defined(USE_SSYMM_KERNEL_प्रत्यक्षम्)||defined(DYNAMIC_ARCH))
+#यदि defined(DYNAMIC_ARCH)
+यदि (वाक्यं_तुलय(gotoblas_corename(), "armv9sme") == 0
+#यदि defined(__clang__)
+ || वाक्यं_तुलय(gotoblas_corename(), "vortexm4") == 0
+#यदि_अन्तः
 )
-#endif
-   if (order == CblasRowMajor && m == lda && n == ldb && n == ldc)
+#यदि_अन्तः
+   यदि (क्रमः == CblasRowMajor && m == lda && n == ldb && n == ldc)
    {
-     if (Side == CblasLeft && Uplo == CblasUpper) {
-       SSYMM_DIRECT_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     यदि (Side == Cblas_वामः && Uplo == Cblas_ऊर्ध्वस्थम्) {
+       SSYMM_प्रत्यक्षम्_ALPHA_BETA_LU(m, n, alpha, a, lda, b, ldb, beta, c, ldc); प्रत्यागम;
      }
-     else if (Side == CblasLeft && Uplo == CblasLower) {
-       SSYMM_DIRECT_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); return;
+     अन्यथा यदि (Side == Cblas_वामः && Uplo == Cblas_अधस्तनम्) {
+       SSYMM_प्रत्यक्षम्_ALPHA_BETA_LL(m, n, alpha, a, lda, b, ldb, beta, c, ldc); प्रत्यागम;
      }
    }
-#endif
-#endif
+#यदि_अन्तः
+#यदि_अन्तः
 
-#endif
+#यदि_अन्तः
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  buffer = (FLOAT *)blas_memory_alloc(0);
-  if (!buffer) {
+  बफर = (FLOAT *)blas_स्मृतिः_alloc(0);
+  यदि (!बफर) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, परिमाण(ERROR_NAME));
+    प्रत्यागम;
   }
 
-  sa = (FLOAT *)((BLASLONG)buffer + GEMM_OFFSET_A);
-  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * SIZE + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_OFFSET_B);
+  sa = (FLOAT *)((BLASLONG)बफर + GEMM_विस्थापनम्_A);
+  sb = (FLOAT *)(((BLASLONG)sa + ((GEMM_P * GEMM_Q * COMPSIZE * आकार + GEMM_ALIGN) & ~GEMM_ALIGN)) + GEMM_विस्थापनम्_B);
 
-#ifdef SMP
-  args.common = NULL;
-  MN = 2.* (double) args.m * (double)args.m * (double) args.n;
-  if (MN <= (SMP_THRESHOLD_MIN * (double) GEMM_MULTITHREAD_THRESHOLD) ) {
-	  args.nthreads = 1;
-  } else {
-	 args.nthreads = num_cpu_avail(3);
+#यदि_परिभाषितम् SMP
+  तर्काः.common = रिक्त;
+  MN = 2.* (द्विगुण) तर्काः.m * (द्विगुण)तर्काः.m * (द्विगुण) तर्काः.n;
+  यदि (MN <= (SMP_देहली_MIN * (द्विगुण) GEMM_MULTITHREAD_देहली) ) {
+	  तर्काः.nthreads = 1;
+  } अन्यथा {
+	 तर्काः.nthreads = अङ्कः_cpu_avail(3);
   }
-  if (args.nthreads == 1) {
-#endif
+  यदि (तर्काः.nthreads == 1) {
+#यदि_अन्तः
 
-    (symm[(side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+    (symm[(side << 1) | uplo ])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-#ifdef SMP
-  } else {
+#यदि_परिभाषितम् SMP
+  } अन्यथा {
 
-#ifndef NO_AFFINITY
-    nodes = get_num_nodes();
+#यदि_अपरिभाषितम् NO_AFFINITY
+    nodes = get_अङ्कः_nodes();
 
-    if (nodes > 1) {
+    यदि (nodes > 1) {
 
-      args.nthreads /= nodes;
+      तर्काः.nthreads /= nodes;
 
-      gemm_thread_mn(MODE, &args, NULL, NULL,
+      gemm_thread_mn(बहुलकम्_2, &तर्काः, रिक्त, रिक्त,
 		     symm[4 | (side << 1) | uplo ], sa, sb, nodes);
 
-    } else {
-#endif
+    } अन्यथा {
+#यदि_अन्तः
 
-#ifndef USE_SIMPLE_THREADED_LEVEL3
+#यदि_अपरिभाषितम् USE_SIMPLE_THREADED_LEVEL3
 
-      (symm[4 | (side << 1) | uplo ])(&args, NULL, NULL, sa, sb, 0);
+      (symm[4 | (side << 1) | uplo ])(&तर्काः, रिक्त, रिक्त, sa, sb, 0);
 
-#else
+#अन्यथा
 
-      GEMM_THREAD(MODE, &args, NULL, NULL, symm[(side << 1) | uplo ], sa, sb, args.nthreads);
+      GEMM_THREAD(बहुलकम्_2, &तर्काः, रिक्त, रिक्त, symm[(side << 1) | uplo ], sa, sb, तर्काः.nthreads);
 
-#endif
+#यदि_अन्तः
 
-#ifndef NO_AFFINITY
+#यदि_अपरिभाषितम् NO_AFFINITY
     }
-#endif
+#यदि_अन्तः
 
   }
-#endif
+#यदि_अन्तः
 
- blas_memory_free(buffer);
+ blas_स्मृतिः_free(बफर);
 
-  FUNCTION_PROFILE_END(COMPSIZE * COMPSIZE,
-		       (!side)? args.m * (args.m / 2 + args.n) : args.n * (args.m + args.n / 2),
-		       (!side)? 2 * args.m * args.m * args.n : 2 * args.m * args.n * args.n);
+  FUNCTION_PROFILE_अन्तः(COMPSIZE * COMPSIZE,
+		       (!side)? तर्काः.m * (तर्काः.m / 2 + तर्काः.n) : तर्काः.n * (तर्काः.m + तर्काः.n / 2),
+		       (!side)? 2 * तर्काः.m * तर्काः.m * तर्काः.n : 2 * तर्काः.m * तर्काः.n * तर्काः.n);
 
-  IDEBUG_END;
+  IDEBUG_अन्तः;
 
-  return;
+  प्रत्यागम;
 }
