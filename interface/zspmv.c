@@ -47,27 +47,27 @@
 #define ERROR_NAME "ZSPMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSPMV "
-#else
+#มิฉะนั้น
 #define ERROR_NAME "CSPMV "
 #endif
 
-static  int (*spmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
+static  จำนวนเต็ม (*spmv[])(BLASLONG, FLOAT, FLOAT, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, void *) = {
 #ifdef XDOUBLE
   xspmv_U, xspmv_L,
 #elif defined(DOUBLE)
   zspmv_U, zspmv_L,
-#else
+#มิฉะนั้น
   cspmv_U, cspmv_L,
 #endif
 };
 
 #ifdef SMPTEST
-static  int (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static  จำนวนเต็ม (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, จำนวนเต็ม) = {
 #ifdef XDOUBLE
   xspmv_thread_U, xspmv_thread_L,
 #elif defined(DOUBLE)
   zspmv_thread_U, zspmv_thread_L,
-#else
+#มิฉะนั้น
   cspmv_thread_U, cspmv_thread_L,
 #endif
 };
@@ -75,10 +75,10 @@ static  int (*spmv_thread[])(BLASLONG, FLOAT *, FLOAT *, FLOAT *, BLASLONG, FLOA
 
 OPENBLAS_EXPORT
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
             FLOAT  *b, blasint *INCX, FLOAT *BETA, FLOAT *c, blasint *INCY){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -88,10 +88,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  จำนวนเต็ม uplo;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  จำนวนเต็ม nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -99,52 +99,52 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ถ้า (uplo_arg  == 'U') uplo  = 0;
+  ถ้า (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  9;
-  if (incx == 0)          info =  6;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ถ้า (incy == 0)          info =  9;
+  ถ้า (incx == 0)          info =  6;
+  ถ้า (n < 0)              info =  2;
+  ถ้า (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ถ้า (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    คืน;
   }
 
-  if (n == 0) return;
+  ถ้า (n == 0) คืน;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, abs(incy), NULL, 0, NULL, 0);
+  ถ้า ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, c, abs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ถ้า ((alpha_r == ZERO) && (alpha_i == ZERO)) คืน;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
+  ถ้า (incx < 0 ) b -= (n - 1) * incx * COMPSIZE;
+  ถ้า (incy < 0 ) c -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ถ้า (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    คืน;
   }
 
 #ifdef SMPTEST
   nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ถ้า (nthreads == 1) {
 #endif
 
   (spmv[uplo])(n, alpha_r, alpha_i, a, b, incx, c, incy, buffer);
 
 #ifdef SMPTEST
 
-  } else {
+  } มิฉะนั้น {
 
     (spmv_thread[uplo])(n, ALPHA, a, b, incx, c, incy, buffer, nthreads);
 
@@ -157,5 +157,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a,
 
   IDEBUG_END;
 
-  return;
+  คืน;
 }

@@ -47,37 +47,37 @@
 #define ERROR_NAME "XSPR2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSPR2 "
-#else
+#มิฉะนั้น
 #define ERROR_NAME "CSPR2 "
 #endif
 
-static int (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static จำนวนเต็ม (*spr2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xspr2_U, xspr2_L,
 #elif defined(DOUBLE)
   zspr2_U, zspr2_L,
-#else
+#มิฉะนั้น
   cspr2_U, cspr2_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static จำนวนเต็ม (*spr2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, FLOAT *, จำนวนเต็ม) = {
 #ifdef XDOUBLE
   xspr2_thread_U, xspr2_thread_L,
 #elif defined(DOUBLE)
   zspr2_thread_U, zspr2_thread_L,
-#else
+#มิฉะนั้น
   cspr2_thread_U, cspr2_thread_L,
 #endif
 };
 #endif
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -85,10 +85,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int uplo;
+  จำนวนเต็ม uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  จำนวนเต็ม nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -96,52 +96,52 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ถ้า (uplo_arg  == 'U') uplo  = 0;
+  ถ้า (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ถ้า (incy == 0)          info =  7;
+  ถ้า (incx == 0)          info =  5;
+  ถ้า (n < 0)              info =  2;
+  ถ้า (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ถ้า (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    คืน;
   }
 
-  if (n == 0) return;
+  ถ้า (n == 0) คืน;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ถ้า ((alpha_r == ZERO) && (alpha_i == ZERO)) คืน;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
-  if (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
+  ถ้า (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  ถ้า (incy < 0 ) y -= (n - 1) * incy * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ถ้า (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    คืน;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  ถ้า (n < 50) nthreads = 1;
+  ถ้า (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  ถ้า (nthreads == 1) {
 #endif
 
     (spr2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, buffer);
 
 #ifdef SMP
-  } else {
+  } มิฉะนั้น {
 
     (spr2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, buffer, nthreads);
 
@@ -154,5 +154,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  คืน;
 }

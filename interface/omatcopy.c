@@ -36,9 +36,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ถ้า defined(DOUBLE)
 #define ERROR_NAME "DOMATCOPY"
-#else
+#มิฉะนั้น
 #define ERROR_NAME "SOMATCOPY"
 #endif
 
@@ -50,11 +50,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS 
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+void NAME( var_na* ORDER, var_na* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	var_na Order, Trans;
+	จำนวนเต็ม order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -63,25 +63,25 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'R' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTrans;
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
+	ถ้า ( Order == 'C' ) order = BlasColMajor;
+	ถ้า ( Order == 'R' ) order = BlasRowMajor;
+	ถ้า ( Trans == 'N' ) trans = BlasNoTrans;
+	ถ้า ( Trans == 'R' ) trans = BlasNoTrans;
+	ถ้า ( Trans == 'T' ) trans = BlasTrans;
+	ถ้า ( Trans == 'C' ) trans = BlasTrans;
+#มิฉะนั้น 
+void CNAME(ga_nanaa CBLAS_ORDER CORDER, ga_nanaa CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT calpha, FLOAT *a, blasint clda, FLOAT *b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
 	FLOAT   *alpha; 
-	int order=-1,trans=-1;
+	จำนวนเต็ม order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	ถ้า ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	ถ้า ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
-	if ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
+	ถ้า ( CTRANS == CblasNoTrans || CTRANS == CblasConjNoTrans ) trans = BlasNoTrans; 
+	ถ้า ( CTRANS == CblasTrans   || CTRANS == CblasConjTrans   ) trans = BlasTrans; 
 
 	rows = &crows; 
 	cols = &ccols; 
@@ -90,55 +90,55 @@ void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, 
 	alpha = &calpha; 
 
 #endif
-	if ( order == BlasColMajor)
+	ถ้า ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ถ้า ( trans == BlasNoTrans  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ถ้า ( trans == BlasTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	ถ้า ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ถ้า ( trans == BlasNoTrans  &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ถ้า ( trans == BlasTrans    &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ถ้า ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	ถ้า ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	ถ้า ( *cols < 0 ) info = 4;
+	ถ้า ( *rows < 0 ) info = 3;
+	ถ้า ( trans < 0 ) info = 2;
+	ถ้า ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ถ้า (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    		คืน;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ถ้า ((*rows == 0) || (*cols == 0)) คืน;
 
-	if ( order == BlasColMajor )
+	ถ้า ( order == BlasColMajor )
 	{
-		if ( trans == BlasNoTrans )
+		ถ้า ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		มิฉะนั้น
 		{
 			OMATCOPY_K_CT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
-	else
+	มิฉะนั้น
 	{
-		if ( trans == BlasNoTrans )
+		ถ้า ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
-		else
+		มิฉะนั้น
 		{
 			OMATCOPY_K_RT(*rows, *cols, *alpha, a, *lda, b, *ldb );
 		}
 	}
 
-	return;
+	คืน;
 
 }
 

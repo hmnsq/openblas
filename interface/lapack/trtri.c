@@ -46,7 +46,7 @@
 #define ERROR_NAME "QTRTRI"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DTRTRI"
-#else
+#มิฉะนั้น
 #define ERROR_NAME "STRTRI"
 #endif
 
@@ -62,7 +62,7 @@ static blasint (*trtri_parallel[])(blas_arg_t *, BLASLONG *, BLASLONG *, FLOAT *
 
 
 OPENBLAS_EXPORT
-void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
+void NAME(var_na *UPLO, var_na *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   blas_arg_t args;
 
@@ -87,32 +87,32 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  ถ้า (uplo_arg == 'U') uplo = 0;
+  ถ้า (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  ถ้า (diag_arg == 'U') diag = 0;
+  ถ้า (diag_arg == 'N') diag = 1;
 
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
+  ถ้า (args.lda  < MAX(1,args.n)) info = 5;
+  ถ้า (args.n    < 0)             info = 3;
+  ถ้า (diag < 0)                  info = 2;
+  ถ้า (uplo < 0)                  info = 1;
+  ถ้า (info) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    คืน;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  ถ้า (args.n == 0) คืน;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
+  ถ้า (diag) {
+    ถ้า (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+      คืน;
     }
   }
 
@@ -128,18 +128,18 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 #endif
 
 #ifdef SMP
-  if (args.n <= 150)
+  ถ้า (args.n <= 150)
     args.nthreads = 1;
-  else
+  มิฉะนั้น
     args.nthreads = num_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  ถ้า (args.nthreads == 1) {
 #endif
 
     *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } มิฉะนั้น {
 
     *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
@@ -156,5 +156,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  คืน;
 }

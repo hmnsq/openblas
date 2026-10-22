@@ -36,9 +36,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#ถ้า defined(DOUBLE)
 #define ERROR_NAME "ZOMATCOPY"
-#else
+#มิฉะนั้น
 #define ERROR_NAME "COMATCOPY"
 #endif
 
@@ -52,11 +52,11 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 OPENBLAS_EXPORT
 
 #ifndef CBLAS
-void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
+void NAME( var_na* ORDER, var_na* TRANS, blasint *rows, blasint *cols, FLOAT *alpha, FLOAT *a, blasint *lda, FLOAT *b, blasint *ldb)
 {
 
-	char Order, Trans;
-	int order=-1,trans=-1;
+	var_na Order, Trans;
+	จำนวนเต็ม order=-1,trans=-1;
 	blasint info = -1;
 
 	Order = *ORDER;
@@ -65,114 +65,114 @@ void NAME( char* ORDER, char* TRANS, blasint *rows, blasint *cols, FLOAT *alpha,
 	TOUPPER(Order);
 	TOUPPER(Trans);
 
-	if ( Order == 'C' ) order = BlasColMajor;
-	if ( Order == 'R' ) order = BlasRowMajor;
-	if ( Trans == 'N' ) trans = BlasNoTrans;
-	if ( Trans == 'T' ) trans = BlasTrans;
-	if ( Trans == 'C' ) trans = BlasTransConj;
-	if ( Trans == 'R' ) trans = BlasConj;
+	ถ้า ( Order == 'C' ) order = BlasColMajor;
+	ถ้า ( Order == 'R' ) order = BlasRowMajor;
+	ถ้า ( Trans == 'N' ) trans = BlasNoTrans;
+	ถ้า ( Trans == 'T' ) trans = BlasTrans;
+	ถ้า ( Trans == 'C' ) trans = BlasTransConj;
+	ถ้า ( Trans == 'R' ) trans = BlasConj;
 
-#else 
-void CNAME(enum CBLAS_ORDER CORDER, enum CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
+#มิฉะนั้น 
+void CNAME(ga_nanaa CBLAS_ORDER CORDER, ga_nanaa CBLAS_TRANSPOSE CTRANS, blasint crows, blasint ccols, FLOAT  *alpha, FLOAT *a, blasint clda, FLOAT*b, blasint cldb)
 {
 	blasint *rows, *cols, *lda, *ldb; 
-	int order=-1,trans=-1;
+	จำนวนเต็ม order=-1,trans=-1;
 	blasint info = -1;
 
-	if ( CORDER == CblasColMajor ) order = BlasColMajor; 
-	if ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
+	ถ้า ( CORDER == CblasColMajor ) order = BlasColMajor; 
+	ถ้า ( CORDER == CblasRowMajor ) order = BlasRowMajor; 
 
-	if ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
-	if ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
-	if ( CTRANS == CblasTrans) trans = BlasTrans; 
-	if ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
+	ถ้า ( CTRANS == CblasNoTrans) trans = BlasNoTrans; 
+	ถ้า ( CTRANS == CblasConjNoTrans ) trans = BlasConj; 
+	ถ้า ( CTRANS == CblasTrans) trans = BlasTrans; 
+	ถ้า ( CTRANS == CblasConjTrans) trans = BlasTransConj; 
 
 	rows = &crows; 
 	cols = &ccols; 
 	lda  = &clda; 
 	ldb  = &cldb; 
 #endif
-	if ( order == BlasColMajor)
+	ถ้า ( order == BlasColMajor)
 	{
-        	if ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ถ้า ( trans == BlasNoTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ถ้า ( trans == BlasConj         &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ถ้า ( trans == BlasTrans        &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ถ้า ( trans == BlasTransConj    &&  *ldb < MAX(1,*cols) ) info = 9;
 	}
-	if ( order == BlasRowMajor)
+	ถ้า ( order == BlasRowMajor)
 	{
-        	if ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
-        	if ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
-        	if ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ถ้า ( trans == BlasNoTrans    &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ถ้า ( trans == BlasConj       &&  *ldb < MAX(1,*cols) ) info = 9;
+        	ถ้า ( trans == BlasTrans      &&  *ldb < MAX(1,*rows) ) info = 9;
+        	ถ้า ( trans == BlasTransConj  &&  *ldb < MAX(1,*rows) ) info = 9;
 	}
 
-	if ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
-	if ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
-	if ( *cols < 0 ) info = 4;
-	if ( *rows < 0 ) info = 3;
-	if ( trans < 0 ) info = 2;
-	if ( order < 0 ) info = 1;
+	ถ้า ( order == BlasColMajor &&  *lda < MAX(1,*rows) ) info = 7;
+	ถ้า ( order == BlasRowMajor &&  *lda < MAX(1,*cols) ) info = 7;
+	ถ้า ( *cols < 0 ) info = 4;
+	ถ้า ( *rows < 0 ) info = 3;
+	ถ้า ( trans < 0 ) info = 2;
+	ถ้า ( order < 0 ) info = 1;
 
-	if (info >= 0) {
-    		BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    		return;
+	ถ้า (info >= 0) {
+    		BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    		คืน;
   	}
 
-	if ((*rows == 0) || (*cols == 0)) return;
+	ถ้า ((*rows == 0) || (*cols == 0)) คืน;
 
-	if ( order == BlasColMajor )
+	ถ้า ( order == BlasColMajor )
 	{
 
-		if ( trans == BlasNoTrans )
+		ถ้า ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_CN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
-		if ( trans == BlasConj )
+		ถ้า ( trans == BlasConj )
 		{
 			OMATCOPY_K_CNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
-		if ( trans == BlasTrans )
+		ถ้า ( trans == BlasTrans )
 		{
 			OMATCOPY_K_CT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
-		if ( trans == BlasTransConj )
+		ถ้า ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_CTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
 
 	}
-	else
+	มิฉะนั้น
 	{
 
-		if ( trans == BlasNoTrans )
+		ถ้า ( trans == BlasNoTrans )
 		{
 			OMATCOPY_K_RN(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
-		if ( trans == BlasConj )
+		ถ้า ( trans == BlasConj )
 		{
 			OMATCOPY_K_RNC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
-		if ( trans == BlasTrans )
+		ถ้า ( trans == BlasTrans )
 		{
 			OMATCOPY_K_RT(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
-		if ( trans == BlasTransConj )
+		ถ้า ( trans == BlasTransConj )
 		{
 			OMATCOPY_K_RTC(*rows, *cols, alpha[0], alpha[1], a, *lda, b, *ldb );
-			return;
+			คืน;
 		}
 
 	}
 
-	return;
+	คืน;
 
 }
 

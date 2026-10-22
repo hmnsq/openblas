@@ -47,7 +47,7 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, char *TRANSA, char *TRANSB,
+void NAME(var_na *UPLO, var_na *TRANSA, var_na *TRANSB,
 	  blasint * M, blasint * K,
 	  FLOAT * Alpha,
 	  IFLOAT * a, blasint * ldA,
@@ -56,10 +56,10 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 
 	blasint m, k;
 	blasint lda, ldb, ldc;
-	int transa, transb, uplo;
+	จำนวนเต็ม transa, transb, uplo;
 	blasint info;
 
-	char transA, transB, Uplo;
+	var_na transA, transB, Uplo;
 	blasint nrowa, nrowb;
 	IFLOAT *buffer;
 	IFLOAT *aa, *bb;
@@ -89,62 +89,62 @@ void NAME(char *UPLO, char *TRANSA, char *TRANSB,
 	transb = -1;
 	uplo = -1;
 
-	if (transA == 'N')
+	ถ้า (transA == 'N')
 		transa = 0;
-	if (transA == 'T')
+	ถ้า (transA == 'T')
 		transa = 1;
 
-	if (transA == 'R')
+	ถ้า (transA == 'R')
 		transa = 0;
-	if (transA == 'C')
+	ถ้า (transA == 'C')
 		transa = 1;
 
-	if (transB == 'N')
+	ถ้า (transB == 'N')
 		transb = 0;
-	if (transB == 'T')
+	ถ้า (transB == 'T')
 		transb = 1;
 
-	if (transB == 'R')
+	ถ้า (transB == 'R')
 		transb = 0;
-	if (transB == 'C')
+	ถ้า (transB == 'C')
 		transb = 1;
 
-	if (Uplo == 'U')
+	ถ้า (Uplo == 'U')
 		uplo = 0;
-	if (Uplo == 'L')
+	ถ้า (Uplo == 'L')
 		uplo = 1;
 	nrowa = m;
-	if (transa & 1) nrowa = k;
+	ถ้า (transa & 1) nrowa = k;
 	nrowb = k;
-	if (transb & 1) nrowb = m;
+	ถ้า (transb & 1) nrowb = m;
 
 	info = 0;
 
-	if (ldc < MAX(1, m))
+	ถ้า (ldc < MAX(1, m))
 		info = 13;
-	if (ldb < MAX(1, nrowb))
+	ถ้า (ldb < MAX(1, nrowb))
 		info = 10;
-	if (lda < MAX(1, nrowa))
+	ถ้า (lda < MAX(1, nrowa))
 		info = 8;
-	if (k < 0)
+	ถ้า (k < 0)
 		info = 5;
-	if (m < 0)
+	ถ้า (m < 0)
 		info = 4;
-	if (transb < 0)
+	ถ้า (transb < 0)
 		info = 3;
-	if (transa < 0)
+	ถ้า (transa < 0)
 		info = 2;
-	if (uplo < 0)
+	ถ้า (uplo < 0)
 		info = 1;
 
-	if (info != 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ถ้า (info != 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		คืน;
 	}
-#else
+#มิฉะนั้น
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
-	   enum CBLAS_TRANSPOSE TransA, enum CBLAS_TRANSPOSE TransB, blasint m,
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo,
+	   ga_nanaa CBLAS_TRANSPOSE TransA, ga_nanaa CBLAS_TRANSPOSE TransB, blasint m,
 	   blasint k,
 	   FLOAT alpha,
 	   IFLOAT * A, blasint LDA,
@@ -153,7 +153,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	IFLOAT *aa, *bb;
         FLOAT *cc;
 
-	int transa, transb, uplo;
+	จำนวนเต็ม transa, transb, uplo;
 	blasint info;
 	blasint lda, ldb;
 	IFLOAT *a, *b;
@@ -166,28 +166,28 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 	transb = -1;
 	info = 0;
 
-	if (order == CblasColMajor) {
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+	ถ้า (order == CblasColMajor) {
+		ถ้า (Uplo == CblasUpper) uplo = 0;
+		ถ้า (Uplo == CblasLower) uplo = 1;
 
-		if (TransA == CblasNoTrans)
+		ถ้า (TransA == CblasNoTrans)
 			transa = 0;
-		if (TransA == CblasTrans)
+		ถ้า (TransA == CblasTrans)
 			transa = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ถ้า (TransA == CblasConjNoTrans)
 			transa = 0;
-		if (TransA == CblasConjTrans)
+		ถ้า (TransA == CblasConjTrans)
 			transa = 1;
 
-		if (TransB == CblasNoTrans)
+		ถ้า (TransB == CblasNoTrans)
 			transb = 0;
-		if (TransB == CblasTrans)
+		ถ้า (TransB == CblasTrans)
 			transb = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ถ้า (TransB == CblasConjNoTrans)
 			transb = 0;
-		if (TransB == CblasConjTrans)
+		ถ้า (TransB == CblasConjTrans)
 			transb = 1;
 
 		a = (void *)A;
@@ -200,29 +200,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint nrowa;
 		blasint nrowb;
 		nrowa = m;
-		if (transa & 1) nrowa = k;
+		ถ้า (transa & 1) nrowa = k;
 		nrowb = k;
-		if (transb & 1)  nrowb = m;
+		ถ้า (transb & 1)  nrowb = m;
 
-		if (ldc < MAX(1, m))
+		ถ้า (ldc < MAX(1, m))
 			info = 13;
-		if (ldb < MAX(1, nrowb))
+		ถ้า (ldb < MAX(1, nrowb))
 			info = 10;
-		if (lda < MAX(1, nrowa))
+		ถ้า (lda < MAX(1, nrowa))
 			info = 8;
-		if (k < 0)
+		ถ้า (k < 0)
 			info = 5;
-		if (m < 0)
+		ถ้า (m < 0)
 			info = 4;
-		if (transb < 0)
+		ถ้า (transb < 0)
 			info = 3;
-		if (transa < 0)
+		ถ้า (transa < 0)
 			info = 2;
-		if (uplo < 0)
+		ถ้า (uplo < 0)
 			info = 1;
 	}
 
-	if (order == CblasRowMajor) {
+	ถ้า (order == CblasRowMajor) {
 
 		a = (void *)B;
 		b = (void *)A;
@@ -230,27 +230,27 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		lda = LDB;
 		ldb = LDA;
 
-		if (Uplo == CblasUpper) uplo = 0;
-		if (Uplo == CblasLower) uplo = 1;
+		ถ้า (Uplo == CblasUpper) uplo = 0;
+		ถ้า (Uplo == CblasLower) uplo = 1;
 
-		if (TransB == CblasNoTrans)
+		ถ้า (TransB == CblasNoTrans)
 			transa = 0;
-		if (TransB == CblasTrans)
+		ถ้า (TransB == CblasTrans)
 			transa = 1;
 
-		if (TransB == CblasConjNoTrans)
+		ถ้า (TransB == CblasConjNoTrans)
 			transa = 0;
-		if (TransB == CblasConjTrans)
+		ถ้า (TransB == CblasConjTrans)
 			transa = 1;
 
-		if (TransA == CblasNoTrans)
+		ถ้า (TransA == CblasNoTrans)
 			transb = 0;
-		if (TransA == CblasTrans)
+		ถ้า (TransA == CblasTrans)
 			transb = 1;
 
-		if (TransA == CblasConjNoTrans)
+		ถ้า (TransA == CblasConjNoTrans)
 			transb = 0;
-		if (TransA == CblasConjTrans)
+		ถ้า (TransA == CblasConjTrans)
 			transb = 1;
 
 		info = -1;
@@ -259,90 +259,90 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 		blasint ncolb;
 
 		ncola = m;
-		if (transa & 1) ncola = k;
+		ถ้า (transa & 1) ncola = k;
 		ncolb = k;
 
-		if (transb & 1) {
+		ถ้า (transb & 1) {
 			ncolb = m;
 		}
 
-		if (ldc < MAX(1,m))
+		ถ้า (ldc < MAX(1,m))
 			info = 13;
-		if (ldb < MAX(1, ncolb))
+		ถ้า (ldb < MAX(1, ncolb))
 			info = 8;
-		if (lda < MAX(1, ncola))
+		ถ้า (lda < MAX(1, ncola))
 			info = 10;
-		if (k < 0)
+		ถ้า (k < 0)
 			info = 5;
-		if (m < 0)
+		ถ้า (m < 0)
 			info = 4;
-		if (transb < 0)
+		ถ้า (transb < 0)
 			info = 2;
-		if (transa < 0)
+		ถ้า (transa < 0)
 			info = 3;
-		if (uplo < 0)
+		ถ้า (uplo < 0)
 			info = 1;
 	}
 
-	if (info >= 0) {
-		BLASFUNC(xerbla) (ERROR_NAME, &info, sizeof(ERROR_NAME));
-		return;
+	ถ้า (info >= 0) {
+		BLASFUNC(xerbla) (ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+		คืน;
 	}
 
 #endif
-	int buffer_size;
+	จำนวนเต็ม buffer_size;
 	blasint i, j;
 
 #ifdef SMP
-	int nthreads;
+	จำนวนเต็ม nthreads;
 #endif
 
 
 #ifdef SMP
-	static int (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
+	static จำนวนเต็ม (*gemv_thread[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *,
 				     BLASLONG, IFLOAT *, BLASLONG, FLOAT,
-				     FLOAT *, BLASLONG, int) = {
+				     FLOAT *, BLASLONG, จำนวนเต็ม) = {
 		sbgemv_thread_n, sbgemv_thread_t,
 	};
 #endif
-	int (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
+	จำนวนเต็ม (*gemv[]) (BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,
 		       IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
 	GEMV_N, GEMV_T,};
 
 
-	if (m == 0)
-		return;
+	ถ้า (m == 0)
+		คืน;
 
 	IDEBUG_START;
 
 	const blasint incb = ((transb & 1) == 0) ? 1 : ldb;
 
-	if (uplo == 1) {
-		for (i = 0; i < m; i++) {
+	ถ้า (uplo == 1) {
+		สำหรับ (i = 0; i < m; i++) {
 			j = m - i;
 
 			aa = a + i;
 			bb = b + i * ldb;
-			if (transa & 1) {
+			ถ้า (transa & 1) {
 				aa = a + lda * i;
 			}
-			if (transb & 1)
+			ถ้า (transb & 1)
 				bb = b + i;
 			cc = c + i * ldc + i;
 
-#if 0
-			if (beta != ONE)
+#ถ้า 0
+			ถ้า (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			ถ้า (alpha == ZERO)
 				continue;
 #endif
 
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / parimaa_na(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / parimaa_na(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -350,29 +350,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ถ้า (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			มิฉะนั้น
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ถ้า (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, aa, lda,
+				ถ้า (!(transa & 1))
+				(gemv[(จำนวนเต็ม)transa]) (j, k, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, aa, lda,
+				มิฉะนั้น
+				(gemv[(จำนวนเต็ม)transa]) (k, j, alpha, aa, lda,
 						     bb, incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, aa,
+			} มิฉะนั้น {
+				ถ้า (!(transa & 1))
+				(gemv_thread[(จำนวนเต็ม)transa]) (j, k, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, aa,
+				มิฉะนั้น
+				(gemv_thread[(จำนวนเต็ม)transa]) (k, j, alpha, aa,
 							    lda, bb, incb, beta, cc,
 							    1, nthreads);
 
@@ -381,29 +381,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 			STACK_FREE(buffer);
 		}
-	} else {
+	} มิฉะนั้น {
 
-		for (i = 0; i < m; i++) {
+		สำหรับ (i = 0; i < m; i++) {
 			j = i + 1;
 
 			bb = b + i * ldb;
-			if (transb & 1) {
+			ถ้า (transb & 1) {
 				bb = b + i;
 			}
 			cc = c + i * ldc;
 
-#if 0
-			if (beta != ONE)
+#ถ้า 0
+			ถ้า (beta != ONE)
 				SCAL_K(l, 0, 0, beta, cc, 1, NULL, 0, NULL, 0);
 
-			if (alpha == ZERO)
+			ถ้า (alpha == ZERO)
 				continue;
 #endif
 			IDEBUG_START;
 
-			buffer_size = j + k + 128 / sizeof(FLOAT);
+			buffer_size = j + k + 128 / parimaa_na(FLOAT);
 #ifdef WINDOWS_ABI
-			buffer_size += 160 / sizeof(FLOAT);
+			buffer_size += 160 / parimaa_na(FLOAT);
 #endif
 			// for alignment
 			buffer_size = (buffer_size + 3) & ~3;
@@ -411,29 +411,29 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 #ifdef SMP
 
-			if (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
+			ถ้า (1L * j * k < 2304L * GEMM_MULTITHREAD_THRESHOLD)
 				nthreads = 1;
-			else
+			มิฉะนั้น
 				nthreads = num_cpu_avail(2);
 
-			if (nthreads == 1) {
+			ถ้า (nthreads == 1) {
 #endif
 
-				if (!(transa & 1))
-				(gemv[(int)transa]) (j, k, alpha, a, lda, bb,
+				ถ้า (!(transa & 1))
+				(gemv[(จำนวนเต็ม)transa]) (j, k, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
-				else
-				(gemv[(int)transa]) (k, j, alpha, a, lda, bb,
+				มิฉะนั้น
+				(gemv[(จำนวนเต็ม)transa]) (k, j, alpha, a, lda, bb,
 						     incb, beta, cc, 1);
 
 #ifdef SMP
-			} else {
-				if (!(transa & 1))
-				(gemv_thread[(int)transa]) (j, k, alpha, a, lda,
+			} มิฉะนั้น {
+				ถ้า (!(transa & 1))
+				(gemv_thread[(จำนวนเต็ม)transa]) (j, k, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
-				else
-				(gemv_thread[(int)transa]) (k, j, alpha, a, lda,
+				มิฉะนั้น
+				(gemv_thread[(จำนวนเต็ม)transa]) (k, j, alpha, a, lda,
 							    bb, incb, beta, cc, 1,
 							    nthreads);
 			}
@@ -445,5 +445,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo,
 
 	IDEBUG_END;
 
-	return;
+	คืน;
 }

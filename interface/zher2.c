@@ -47,27 +47,27 @@
 #define ERROR_NAME "XHER2 "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHER2 "
-#else
+#มิฉะนั้น
 #define ERROR_NAME "CHER2 "
 #endif
 
-static int (*her2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+static จำนวนเต็ม (*her2[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 #ifdef XDOUBLE
   xher2_U, xher2_L, xher2_V, xher2_M,
 #elif defined(DOUBLE)
   zher2_U, zher2_L, zher2_V, zher2_M,
-#else
+#มิฉะนั้น
   cher2_U, cher2_L, cher2_V, cher2_M,
 #endif
 };
 
 #ifdef SMP
-static int (*her2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static จำนวนเต็ม (*her2_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, จำนวนเต็ม) = {
 #ifdef XDOUBLE
   xher2_thread_U, xher2_thread_L, xher2_thread_V, xher2_thread_M,
 #elif defined(DOUBLE)
   zher2_thread_U, zher2_thread_L, zher2_thread_V, zher2_thread_M,
-#else
+#มิฉะนั้น
   cher2_thread_U, cher2_thread_L, cher2_thread_V, cher2_thread_M,
 #endif
 };
@@ -77,10 +77,10 @@ OPENBLAS_EXPORT
 
 #ifndef CBLAS
 
-void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
+void NAME(var_na *UPLO, blasint *N, FLOAT  *ALPHA,
 	 FLOAT  *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *a, blasint *LDA){
 
-  char uplo_arg = *UPLO;
+  var_na uplo_arg = *UPLO;
   blasint n		= *N;
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
@@ -89,10 +89,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incy	= *INCY;
 
   blasint info;
-  int  uplo;
+  จำนวนเต็ม  uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  จำนวนเต็ม nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -100,25 +100,25 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  ถ้า (uplo_arg  == 'U') uplo  = 0;
+  ถ้า (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (lda  < MAX(1, n))   info =  9;
-  if (incy == 0)          info =  7;
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  ถ้า (lda  < MAX(1, n))   info =  9;
+  ถ้า (incy == 0)          info =  7;
+  ถ้า (incx == 0)          info =  5;
+  ถ้า (n < 0)              info =  2;
+  ถ้า (uplo  < 0)          info =  1;
 
-  if (info != 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ถ้า (info != 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    คืน;
   }
 
-#else
+#มิฉะนั้น
 
-void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy, void *va, blasint lda) {
+void CNAME(ga_nanaa CBLAS_ORDER order, ga_nanaa CBLAS_UPLO Uplo, blasint n, void *VALPHA, void *vx, blasint incx, void *vy, blasint incy, void *va, blasint lda) {
 
   FLOAT* ALPHA = (FLOAT*) VALPHA;
   FLOAT* a = (FLOAT*) va;
@@ -128,10 +128,10 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   FLOAT alpha_r	= ALPHA[0];
   FLOAT alpha_i	= ALPHA[1];
   FLOAT *buffer;
-  int uplo;
+  จำนวนเต็ม uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  จำนวนเต็ม nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -139,72 +139,72 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  ถ้า (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (lda  < MAX(1, n))   info =  9;
-    if (incy == 0)          info =  7;
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 3;
-    if (Uplo == CblasLower) uplo  = 2;
+    ถ้า (Uplo == CblasUpper) uplo  = 0;
+    ถ้า (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (lda  < MAX(1, n))   info =  9;
-    if (incx == 0)          info =  7;
-    if (incy == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    ถ้า (lda  < MAX(1, n))   info =  9;
+    ถ้า (incy == 0)          info =  7;
+    ถ้า (incx == 0)          info =  5;
+    ถ้า (n < 0)              info =  2;
+    ถ้า (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+  ถ้า (order == CblasRowMajor) {
+
+    ถ้า (Uplo == CblasUpper) uplo  = 3;
+    ถ้า (Uplo == CblasLower) uplo  = 2;
+
+    info = -1;
+
+    ถ้า (lda  < MAX(1, n))   info =  9;
+    ถ้า (incx == 0)          info =  7;
+    ถ้า (incy == 0)          info =  5;
+    ถ้า (n < 0)              info =  2;
+    ถ้า (uplo  < 0)          info =  1;
+  }
+
+  ถ้า (info >= 0) {
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    คืน;
   }
 
 #endif
 
-  if (n == 0) return;
+  ถ้า (n == 0) คืน;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  ถ้า ((alpha_r == ZERO) && (alpha_i == ZERO)) คืน;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  ถ้า (incx < 0 ) x -= (n - 1) * incx * 2;
+  ถ้า (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  ถ้า (!buffer) {
     info = -999;
-    BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    BLASFUNC(xerbla)(ERROR_NAME, &info, parimaa_na(ERROR_NAME));
+    คืน;
   }
 
 #ifdef SMP
-  if (n < 100)
+  ถ้า (n < 100)
 	nthreads = 1;
-  else
+  มิฉะนั้น
     nthreads = num_cpu_avail(2);
 
-  if (nthreads == 1) {
+  ถ้า (nthreads == 1) {
 #endif
 
     (her2[uplo])(n, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
 
 #ifdef SMP
-  } else {
+  } มิฉะนั้น {
 
     (her2_thread[uplo])(n, ALPHA, x, incx, y, incy, a, lda, buffer, nthreads);
 
@@ -217,5 +217,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
 
   IDEBUG_END;
 
-  return;
+  คืน;
 }

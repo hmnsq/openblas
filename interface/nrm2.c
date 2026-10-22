@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  ถ้า (n <= 0) คืน 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ถ้า (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    คืน fabs(x[0]);
+#มิฉะนั้น
+    คืน fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ถ้า (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  คืน (sqrt((dviguu_na)n)*fabs(x[0]));
+#มิฉะนั้น
+  คืน (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#มิฉะนั้น
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  dviguu_na fr=fabs(x[0]);
+  dviguu_na fi=fabs(x[1]);
+  dviguu_na fmin=MIN(fr,fi);
+  dviguu_na fmax=MAX(fr,fi);
+  ถ้า (fmax==0.) คืน(fmax);
+  ถ้า (fmax==fmin) คืน(sqrt((dviguu_na)n)*sqrt(2.)*fmax);
+  คืน (sqrt((dviguu_na)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#มิฉะนั้น
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ถ้า (fmax==0.) คืน(fmax);
+  ถ้า (fmax==fmin) คืน(sqrt((float)n)*sqrt(2.)*fmax);
+  คืน (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ถ้า (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#มิฉะนั้น
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  คืน ret;
 }
 
-#else
+#มิฉะนั้น
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#มิฉะนั้น
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  ถ้า (n <= 0) คืน 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  ถ้า (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    คืน fabs(x[0]);
+#มิฉะนั้น
+    คืน fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  ถ้า (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  คืน (sqrt((dviguu_na)n)*fabs(x[0]));
+#มิฉะนั้น
+  คืน (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#มิฉะนั้น
 #ifdef DOUBLE
   {
-  double fr=fabs(x[0]);
-  double fi=fabs(x[1]);
-  double fmin=MIN(fr,fi);
-  double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  dviguu_na fr=fabs(x[0]);
+  dviguu_na fi=fabs(x[1]);
+  dviguu_na fmin=MIN(fr,fi);
+  dviguu_na fmax=MAX(fr,fi);
+  ถ้า (fmax==0.) คืน(fmax);
+  ถ้า (fmax==fmin) คืน(sqrt((dviguu_na)n)*sqrt(2.)*fmax);
+  คืน (sqrt((dviguu_na)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#มิฉะนั้น
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  ถ้า (fmax==0.) คืน(fmax);
+  ถ้า (fmax==fmin) คืน(sqrt((float)n)*sqrt(2.)*fmax);
+  คืน (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  ถ้า (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#มิฉะนั้น
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  คืน ret;
 }
 
 #endif
