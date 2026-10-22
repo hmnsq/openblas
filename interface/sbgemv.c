@@ -52,14 +52,14 @@
 #define GEMV_THREAD_N shgemv_thread_n
 #define GEMV_THREAD_T shgemv_thread_t
 #define ERROR_NAME "SHGEMV "
-#else
+#không_thì
 #define GEMV_THREAD_N sbgemv_thread_n
 #define GEMV_THREAD_T sbgemv_thread_t
 #define ERROR_NAME "SBGEMV "
 #endif 
 
 #ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, int) = {
+static số_nguyên (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG, số_nguyên) = {
     GEMV_THREAD_N, GEMV_THREAD_T,
 };
 #endif
@@ -79,10 +79,10 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
     FLOAT alpha = *ALPHA;
     FLOAT beta  = *BETA;
 #ifdef SMP
-    int nthreads;
+    số_nguyên nthreads;
 #endif
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    số_nguyên (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG, IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -98,37 +98,37 @@ void NAME(char *TRANS, blasint *M, blasint *N, FLOAT *ALPHA, IFLOAT *a, blasint 
 
     i = -1;
 
-    if (trans == 'N') {i = 0;}
-    if (trans == 'T') {i = 1;}
-    if (trans == 'R') {i = 0;}
-    if (trans == 'C') {i = 1;}
+    nếu (trans == 'N') {i = 0;}
+    nếu (trans == 'T') {i = 1;}
+    nếu (trans == 'R') {i = 0;}
+    nếu (trans == 'C') {i = 1;}
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (i < 0)           {info = 1;}
+    nếu (incy == 0)       {info = 11;}
+    nếu (incx == 0)       {info = 8;}
+    nếu (lda < MAX(1, m)) {info = 6;}
+    nếu (n < 0)           {info = 3;}
+    nếu (m < 0)           {info = 2;}
+    nếu (i < 0)           {info = 1;}
 
     trans = i;
 
-    if (info != 0) {
+    nếu (info != 0) {
         BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+        trả_về;
     }
 
-#else
+#không_thì
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasint n, FLOAT alpha, IFLOAT *a, blasint lda, IFLOAT *x, blasint incx, FLOAT beta, FLOAT *y, blasint incy)
 {
     blasint lenx,  leny;
-    int     trans;
+    số_nguyên     trans;
     blasint info,  t;
 #ifdef SMP
-    int     nthreads;
+    số_nguyên     nthreads;
 #endif
 
-    int (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
+    số_nguyên (*gemv[])(BLASLONG, BLASLONG, FLOAT, IFLOAT *, BLASLONG,  IFLOAT * , BLASLONG, FLOAT, FLOAT *, BLASLONG) = {
         GEMV_N, GEMV_T,
     };
 
@@ -137,16 +137,16 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
     trans = -1;
     info  =  0;
 
-    if (order == CblasColMajor) {   // Column Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    nếu (order == CblasColMajor) {   // Column Major
+        nếu (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 0;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } không_thì nếu (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 1;
         }
-    } else {                        // Row Major
-        if (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
+    } không_thì {                        // Row Major
+        nếu (TransA == CblasNoTrans || TransA == CblasConjNoTrans) {
             trans = 1;
-        } else if (TransA == CblasTrans || TransA == CblasConjTrans) {
+        } không_thì nếu (TransA == CblasTrans || TransA == CblasConjTrans) {
             trans = 0;
         }
 
@@ -157,26 +157,26 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
 
     info = -1;
 
-    if (incy == 0)       {info = 11;}
-    if (incx == 0)       {info = 8;}
-    if (lda < MAX(1, m)) {info = 6;}
-    if (n < 0)           {info = 3;}
-    if (m < 0)           {info = 2;}
-    if (trans < 0)       {info = 1;}
+    nếu (incy == 0)       {info = 11;}
+    nếu (incx == 0)       {info = 8;}
+    nếu (lda < MAX(1, m)) {info = 6;}
+    nếu (n < 0)           {info = 3;}
+    nếu (m < 0)           {info = 2;}
+    nếu (trans < 0)       {info = 1;}
 
-    if (info >= 0) {
+    nếu (info >= 0) {
         BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-        return;
+        trả_về;
     }
 
 #endif
 
-    if ((m==0) || (n==0)) return;
+    nếu ((m==0) || (n==0)) trả_về;
 
-    if (trans) {
+    nếu (trans) {
         lenx = m;
         leny = n;
-    } else {
+    } không_thì {
         lenx = n;
         leny = m;
     }
@@ -185,39 +185,39 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE TransA, blasint m, blasi
   float alpha_float, beta_float;
   SBF16TOS_K(1, &alpha, 1, &alpha_float, 1);
   SBF16TOS_K(1, &beta, 1, &beta_float, 1);
-#else
+#không_thì
   float alpha_float = alpha;
   float beta_float = beta;
 #endif
 
-    if (alpha_float == ZERO) {
-        if (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
-        return;
+    nếu (alpha_float == ZERO) {
+        nếu (beta_float != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+        trả_về;
     }
 
     IDEBUG_START;
     FUNCTION_PROFILE_START();
 
-    if (incx < 0) {x -= (lenx - 1) * incx;}
-    if (incy < 0) {y -= (leny - 1) * incy;}
+    nếu (incx < 0) {x -= (lenx - 1) * incx;}
+    nếu (incy < 0) {y -= (leny - 1) * incy;}
 
 #ifdef SMP
-    if ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
+    nếu ( 1L * m * n < 115200L * GEMM_MULTITHREAD_THRESHOLD )
       nthreads = 1;
-    else
+    không_thì
       nthreads = num_cpu_avail(2);
 
-    if (nthreads == 1) {
+    nếu (nthreads == 1) {
 #endif
-        (gemv[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
+        (gemv[(số_nguyên)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy);
 #ifdef SMP
-    } else {
-        (gemv_thread[(int)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
+    } không_thì {
+        (gemv_thread[(số_nguyên)trans])(m, n, alpha, a, lda, x, incx, beta, y, incy, nthreads);
     }
 #endif
 
     FUNCTION_PROFILE_END(1, m * n + m + n,  2 * m * n);
     IDEBUG_END;
 
-    return;
+    trả_về;
 }

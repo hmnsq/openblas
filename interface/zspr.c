@@ -47,27 +47,27 @@
 #define ERROR_NAME "XSPR  "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZSPR  "
-#else
+#không_thì
 #define ERROR_NAME "CSPR  "
 #endif
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static số_nguyên (*spr[])(BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   xspr_U, xspr_L,
 #elif defined(DOUBLE)
   zspr_U, zspr_L,
-#else
+#không_thì
   cspr_U, cspr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static số_nguyên (*spr_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, FLOAT *, số_nguyên) = {
 #ifdef XDOUBLE
   xspr_thread_U, xspr_thread_L,
 #elif defined(DOUBLE)
   zspr_thread_U, zspr_thread_L,
-#else
+#không_thì
   cspr_thread_U, cspr_thread_L,
 #endif
 };
@@ -84,10 +84,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  số_nguyên uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -95,50 +95,50 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  nếu (uplo_arg  == 'U') uplo  = 0;
+  nếu (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  nếu (incx == 0)          info =  5;
+  nếu (n < 0)              info =  2;
+  nếu (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  nếu (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
-  if (n == 0) return;
+  nếu (n == 0) trả_về;
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  nếu ((alpha_r == ZERO) && (alpha_i == ZERO)) trả_về;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
+  nếu (incx < 0 ) x -= (n - 1) * incx * COMPSIZE;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  nếu (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  nếu (n < 50) nthreads = 1;
+  nếu (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  nếu (nthreads == 1) {
 #endif
 
     (spr[uplo])(n, alpha_r, alpha_i, x, incx, a, buffer);
 
 #ifdef SMP
-  } else {
+  } không_thì {
 
     (spr_thread[uplo])(n, ALPHA, x, incx, a, buffer, nthreads);
 
@@ -151,5 +151,5 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 }

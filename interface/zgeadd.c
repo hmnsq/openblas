@@ -42,9 +42,9 @@
 #include "functable.h"
 #endif
 
-#if defined(DOUBLE)
+#nếu defined(DOUBLE)
 #define ERROR_NAME "ZGEADD "
-#else
+#không_thì
 #define ERROR_NAME "CGEADD "
 #endif
 
@@ -71,35 +71,35 @@ char transc = (*TRANS_C == 'T') || (*TRANS_C == 't') || (*TRANS_C == 'C') || (*T
   info = 0;
 
 
-if(transa){
-  if (lda < MAX(1, n))info = 5;
+nếu(transa){
+  nếu (lda < MAX(1, n))info = 5;
 
 
-  }	else{
+  }	không_thì{
 
-   if (lda < MAX(1, m))	info = 5;
+   nếu (lda < MAX(1, m))	info = 5;
   }
  
 
-  if(transc){
-        if (ldc < MAX(1, n))	info = 8;
+  nếu(transc){
+        nếu (ldc < MAX(1, n))	info = 8;
 
 
-   }else{
+   }không_thì{
        
-      if (ldc < MAX(1, m))	info = 8;
+      nếu (ldc < MAX(1, m))	info = 8;
           }
 
 
-  if (n < 0)		info = 2;
-  if (m < 0)		info = 1;
+  nếu (n < 0)		info = 2;
+  nếu (m < 0)		info = 1;
 
-  if (info != 0){
+  nếu (info != 0){
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
-#else
+#không_thì
 void CNAME( enum CBLAS_ORDER order,enum CBLAS_TRANSPOSE transa, enum CBLAS_TRANSPOSE transc, blasint m,  blasint n,  FLOAT *ALPHA, FLOAT *a,  blasint lda, FLOAT *BETA, 
 		  FLOAT *c,  blasint ldc)
 {
@@ -117,57 +117,57 @@ void CNAME(enum CBLAS_ORDER order,
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  nếu (order == CblasColMajor) {
 
     info = -1;
 
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+nếu ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      nếu (ldc < MAX(1, m))  info = 8;
+    } không_thì {
+      nếu (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    nếu ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      nếu (lda < MAX(1, m))  info = 5;
+    } không_thì {
+      nếu (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 2;
-    if (m < 0)		  info = 1;  
+    nếu (n < 0)		  info = 2;
+    nếu (m < 0)		  info = 1;  
   }
 
-  if (order == CblasRowMajor) {
+  nếu (order == CblasRowMajor) {
     info = -1;
 
     t = n;
     n = m;
     m = t;
-if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
-      if (ldc < MAX(1, m))  info = 8;
-    } else {
-      if (ldc < MAX(1, n))  info = 8;
+nếu ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
+      nếu (ldc < MAX(1, m))  info = 8;
+    } không_thì {
+      nếu (ldc < MAX(1, n))  info = 8;
     }
 
-    if ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
-      if (lda < MAX(1, m))  info = 5;
-    } else {
-      if (lda < MAX(1, n))  info = 5;
+    nếu ( (transa == CblasNoTrans) || (transa == CblasConjNoTrans) ) {
+      nếu (lda < MAX(1, m))  info = 5;
+    } không_thì {
+      nếu (lda < MAX(1, n))  info = 5;
     }
-    if (n < 0)		  info = 1;
-    if (m < 0)		  info = 2;
+    nếu (n < 0)		  info = 1;
+    nếu (m < 0)		  info = 2;
   }
 
  
   
 
-  if (info >= 0) {
+  nếu (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #endif
 
-  if ((m==0) || (n==0)) return;
+  nếu ((m==0) || (n==0)) trả_về;
 
 
   IDEBUG_START;
@@ -180,7 +180,7 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
           #ifdef CBLAS
           (transa == CblasTrans) || (transa == CblasConjTrans),
           (transc == CblasTrans) || (transc == CblasConjTrans)
-#else
+#không_thì
           transa, transc
 #endif
           );
@@ -193,6 +193,6 @@ if ( (transc == CblasNoTrans) || (transc == CblasConjNoTrans) ) {
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 
 }

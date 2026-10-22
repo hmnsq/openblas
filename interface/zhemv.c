@@ -51,7 +51,7 @@
 #define ERROR_NAME "XHEMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZHEMV "
-#else
+#không_thì
 #define ERROR_NAME "CHEMV "
 #endif
 
@@ -72,21 +72,21 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   FLOAT beta_i	= BETA[1];
   blasint incy	= *INCY;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
-  int (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  số_nguyên (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     HEMV_U, HEMV_L, HEMV_V, HEMV_M,
   };
 
 #ifdef SMP
-  int (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+  số_nguyên (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, số_nguyên) = {
     HEMV_THREAD_U, HEMV_THREAD_L, HEMV_THREAD_V, HEMV_THREAD_M,
   };
 #endif
 
   blasint info;
-  int uplo;
+  số_nguyên uplo;
   FLOAT *buffer;
 
   PRINT_DEBUG_NAME;
@@ -94,25 +94,25 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA, FLOAT *a, blasint *LDA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
-  if (uplo_arg  == 'V') uplo  = 2;
-  if (uplo_arg  == 'M') uplo  = 3;
+  nếu (uplo_arg  == 'U') uplo  = 0;
+  nếu (uplo_arg  == 'L') uplo  = 1;
+  nếu (uplo_arg  == 'V') uplo  = 2;
+  nếu (uplo_arg  == 'M') uplo  = 3;
 
   info = 0;
 
-  if (incy == 0)          info = 10;
-  if (incx == 0)          info =  7;
-  if (lda  < MAX(1, n))   info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  nếu (incy == 0)          info = 10;
+  nếu (incx == 0)          info =  7;
+  nếu (lda  < MAX(1, n))   info =  5;
+  nếu (n < 0)              info =  2;
+  nếu (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  nếu (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
-#else
+#không_thì
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA,
 	   void *va, blasint lda, void *vx, blasint incx, void *VBETA, void *vy, blasint incy) {
@@ -129,18 +129,18 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   FLOAT beta_i	= BETA[1];
 
   FLOAT *buffer;
-  int uplo;
+  số_nguyên uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
-  int (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  số_nguyên (*hemv[])(BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     HEMV_U, HEMV_L, HEMV_V, HEMV_M,
   };
 
 #ifdef SMP
-  int (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+  số_nguyên (*hemv_thread[])(BLASLONG, FLOAT *, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, BLASLONG, FLOAT *, số_nguyên) = {
     HEMV_THREAD_U, HEMV_THREAD_L, HEMV_THREAD_V, HEMV_THREAD_M,
   };
 #endif
@@ -150,75 +150,75 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
   uplo  = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
+  nếu (order == CblasColMajor) {
 
-    if (Uplo == CblasUpper) uplo  = 0;
-    if (Uplo == CblasLower) uplo  = 1;
-
-    info = -1;
-
-    if (incy == 0)          info = 10;
-    if (incx == 0)          info =  7;
-    if (lda  < MAX(1, n))   info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
-  }
-
-  if (order == CblasRowMajor) {
-
-    if (Uplo == CblasUpper) uplo  = 3;
-    if (Uplo == CblasLower) uplo  = 2;
+    nếu (Uplo == CblasUpper) uplo  = 0;
+    nếu (Uplo == CblasLower) uplo  = 1;
 
     info = -1;
 
-    if (incy == 0)          info = 10;
-    if (incx == 0)          info =  7;
-    if (lda  < MAX(1, n))   info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    nếu (incy == 0)          info = 10;
+    nếu (incx == 0)          info =  7;
+    nếu (lda  < MAX(1, n))   info =  5;
+    nếu (n < 0)              info =  2;
+    nếu (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  nếu (order == CblasRowMajor) {
+
+    nếu (Uplo == CblasUpper) uplo  = 3;
+    nếu (Uplo == CblasLower) uplo  = 2;
+
+    info = -1;
+
+    nếu (incy == 0)          info = 10;
+    nếu (incx == 0)          info =  7;
+    nếu (lda  < MAX(1, n))   info =  5;
+    nếu (n < 0)              info =  2;
+    nếu (uplo  < 0)          info =  1;
+  }
+
+  nếu (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #endif
 
-  if (n == 0) return;
+  nếu (n == 0) trả_về;
 
-  if ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  nếu ((beta_r != ONE) || (beta_i != ZERO)) SCAL_K(n, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if ((alpha_r == ZERO) && (alpha_i == ZERO)) return;
+  nếu ((alpha_r == ZERO) && (alpha_i == ZERO)) trả_về;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0 ) x -= (n - 1) * incx * 2;
-  if (incy < 0 ) y -= (n - 1) * incy * 2;
+  nếu (incx < 0 ) x -= (n - 1) * incx * 2;
+  nếu (incy < 0 ) y -= (n - 1) * incy * 2;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  nếu (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #ifdef SMP
-  if (n<MULTI_THREAD_MINIMAL) {
+  nếu (n<MULTI_THREAD_MINIMAL) {
 	  nthreads = 1 ;
-  } else {
+  } không_thì {
   	  nthreads = num_cpu_avail(2);
   };
 
-  if (nthreads == 1) {
+  nếu (nthreads == 1) {
 #endif
 
   (hemv[uplo])(n, n, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } không_thì {
 
     (hemv_thread[uplo])(n, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
 
@@ -231,5 +231,5 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_UPLO Uplo, blasint n, void *VALPHA
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 }

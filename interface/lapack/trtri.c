@@ -46,7 +46,7 @@
 #define ERROR_NAME "QTRTRI"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DTRTRI"
-#else
+#không_thì
 #define ERROR_NAME "STRTRI"
 #endif
 
@@ -87,32 +87,32 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  nếu (uplo_arg == 'U') uplo = 0;
+  nếu (uplo_arg == 'L') uplo = 1;
   diag = -1;
-  if (diag_arg == 'U') diag = 0;
-  if (diag_arg == 'N') diag = 1;
+  nếu (diag_arg == 'U') diag = 0;
+  nếu (diag_arg == 'N') diag = 1;
 
 
   info  = 0;
-  if (args.lda  < MAX(1,args.n)) info = 5;
-  if (args.n    < 0)             info = 3;
-  if (diag < 0)                  info = 2;
-  if (uplo < 0)                  info = 1;
-  if (info) {
+  nếu (args.lda  < MAX(1,args.n)) info = 5;
+  nếu (args.n    < 0)             info = 3;
+  nếu (diag < 0)                  info = 2;
+  nếu (uplo < 0)                  info = 1;
+  nếu (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    trả_về;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  nếu (args.n == 0) trả_về;
 
-  if (diag) {
-    if (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
+  nếu (diag) {
+    nếu (AMIN_K(args.n, args.a, args.lda + 1) == ZERO) {
       *Info = IAMIN_K(args.n, args.a, args.lda + 1);
-      return;
+      trả_về;
     }
   }
 
@@ -128,18 +128,18 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 #endif
 
 #ifdef SMP
-  if (args.n <= 150)
+  nếu (args.n <= 150)
     args.nthreads = 1;
-  else
+  không_thì
     args.nthreads = num_cpu_avail(4);
 
-  if (args.nthreads == 1) {
+  nếu (args.nthreads == 1) {
 #endif
 
     *Info = (trtri_single[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } không_thì {
 
     *Info = (trtri_parallel[(uplo << 1) | diag])(&args, NULL, NULL, sa, sb, 0);
 
@@ -156,5 +156,5 @@ void NAME(char *UPLO, char *DIAG, blasint *N, FLOAT *a, blasint *ldA, blasint *I
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 }

@@ -54,52 +54,52 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   PRINT_DEBUG_NAME;
 
-  if (n <= 0) return 0.;
+  nếu (n <= 0) trả_về 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  nếu (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    trả_về fabs(x[0]);
+#không_thì
+    trả_về fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  nếu (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  trả_về (sqrt((double)n)*fabs(x[0]));
+#không_thì
+  trả_về (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#không_thì
 #ifdef DOUBLE
   {
   double fr=fabs(x[0]);
   double fi=fabs(x[1]);
   double fmin=MIN(fr,fi);
   double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  nếu (fmax==0.) trả_về(fmax);
+  nếu (fmax==fmin) trả_về(sqrt((double)n)*sqrt(2.)*fmax);
+  trả_về (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#không_thì
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  nếu (fmax==0.) trả_về(fmax);
+  nếu (fmax==fmin) trả_về(sqrt((float)n)*sqrt(2.)*fmax);
+  trả_về (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  nếu (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#không_thì
     x -= (n - 1) * incx;
 #endif
   IDEBUG_START;
@@ -112,15 +112,15 @@ FLOATRET NAME(blasint *N, FLOAT *x, blasint *INCX){
 
   IDEBUG_END;
 
-  return ret;
+  trả_về ret;
 }
 
-#else
+#không_thì
 
 #ifdef COMPLEX
 FLOAT CNAME(blasint n, void *vx, blasint incx){
   FLOAT *x = (FLOAT*) vx;
-#else
+#không_thì
 FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 #endif
 
@@ -128,52 +128,52 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   PRINT_DEBUG_CNAME;
 
-  if (n <= 0) return 0.;
+  nếu (n <= 0) trả_về 0.;
 
 #ifndef COMPLEX
-  if (n == 1)
+  nếu (n == 1)
 #ifdef DOUBLE
-    return fabs(x[0]);
-#else
-    return fabsf(x[0]);
+    trả_về fabs(x[0]);
+#không_thì
+    trả_về fabsf(x[0]);
 #endif
 #endif
 
-  if (incx == 0)
+  nếu (incx == 0)
 #ifndef COMPLEX
 #ifdef DOUBLE
-  return (sqrt((double)n)*fabs(x[0]));
-#else
-  return (sqrt((float)n)*fabsf(x[0]));
+  trả_về (sqrt((double)n)*fabs(x[0]));
+#không_thì
+  trả_về (sqrt((float)n)*fabsf(x[0]));
 #endif
-#else
+#không_thì
 #ifdef DOUBLE
   {
   double fr=fabs(x[0]);
   double fi=fabs(x[1]);
   double fmin=MIN(fr,fi);
   double fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((double)n)*sqrt(2.)*fmax);
-  return (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  nếu (fmax==0.) trả_về(fmax);
+  nếu (fmax==fmin) trả_về(sqrt((double)n)*sqrt(2.)*fmax);
+  trả_về (sqrt((double)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
-#else
+#không_thì
   {
   float fr=fabs(x[0]);
   float fi=fabs(x[1]);
   float fmin=MIN(fr,fi);
   float fmax=MAX(fr,fi);
-  if (fmax==0.) return(fmax);
-  if (fmax==fmin) return(sqrt((float)n)*sqrt(2.)*fmax);
-  return (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
+  nếu (fmax==0.) trả_về(fmax);
+  nếu (fmax==fmin) trả_về(sqrt((float)n)*sqrt(2.)*fmax);
+  trả_về (sqrt((float)n) * fmax * sqrt (1. + (fmin/fmax)*(fmin/fmax)));
   }
 #endif
 #endif
 
-  if (incx < 0) 
+  nếu (incx < 0) 
 #ifdef COMPLEX    
     x -= (n - 1) * incx * 2;
-#else
+#không_thì
     x -= (n - 1) * incx;
 #endif
   
@@ -187,7 +187,7 @@ FLOAT CNAME(blasint n, FLOAT *x, blasint incx){
 
   IDEBUG_END;
 
-  return ret;
+  trả_về ret;
 }
 
 #endif

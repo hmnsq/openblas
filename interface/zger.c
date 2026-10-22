@@ -52,28 +52,28 @@
 #ifdef XDOUBLE
 #ifndef CONJ
 #define ERROR_NAME "XGERU  "
-#else
+#không_thì
 #define ERROR_NAME "XGERC  "
 #endif
 #elif defined DOUBLE
 #ifndef CONJ
 #define ERROR_NAME "ZGERU  "
-#else
+#không_thì
 #define ERROR_NAME "ZGERC  "
 #endif
-#else
+#không_thì
 #ifndef CONJ
 #define ERROR_NAME "CGERU  "
-#else
+#không_thì
 #define ERROR_NAME "CGERC "
 #endif
 #endif
 
-#if   defined XDOUBLE
+#nếu   defined XDOUBLE
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	xger_thread_U
-#else
+#không_thì
 #define GER		GERC_K
 #define GER_THREAD	xger_thread_C
 #define GERV		GERV_K
@@ -83,17 +83,17 @@
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	zger_thread_U
-#else
+#không_thì
 #define GER		GERC_K
 #define GER_THREAD	zger_thread_C
 #define GERV		GERV_K
 #define GERV_THREAD	zger_thread_V
 #endif
-#else
+#không_thì
 #ifndef CONJ
 #define GER		GERU_K
 #define GER_THREAD	cger_thread_U
-#else
+#không_thì
 #define GER		GERC_K
 #define GER_THREAD	cger_thread_C
 #define GERV		GERV_K
@@ -119,7 +119,7 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
   blasint    lda   = *LDA;
   FLOAT *buffer;
 #ifdef SMPTEST
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
   blasint info;
@@ -128,18 +128,18 @@ void NAME(blasint *M, blasint *N, FLOAT *Alpha,
 
   info = 0;
 
-  if (lda < MAX(1,m)) info = 9;
-  if (incy == 0)      info = 7;
-  if (incx == 0)      info = 5;
-  if (n < 0)          info = 2;
-  if (m < 0)          info = 1;
+  nếu (lda < MAX(1,m)) info = 9;
+  nếu (incy == 0)      info = 7;
+  nếu (incx == 0)      info = 5;
+  nếu (n < 0)          info = 2;
+  nếu (m < 0)          info = 1;
 
-  if (info){
+  nếu (info){
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
-#else
+#không_thì
 
 void CNAME(enum CBLAS_ORDER order,
 	   blasint m, blasint n,
@@ -159,24 +159,24 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *buffer;
   blasint info, t;
 #ifdef SMPTEST
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
 
   info  =  0;
 
-  if (order == CblasColMajor) {
+  nếu (order == CblasColMajor) {
     info = -1;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    nếu (lda < MAX(1,m)) info = 9;
+    nếu (incy == 0)      info = 7;
+    nếu (incx == 0)      info = 5;
+    nếu (n < 0)          info = 2;
+    nếu (m < 0)          info = 1;
   }
 
-  if (order == CblasRowMajor) {
+  nếu (order == CblasRowMajor) {
     info = -1;
 
     t = n;
@@ -191,64 +191,64 @@ void CNAME(enum CBLAS_ORDER order,
     x = y;
     y = buffer;
 
-    if (lda < MAX(1,m)) info = 9;
-    if (incy == 0)      info = 7;
-    if (incx == 0)      info = 5;
-    if (n < 0)          info = 2;
-    if (m < 0)          info = 1;
+    nếu (lda < MAX(1,m)) info = 9;
+    nếu (incy == 0)      info = 7;
+    nếu (incx == 0)      info = 5;
+    nếu (n < 0)          info = 2;
+    nếu (m < 0)          info = 1;
   }
 
-  if (info >= 0) {
+  nếu (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #endif
 
   /*     Quick return if possible. */
-  if (m == 0 || n == 0) return;
+  nếu (m == 0 || n == 0) trả_về;
 
-  if ((alpha_r == 0.) && (alpha_i == 0.)) return;
+  nếu ((alpha_r == 0.) && (alpha_i == 0.)) trả_về;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incy < 0) y -= (n - 1) * incy * 2;
-  if (incx < 0) x -= (m - 1) * incx * 2;
+  nếu (incy < 0) y -= (n - 1) * incy * 2;
+  nếu (incx < 0) x -= (m - 1) * incx * 2;
 
   STACK_ALLOC(2 * m, FLOAT, buffer);
 
 #ifdef SMPTEST
   // Threshold chosen so that speed-up is > 1 on a Xeon E5-2630
-  if(1L * m * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
+  nếu(1L * m * n > 36L * sizeof(FLOAT) * sizeof(FLOAT) * GEMM_MULTITHREAD_THRESHOLD)
     nthreads = num_cpu_avail(2);
-  else
+  không_thì
     nthreads = 1;
 
-  if (nthreads == 1) {
+  nếu (nthreads == 1) {
 #endif
 
-#if !defined(CBLAS) || !defined(CONJ)
+#nếu !defined(CBLAS) || !defined(CONJ)
   GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-#else
-  if (order == CblasColMajor) {
+#không_thì
+  nếu (order == CblasColMajor) {
     GER(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
-  } else {
+  } không_thì {
     GERV(m, n, 0, alpha_r, alpha_i, x, incx, y, incy, a, lda, buffer);
   }
 #endif
 
 #ifdef SMPTEST
 
-  } else {
+  } không_thì {
 
-#if !defined(CBLAS) || !defined(CONJ)
+#nếu !defined(CBLAS) || !defined(CONJ)
       GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-#else
-      if (order == CblasColMajor) {
+#không_thì
+      nếu (order == CblasColMajor) {
 	GER_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
-      } else {
+      } không_thì {
 	GERV_THREAD(m, n, Alpha, x, incx, y, incy, a, lda, buffer, nthreads);
       }
 #endif
@@ -262,6 +262,6 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 
 }

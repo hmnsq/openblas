@@ -46,17 +46,17 @@
 #define ERROR_NAME "XGEMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMV "
-#else
+#không_thì
 #define ERROR_NAME "CGEMV "
 #endif
 
 #ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static số_nguyên (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT *, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, số_nguyên) = {
 #ifdef XDOUBLE
   xgemv_thread_n, xgemv_thread_t, xgemv_thread_r, xgemv_thread_c, xgemv_thread_o, xgemv_thread_u, xgemv_thread_s, xgemv_thread_d,
 #elif defined DOUBLE
   zgemv_thread_n, zgemv_thread_t, zgemv_thread_r, zgemv_thread_c, zgemv_thread_o, zgemv_thread_u, zgemv_thread_s, zgemv_thread_d,
-#else
+#không_thì
   cgemv_thread_n, cgemv_thread_t, cgemv_thread_r, cgemv_thread_c, cgemv_thread_o, cgemv_thread_u, cgemv_thread_s, cgemv_thread_d,
 #endif
 };
@@ -79,12 +79,12 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   blasint incy = *INCY;
 
   FLOAT *buffer;
-  int buffer_size;
+  số_nguyên buffer_size;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
+  số_nguyên (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
 		FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 		  GEMV_N, GEMV_T, GEMV_R, GEMV_C,
 		  GEMV_O, GEMV_U, GEMV_S, GEMV_D,
@@ -108,30 +108,30 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i    = -1;
 
-  if (trans == 'N')  i = 0;
-  if (trans == 'T')  i = 1;
-  if (trans == 'R')  i = 2;
-  if (trans == 'C')  i = 3;
-  if (trans == 'O')  i = 4;
-  if (trans == 'U')  i = 5;
-  if (trans == 'S')  i = 6;
-  if (trans == 'D')  i = 7;
+  nếu (trans == 'N')  i = 0;
+  nếu (trans == 'T')  i = 1;
+  nếu (trans == 'R')  i = 2;
+  nếu (trans == 'C')  i = 3;
+  nếu (trans == 'O')  i = 4;
+  nếu (trans == 'U')  i = 5;
+  nếu (trans == 'S')  i = 6;
+  nếu (trans == 'D')  i = 7;
 
-  if (incy == 0)      info = 11;
-  if (incx == 0)      info = 8;
-  if (lda < MAX(1,m)) info = 6;
-  if (n < 0) 	      info = 3;
-  if (m < 0) 	      info = 2;
-  if (i < 0)          info = 1;
+  nếu (incy == 0)      info = 11;
+  nếu (incx == 0)      info = 8;
+  nếu (lda < MAX(1,m)) info = 6;
+  nếu (n < 0) 	      info = 3;
+  nếu (m < 0) 	      info = 2;
+  nếu (i < 0)          info = 1;
 
   trans = i;
 
-  if (info != 0) {
+  nếu (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
-#else
+#không_thì
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_TRANSPOSE TransA,
@@ -149,13 +149,13 @@ void CNAME(enum CBLAS_ORDER order,
   FLOAT *y = (FLOAT*) vy;
   FLOAT *buffer;
   blasint    lenx, leny;
-  int trans, buffer_size;
+  số_nguyên trans, buffer_size;
   blasint info, t;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
+  số_nguyên (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT, FLOAT *, BLASLONG,
 	    FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
 	      GEMV_N, GEMV_T, GEMV_R, GEMV_C,
 	      GEMV_O, GEMV_U, GEMV_S, GEMV_D,
@@ -172,28 +172,28 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 2;
-    if (TransA == CblasConjTrans)   trans = 3;
+  nếu (order == CblasColMajor) {
+    nếu (TransA == CblasNoTrans)     trans = 0;
+    nếu (TransA == CblasTrans)       trans = 1;
+    nếu (TransA == CblasConjNoTrans) trans = 2;
+    nếu (TransA == CblasConjTrans)   trans = 3;
 
     info = -1;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    nếu (incy == 0)	  info = 11;
+    nếu (incx == 0)	  info = 8;
+    nếu (lda < MAX(1, m))  info = 6;
+    nếu (n < 0)		  info = 3;
+    nếu (m < 0)		  info = 2;
+    nếu (trans < 0)        info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 3;
-    if (TransA == CblasConjTrans)   trans = 2;
+  nếu (order == CblasRowMajor) {
+    nếu (TransA == CblasNoTrans)     trans = 1;
+    nếu (TransA == CblasTrans)       trans = 0;
+    nếu (TransA == CblasConjNoTrans) trans = 3;
+    nếu (TransA == CblasConjTrans)   trans = 2;
 
     info = -1;
 
@@ -201,42 +201,42 @@ void CNAME(enum CBLAS_ORDER order,
     n = m;
     m = t;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    nếu (incy == 0)	  info = 11;
+    nếu (incx == 0)	  info = 8;
+    nếu (lda < MAX(1, m))  info = 6;
+    nếu (n < 0)		  info = 3;
+    nếu (m < 0)		  info = 2;
+    nếu (trans < 0)        info = 1;
 
   }
 
-  if (info >= 0) {
+  nếu (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #endif
 
   /*  Quick return if possible. */
 
-  if (m == 0 || n == 0) return;
+  nếu (m == 0 || n == 0) trả_về;
 
   lenx = n;
   leny = m;
 
-  if (trans & 1) lenx = m;
-  if (trans & 1) leny = n;
+  nếu (trans & 1) lenx = m;
+  nếu (trans & 1) leny = n;
 
-  if (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
+  nếu (beta_r != ONE || beta_i != ZERO) SCAL_K(leny, 0, 0, beta_r, beta_i, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if (alpha_r == ZERO && alpha_i == ZERO) return;
+  nếu (alpha_r == ZERO && alpha_i == ZERO) trả_về;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx - 1) * incx * 2;
-  if (incy < 0) y -= (leny - 1) * incy * 2;
+  nếu (incx < 0) x -= (lenx - 1) * incx * 2;
+  nếu (incy < 0) y -= (leny - 1) * incy * 2;
 
   buffer_size = 2 * (m + n) + 128 / sizeof(FLOAT);
 #ifdef WINDOWS_ABI
@@ -246,34 +246,34 @@ void CNAME(enum CBLAS_ORDER order,
   buffer_size = (buffer_size + 3) & ~3;
   STACK_ALLOC(buffer_size, FLOAT, buffer);
 
-#if defined(ARCH_X86_64) && defined(MAX_STACK_ALLOC) && MAX_STACK_ALLOC > 0
+#nếu defined(ARCH_X86_64) && defined(MAX_STACK_ALLOC) && MAX_STACK_ALLOC > 0
   // cgemv_t.S return NaN if there are NaN or Inf in the buffer (see bug #746)
-  if(trans && stack_alloc_size)
+  nếu(trans && stack_alloc_size)
     memset(buffer, 0, MIN(BUFFER_SIZE, sizeof(FLOAT) * buffer_size));
 #endif
 
 #ifdef SMP
 
-#if defined(_WIN64) && defined(_M_ARM64)
-  if (m*n > 25000000L) 
+#nếu defined(_WIN64) && defined(_M_ARM64)
+  nếu (m*n > 25000000L) 
     nthreads = num_cpu_avail(4);
-  else
+  không_thì
     nthreads = 1;
-#else
-  if (1L * m * n < 1024L * GEMM_MULTITHREAD_THRESHOLD)
+#không_thì
+  nếu (1L * m * n < 1024L * GEMM_MULTITHREAD_THRESHOLD)
     nthreads = 1;
-  else
+  không_thì
     nthreads = num_cpu_avail(2);
 #endif  
 
-  if (nthreads == 1) {
+  nếu (nthreads == 1) {
 #endif  
 
-    (gemv[(int)trans])(m, n, 0, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
+    (gemv[(số_nguyên)trans])(m, n, 0, alpha_r, alpha_i, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
-    (gemv_thread[(int)trans])(m, n, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
+  } không_thì {
+    (gemv_thread[(số_nguyên)trans])(m, n, ALPHA, a, lda, x, incx, y, incy, buffer, nthreads);
   }
 #endif
 
@@ -284,5 +284,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 }

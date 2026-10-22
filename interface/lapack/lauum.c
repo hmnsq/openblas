@@ -46,7 +46,7 @@
 #define ERROR_NAME "QLAUUM"
 #elif defined(DOUBLE)
 #define ERROR_NAME "DLAUUM"
-#else
+#không_thì
 #define ERROR_NAME "SLAUUM"
 #endif
 
@@ -83,22 +83,22 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
   TOUPPER(uplo_arg);
 
   uplo = -1;
-  if (uplo_arg == 'U') uplo = 0;
-  if (uplo_arg == 'L') uplo = 1;
+  nếu (uplo_arg == 'U') uplo = 0;
+  nếu (uplo_arg == 'L') uplo = 1;
 
   info  = 0;
-  if (args.lda < MAX(1,args.n)) info = 4;
-  if (args.n   < 0)             info = 2;
-  if (uplo     < 0)             info = 1;
-  if (info) {
+  nếu (args.lda < MAX(1,args.n)) info = 4;
+  nếu (args.n   < 0)             info = 2;
+  nếu (uplo     < 0)             info = 1;
+  nếu (info) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME) - 1);
     *Info = - info;
-    return;
+    trả_về;
   }
 
   *Info = 0;
 
-  if (args.n == 0) return;
+  nếu (args.n == 0) trả_về;
 
   IDEBUG_START;
 
@@ -113,19 +113,19 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
 #ifdef SMP
   args.common = NULL;
-  if (args.n < 64) {
+  nếu (args.n < 64) {
     args.nthreads = 1;
-  } else {
+  } không_thì {
     args.nthreads = num_cpu_avail(4);
   }
 
-  if (args.nthreads == 1) {
+  nếu (args.nthreads == 1) {
 #endif
 
     *Info = (lauum_single[uplo])(&args, NULL, NULL, sa, sb, 0);
 
 #ifdef SMP
-  } else {
+  } không_thì {
     *Info = (lauum_parallel[uplo])(&args, NULL, NULL, sa, sb, 0);
   }
 #endif
@@ -140,5 +140,5 @@ void NAME(char *UPLO, blasint *N, FLOAT *a, blasint *ldA, blasint *Info){
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 }

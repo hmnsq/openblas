@@ -35,7 +35,7 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include "common.h"
 
-void openblas_warning(int verbose, const char * msg);
+void openblas_warning(số_nguyên verbose, const char * msg);
 
 #ifndef COMPLEX
 #ifdef XDOUBLE
@@ -43,38 +43,38 @@ void openblas_warning(int verbose, const char * msg);
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGEMM_BATCH "
 #define GEMM_BATCH_THREAD dgemm_batch_thread
-#else
+#không_thì
 #define ERROR_NAME "SGEMM_BATCH "
 #define GEMM_BATCH_THREAD sgemm_batch_thread
 #endif
-#else
+#không_thì
 #ifdef XDOUBLE
 #define ERROR_NAME "XGEMM_BATCH "
 #elif defined(DOUBLE)
 #define ERROR_NAME "ZGEMM_BATCH "
 #define GEMM_BATCH_THREAD zgemm_batch_thread
-#else
+#không_thì
 #define ERROR_NAME "CGEMM_BATCH "
 #define GEMM_BATCH_THREAD cgemm_batch_thread
 #endif
 #endif
-static int (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
+static số_nguyên (*gemm[])(blas_arg_t *, BLASLONG *, BLASLONG *, IFLOAT *, IFLOAT *, BLASLONG) = {
   GEMM_NN, GEMM_TN, GEMM_RN, GEMM_CN,
   GEMM_NT, GEMM_TT, GEMM_RT, GEMM_CT,
   GEMM_NR, GEMM_TR, GEMM_RR, GEMM_CR,
   GEMM_NC, GEMM_TC, GEMM_RC, GEMM_CC,
 };
 
-#if defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
+#nếu defined(SMALL_MATRIX_OPT) && !defined(GEMM3M) && !defined(XDOUBLE)
 #define USE_SMALL_MATRIX_OPT 1
-#else
+#không_thì
 #define USE_SMALL_MATRIX_OPT 0
 #endif
 
-#if USE_SMALL_MATRIX_OPT
+#nếu USE_SMALL_MATRIX_OPT
 #ifndef DYNAMIC_ARCH
 #define SMALL_KERNEL_ADDR(table, idx) ((void *)(table[idx]))
-#else
+#không_thì
 #define SMALL_KERNEL_ADDR(table, idx) ((void *)(*(uintptr_t *)((char *)gotoblas + (size_t)(table[idx]))))
 #endif
 
@@ -91,9 +91,9 @@ static size_t gemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NT, GEMM_SMALL_KERNEL_B0_TT, 0, 0,
 };
 
-#define GEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
-#define GEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
-#else
+#define GEMM_SMALL_KERNEL_B0(idx) (số_nguyên (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel_b0, (idx))
+#define GEMM_SMALL_KERNEL(idx) (số_nguyên (*)(BLASLONG, BLASLONG, BLASLONG, IFLOAT *, BLASLONG, FLOAT, IFLOAT *, BLASLONG, FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(gemm_small_kernel, (idx))
+#không_thì
 
 static size_t zgemm_small_kernel[] = {
 	GEMM_SMALL_KERNEL_NN, GEMM_SMALL_KERNEL_TN, GEMM_SMALL_KERNEL_RN, GEMM_SMALL_KERNEL_CN,
@@ -109,8 +109,8 @@ static size_t zgemm_small_kernel_b0[] = {
 	GEMM_SMALL_KERNEL_B0_NC, GEMM_SMALL_KERNEL_B0_TC, GEMM_SMALL_KERNEL_B0_RC, GEMM_SMALL_KERNEL_B0_CC,
 };
 
-#define ZGEMM_SMALL_KERNEL(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
-#define ZGEMM_SMALL_KERNEL_B0(idx) (int (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
+#define ZGEMM_SMALL_KERNEL(idx) (số_nguyên (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel, (idx))
+#define ZGEMM_SMALL_KERNEL_B0(idx) (số_nguyên (*)(BLASLONG, BLASLONG, BLASLONG, FLOAT *, BLASLONG, FLOAT , FLOAT, FLOAT *, BLASLONG, FLOAT *, BLASLONG)) SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, (idx))
 #endif
 #endif
 
@@ -125,7 +125,7 @@ void NAME(char *transa_array, char *transb_array,
 	   FLOAT * beta_array,
 	   FLOAT ** c_array, blasint * ldc_array, blasint * gcount, blasint * group_size) {
        blasint group_count = *gcount;
-#else
+#không_thì
 
 void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CBLAS_TRANSPOSE * transb_array,
 	   blasint * m_array, blasint * n_array, blasint * k_array,
@@ -135,7 +135,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
 	   IFLOAT ** b_array, blasint * ldb_array,
 	   FLOAT * beta_array,
 	   FLOAT ** c_array, blasint * ldc_array, blasint group_count, blasint * group_size) {
-#else
+#không_thì
 	   void * valpha_array,
 	   void ** va_array, blasint * lda_array,
 	   void ** vb_array, blasint * ldb_array,
@@ -154,12 +154,12 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
 
   blas_arg_t * args_array=NULL;
 
-  int mode=0, group_mode=0;
+  số_nguyên mode=0, group_mode=0;
   blasint total_num=0;
 
   blasint i=0, j=0, matrix_idx=0, count=0;
 
-  int group_transa, group_transb;
+  số_nguyên group_transa, group_transb;
   BLASLONG group_nrowa, group_nrowb;
   blasint info;
 
@@ -169,21 +169,21 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
   void * group_small_matrix_opt_routine=NULL;
 #endif
   
-#if defined (SMP) || defined(SMALL_MATRIX_OPT)
+#nếu defined (SMP) || defined(SMALL_MATRIX_OPT)
   double MNK;
 #endif
 
   PRINT_DEBUG_CNAME;
     
-  for(i=0; i<group_count; i++){
+  cho(i=0; i<group_count; i++){
     total_num+=group_size[i];
   }
 
   args_array=(blas_arg_t *)malloc(total_num * sizeof(blas_arg_t));
   
-  if(args_array == NULL){
+  nếu(args_array == NULL){
     openblas_warning(0, "memory alloc failed!\n");
-    return;
+    trả_về;
   }
 
 #ifdef SMP
@@ -192,21 +192,21 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
   mode  =  BLAS_XDOUBLE | BLAS_REAL;
 #elif defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_REAL;
-#else
+#không_thì
   mode  =  BLAS_SINGLE  | BLAS_REAL;
 #endif
-#else
+#không_thì
 #ifdef XDOUBLE
   mode  =  BLAS_XDOUBLE | BLAS_COMPLEX;
 #elif defined(DOUBLE)
   mode  =  BLAS_DOUBLE  | BLAS_COMPLEX;
-#else
+#không_thì
   mode  =  BLAS_SINGLE  | BLAS_COMPLEX;
 #endif
 #endif
 #endif
   
-  for(i=0; i<group_count; matrix_idx+=group_size[i], i++){
+  cho(i=0; i<group_count; matrix_idx+=group_size[i], i++){
     group_alpha = (void *)&alpha_array[i * COMPSIZE];
     group_beta = (void *)&beta_array[i * COMPSIZE];
 
@@ -216,8 +216,8 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
     group_transb = -1;
     info   = 0;
    
-#if defined(CBLAS) 
-    if (order == CblasColMajor) {
+#nếu defined(CBLAS) 
+    nếu (order == CblasColMajor) {
       group_m = m_array[i];
       group_n = n_array[i];
       group_k = k_array[i];
@@ -226,41 +226,41 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       group_ldb = ldb_array[i];
       group_ldc = ldc_array[i];
       
-      if (transa_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transa_array[i] == CblasTrans)       group_transa = 1;
+      nếu (transa_array[i] == CblasNoTrans)     group_transa = 0;
+      nếu (transa_array[i] == CblasTrans)       group_transa = 1;
 #ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transa = 3;
+      nếu (transa_array[i] == CblasConjNoTrans) group_transa = 0;
+      nếu (transa_array[i] == CblasConjTrans)   group_transa = 1;
+#không_thì
+      nếu (transa_array[i] == CblasConjNoTrans) group_transa = 2;
+      nếu (transa_array[i] == CblasConjTrans)   group_transa = 3;
 #endif
-      if (transb_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transb_array[i] == CblasTrans)       group_transb = 1;
+      nếu (transb_array[i] == CblasNoTrans)     group_transb = 0;
+      nếu (transb_array[i] == CblasTrans)       group_transb = 1;
 #ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transb = 3;
+      nếu (transb_array[i] == CblasConjNoTrans) group_transb = 0;
+      nếu (transb_array[i] == CblasConjTrans)   group_transb = 1;
+#không_thì
+      nếu (transb_array[i] == CblasConjNoTrans) group_transb = 2;
+      nếu (transb_array[i] == CblasConjTrans)   group_transb = 3;
 #endif
       group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
+      nếu (group_transa & 1) group_nrowa = group_k;
       group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      nếu (group_transb & 1) group_nrowb = group_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;
+      nếu (group_ldc < group_m) info = 13;
+      nếu (group_ldb < group_nrowb)  info = 10;
+      nếu (group_lda < group_nrowa)  info =  8;
+      nếu (group_k < 0)        info =  5;
+      nếu (group_n < 0)        info =  4;
+      nếu (group_m < 0)        info =  3;
+      nếu (group_transb < 0)        info =  2;
+      nếu (group_transa < 0)        info =  1;
 
-    }else if (order == CblasRowMajor) {
+    }không_thì nếu (order == CblasRowMajor) {
       
       group_m = n_array[i];
       group_n = m_array[i];
@@ -270,26 +270,26 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       group_ldb = lda_array[i];
       group_ldc = ldc_array[i];
 
-      if (transb_array[i] == CblasNoTrans)     group_transa = 0;
-      if (transb_array[i] == CblasTrans)       group_transa = 1;
+      nếu (transb_array[i] == CblasNoTrans)     group_transa = 0;
+      nếu (transb_array[i] == CblasTrans)       group_transa = 1;
 #ifndef COMPLEX
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 0;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 1;
-#else
-      if (transb_array[i] == CblasConjNoTrans) group_transa = 2;
-      if (transb_array[i] == CblasConjTrans)   group_transa = 3;
+      nếu (transb_array[i] == CblasConjNoTrans) group_transa = 0;
+      nếu (transb_array[i] == CblasConjTrans)   group_transa = 1;
+#không_thì
+      nếu (transb_array[i] == CblasConjNoTrans) group_transa = 2;
+      nếu (transb_array[i] == CblasConjTrans)   group_transa = 3;
 #endif
-      if (transa_array[i] == CblasNoTrans)     group_transb = 0;
-      if (transa_array[i] == CblasTrans)       group_transb = 1;
+      nếu (transa_array[i] == CblasNoTrans)     group_transb = 0;
+      nếu (transa_array[i] == CblasTrans)       group_transb = 1;
 #ifndef COMPLEX
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 0;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 1;
-#else
-      if (transa_array[i] == CblasConjNoTrans) group_transb = 2;
-      if (transa_array[i] == CblasConjTrans)   group_transb = 3;
+      nếu (transa_array[i] == CblasConjNoTrans) group_transb = 0;
+      nếu (transa_array[i] == CblasConjTrans)   group_transb = 1;
+#không_thì
+      nếu (transa_array[i] == CblasConjNoTrans) group_transb = 2;
+      nếu (transa_array[i] == CblasConjTrans)   group_transb = 3;
 #endif
 
-#else
+#không_thì
       group_m = m_array[i];
       group_n = n_array[i];
       group_k = k_array[i];
@@ -298,87 +298,87 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       group_ldb = ldb_array[i];
       group_ldc = ldc_array[i];
       
-      if (transa_array[i] == 'N')   group_transa = 0;
-      if (transa_array[i] == 'T')   group_transa = 1;
+      nếu (transa_array[i] == 'N')   group_transa = 0;
+      nếu (transa_array[i] == 'T')   group_transa = 1;
 #ifndef COMPLEX
-      if (transa_array[i] == 'C')   group_transa = 1;
-#else
-      if (transa_array[i] == 'C')   group_transa = 3;
+      nếu (transa_array[i] == 'C')   group_transa = 1;
+#không_thì
+      nếu (transa_array[i] == 'C')   group_transa = 3;
 #endif
-      if (transb_array[i] == 'N')   group_transb = 0;
-      if (transb_array[i] == 'T')   group_transb = 1;
+      nếu (transb_array[i] == 'N')   group_transb = 0;
+      nếu (transb_array[i] == 'T')   group_transb = 1;
 #ifndef COMPLEX
-      if (transb_array[i] == 'C')   group_transb = 1;
-#else
-      if (transb_array[i] == 'C')   group_transb = 3;
+      nếu (transb_array[i] == 'C')   group_transb = 1;
+#không_thì
+      nếu (transb_array[i] == 'C')   group_transb = 3;
 #endif
 #endif
 
       group_nrowa = group_m;
-      if (group_transa & 1) group_nrowa = group_k;
+      nếu (group_transa & 1) group_nrowa = group_k;
       group_nrowb = group_k;
-      if (group_transb & 1) group_nrowb = group_n;
+      nếu (group_transb & 1) group_nrowb = group_n;
 
       info=-1;
 	
-      if (group_ldc < group_m) info = 13;
-      if (group_ldb < group_nrowb)  info = 10;
-      if (group_lda < group_nrowa)  info =  8;
-      if (group_k < 0)        info =  5;
-      if (group_n < 0)        info =  4;
-      if (group_m < 0)        info =  3;
-      if (group_transb < 0)        info =  2;
-      if (group_transa < 0)        info =  1;      
-#if defined(CBLAS)
+      nếu (group_ldc < group_m) info = 13;
+      nếu (group_ldb < group_nrowb)  info = 10;
+      nếu (group_lda < group_nrowa)  info =  8;
+      nếu (group_k < 0)        info =  5;
+      nếu (group_n < 0)        info =  4;
+      nếu (group_m < 0)        info =  3;
+      nếu (group_transb < 0)        info =  2;
+      nếu (group_transa < 0)        info =  1;      
+#nếu defined(CBLAS)
     }
 #endif
 
-    if (info >= 0) {
+    nếu (info >= 0) {
       BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
       free(args_array);
-      return;
+      trả_về;
     }
 
-    if (group_m == 0 || group_n == 0) continue;
+    nếu (group_m == 0 || group_n == 0) continue;
 
     group_mode=mode;
 
-#if defined(SMP) || defined(SMALL_MATRIX_OPT)
+#nếu defined(SMP) || defined(SMALL_MATRIX_OPT)
     MNK = (double) group_m * (double) group_n * (double) group_k;
 #endif
 
 #ifdef SMALL_MATRIX_OPT
-#if !defined(COMPLEX)
-    if (*(FLOAT *)(group_alpha) != ZERO &&
+#nếu !defined(COMPLEX)
+    nếu (*(FLOAT *)(group_alpha) != ZERO &&
         GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
                                  *(FLOAT *)(group_alpha), *(FLOAT *)(group_beta))){
-#else
-    if (((FLOAT *)(group_alpha))[0] != ZERO &&
+#không_thì
+    nếu (((FLOAT *)(group_alpha))[0] != ZERO &&
         GEMM_SMALL_MATRIX_PERMIT(group_transa, group_transb, group_m, group_n, group_k,
                                  ((FLOAT *)(group_alpha))[0], ((FLOAT *)(group_alpha))[1],
                                  ((FLOAT *)(group_beta))[0], ((FLOAT *)(group_beta))[1])){
 #endif
       group_routine=NULL;
-#if !defined(COMPLEX)
-      if(*(FLOAT *)(group_beta) == 0.0){
+#nếu !defined(COMPLEX)
+      nếu(*(FLOAT *)(group_beta) == 0.0){
 	group_mode=mode | BLAS_SMALL_B0_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
+      }không_thì{
 	group_mode=mode | BLAS_SMALL_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(gemm_small_kernel, ((group_transb<<2)|group_transa));
       }
-#else
-      if(((FLOAT *)(group_beta))[0] == 0.0 && ((FLOAT *)(group_beta))[1] == 0.0){
+#không_thì
+      nếu(((FLOAT *)(group_beta))[0] == 0.0 && ((FLOAT *)(group_beta))[1] == 0.0){
 	group_mode=mode | BLAS_SMALL_B0_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel_b0, ((group_transb<<2)|group_transa));
-      }else{
+      }không_thì{
 	group_mode=mode | BLAS_SMALL_OPT;
 	group_small_matrix_opt_routine=SMALL_KERNEL_ADDR(zgemm_small_kernel, ((group_transb<<2)|group_transa));
       }
 
 #endif
       
-    }else{
+    }không_thì{
 #endif
       group_routine=(void*)(gemm[(group_transb<<2)|group_transa]);
 #ifdef SMALL_MATRIX_OPT
@@ -386,7 +386,7 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
 #endif    
 
     
-    for(j=0; j<group_size[i]; j++){
+    cho(j=0; j<group_size[i]; j++){
       args_array[count].m=group_m;
       args_array[count].n=group_n;
       args_array[count].k=group_k;
@@ -396,11 +396,11 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       args_array[count].alpha=group_alpha;
       args_array[count].beta=group_beta;
 
-#if defined(CBLAS)
-      if (order == CblasRowMajor) {
+#nếu defined(CBLAS)
+      nếu (order == CblasRowMajor) {
 	args_array[count].a=(b_array[matrix_idx+j]);
 	args_array[count].b=(a_array[matrix_idx+j]);
-      } else
+      } không_thì
 #endif
       {
 	args_array[count].a=(a_array[matrix_idx+j]);
@@ -412,14 +412,14 @@ void CNAME(enum CBLAS_ORDER order, enum CBLAS_TRANSPOSE *  transa_array, enum CB
       args_array[count].routine_mode=group_mode;
       args_array[count].routine=group_routine;
 #ifdef SMALL_MATRIX_OPT
-      if (!group_routine)
+      nếu (!group_routine)
         args_array[count].routine=group_small_matrix_opt_routine;
 #endif      
       count++;
     }
   }
 
-  if(count>0){
+  nếu(count>0){
     GEMM_BATCH_THREAD(args_array,count);
   }
 

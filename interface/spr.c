@@ -47,27 +47,27 @@
 #define ERROR_NAME "QSPR  "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DSPR  "
-#else
+#không_thì
 #define ERROR_NAME "SSPR  "
 #endif
 
-static int (*spr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
+static số_nguyên (*spr[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *) = {
 #ifdef XDOUBLE
   qspr_U, qspr_L,
 #elif defined(DOUBLE)
   dspr_U, dspr_L,
-#else
+#không_thì
   sspr_U, sspr_L,
 #endif
 };
 
 #ifdef SMP
-static int (*spr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, int) = {
+static số_nguyên (*spr_thread[])(BLASLONG, FLOAT, FLOAT *, BLASLONG, FLOAT *, FLOAT *, số_nguyên) = {
 #ifdef XDOUBLE
   qspr_thread_U, qspr_thread_L,
 #elif defined(DOUBLE)
   dspr_thread_U, dspr_thread_L,
-#else
+#không_thì
   sspr_thread_U, sspr_thread_L,
 #endif
 };
@@ -86,10 +86,10 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   blasint incx	= *INCX;
 
   blasint info;
-  int uplo;
+  số_nguyên uplo;
   FLOAT *buffer;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
   PRINT_DEBUG_NAME;
@@ -97,21 +97,21 @@ void NAME(char *UPLO, blasint *N, FLOAT  *ALPHA,
   TOUPPER(uplo_arg);
   uplo  = -1;
 
-  if (uplo_arg  == 'U') uplo  = 0;
-  if (uplo_arg  == 'L') uplo  = 1;
+  nếu (uplo_arg  == 'U') uplo  = 0;
+  nếu (uplo_arg  == 'L') uplo  = 1;
 
   info = 0;
 
-  if (incx == 0)          info =  5;
-  if (n < 0)              info =  2;
-  if (uplo  < 0)          info =  1;
+  nếu (incx == 0)          info =  5;
+  nếu (n < 0)              info =  2;
+  nếu (uplo  < 0)          info =  1;
 
-  if (info != 0) {
+  nếu (info != 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
-#else
+#không_thì
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_UPLO Uplo,
@@ -121,10 +121,10 @@ void CNAME(enum CBLAS_ORDER order,
 	   FLOAT  *a) {
 
   FLOAT *buffer;
-  int uplo;
+  số_nguyên uplo;
   blasint info;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
   PRINT_DEBUG_CNAME;
@@ -132,85 +132,85 @@ void CNAME(enum CBLAS_ORDER order,
   uplo = -1;
   info =  0;
 
-  if (order == CblasColMajor) {
-    if (Uplo == CblasUpper)         uplo  = 0;
-    if (Uplo == CblasLower)         uplo  = 1;
+  nếu (order == CblasColMajor) {
+    nếu (Uplo == CblasUpper)         uplo  = 0;
+    nếu (Uplo == CblasLower)         uplo  = 1;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    nếu (incx == 0)          info =  5;
+    nếu (n < 0)              info =  2;
+    nếu (uplo  < 0)          info =  1;
   }
 
-  if (order == CblasRowMajor) {
-    if (Uplo == CblasUpper)         uplo  = 1;
-    if (Uplo == CblasLower)         uplo  = 0;
+  nếu (order == CblasRowMajor) {
+    nếu (Uplo == CblasUpper)         uplo  = 1;
+    nếu (Uplo == CblasLower)         uplo  = 0;
 
     info = -1;
 
-    if (incx == 0)          info =  5;
-    if (n < 0)              info =  2;
-    if (uplo  < 0)          info =  1;
+    nếu (incx == 0)          info =  5;
+    nếu (n < 0)              info =  2;
+    nếu (uplo  < 0)          info =  1;
   }
 
-  if (info >= 0) {
+  nếu (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #endif
 
-  if (n == 0) return;
+  nếu (n == 0) trả_về;
 
-  if (alpha == ZERO) return;
+  nếu (alpha == ZERO) trả_về;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx == 1 && n <100) {
+  nếu (incx == 1 && n <100) {
     blasint i;
-    if (uplo==0) {
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
+    nếu (uplo==0) {
+      cho (i = 0; i < n; i++){
+        nếu (x[i] != ZERO) {
           AXPYU_K(i + 1, 0, 0, alpha * x[i], x,     1, a, 1, NULL, 0);
         }
         a += i + 1;
       }
-    } else { 
-      for (i = 0; i < n; i++){
-        if (x[i] != ZERO) {
+    } không_thì { 
+      cho (i = 0; i < n; i++){
+        nếu (x[i] != ZERO) {
           AXPYU_K(n - i, 0, 0, alpha * x[i], x + i, 1, a, 1, NULL, 0);
         }
         a += n - i;
       }
     }
-    return;
+    trả_về;
   }
 
-  if (incx < 0 ) x -= (n - 1) * incx;
+  nếu (incx < 0 ) x -= (n - 1) * incx;
 
   buffer = (FLOAT *)blas_memory_alloc(1);
-  if (!buffer) {
+  nếu (!buffer) {
     info = -999;
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #ifdef SMP
   nthreads = num_cpu_avail(2);
 
-  if (n < 50) nthreads = 1;
-  if (nthreads > 2 && n < 500) nthreads = 2;
+  nếu (n < 50) nthreads = 1;
+  nếu (nthreads > 2 && n < 500) nthreads = 2;
 
-  if (nthreads == 1) {
+  nếu (nthreads == 1) {
 #endif
 
   (spr[uplo])(n, alpha, x, incx, a, buffer);
 
 #ifdef SMP
-  } else {
+  } không_thì {
 
     (spr_thread[uplo])(n, alpha, x, incx, a, buffer, nthreads);
 
@@ -223,5 +223,5 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 }

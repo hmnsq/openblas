@@ -48,17 +48,17 @@
 #define ERROR_NAME "QGEMV "
 #elif defined(DOUBLE)
 #define ERROR_NAME "DGEMV "
-#else
+#không_thì
 #define ERROR_NAME "SGEMV "
 #endif
 
 #ifdef SMP
-static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, int) = {
+static số_nguyên (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *, số_nguyên) = {
 #ifdef XDOUBLE
   qgemv_thread_n, qgemv_thread_t,
 #elif defined DOUBLE
   dgemv_thread_n, dgemv_thread_t,
-#else
+#không_thì
   sgemv_thread_n, sgemv_thread_t,
 #endif
 };
@@ -69,10 +69,10 @@ static int (*gemv_thread[])(BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT
  extern char* gotoblas_corename(void);
 #endif
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
-static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
+#nếu defined(DYNAMIC_ARCH) || defined(NEOVERSEV1)
+static inline số_nguyên get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, số_nguyên ncpu) {
   #ifdef DOUBLE
-      return (MN < 8100L)      ? 1
+      trả_về (MN < 8100L)      ? 1
           : (MN < 12100L)     ? MIN(ncpu, 2)
           : (MN < 36100L)     ? MIN(ncpu, 4)
           : (MN < 84100L)     ? MIN(ncpu, 8)
@@ -81,8 +81,8 @@ static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
           : (MN < 810000L)    ? MIN(ncpu, 32)
           : (MN < 1050625L)   ? MIN(ncpu, 40)
           : ncpu;
-  #else
-      return
+  #không_thì
+      trả_về
             (MN < 25600L)     ? 1
           : (MN < 63001L)     ? MIN(ncpu, 4)
           : (MN < 202500L)    ? MIN(ncpu, 8)
@@ -93,9 +93,9 @@ static inline int get_gemv_optimal_nthreads_neoversev1(BLASLONG MN, int ncpu) {
 }
 #endif
 
-#if defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
-static inline int get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, int ncpu) {
-  return
+#nếu defined(DYNAMIC_ARCH) || defined(NEOVERSEV2)
+static inline số_nguyên get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, số_nguyên ncpu) {
+  trả_về
       MN < 24964L    ? 1
     : MN < 145924L    ? MIN(ncpu, 8)
     : MN < 692224L   ? MIN(ncpu, 16)
@@ -104,30 +104,30 @@ static inline int get_gemv_optimal_nthreads_neoversev2(BLASLONG MN, int ncpu) {
 }
 #endif
 
-static inline int get_gemv_optimal_nthreads(BLASLONG MN) {
-  int ncpu = num_cpu_avail(3);
-#if defined(_WIN64) && defined(_M_ARM64)
-  if (MN > 100000000L)
-    return num_cpu_avail(4);
-  return 1;
+static inline số_nguyên get_gemv_optimal_nthreads(BLASLONG MN) {
+  số_nguyên ncpu = num_cpu_avail(3);
+#nếu defined(_WIN64) && defined(_M_ARM64)
+  nếu (MN > 100000000L)
+    trả_về num_cpu_avail(4);
+  trả_về 1;
 #endif
-#if defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(BFLOAT16)
-  return get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
+#nếu defined(NEOVERSEV1) && !defined(COMPLEX) && !defined(BFLOAT16)
+  trả_về get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
 #elif defined(NEOVERSEV2) && !defined(COMPLEX) && !defined(DOUBLE) && !defined(BFLOAT16)
-  return get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
+  trả_về get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
 #elif defined(DYNAMIC_ARCH) && !defined(COMPLEX) && !defined(BFLOAT16)
-  if (strcmp(gotoblas_corename(), "neoversev1") == 0) {
-    return get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
+  nếu (strcmp(gotoblas_corename(), "neoversev1") == 0) {
+    trả_về get_gemv_optimal_nthreads_neoversev1(MN, ncpu);
   }
-  if (strcmp(gotoblas_corename(), "neoversev2") == 0) {
-    return get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
+  nếu (strcmp(gotoblas_corename(), "neoversev2") == 0) {
+    trả_về get_gemv_optimal_nthreads_neoversev2(MN, ncpu);
   }
 #endif
 
-  if ( MN < 115200L * GEMM_MULTITHREAD_THRESHOLD )
-    return 1;
-  else
-    return num_cpu_avail(2);
+  nếu ( MN < 115200L * GEMM_MULTITHREAD_THRESHOLD )
+    trả_về 1;
+  không_thì
+    trả_về num_cpu_avail(2);
 }
 #endif
 
@@ -149,12 +149,12 @@ void NAME(char *TRANS, blasint *M, blasint *N,
   FLOAT alpha = *ALPHA;
   FLOAT beta  = *BETA;
   FLOAT *buffer;
-  int buffer_size;
+  số_nguyên buffer_size;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  số_nguyên (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     GEMV_N, GEMV_T,
   };
 
@@ -170,26 +170,26 @@ void NAME(char *TRANS, blasint *M, blasint *N,
 
   i = -1;
 
-  if (trans == 'N') i = 0;
-  if (trans == 'T') i = 1;
-  if (trans == 'R') i = 0;
-  if (trans == 'C') i = 1;
+  nếu (trans == 'N') i = 0;
+  nếu (trans == 'T') i = 1;
+  nếu (trans == 'R') i = 0;
+  nếu (trans == 'C') i = 1;
 
-  if (incy == 0)	info = 11;
-  if (incx == 0)	info = 8;
-  if (lda < MAX(1, m))	info = 6;
-  if (n < 0)		info = 3;
-  if (m < 0)		info = 2;
-  if (i < 0)          info = 1;
+  nếu (incy == 0)	info = 11;
+  nếu (incx == 0)	info = 8;
+  nếu (lda < MAX(1, m))	info = 6;
+  nếu (n < 0)		info = 3;
+  nếu (m < 0)		info = 2;
+  nếu (i < 0)          info = 1;
 
   trans = i;
 
-  if (info != 0){
+  nếu (info != 0){
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
-#else
+#không_thì
 
 void CNAME(enum CBLAS_ORDER order,
 	   enum CBLAS_TRANSPOSE TransA,
@@ -202,13 +202,13 @@ void CNAME(enum CBLAS_ORDER order,
 
   FLOAT *buffer;
   blasint lenx, leny;
-  int trans, buffer_size;
+  số_nguyên trans, buffer_size;
   blasint info, t;
 #ifdef SMP
-  int nthreads;
+  số_nguyên nthreads;
 #endif
 
-  int (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
+  số_nguyên (*gemv[])(BLASLONG, BLASLONG, BLASLONG, FLOAT, FLOAT *, BLASLONG,  FLOAT * , BLASLONG, FLOAT *, BLASLONG, FLOAT *) = {
     GEMV_N, GEMV_T,
   };
 
@@ -217,28 +217,28 @@ void CNAME(enum CBLAS_ORDER order,
   trans = -1;
   info  =  0;
 
-  if (order == CblasColMajor) {
-    if (TransA == CblasNoTrans)     trans = 0;
-    if (TransA == CblasTrans)       trans = 1;
-    if (TransA == CblasConjNoTrans) trans = 0;
-    if (TransA == CblasConjTrans)   trans = 1;
+  nếu (order == CblasColMajor) {
+    nếu (TransA == CblasNoTrans)     trans = 0;
+    nếu (TransA == CblasTrans)       trans = 1;
+    nếu (TransA == CblasConjNoTrans) trans = 0;
+    nếu (TransA == CblasConjTrans)   trans = 1;
 
     info = -1;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    nếu (incy == 0)	  info = 11;
+    nếu (incx == 0)	  info = 8;
+    nếu (lda < MAX(1, m))  info = 6;
+    nếu (n < 0)		  info = 3;
+    nếu (m < 0)		  info = 2;
+    nếu (trans < 0)        info = 1;
 
   }
 
-  if (order == CblasRowMajor) {
-    if (TransA == CblasNoTrans)     trans = 1;
-    if (TransA == CblasTrans)       trans = 0;
-    if (TransA == CblasConjNoTrans) trans = 1;
-    if (TransA == CblasConjTrans)   trans = 0;
+  nếu (order == CblasRowMajor) {
+    nếu (TransA == CblasNoTrans)     trans = 1;
+    nếu (TransA == CblasTrans)       trans = 0;
+    nếu (TransA == CblasConjNoTrans) trans = 1;
+    nếu (TransA == CblasConjTrans)   trans = 0;
 
     info = -1;
 
@@ -246,38 +246,38 @@ void CNAME(enum CBLAS_ORDER order,
     n = m;
     m = t;
 
-    if (incy == 0)	  info = 11;
-    if (incx == 0)	  info = 8;
-    if (lda < MAX(1, m))  info = 6;
-    if (n < 0)		  info = 3;
-    if (m < 0)		  info = 2;
-    if (trans < 0)        info = 1;
+    nếu (incy == 0)	  info = 11;
+    nếu (incx == 0)	  info = 8;
+    nếu (lda < MAX(1, m))  info = 6;
+    nếu (n < 0)		  info = 3;
+    nếu (m < 0)		  info = 2;
+    nếu (trans < 0)        info = 1;
 
   }
 
-  if (info >= 0) {
+  nếu (info >= 0) {
     BLASFUNC(xerbla)(ERROR_NAME, &info, sizeof(ERROR_NAME));
-    return;
+    trả_về;
   }
 
 #endif
-  if ((m==0) || (n==0)) return;
+  nếu ((m==0) || (n==0)) trả_về;
 
   lenx = n;
   leny = m;
-  if (trans) lenx = m;
-  if (trans) leny = n;
+  nếu (trans) lenx = m;
+  nếu (trans) leny = n;
 
-  if (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
+  nếu (beta != ONE) SCAL_K(leny, 0, 0, beta, y, blasabs(incy), NULL, 0, NULL, 0);
 
-  if (alpha == ZERO) return;
+  nếu (alpha == ZERO) trả_về;
 	
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (lenx - 1) * incx;
-  if (incy < 0) y -= (leny - 1) * incy;
+  nếu (incx < 0) x -= (lenx - 1) * incx;
+  nếu (incy < 0) y -= (leny - 1) * incy;
 
   buffer_size = m + n + 128 / sizeof(FLOAT);
 #ifdef WINDOWS_ABI
@@ -290,15 +290,15 @@ void CNAME(enum CBLAS_ORDER order,
 #ifdef SMP
   nthreads = get_gemv_optimal_nthreads(1L * m * n);
 
-  if (nthreads == 1) {
+  nếu (nthreads == 1) {
 #endif
 
-    (gemv[(int)trans])(m, n, 0, alpha, a, lda, x, incx, y, incy, buffer);
+    (gemv[(số_nguyên)trans])(m, n, 0, alpha, a, lda, x, incx, y, incy, buffer);
 
 #ifdef SMP
-  } else {
+  } không_thì {
 
-    (gemv_thread[(int)trans])(m, n, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
+    (gemv_thread[(số_nguyên)trans])(m, n, alpha, a, lda, x, incx, y, incy, buffer, nthreads);
 
   }
 #endif
@@ -308,6 +308,6 @@ void CNAME(enum CBLAS_ORDER order,
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 
 }

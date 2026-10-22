@@ -56,7 +56,7 @@ void NAME(blasint *N, FLOAT *x, blasint *INCX, FLOAT *y, blasint *INCY, FLOAT *C
 
   PRINT_DEBUG_NAME;
 
-#else
+#không_thì
 
 void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT c, FLOAT s){
 
@@ -64,14 +64,14 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT c, F
 
 #endif
 
-  if (n <= 0) return;
+  nếu (n <= 0) trả_về;
 
   IDEBUG_START;
 
   FUNCTION_PROFILE_START();
 
-  if (incx < 0) x -= (n - 1) * incx;
-  if (incy < 0) y -= (n - 1) * incy;
+  nếu (incx < 0) x -= (n - 1) * incx;
+  nếu (incy < 0) y -= (n - 1) * incy;
 
   ROT_K(n, x, incx, y, incy, c, s);
 
@@ -79,6 +79,6 @@ void CNAME(blasint n, FLOAT *x, blasint incx, FLOAT *y, blasint incy, FLOAT c, F
 
   IDEBUG_END;
 
-  return;
+  trả_về;
 
 }
